@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="primary_color">#064282</color>
+	<color name="secondary_color">#4e8ccf</color>
+	<color name="btn_login_color">#042f56</color>
+	<color name="remove_color">#ec3f3f</color>
+	<color name="remove_pressed_color">#f57979</color>
+
+	<!-- Main Toolbar -->
+	<color name="crm_gray">#a7a9ac</color>
+	<color name="crm_ligth_gray">#ecf1f8</color>
+
+	<!-- Navigation Drawer -->
+	<color name="list_item_title">@android:color/white</color>
+	<color name="list_background">#fcfbfa</color>
+	<color name="list_background_pressed">#b8d6e8</color>
+</resources>
