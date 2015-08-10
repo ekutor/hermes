@@ -60,7 +60,7 @@ public class AccountsFragment extends Fragment {
     private RecyclerView mRecyclerViewAccounts;
     private RecyclerView.Adapter mRecyclerViewAccountsAdapter;
     private RecyclerView.LayoutManager mRecyclerViewAccountsLayoutManager;
-    private ActionButton mActionButton;
+//    private ActionButton mActionButton;
 
     public AccountsFragment() {
         // Required empty public constructor
@@ -115,7 +115,7 @@ public class AccountsFragment extends Fragment {
          
          
          // Action Button
-         mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
+//         mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
 
          // Eventos
          mMainSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -169,19 +169,19 @@ public class AccountsFragment extends Fragment {
              }
          });
 
-         mActionButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 // Create Account Activity
-//                 Intent intentCrearCuenta = new Intent(getActivity(),
-//                         AddAccountActivity.class);
-//                 getActivity().startActivity(intentCrearCuenta);
-             }
-         });
+//         mActionButton.setOnClickListener(new View.OnClickListener() {
+//             @Override
+//             public void onClick(View v) {
+//                 // Create Account Activity
+////                 Intent intentCrearCuenta = new Intent(getActivity(),
+////                         AddAccountActivity.class);
+////                 getActivity().startActivity(intentCrearCuenta);
+//             }
+//         });
 
          // Tarea para consultar cuentas
          mTareaObtenerCuentas = new GetAccountsTask();
-        // mTareaObtenerCuentas.execute();
+         mTareaObtenerCuentas.execute();
 
          
          return mRootView;

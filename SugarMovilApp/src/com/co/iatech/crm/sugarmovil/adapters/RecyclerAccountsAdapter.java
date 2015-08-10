@@ -21,7 +21,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
      * Extras
      */
     public final static String EXTRA_URL = "com.taktil.crm.laumayer.adapters.URL";
-    public final static String EXTRA_ID_CUENTA = "com.taktil.crm.laumayer.adapters.ID_CUENTA";
+    public final static String EXTRA_ID_CUENTA = "830135967-8";
 
     /**
      * Debug.

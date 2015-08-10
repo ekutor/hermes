@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de una cuenta.
  */
-public class CuentaDetalle implements Parcelable {
+public class CuentaDetalle extends GenericBean implements Parcelable  {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<CuentaDetalle> CREATOR = new Parcelable.Creator<CuentaDetalle>() {
@@ -169,449 +172,311 @@ public class CuentaDetalle implements Parcelable {
     private String email_address;
 
 
-    public CuentaDetalle(String id,
-                         String name,
-                         String date_entered,
-                         String date_modified,
-                         String modified_user_id,
-                         String created_by,
-                         String description,
-                         String deleted,
-                         String assigned_user_id,
-                         String account_type,
-                         String industry,
-                         String annual_revenue,
-                         String phone_fax,
-                         String billing_address_street,
-                         String billing_address_city,
-                         String billing_address_state,
-                         String billing_address_postalcode,
-                         String billing_address_country,
-                         String rating, String phone_office,
-                         String phone_alternate,
-                         String website,
-                         String ownership,
-                         String employees,
-                         String ticker_symbol,
-                         String shipping_address_street,
-                         String shipping_address_city,
-                         String shipping_address_state,
-                         String shipping_address_postalcode,
-                         String shipping_address_country,
-                         String parent_id,
-                         String sic_code,
-                         String campaign_id,
-                         String id_c,
-                         String canal_c,
-                         String sector_c,
-                         String extension1_c,
-                         String extension2_c,
-                         String celular_c,
-                         String direccion_c,
-                         String departamento_c,
-                         String municipio_c,
-                         String zona_c,
-                         String uen_c,
-                         String descuentocomercial_c,
-                         String presupuestoanual_c,
-                         String condpago_c,
-                         String plpago_c,
-                         String prompago_c,
-                         String carteravencida_c,
-                         String carteravencer_c,
-                         String grupo_objetivo_c,
-                         String segmento_c,
-                         String estado_c,
-                         String origencuenta_c,
-                         String alianzasestrategicas_c,
-                         String automatizacionmoeller_c,
-                         String enerlux_c,
-                         String delta_c,
-                         String dkc_c,
-                         String leviton_c,
-                         String wvcai_c,
-                         String wohner_c,
-                         String comunicaciones_c,
-                         String preciosmineaton_c,
-                         String maniobraeaton_c,
-                         String descuento1_c,
-                         String descuento2_c,
-                         String descuento3_c,
-                         String descuento4_c,
-                         String descuento5_c,
-                         String descuento6_c,
-                         String descuento7_c,
-                         String descuento8_c,
-                         String descuento9_c,
-                         String descuento10_c,
-                         String bonosespeciales_c,
-                         String bonificacioncompra_c,
-                         String maniobraeatonanual_c,
-                         String bonificacionleviton_c,
-                         String meta1_c,
-                         String meta2_c,
-                         String meta3_c,
-                         String meta4_c,
-                         String bonificacion1_c,
-                         String bonificacion2_c,
-                         String bonificacion3_c,
-                         String bonificacion4_c,
-                         String despachoremsion_c,
-                         String nocobro_c,
-                         String estrategia1_c,
-                         String estrategia2_c,
-                         String estrategia3_c,
-                         String estrategia4_c,
-                         String fechaempresa_c,
-                         String diamarca_c,
-                         String exhibidor_c,
-                         String apoya_c,
-                         String placaaniversario_c,
-                         String certificaciones_c,
-                         String fechamarca_c,
-                         String entregaexhibidor1_c,
-                         String entregaexhibidor2_c,
-                         String entregaexhibidor3_c,
-                         String fechaapoya_c,
-                         String fechaplaca_c,
-                         String otrasestrategias_c,
-                         String imagen1_c,
-                         String imagen2_c,
-                         String imagen3_c,
-                         String acta1_c,
-                         String acta2_c,
-                         String acta3_c,
-                         String pieza_c,
-                         String fechaapoya2_c,
-                         String pieza2_c,
-                         String fechafacturacion_c,
-                         String correotransporte_c,
-                         String laumayer2_c,
-                         String ventasactual_c,
-                         String ventasanterior_c,
-                         String numeroalianzas_c,
-                         String cupocr_c,
-                         String facturacionmes_c,
-                         String cupodisponible_c,
-                         String nit_c,
-                         String facturaciondiara_c,
-                         String facturacionautorizada_c,
-                         String cod_alterno_c,
-                         String totalcartera_c,
-                         String remesa_c,
-                         String destino_c,
-                         String nombredestinatario_c,
-                         String unidades_c,
-                         String documento_c,
-                         String nombredestinatario2_c,
-                         String destino2_c,
-                         String motivo_c,
-                         String facturacionnoautorizada_c,
-                         String porcentaje_cumplimiento_c,
-                         String fecha_despacho_c,
-                         String prue_c,
-                         String prueba_c,
-                         String preuba_c,
-                         String assigned_user_name,
-                         String email_address) {
-        setId(id);
-        setName(name);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setAccount_type(account_type);
-        setIndustry(industry);
-        setAnnual_revenue(annual_revenue);
-        setPhone_fax(phone_fax);
-        setBilling_address_street(billing_address_street);
-        setBilling_address_city(billing_address_city);
-        setBilling_address_state(billing_address_state);
-        setBilling_address_postalcode(billing_address_postalcode);
-        setBilling_address_country(billing_address_country);
-        setRating(rating);
-        setPhone_office(phone_office);
-        setPhone_alternate(phone_alternate);
-        setWebsite(website);
-        setOwnership(ownership);
-        setEmployees(employees);
-        setTicker_symbol(ticker_symbol);
-        setShipping_address_street(shipping_address_street);
-        setShipping_address_city(shipping_address_city);
-        setShipping_address_state(shipping_address_state);
-        setShipping_address_postalcode(shipping_address_postalcode);
-        setShipping_address_country(shipping_address_country);
-        setParent_id(parent_id);
-        setSic_code(sic_code);
-        setCampaign_id(campaign_id);
-        setId_c(id_c);
-        setCanal_c(canal_c);
-        setSector_c(sector_c);
-        setExtension1_c(extension1_c);
-        setExtension2_c(extension2_c);
-        setCelular_c(celular_c);
-        setDireccion_c(direccion_c);
-        setDepartamento_c(departamento_c);
-        setMunicipio_c(municipio_c);
-        setZona_c(zona_c);
-        setUen_c(uen_c);
-        setDescuentocomercial_c(descuentocomercial_c);
-        setPresupuestoanual_c(presupuestoanual_c);
-        setCondpago_c(condpago_c);
-        setPlpago_c(plpago_c);
-        setPrompago_c(prompago_c);
-        setCarteravencida_c(carteravencida_c);
-        setCarteravencer_c(carteravencer_c);
-        setGrupo_objetivo_c(grupo_objetivo_c);
-        setSegmento_c(segmento_c);
-        setEstado_c(estado_c);
-        setOrigencuenta_c(origencuenta_c);
-        setAlianzasestrategicas_c(alianzasestrategicas_c);
-        setAutomatizacionmoeller_c(automatizacionmoeller_c);
-        setEnerlux_c(enerlux_c);
-        setDelta_c(delta_c);
-        setDkc_c(dkc_c);
-        setLeviton_c(leviton_c);
-        setWvcai_c(wvcai_c);
-        setWohner_c(wohner_c);
-        setComunicaciones_c(comunicaciones_c);
-        setPreciosmineaton_c(preciosmineaton_c);
-        setManiobraeaton_c(maniobraeaton_c);
-        setDescuento1_c(descuento1_c);
-        setDescuento2_c(descuento2_c);
-        setDescuento3_c(descuento3_c);
-        setDescuento4_c(descuento4_c);
-        setDescuento5_c(descuento5_c);
-        setDescuento6_c(descuento6_c);
-        setDescuento7_c(descuento7_c);
-        setDescuento8_c(descuento8_c);
-        setDescuento9_c(descuento9_c);
-        setDescuento10_c(descuento10_c);
-        setBonosespeciales_c(bonosespeciales_c);
-        setBonificacioncompra_c(bonificacioncompra_c);
-        setManiobraeatonanual_c(maniobraeatonanual_c);
-        setBonificacionleviton_c(bonificacionleviton_c);
-        setMeta1_c(meta1_c);
-        setMeta2_c(meta2_c);
-        setMeta3_c(meta3_c);
-        setMeta4_c(meta4_c);
-        setBonificacion1_c(bonificacion1_c);
-        setBonificacion2_c(bonificacion2_c);
-        setBonificacion3_c(bonificacion3_c);
-        setBonificacion4_c(bonificacion4_c);
-        setDespachoremsion_c(despachoremsion_c);
-        setNocobro_c(nocobro_c);
-        setEstrategia1_c(estrategia1_c);
-        setEstrategia2_c(estrategia2_c);
-        setEstrategia3_c(estrategia3_c);
-        setEstrategia4_c(estrategia4_c);
-        setFechaempresa_c(fechaempresa_c);
-        setDiamarca_c(diamarca_c);
-        setExhibidor_c(exhibidor_c);
-        setApoya_c(apoya_c);
-        setPlacaaniversario_c(placaaniversario_c);
-        setCertificaciones_c(certificaciones_c);
-        setFechamarca_c(fechamarca_c);
-        setEntregaexhibidor1_c(entregaexhibidor1_c);
-        setEntregaexhibidor2_c(entregaexhibidor2_c);
-        setEntregaexhibidor3_c(entregaexhibidor3_c);
-        setFechaapoya_c(fechaapoya_c);
-        setFechaplaca_c(fechaplaca_c);
-        setOtrasestrategias_c(otrasestrategias_c);
-        setImagen1_c(imagen1_c);
-        setImagen2_c(imagen2_c);
-        setImagen3_c(imagen3_c);
-        setActa1_c(acta1_c);
-        setActa2_c(acta2_c);
-        setActa3_c(acta3_c);
-        setPieza_c(pieza_c);
-        setFechaapoya2_c(fechaapoya2_c);
-        setPieza2_c(pieza2_c);
-        setFechafacturacion_c(fechafacturacion_c);
-        setCorreotransporte_c(correotransporte_c);
-        setLaumayer2_c(laumayer2_c);
-        setVentasactual_c(ventasactual_c);
-        setVentasanterior_c(ventasanterior_c);
-        setNumeroalianzas_c(numeroalianzas_c);
-        setCupocr_c(cupocr_c);
-        setFacturacionmes_c(facturacionmes_c);
-        setCupodisponible_c(cupodisponible_c);
-        setNit_c(nit_c);
-        setFacturaciondiara_c(facturaciondiara_c);
-        setFacturacionautorizada_c(facturacionautorizada_c);
-        setCod_alterno_c(cod_alterno_c);
-        setTotalcartera_c(totalcartera_c);
-        setRemesa_c(remesa_c);
-        setDestino_c(destino_c);
-        setNombredestinatario_c(nombredestinatario_c);
-        setUnidades_c(unidades_c);
-        setDocumento_c(documento_c);
-        setNombredestinatario2_c(nombredestinatario2_c);
-        setDestino2_c(destino2_c);
-        setMotivo_c(motivo_c);
-        setFacturacionautorizada_c(facturacionnoautorizada_c);
-        setPorcentaje_cumplimiento_c(porcentaje_cumplimiento_c);
-        setFecha_despacho_c(fecha_despacho_c);
-        setPrue_c(prue_c);
-        setPrueba_c(prueba_c);
-        setPrueba_c(preuba_c);
-        setAssigned_user_name(assigned_user_name);
-        setEmail_address(email_address);
+    public CuentaDetalle() {
+      
     }
+
+    public CuentaDetalle(JSONObject obj) throws JSONException {
+    	
+    	 setId(validate(obj.getString("id")));
+    	 setName(validate(obj.getString("name")));
+    	 setDate_entered(validate(obj.getString("date_entered")));
+    	 setDate_modified(validate(obj.getString("date_modified")));
+    	 setModified_user_id(validate(obj.getString("modified_user_id")));
+    	 setCreated_by(validate(obj.getString("created_by")));
+    	 setDescription(validate(obj.getString("description")));
+    	 setDeleted(validate(obj.getString("deleted")));
+    	 setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+    	 setAccount_type(validate(obj.getString("account_type")));
+    	 setIndustry(validate(obj.getString("industry")));
+    	 setAnnual_revenue(validate(obj.getString("annual_revenue")));
+    	 setPhone_fax(validate(obj.getString("phone_fax")));
+    	 setBilling_address_street(validate(obj.getString("billing_address_street")));
+    	 setBilling_address_city(validate(obj.getString("billing_address_city")));
+    	 setBilling_address_state(validate(obj.getString("billing_address_state")));
+    	 setBilling_address_postalcode(validate(obj.getString("billing_address_postalcode")));
+    	 setBilling_address_country(validate(obj.getString("billing_address_country")));
+    	 setRating(validate(obj.getString("rating")));
+    	 setPhone_office(validate(obj.getString("phone_office")));
+    	 setPhone_alternate(validate(obj.getString("phone_alternate")));
+    	 setWebsite(validate(obj.getString("website")));
+    	 setOwnership(validate(obj.getString("ownership")));
+    	 setEmployees(validate(obj.getString("employees")));
+    	 setTicker_symbol(validate(obj.getString("ticker_symbol")));
+    	 setShipping_address_street(validate(obj.getString("shipping_address_street")));
+    	 setShipping_address_city(validate(obj.getString("shipping_address_city")));
+    	 setShipping_address_state(validate(obj.getString("shipping_address_state")));
+    	 setShipping_address_postalcode(validate(obj.getString("shipping_address_postalcode")));
+    	 setShipping_address_country(validate(obj.getString("shipping_address_country")));
+    	 setParent_id(validate(obj.getString("parent_id")));
+    	 setSic_code(validate(obj.getString("sic_code")));
+    	 setCampaign_id(validate(obj.getString("campaign_id")));
+    	 setId_c(validate(obj.getString("id_c")));
+    	 setCanal_c(validate(obj.getString("canal_c")));
+    	 setSector_c(validate(obj.getString("sector_c")));
+    	 setExtension1_c(validate(obj.getString("extension1_c")));
+    	 setExtension2_c(validate(obj.getString("extension2_c")));
+    	 setCelular_c(validate(obj.getString("celular_c")));
+    	 setDireccion_c(validate(obj.getString("direccion_c")));
+    	 setDepartamento_c(validate(obj.getString("departamento_c")));
+    	 setMunicipio_c(validate(obj.getString("municipio_c")));
+    	 setZona_c(validate(obj.getString("zona_c")));
+    	 setUen_c(validate(obj.getString("uen_c")));
+    	 setDescuentocomercial_c(validate(obj.getString("descuentocomercial_c")));
+    	 setPresupuestoanual_c(validate(obj.getString("presupuestoanual_c")));
+    	 setCondpago_c(validate(obj.getString("condpago_c")));
+    	 setPlpago_c(validate(obj.getString("plpago_c")));
+    	 setPrompago_c(validate(obj.getString("prompago_c")));
+    	 setCarteravencida_c(validate(obj.getString("carteravencida_c")));
+    	 setCarteravencer_c(validate(obj.getString("carteravencer_c")));
+    	 setGrupo_objetivo_c(validate(obj.getString("grupo_objetivo_c")));
+    	 setSegmento_c(validate(obj.getString("segmento_c")));
+    	 setEstado_c(validate(obj.getString("estado_c")));
+    	 setOrigencuenta_c(validate(obj.getString("origencuenta_c")));
+    	 setAlianzasestrategicas_c(validate(obj.getString("alianzasestrategicas_c")));
+    	 setAutomatizacionmoeller_c(validate(obj.getString("automatizacionmoeller_c")));
+    	 setEnerlux_c(validate(obj.getString("enerlux_c")));
+    	 setDelta_c(validate(obj.getString("delta_c")));
+    	 setDkc_c(validate(obj.getString("dkc_c")));
+    	 setLeviton_c(validate(obj.getString("leviton_c")));
+    	 setWvcai_c(validate(obj.getString("wvcai_c")));
+    	 setWohner_c(validate(obj.getString("wohner_c")));
+    	 setComunicaciones_c(validate(obj.getString("comunicaciones_c")));
+    	 setPreciosmineaton_c(validate(obj.getString("preciosmineaton_c")));
+    	 setManiobraeaton_c(validate(obj.getString("maniobraeaton_c")));
+    	 setDescuento1_c(validate(obj.getString("descuento1_c")));
+    	 setDescuento2_c(validate(obj.getString("descuento2_c")));
+    	 setDescuento3_c(validate(obj.getString("descuento3_c")));
+    	 setDescuento4_c(validate(obj.getString("descuento4_c")));
+    	 setDescuento5_c(validate(obj.getString("descuento5_c")));
+    	 setDescuento6_c(validate(obj.getString("descuento6_c")));
+    	 setDescuento7_c(validate(obj.getString("descuento7_c")));
+    	 setDescuento8_c(validate(obj.getString("descuento8_c")));
+    	 setDescuento9_c(validate(obj.getString("descuento9_c")));
+    	 setDescuento10_c(validate(obj.getString("descuento10_c")));
+    	 setBonosespeciales_c(validate(obj.getString("bonosespeciales_c")));
+    	 setBonificacioncompra_c(validate(obj.getString("bonificacioncompra_c")));
+    	 setManiobraeatonanual_c(validate(obj.getString("maniobraeatonanual_c")));
+    	 setBonificacionleviton_c(validate(obj.getString("bonificacionleviton_c")));
+    	 setMeta1_c(validate(obj.getString("meta1_c")));
+    	 setMeta2_c(validate(obj.getString("meta2_c")));
+    	 setMeta3_c(validate(obj.getString("meta3_c")));
+    	 setMeta4_c(validate(obj.getString("meta4_c")));
+    	 setBonificacion1_c(validate(obj.getString("bonificacion1_c")));
+    	 setBonificacion2_c(validate(obj.getString("bonificacion2_c")));
+    	 setBonificacion3_c(validate(obj.getString("bonificacion3_c")));
+    	 setBonificacion4_c(validate(obj.getString("bonificacion4_c")));
+    	 setDespachoremsion_c(validate(obj.getString("despachoremsion_c")));
+    	 setNocobro_c(validate(obj.getString("nocobro_c")));
+    	 setEstrategia1_c(validate(obj.getString("estrategia1_c")));
+    	 setEstrategia2_c(validate(obj.getString("estrategia2_c")));
+    	 setEstrategia3_c(validate(obj.getString("estrategia3_c")));
+    	 setEstrategia4_c(validate(obj.getString("estrategia4_c")));
+    	 setFechaempresa_c(validate(obj.getString("fechaempresa_c")));
+    	 setDiamarca_c(validate(obj.getString("diamarca_c")));
+    	 setExhibidor_c(validate(obj.getString("exhibidor_c")));
+    	 setApoya_c(validate(obj.getString("apoya_c")));
+    	 setPlacaaniversario_c(validate(obj.getString("placaaniversario_c")));
+    	 setCertificaciones_c(validate(obj.getString("certificaciones_c")));
+    	 setFechamarca_c(validate(obj.getString("fechamarca_c")));
+    	 setEntregaexhibidor1_c(validate(obj.getString("entregaexhibidor1_c")));
+    	 setEntregaexhibidor2_c(validate(obj.getString("entregaexhibidor2_c")));
+    	 setEntregaexhibidor3_c(validate(obj.getString("entregaexhibidor3_c")));
+    	 setFechaapoya_c(validate(obj.getString("fechaapoya_c")));
+    	 setFechaplaca_c(validate(obj.getString("fechaplaca_c")));
+    	 setOtrasestrategias_c(validate(obj.getString("otrasestrategias_c")));
+    	 setImagen1_c(validate(obj.getString("imagen1_c")));
+    	 setImagen2_c(validate(obj.getString("imagen2_c")));
+    	 setImagen3_c(validate(obj.getString("imagen3_c")));
+    	 setActa1_c(validate(obj.getString("acta1_c")));
+    	 setActa2_c(validate(obj.getString("acta2_c")));
+    	 setActa3_c(validate(obj.getString("acta3_c")));
+    	 setPieza_c(validate(obj.getString("pieza_c")));
+    	 setFechaapoya2_c(validate(obj.getString("fechaapoya2_c")));
+    	 setPieza2_c(validate(obj.getString("pieza2_c")));
+    	 setFechafacturacion_c(validate(obj.getString("fechafacturacion_c")));
+    	 setCorreotransporte_c(validate(obj.getString("correotransporte_c")));
+    	 setLaumayer2_c(validate(obj.getString("laumayer2_c")));
+    	 setVentasactual_c(validate(obj.getString("ventasactual_c")));
+    	 setVentasanterior_c(validate(obj.getString("ventasanterior_c")));
+    	 setNumeroalianzas_c(validate(obj.getString("numeroalianzas_c")));
+    	 setCupocr_c(validate(obj.getString("cupocr_c")));
+    	 setFacturacionmes_c(validate(obj.getString("facturacionmes_c")));
+    	 setCupodisponible_c(validate(obj.getString("cupodisponible_c")));
+    	 setNit_c(validate(obj.getString("nit_c")));
+    	 setFacturaciondiara_c(validate(obj.getString("facturaciondiara_c")));
+    	 setFacturacionautorizada_c(validate(obj.getString("facturacionautorizada_c")));
+    	 setCod_alterno_c(validate(obj.getString("cod_alterno_c")));
+    	 setTotalcartera_c(validate(obj.getString("totalcartera_c")));
+    	 setRemesa_c(validate(obj.getString("remesa_c")));
+    	 setDestino_c(validate(obj.getString("destino_c")));
+    	 setNombredestinatario_c(validate(obj.getString("nombredestinatario_c")));
+    	 setUnidades_c(validate(obj.getString("unidades_c")));
+    	 setDocumento_c(validate(obj.getString("documento_c")));
+    	 setNombredestinatario2_c(validate(obj.getString("nombredestinatario2_c")));
+    	 setDestino2_c(validate(obj.getString("destino2_c")));
+    	 setMotivo_c(validate(obj.getString("motivo_c")));
+    	 setFacturacionautorizada_c(validate(obj.getString("facturacionnoautorizada_c")));
+    	 setPorcentaje_cumplimiento_c(validate(obj.getString("porcentaje_cumplimiento_c")));
+    	 setFecha_despacho_c(validate(obj.getString("fecha_despacho_c")));
+    	 setPrue_c(validate(obj.getString("prue_c")));
+    	 setPrueba_c(validate(obj.getString("prueba_c")));
+    	 setPrueba_c(validate(obj.getString("preuba_c")));
+    	 setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+    	 setEmail_address(validate(obj.getString("email_address")));
+	}
+    
 
     protected CuentaDetalle(Parcel in) {
-        setId(in.readString());
-        setName(in.readString());
-        setDate_entered(in.readString());
-        setDate_modified(in.readString());
-        setModified_user_id(in.readString());
-        setCreated_by(in.readString());
-        setDescription(in.readString());
-        setDeleted(in.readString());
-        setAssigned_user_id(in.readString());
-        setAccount_type(in.readString());
-        setIndustry(in.readString());
-        setAnnual_revenue(in.readString());
-        setPhone_fax(in.readString());
-        setBilling_address_street(in.readString());
-        setBilling_address_city(in.readString());
-        setBilling_address_state(in.readString());
-        setBilling_address_postalcode(in.readString());
-        setBilling_address_country(in.readString());
-        setRating(in.readString());
-        setPhone_office(in.readString());
-        setPhone_alternate(in.readString());
-        setWebsite(in.readString());
-        setOwnership(in.readString());
-        setEmployees(in.readString());
-        setTicker_symbol(in.readString());
-        setShipping_address_street(in.readString());
-        setShipping_address_city(in.readString());
-        setShipping_address_state(in.readString());
-        setShipping_address_postalcode(in.readString());
-        setShipping_address_country(in.readString());
-        setParent_id(in.readString());
-        setSic_code(in.readString());
-        setCampaign_id(in.readString());
-        setId_c(in.readString());
-        setCanal_c(in.readString());
-        setSector_c(in.readString());
-        setExtension1_c(in.readString());
-        setExtension2_c(in.readString());
-        setCelular_c(in.readString());
-        setDireccion_c(in.readString());
-        setDepartamento_c(in.readString());
-        setMunicipio_c(in.readString());
-        setZona_c(in.readString());
-        setUen_c(in.readString());
-        setDescuentocomercial_c(in.readString());
-        setPresupuestoanual_c(in.readString());
-        setCondpago_c(in.readString());
-        setPlpago_c(in.readString());
-        setPrompago_c(in.readString());
-        setCarteravencida_c(in.readString());
-        setCarteravencer_c(in.readString());
-        setGrupo_objetivo_c(in.readString());
-        setSegmento_c(in.readString());
-        setEstado_c(in.readString());
-        setOrigencuenta_c(in.readString());
-        setAlianzasestrategicas_c(in.readString());
-        setAutomatizacionmoeller_c(in.readString());
-        setEnerlux_c(in.readString());
-        setDelta_c(in.readString());
-        setDkc_c(in.readString());
-        setLeviton_c(in.readString());
-        setWvcai_c(in.readString());
-        setWohner_c(in.readString());
-        setComunicaciones_c(in.readString());
-        setPreciosmineaton_c(in.readString());
-        setManiobraeaton_c(in.readString());
-        setDescuento1_c(in.readString());
-        setDescuento2_c(in.readString());
-        setDescuento3_c(in.readString());
-        setDescuento4_c(in.readString());
-        setDescuento5_c(in.readString());
-        setDescuento6_c(in.readString());
-        setDescuento7_c(in.readString());
-        setDescuento8_c(in.readString());
-        setDescuento9_c(in.readString());
-        setDescuento10_c(in.readString());
-        setBonosespeciales_c(in.readString());
-        setBonificacioncompra_c(in.readString());
-        setManiobraeatonanual_c(in.readString());
-        setBonificacionleviton_c(in.readString());
-        setMeta1_c(in.readString());
-        setMeta2_c(in.readString());
-        setMeta3_c(in.readString());
-        setMeta4_c(in.readString());
-        setBonificacion1_c(in.readString());
-        setBonificacion2_c(in.readString());
-        setBonificacion3_c(in.readString());
-        setBonificacion4_c(in.readString());
-        setDespachoremsion_c(in.readString());
-        setNocobro_c(in.readString());
-        setEstrategia1_c(in.readString());
-        setEstrategia2_c(in.readString());
-        setEstrategia3_c(in.readString());
-        setEstrategia4_c(in.readString());
-        setFechaempresa_c(in.readString());
-        setDiamarca_c(in.readString());
-        setExhibidor_c(in.readString());
-        setApoya_c(in.readString());
-        setPlacaaniversario_c(in.readString());
-        setCertificaciones_c(in.readString());
-        setFechamarca_c(in.readString());
-        setEntregaexhibidor1_c(in.readString());
-        setEntregaexhibidor2_c(in.readString());
-        setEntregaexhibidor3_c(in.readString());
-        setFechaapoya_c(in.readString());
-        setFechaplaca_c(in.readString());
-        setOtrasestrategias_c(in.readString());
-        setImagen1_c(in.readString());
-        setImagen2_c(in.readString());
-        setImagen3_c(in.readString());
-        setActa1_c(in.readString());
-        setActa2_c(in.readString());
-        setActa3_c(in.readString());
-        setPieza_c(in.readString());
-        setFechaapoya2_c(in.readString());
-        setPieza2_c(in.readString());
-        setFechafacturacion_c(in.readString());
-        setCorreotransporte_c(in.readString());
-        setLaumayer2_c(in.readString());
-        setVentasactual_c(in.readString());
-        setVentasanterior_c(in.readString());
-        setNumeroalianzas_c(in.readString());
-        setCupocr_c(in.readString());
-        setFacturacionmes_c(in.readString());
-        setCupodisponible_c(in.readString());
-        setNit_c(in.readString());
-        setFacturaciondiara_c(in.readString());
-        setFacturacionautorizada_c(in.readString());
-        setCod_alterno_c(in.readString());
-        setTotalcartera_c(in.readString());
-        setRemesa_c(in.readString());
-        setDestino_c(in.readString());
-        setNombredestinatario_c(in.readString());
-        setUnidades_c(in.readString());
-        setDocumento_c(in.readString());
-        setNombredestinatario2_c(in.readString());
-        setDestino2_c(in.readString());
-        setMotivo_c(in.readString());
-        setFacturacionnoautorizada_c(in.readString());
-        setPorcentaje_cumplimiento_c(in.readString());
-        setFecha_despacho_c(in.readString());
-        setPrue_c(in.readString());
-        setPrueba_c(in.readString());
-        setPreuba_c(in.readString());
-        setAssigned_user_name(in.readString());
-        setEmail_address(in.readString());
-    }
+		setId(validate(in.readString()));
+		setName(validate(in.readString()));
+		setDate_entered(validate(in.readString()));
+		setDate_modified(validate(in.readString()));
+		setModified_user_id(validate(in.readString()));
+		setCreated_by(validate(in.readString()));
+		setDescription(validate(in.readString()));
+		setDeleted(validate(in.readString()));
+		setAssigned_user_id(validate(in.readString()));
+		setAccount_type(validate(in.readString()));
+		setIndustry(validate(in.readString()));
+		setAnnual_revenue(validate(in.readString()));
+		setPhone_fax(validate(in.readString()));
+		setBilling_address_street(validate(in.readString()));
+		setBilling_address_city(validate(in.readString()));
+		setBilling_address_state(validate(in.readString()));
+		setBilling_address_postalcode(validate(in.readString()));
+		setBilling_address_country(validate(in.readString()));
+		setRating(validate(in.readString()));
+		setPhone_office(validate(in.readString()));
+		setPhone_alternate(validate(in.readString()));
+		setWebsite(validate(in.readString()));
+		setOwnership(validate(in.readString()));
+		setEmployees(validate(in.readString()));
+		setTicker_symbol(validate(in.readString()));
+		setShipping_address_street(validate(in.readString()));
+		setShipping_address_city(validate(in.readString()));
+		setShipping_address_state(validate(in.readString()));
+		setShipping_address_postalcode(validate(in.readString()));
+		setShipping_address_country(validate(in.readString()));
+		setParent_id(validate(in.readString()));
+		setSic_code(validate(in.readString()));
+		setCampaign_id(validate(in.readString()));
+		setId_c(validate(in.readString()));
+		setCanal_c(validate(in.readString()));
+		setSector_c(validate(in.readString()));
+		setExtension1_c(validate(in.readString()));
+		setExtension2_c(validate(in.readString()));
+		setCelular_c(validate(in.readString()));
+		setDireccion_c(validate(in.readString()));
+		setDepartamento_c(validate(in.readString()));
+		setMunicipio_c(validate(in.readString()));
+		setZona_c(validate(in.readString()));
+		setUen_c(validate(in.readString()));
+		setDescuentocomercial_c(validate(in.readString()));
+		setPresupuestoanual_c(validate(in.readString()));
+		setCondpago_c(validate(in.readString()));
+		setPlpago_c(validate(in.readString()));
+		setPrompago_c(validate(in.readString()));
+		setCarteravencida_c(validate(in.readString()));
+		setCarteravencer_c(validate(in.readString()));
+		setGrupo_objetivo_c(validate(in.readString()));
+		setSegmento_c(validate(in.readString()));
+		setEstado_c(validate(in.readString()));
+		setOrigencuenta_c(validate(in.readString()));
+		setAlianzasestrategicas_c(validate(in.readString()));
+		setAutomatizacionmoeller_c(validate(in.readString()));
+		setEnerlux_c(validate(in.readString()));
+		setDelta_c(validate(in.readString()));
+		setDkc_c(validate(in.readString()));
+		setLeviton_c(validate(in.readString()));
+		setWvcai_c(validate(in.readString()));
+		setWohner_c(validate(in.readString()));
+		setComunicaciones_c(validate(in.readString()));
+		setPreciosmineaton_c(validate(in.readString()));
+		setManiobraeaton_c(validate(in.readString()));
+		setDescuento1_c(validate(in.readString()));
+		setDescuento2_c(validate(in.readString()));
+		setDescuento3_c(validate(in.readString()));
+		setDescuento4_c(validate(in.readString()));
+		setDescuento5_c(validate(in.readString()));
+		setDescuento6_c(validate(in.readString()));
+		setDescuento7_c(validate(in.readString()));
+		setDescuento8_c(validate(in.readString()));
+		setDescuento9_c(validate(in.readString()));
+		setDescuento10_c(validate(in.readString()));
+		setBonosespeciales_c(validate(in.readString()));
+		setBonificacioncompra_c(validate(in.readString()));
+		setManiobraeatonanual_c(validate(in.readString()));
+		setBonificacionleviton_c(validate(in.readString()));
+		setMeta1_c(validate(in.readString()));
+		setMeta2_c(validate(in.readString()));
+		setMeta3_c(validate(in.readString()));
+		setMeta4_c(validate(in.readString()));
+		setBonificacion1_c(validate(in.readString()));
+		setBonificacion2_c(validate(in.readString()));
+		setBonificacion3_c(validate(in.readString()));
+		setBonificacion4_c(validate(in.readString()));
+		setDespachoremsion_c(validate(in.readString()));
+		setNocobro_c(validate(in.readString()));
+		setEstrategia1_c(validate(in.readString()));
+		setEstrategia2_c(validate(in.readString()));
+		setEstrategia3_c(validate(in.readString()));
+		setEstrategia4_c(validate(in.readString()));
+		setFechaempresa_c(validate(in.readString()));
+		setDiamarca_c(validate(in.readString()));
+		setExhibidor_c(validate(in.readString()));
+		setApoya_c(validate(in.readString()));
+		setPlacaaniversario_c(validate(in.readString()));
+		setCertificaciones_c(validate(in.readString()));
+		setFechamarca_c(validate(in.readString()));
+		setEntregaexhibidor1_c(validate(in.readString()));
+		setEntregaexhibidor2_c(validate(in.readString()));
+		setEntregaexhibidor3_c(validate(in.readString()));
+		setFechaapoya_c(validate(in.readString()));
+		setFechaplaca_c(validate(in.readString()));
+		setOtrasestrategias_c(validate(in.readString()));
+		setImagen1_c(validate(in.readString()));
+		setImagen2_c(validate(in.readString()));
+		setImagen3_c(validate(in.readString()));
+		setActa1_c(validate(in.readString()));
+		setActa2_c(validate(in.readString()));
+		setActa3_c(validate(in.readString()));
+		setPieza_c(validate(in.readString()));
+		setFechaapoya2_c(validate(in.readString()));
+		setPieza2_c(validate(in.readString()));
+		setFechafacturacion_c(validate(in.readString()));
+		setCorreotransporte_c(validate(in.readString()));
+		setLaumayer2_c(validate(in.readString()));
+		setVentasactual_c(validate(in.readString()));
+		setVentasanterior_c(validate(in.readString()));
+		setNumeroalianzas_c(validate(in.readString()));
+		setCupocr_c(validate(in.readString()));
+		setFacturacionmes_c(validate(in.readString()));
+		setCupodisponible_c(validate(in.readString()));
+		setNit_c(validate(in.readString()));
+		setFacturaciondiara_c(validate(in.readString()));
+		setFacturacionautorizada_c(validate(in.readString()));
+		setCod_alterno_c(validate(in.readString()));
+		setTotalcartera_c(validate(in.readString()));
+		setRemesa_c(validate(in.readString()));
+		setDestino_c(validate(in.readString()));
+		setNombredestinatario_c(validate(in.readString()));
+		setUnidades_c(validate(in.readString()));
+		setDocumento_c(validate(in.readString()));
+		setNombredestinatario2_c(validate(in.readString()));
+		setDestino2_c(validate(in.readString()));
+		setMotivo_c(validate(in.readString()));
+		setFacturacionnoautorizada_c(validate(in.readString()));
+		setPorcentaje_cumplimiento_c(validate(in.readString()));
+		setFecha_despacho_c(validate(in.readString()));
+		setPrue_c(validate(in.readString()));
+		setPrueba_c(validate(in.readString()));
+		setPreuba_c(validate(in.readString()));
+		setAssigned_user_name(validate(in.readString()));
+		setEmail_address(validate(in.readString()));
+	}
 
-    @Override
+	@Override
     public int describeContents() {
         return 0;
     }
@@ -771,7 +636,7 @@ public class CuentaDetalle implements Parcelable {
     }
 
     public void setId(String id) {
-        this.id = id;
+    		this.id = id;
     }
 
     public String getName() {
