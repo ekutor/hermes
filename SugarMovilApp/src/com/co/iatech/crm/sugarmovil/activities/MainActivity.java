@@ -5,14 +5,17 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +28,9 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
 import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
 import com.co.iatech.crm.sugarmovil.model.DrawerItem;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         // Variable Global
         mGlobalVariable = (GlobalClass) getApplicationContext();
         mUrl = mGlobalVariable.getUrl();
+     
         mSelectedButton = mGlobalVariable.getmSelectedButton();
         Log.d(TAG, mUrl);
 
@@ -195,20 +202,20 @@ public class MainActivity extends AppCompatActivity {
     public void selectItem(int position) {
         Fragment fragment = null;
         Bundle args = new Bundle();
-        fragment = AccountsFragment.newInstance();
-//        switch (position) {
-//            case 0:
-//                fragment = AccountsFragment.newInstance();
-//                break;
-//            case 1:
-//                fragment = ContactsFragment.newInstance();
-//                break;
-//            case 2:
-//                fragment = OpportunitiesFragment.newInstance();
-//                break;
-//            case 3:
-//                fragment = CallsFragment.newInstance();
-//                break;
+
+        switch (position) {
+            case 0:
+                fragment = AccountsFragment.newInstance();
+                break;
+            case 1:
+                fragment = ContactsFragment.newInstance();
+                break;
+            case 2:
+                fragment = OpportunitiesFragment.newInstance();
+                break;
+            case 3:
+                fragment = CallsFragment.newInstance();
+                break;
 //            case 4:
 //                fragment = ProductsFragment.newInstance();
 //                break;
@@ -218,9 +225,10 @@ public class MainActivity extends AppCompatActivity {
 //            case 6:
 //                fragment = TasksFragment.newInstance();
 //                break;
-//            default:
-//                break;
-//        }
+            default:
+            	fragment = AccountsFragment.newInstance();
+                break;
+        }
 
         fragment.setArguments(args);
         FragmentManager frgManager = getFragmentManager();

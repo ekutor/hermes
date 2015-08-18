@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de las llamadas.
  */
-public class Llamada implements Parcelable {
+public class Llamada extends GenericBean implements Parcelable {
 
     public static final Creator<Llamada> CREATOR
             = new Creator<Llamada>() {
@@ -55,114 +58,80 @@ public class Llamada implements Parcelable {
     private String campaign_name;
     private String campaign_id;
 
-    public Llamada(String id,
-                   String name,
-                   String date_entered,
-                   String date_modified,
-                   String modified_user_id,
-                   String created_by,
-                   String description,
-                   String deleted,
-                   String assigned_user_id,
-                   String duration_hours,
-                   String duration_minutes,
-                   String date_start,
-                   String date_end,
-                   String parent_type,
-                   String status,
-                   String direction,
-                   String parent_id,
-                   String reminder_time,
-                   String email_reminder_time,
-                   String email_reminder_sent,
-                   String outlook_id,
-                   String repeat_type,
-                   String repeat_interval,
-                   String repeat_dow,
-                   String repeat_until,
-                   String repeat_count,
-                   String repeat_parent_id,
-                   String recurring_source,
-                   String id_c,
-                   String resultadodelallamada_c,
-                   String created_by_name,
-                   String assigned_user_name,
-                   String parent_name,
-                   String campaign_name,
-                   String campaign_id) {
-        setId(id);
-        setName(name);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setDuration_hours(duration_hours);
-        setDuration_minutes(duration_minutes);
-        setDate_start(date_start);
-        setDate_end(date_end);
-        setParent_type(parent_type);
-        setStatus(status);
-        setDirection(direction);
-        setParent_id(parent_id);
-        setReminder_time(reminder_time);
-        setEmail_reminder_time(email_reminder_time);
-        setEmail_reminder_sent(email_reminder_sent);
-        setOutlook_id(outlook_id);
-        setRepeat_type(repeat_type);
-        setRepeat_interval(repeat_interval);
-        setRepeat_dow(repeat_dow);
-        setRepeat_until(repeat_until);
-        setRepeat_count(repeat_count);
-        setRepeat_parent_id(repeat_parent_id);
-        setRecurring_source(recurring_source);
-        setId_c(id_c);
-        setResultadodelallamada_c(resultadodelallamada_c);
-        setCreated_by_name(created_by_name);
-        setAssigned_user_name(assigned_user_name);
-        setParent_name(parent_name);
-        setCampaign_name(campaign_name);
-        setCampaign_id(campaign_id);
+    public Llamada(JSONObject obj) throws JSONException {
+    	setId(validate(obj.getString("id")));
+    	setName(validate(obj.getString("name")));
+    	setDate_entered(validate(obj.getString("date_entered")));
+    	setDate_modified(validate(obj.getString("date_modified")));
+    	setModified_user_id(validate(obj.getString("modified_user_id")));
+    	setCreated_by(validate(obj.getString("created_by")));
+    	setDescription(validate(obj.getString("description")));
+    	setDeleted(validate(obj.getString("deleted")));
+    	setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+    	setDuration_hours(validate(obj.getString("duration_hours")));
+    	setDuration_minutes(validate(obj.getString("duration_minutes")));
+    	setDate_start(validate(obj.getString("date_start")));
+    	setDate_end(validate(obj.getString("date_end")));
+    	setParent_type(validate(obj.getString("parent_type")));
+    	setStatus(validate(obj.getString("status")));
+    	setDirection(validate(obj.getString("direction")));
+    	setParent_id(validate(obj.getString("parent_id")));
+    	setReminder_time(validate(obj.getString("reminder_time")));
+    	setEmail_reminder_time(validate(obj.getString("email_reminder_time")));
+    	setEmail_reminder_sent(validate(obj.getString("email_reminder_sent")));
+    	setOutlook_id(validate(obj.getString("outlook_id")));
+    	setRepeat_type(validate(obj.getString("repeat_type")));
+    	setRepeat_interval(validate(obj.getString("repeat_interval")));
+    	setRepeat_dow(validate(obj.getString("repeat_dow")));
+    	setRepeat_until(validate(obj.getString("repeat_until")));
+    	setRepeat_count(validate(obj.getString("repeat_count")));
+    	setRepeat_parent_id(validate(obj.getString("repeat_parent_id")));
+    	setRecurring_source(validate(obj.getString("recurring_source")));
+    	setId_c(validate(obj.getString("id_c")));
+    	setResultadodelallamada_c(validate(obj.getString("resultadodelallamada_c")));
+    	setCreated_by_name(validate(obj.getString("created_by_name")));
+    	setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+    	setParent_name(validate(obj.getString("parent_name")));
+    	setCampaign_name(validate(obj.getString("campaign_name")));
+    	setCampaign_id(validate(obj.getString("campaign_id")));
     }
 
     public Llamada(Parcel in) {
-        setId(in.readString());
-        setName(in.readString());
-        setDate_entered(in.readString());
-        setDate_modified(in.readString());
-        setModified_user_id(in.readString());
-        setCreated_by(in.readString());
-        setDescription(in.readString());
-        setDeleted(in.readString());
-        setAssigned_user_id(in.readString());
-        setDuration_hours(in.readString());
-        setDuration_minutes(in.readString());
-        setDate_start(in.readString());
-        setDate_end(in.readString());
-        setParent_type(in.readString());
-        setStatus(in.readString());
-        setDirection(in.readString());
-        setParent_id(in.readString());
-        setReminder_time(in.readString());
-        setEmail_reminder_time(in.readString());
-        setEmail_reminder_sent(in.readString());
-        setOutlook_id(in.readString());
-        setRepeat_type(in.readString());
-        setRepeat_interval(in.readString());
-        setRepeat_dow(in.readString());
-        setRepeat_until(in.readString());
-        setRepeat_count(in.readString());
-        setRepeat_parent_id(in.readString());
-        setRecurring_source(in.readString());
-        setId_c(in.readString());
-        setResultadodelallamada_c(in.readString());
-        setCreated_by_name(in.readString());
-        setAssigned_user_name(in.readString());
-        setParent_name(in.readString());
-        setCampaign_name(in.readString());
-        setCampaign_id(in.readString());
+    	setId(validate(in.readString()));
+    	setName(validate(in.readString()));
+    	setDate_entered(validate(in.readString()));
+    	setDate_modified(validate(in.readString()));
+    	setModified_user_id(validate(in.readString()));
+    	setCreated_by(validate(in.readString()));
+    	setDescription(validate(in.readString()));
+    	setDeleted(validate(in.readString()));
+    	setAssigned_user_id(validate(in.readString()));
+    	setDuration_hours(validate(in.readString()));
+    	setDuration_minutes(validate(in.readString()));
+    	setDate_start(validate(in.readString()));
+    	setDate_end(validate(in.readString()));
+    	setParent_type(validate(in.readString()));
+    	setStatus(validate(in.readString()));
+    	setDirection(validate(in.readString()));
+    	setParent_id(validate(in.readString()));
+    	setReminder_time(validate(in.readString()));
+    	setEmail_reminder_time(validate(in.readString()));
+    	setEmail_reminder_sent(validate(in.readString()));
+    	setOutlook_id(validate(in.readString()));
+    	setRepeat_type(validate(in.readString()));
+    	setRepeat_interval(validate(in.readString()));
+    	setRepeat_dow(validate(in.readString()));
+    	setRepeat_until(validate(in.readString()));
+    	setRepeat_count(validate(in.readString()));
+    	setRepeat_parent_id(validate(in.readString()));
+    	setRecurring_source(validate(in.readString()));
+    	setId_c(validate(in.readString()));
+    	setResultadodelallamada_c(validate(in.readString()));
+    	setCreated_by_name(validate(in.readString()));
+    	setAssigned_user_name(validate(in.readString()));
+    	setParent_name(validate(in.readString()));
+    	setCampaign_name(validate(in.readString()));
+    	setCampaign_id(validate(in.readString()));
     }
 
     @Override

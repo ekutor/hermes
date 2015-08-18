@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de las oportunidades.
  */
-public class OportunidadDetalle implements Parcelable {
+public class OportunidadDetalle extends GenericBean implements Parcelable {
 
 
     @SuppressWarnings("unused")
@@ -55,105 +58,74 @@ public class OportunidadDetalle implements Parcelable {
     private String assigned_user_name;
 
 
-    public OportunidadDetalle(String id,
-                              String name,
-                              String date_entered,
-                              String date_modified,
-                              String modified_user_id,
-                              String created_by,
-                              String description,
-                              String deleted,
-                              String assigned_user_id,
-                              String opportunity_type,
-                              String campaign_id,
-                              String lead_source,
-                              String amount,
-                              String amount_usdollar,
-                              String currency_id,
-                              String date_closed,
-                              String next_step,
-                              String sales_stage,
-                              String probability,
-                              String id_c,
-                              String valoroportunidad_c,
-                              String medio_c,
-                              String fuente_c,
-                              String tipo_c,
-                              String energia_c,
-                              String comunicaciones_c,
-                              String iluminacion_c,
-                              String usuario_final_c,
-                              String idAccount,
-                              String nameAccount,
-                              String nameCampaign,
-                              String assigned_user_name) {
-        setId(id);
-        setName(name);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setOpportunity_type(opportunity_type);
-        setCampaign_id(campaign_id);
-        setLead_source(lead_source);
-        setAmount(amount);
-        setAmount_usdollar(amount_usdollar);
-        setCurrency_id(currency_id);
-        setDate_closed(date_closed);
-        setNext_step(next_step);
-        setSales_stage(sales_stage);
-        setProbability(probability);
-        setId(id_c);
-        setValoroportunidad_c(valoroportunidad_c);
-        setMedio_c(medio_c);
-        setFuente_c(fuente_c);
-        setTipo_c(tipo_c);
-        setEnergia_c(energia_c);
-        setComunicaciones_c(comunicaciones_c);
-        setIluminacion_c(iluminacion_c);
-        setUsuario_final_c(usuario_final_c);
-        setIdAccount(idAccount);
-        setNameAccount(nameAccount);
-        setNameCampaign(nameCampaign);
-        setAssigned_user_name(assigned_user_name);
+    public OportunidadDetalle(JSONObject obj) throws JSONException {
+    	setId(validate(obj.getString("id")));
+    	setName(validate(obj.getString("name")));
+    	setDate_entered(validate(obj.getString("date_entered")));
+    	setDate_modified(validate(obj.getString("date_modified")));
+    	setModified_user_id(validate(obj.getString("modified_user_id")));
+    	setCreated_by(validate(obj.getString("created_by")));
+    	setDescription(validate(obj.getString("description")));
+    	setDeleted(validate(obj.getString("deleted")));
+    	setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+    	setOpportunity_type(validate(obj.getString("opportunity_type")));
+    	setCampaign_id(validate(obj.getString("campaign_id")));
+    	setLead_source(validate(obj.getString("lead_source")));
+    	setAmount(validate(obj.getString("amount")));
+    	setAmount_usdollar(validate(obj.getString("amount_usdollar")));
+    	setCurrency_id(validate(obj.getString("currency_id")));
+    	setDate_closed(validate(obj.getString("date_closed")));
+    	setNext_step(validate(obj.getString("next_step")));
+    	setSales_stage(validate(obj.getString("sales_stage")));
+    	setProbability(validate(obj.getString("probability")));
+    	setId(validate(obj.getString("id_c")));
+    	setValoroportunidad_c(validate(obj.getString("valoroportunidad_c")));
+    	setMedio_c(validate(obj.getString("medio_c")));
+    	setFuente_c(validate(obj.getString("fuente_c")));
+    	setTipo_c(validate(obj.getString("tipo_c")));
+    	setEnergia_c(validate(obj.getString("energia_c")));
+    	setComunicaciones_c(validate(obj.getString("comunicaciones_c")));
+    	setIluminacion_c(validate(obj.getString("iluminacion_c")));
+    	setUsuario_final_c(validate(obj.getString("usuario_final_c")));
+    	setIdAccount(validate(obj.getString("idAccount")));
+    	setNameAccount(validate(obj.getString("nameAccount")));
+    	setNameCampaign(validate(obj.getString("nameCampaign")));
+    	setAssigned_user_name(validate(obj.getString("assigned_user_name")));
     }
 
     protected OportunidadDetalle(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        date_entered = in.readString();
-        date_modified = in.readString();
-        modified_user_id = in.readString();
-        created_by = in.readString();
-        description = in.readString();
-        deleted = in.readString();
-        assigned_user_id = in.readString();
-        opportunity_type = in.readString();
-        campaign_id = in.readString();
-        lead_source = in.readString();
-        amount = in.readString();
-        amount_usdollar = in.readString();
-        currency_id = in.readString();
-        date_closed = in.readString();
-        next_step = in.readString();
-        sales_stage = in.readString();
-        probability = in.readString();
-        id_c = in.readString();
-        valoroportunidad_c = in.readString();
-        medio_c = in.readString();
-        fuente_c = in.readString();
-        tipo_c = in.readString();
-        energia_c = in.readString();
-        comunicaciones_c = in.readString();
-        iluminacion_c = in.readString();
-        usuario_final_c = in.readString();
-        idAccount = in.readString();
-        nameAccount = in.readString();
-        nameCampaign = in.readString();
-        assigned_user_name = in.readString();
+    	id = validate(in.readString());
+    	name = validate(in.readString());
+    	date_entered = validate(in.readString());
+    	date_modified = validate(in.readString());
+    	modified_user_id = validate(in.readString());
+    	created_by = validate(in.readString());
+    	description = validate(in.readString());
+    	deleted = validate(in.readString());
+    	assigned_user_id = validate(in.readString());
+    	opportunity_type = validate(in.readString());
+    	campaign_id = validate(in.readString());
+    	lead_source = validate(in.readString());
+    	amount = validate(in.readString());
+    	amount_usdollar = validate(in.readString());
+    	currency_id = validate(in.readString());
+    	date_closed = validate(in.readString());
+    	next_step = validate(in.readString());
+    	sales_stage = validate(in.readString());
+    	probability = validate(in.readString());
+    	id_c = validate(in.readString());
+    	valoroportunidad_c = validate(in.readString());
+    	medio_c = validate(in.readString());
+    	fuente_c = validate(in.readString());
+    	tipo_c = validate(in.readString());
+    	energia_c = validate(in.readString());
+    	comunicaciones_c = validate(in.readString());
+    	iluminacion_c = validate(in.readString());
+    	usuario_final_c = validate(in.readString());
+    	idAccount = validate(in.readString());
+    	nameAccount = validate(in.readString());
+    	nameCampaign = validate(in.readString());
+    	assigned_user_name = validate(in.readString());
     }
 
     public String getId() {

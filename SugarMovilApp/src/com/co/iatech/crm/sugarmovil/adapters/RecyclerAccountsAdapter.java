@@ -13,15 +13,11 @@ import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.AccountActivity;
+import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 
 public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccountsAdapter.ViewHolder> {
 
-    /**
-     * Extras
-     */
-    public final static String EXTRA_URL = "com.taktil.crm.laumayer.adapters.URL";
-    public final static String EXTRA_ID_CUENTA = "830135967-8";
 
     /**
      * Debug.
@@ -67,7 +63,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
                 // Account Activity
                 Intent intentCuenta = new Intent(mContext,
                         AccountActivity.class);
-                intentCuenta.putExtra(EXTRA_ID_CUENTA, cuenta.getId());
+                intentCuenta.putExtra(Info.CUENTA_ACTUAL.name(), cuenta.getId());
                 mContext.startActivity(intentCuenta);
             }
         });

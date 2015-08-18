@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de un contacto.
  */
-public class ContactoDetalle implements Parcelable {
+public class ContactoDetalle extends GenericBean implements Parcelable {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ContactoDetalle> CREATOR = new Parcelable.Creator<ContactoDetalle>() {
@@ -98,240 +101,166 @@ public class ContactoDetalle implements Parcelable {
     private String assigned_user_name;
     private String nameCampaign;
 
-    public ContactoDetalle(String id,
-                           String date_entered,
-                           String date_modified,
-                           String modified_user_id,
-                           String created_by,
-                           String description,
-                           String deleted,
-                           String assigned_user_id,
-                           String salutation,
-                           String first_name,
-                           String last_name,
-                           String title,
-                           String department,
-                           String do_not_call,
-                           String phone_home,
-                           String phone_mobile,
-                           String phone_work,
-                           String phone_other,
-                           String phone_fax,
-                           String primary_address_street,
-                           String primary_address_city,
-                           String primary_address_state,
-                           String primary_address_postalcode,
-                           String primary_address_country,
-                           String alt_address_street,
-                           String alt_address_city,
-                           String alt_address_state,
-                           String alt_address_postalcode,
-                           String alt_address_country,
-                           String assistant,
-                           String assistant_phone,
-                           String lead_source,
-                           String reports_to_id,
-                           String birthdate,
-                           String campaign_id,
-                           String id_c,
-                           String genero_c,
-                           String profesion_c,
-                           String certificaciones_c,
-                           String tipocontacto_c,
-                           String departamento_c,
-                           String regalo1_c,
-                           String regalo2_c,
-                           String regalo3_c,
-                           String regalo4_c,
-                           String regalo5_c,
-                           String mregalo1_c,
-                           String mregalo2_c,
-                           String mregalo3_c,
-                           String mregalo4_c,
-                           String mregalo5_c,
-                           String fecregalo1_c,
-                           String fecregalo2_c,
-                           String fecregalo3_c,
-                           String fecregalo4_c,
-                           String fecregalo5_c,
-                           String segmento_c,
-                           String uen_c,
-                           String canal_c,
-                           String grupo_objetivo_c,
-                           String estado_cliente_c,
-                           String direccion_c,
-                           String zona_c,
-                           String extension1_c,
-                           String extension2_c,
-                           String identificacion_c,
-                           String user_id_c,
-                           String sector_c,
-                           String municipio_c,
-                           String email_address,
-                           String idAccount,
-                           String nameAccount,
-                           String reports_to_name,
-                           String created_by_name,
-                           String modified_user_name,
-                           String assigned_user_name,
-                           String nameCampaign) {
-        setId(id);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setSalutation(salutation);
-        setFirst_name(first_name);
-        setLast_name(last_name);
-        setTitle(title);
-        setDepartamento_c(department);
-        setDo_not_call(do_not_call);
-        setPhone_home(phone_home);
-        setPhone_mobile(phone_mobile);
-        setPhone_work(phone_work);
-        setPhone_other(phone_other);
-        setPhone_fax(phone_fax);
-        setPrimary_address_street(primary_address_street);
-        setPrimary_address_city(primary_address_city);
-        setPrimary_address_state(primary_address_state);
-        setPrimary_address_postalcode(primary_address_postalcode);
-        setPrimary_address_country(primary_address_country);
-        setAlt_address_state(alt_address_street);
-        setAlt_address_city(alt_address_city);
-        setAlt_address_state(alt_address_state);
-        setAlt_address_postalcode(alt_address_postalcode);
-        setAlt_address_country(alt_address_country);
-        setAssistant(assistant);
-        setAssistant_phone(assistant_phone);
-        setLead_source(lead_source);
-        setReports_to_id(reports_to_id);
-        setBirthdate(birthdate);
-        setCampaign_id(campaign_id);
-        setId_c(id_c);
-        setGenero_c(genero_c);
-        setProfesion_c(profesion_c);
-        setCertificaciones_c(certificaciones_c);
-        setTipocontacto_c(tipocontacto_c);
-        setDepartamento_c(departamento_c);
-        setRegalo1_c(regalo1_c);
-        setRegalo2_c(regalo2_c);
-        setRegalo3_c(regalo3_c);
-        setRegalo4_c(regalo4_c);
-        setRegalo5_c(regalo5_c);
-        setMregalo1_c(mregalo1_c);
-        setMregalo2_c(mregalo2_c);
-        setMregalo3_c(mregalo3_c);
-        setMregalo4_c(mregalo4_c);
-        setMregalo5_c(mregalo5_c);
-        setFecregalo1_c(fecregalo1_c);
-        setFecregalo2_c(fecregalo2_c);
-        setFecregalo3_c(fecregalo3_c);
-        setFecregalo4_c(fecregalo4_c);
-        setFecregalo5_c(fecregalo5_c);
-        setSegmento_c(segmento_c);
-        setUen_c(uen_c);
-        setCanal_c(canal_c);
-        setGrupo_objetivo_c(grupo_objetivo_c);
-        setEstado_cliente_c(estado_cliente_c);
-        setDireccion_c(direccion_c);
-        setZona_c(zona_c);
-        setExtension1_c(extension1_c);
-        setExtension2_c(extension2_c);
-        setIdentificacion_c(identificacion_c);
-        setUser_id_c(user_id_c);
-        setSector_c(sector_c);
-        setMunicipio_c(municipio_c);
-        setEmail_address(email_address);
-        setIdAccount(idAccount);
-        setNameAccount(nameAccount);
-        setReports_to_name(reports_to_name);
-        setCreated_by_name(created_by_name);
-        setModified_user_name(modified_user_name);
-        setAssigned_user_name(assigned_user_name);
-        setNameCampaign(nameCampaign);
+    public ContactoDetalle(JSONObject obj) throws JSONException {
+ 
+    	 setId(validate(obj.getString("id")));
+         setDate_entered(validate(obj.getString("date_entered")));
+         setDate_modified(validate(obj.getString("date_modified")));
+         setModified_user_id(validate(obj.getString("modified_user_id")));
+         setCreated_by(validate(obj.getString("created_by")));
+         setDescription(validate(obj.getString("description")));
+         setDeleted(validate(obj.getString("deleted")));
+         setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+         setSalutation(validate(obj.getString("salutation")));
+         setFirst_name(validate(obj.getString("first_name")));
+         setLast_name(validate(obj.getString("last_name")));
+         setTitle(validate(obj.getString("title")));
+         setDepartamento_c(validate(obj.getString("department")));
+         setDo_not_call(validate(obj.getString("do_not_call")));
+         setPhone_home(validate(obj.getString("phone_home")));
+         setPhone_mobile(validate(obj.getString("phone_mobile")));
+         setPhone_work(validate(obj.getString("phone_work")));
+         setPhone_other(validate(obj.getString("phone_other")));
+         setPhone_fax(validate(obj.getString("phone_fax")));
+         setPrimary_address_street(validate(obj.getString("primary_address_street")));
+         setPrimary_address_city(validate(obj.getString("primary_address_city")));
+         setPrimary_address_state(validate(obj.getString("primary_address_state")));
+         setPrimary_address_postalcode(validate(obj.getString("primary_address_postalcode")));
+         setPrimary_address_country(validate(obj.getString("primary_address_country")));
+         setAlt_address_state(validate(obj.getString("alt_address_street")));
+         setAlt_address_city(validate(obj.getString("alt_address_city")));
+         setAlt_address_state(validate(obj.getString("alt_address_state")));
+         setAlt_address_postalcode(validate(obj.getString("alt_address_postalcode")));
+         setAlt_address_country(validate(obj.getString("alt_address_country")));
+         setAssistant(validate(obj.getString("assistant")));
+         setAssistant_phone(validate(obj.getString("assistant_phone")));
+         setLead_source(validate(obj.getString("lead_source")));
+         setReports_to_id(validate(obj.getString("reports_to_id")));
+         setBirthdate(validate(obj.getString("birthdate")));
+         setCampaign_id(validate(obj.getString("campaign_id")));
+         setId_c(validate(obj.getString("id_c")));
+         setGenero_c(validate(obj.getString("genero_c")));
+         setProfesion_c(validate(obj.getString("profesion_c")));
+         setCertificaciones_c(validate(obj.getString("certificaciones_c")));
+         setTipocontacto_c(validate(obj.getString("tipocontacto_c")));
+         setDepartamento_c(validate(obj.getString("departamento_c")));
+         setRegalo1_c(validate(obj.getString("regalo1_c")));
+         setRegalo2_c(validate(obj.getString("regalo2_c")));
+         setRegalo3_c(validate(obj.getString("regalo3_c")));
+         setRegalo4_c(validate(obj.getString("regalo4_c")));
+         setRegalo5_c(validate(obj.getString("regalo5_c")));
+         setMregalo1_c(validate(obj.getString("mregalo1_c")));
+         setMregalo2_c(validate(obj.getString("mregalo2_c")));
+         setMregalo3_c(validate(obj.getString("mregalo3_c")));
+         setMregalo4_c(validate(obj.getString("mregalo4_c")));
+         setMregalo5_c(validate(obj.getString("mregalo5_c")));
+         setFecregalo1_c(validate(obj.getString("fecregalo1_c")));
+         setFecregalo2_c(validate(obj.getString("fecregalo2_c")));
+         setFecregalo3_c(validate(obj.getString("fecregalo3_c")));
+         setFecregalo4_c(validate(obj.getString("fecregalo4_c")));
+         setFecregalo5_c(validate(obj.getString("fecregalo5_c")));
+         setSegmento_c(validate(obj.getString("segmento_c")));
+         setUen_c(validate(obj.getString("uen_c")));
+         setCanal_c(validate(obj.getString("canal_c")));
+         setGrupo_objetivo_c(validate(obj.getString("grupo_objetivo_c")));
+         setEstado_cliente_c(validate(obj.getString("estado_cliente_c")));
+         setDireccion_c(validate(obj.getString("direccion_c")));
+         setZona_c(validate(obj.getString("zona_c")));
+         setExtension1_c(validate(obj.getString("extension1_c")));
+         setExtension2_c(validate(obj.getString("extension2_c")));
+         setIdentificacion_c(validate(obj.getString("identificacion_c")));
+         setUser_id_c(validate(obj.getString("user_id_c")));
+         setSector_c(validate(obj.getString("sector_c")));
+         setMunicipio_c(validate(obj.getString("municipio_c")));
+         setEmail_address(validate(obj.getString("email_address")));
+         setIdAccount(validate(obj.getString("idAccount")));
+         setNameAccount(validate(obj.getString("nameAccount")));
+         setReports_to_name(validate(obj.getString("reports_to_name")));
+         setCreated_by_name(validate(obj.getString("created_by_name")));
+         setModified_user_name(validate(obj.getString("modified_user_name")));
+         setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+         setNameCampaign(validate(obj.getString("nameCampaign")));
+       
     }
 
     protected ContactoDetalle(Parcel in) {
-        id = in.readString();
-        date_entered = in.readString();
-        date_modified = in.readString();
-        modified_user_id = in.readString();
-        created_by = in.readString();
-        description = in.readString();
-        deleted = in.readString();
-        assigned_user_id = in.readString();
-        salutation = in.readString();
-        first_name = in.readString();
-        last_name = in.readString();
-        title = in.readString();
-        department = in.readString();
-        do_not_call = in.readString();
-        phone_home = in.readString();
-        phone_mobile = in.readString();
-        phone_work = in.readString();
-        phone_other = in.readString();
-        phone_fax = in.readString();
-        primary_address_street = in.readString();
-        primary_address_city = in.readString();
-        primary_address_state = in.readString();
-        primary_address_postalcode = in.readString();
-        primary_address_country = in.readString();
-        alt_address_street = in.readString();
-        alt_address_city = in.readString();
-        alt_address_state = in.readString();
-        alt_address_postalcode = in.readString();
-        alt_address_country = in.readString();
-        assistant = in.readString();
-        assistant_phone = in.readString();
-        lead_source = in.readString();
-        reports_to_id = in.readString();
-        birthdate = in.readString();
-        campaign_id = in.readString();
-        id_c = in.readString();
-        genero_c = in.readString();
-        profesion_c = in.readString();
-        certificaciones_c = in.readString();
-        tipocontacto_c = in.readString();
-        departamento_c = in.readString();
-        regalo1_c = in.readString();
-        regalo2_c = in.readString();
-        regalo3_c = in.readString();
-        regalo4_c = in.readString();
-        regalo5_c = in.readString();
-        mregalo1_c = in.readString();
-        mregalo2_c = in.readString();
-        mregalo3_c = in.readString();
-        mregalo4_c = in.readString();
-        mregalo5_c = in.readString();
-        fecregalo1_c = in.readString();
-        fecregalo2_c = in.readString();
-        fecregalo3_c = in.readString();
-        fecregalo4_c = in.readString();
-        fecregalo5_c = in.readString();
-        segmento_c = in.readString();
-        uen_c = in.readString();
-        canal_c = in.readString();
-        grupo_objetivo_c = in.readString();
-        estado_cliente_c = in.readString();
-        direccion_c = in.readString();
-        zona_c = in.readString();
-        extension1_c = in.readString();
-        extension2_c = in.readString();
-        identificacion_c = in.readString();
-        user_id_c = in.readString();
-        sector_c = in.readString();
-        municipio_c = in.readString();
-        email_address = in.readString();
-        idAccount = in.readString();
-        nameAccount = in.readString();
-        reports_to_name = in.readString();
-        created_by_name = in.readString();
-        modified_user_name = in.readString();
-        assigned_user_name = in.readString();
-        nameCampaign = in.readString();
+    	 id = validate(in.readString());
+         date_entered = validate(in.readString());
+         date_modified = validate(in.readString());
+         modified_user_id = validate(in.readString());
+         created_by = validate(in.readString());
+         description = validate(in.readString());
+         deleted = validate(in.readString());
+         assigned_user_id = validate(in.readString());
+         salutation = validate(in.readString());
+         first_name = validate(in.readString());
+         last_name = validate(in.readString());
+         title = validate(in.readString());
+         department = validate(in.readString());
+         do_not_call = validate(in.readString());
+         phone_home = validate(in.readString());
+         phone_mobile = validate(in.readString());
+         phone_work = validate(in.readString());
+         phone_other = validate(in.readString());
+         phone_fax = validate(in.readString());
+         primary_address_street = validate(in.readString());
+         primary_address_city = validate(in.readString());
+         primary_address_state = validate(in.readString());
+         primary_address_postalcode = validate(in.readString());
+         primary_address_country = validate(in.readString());
+         alt_address_street = validate(in.readString());
+         alt_address_city = validate(in.readString());
+         alt_address_state = validate(in.readString());
+         alt_address_postalcode = validate(in.readString());
+         alt_address_country = validate(in.readString());
+         assistant = validate(in.readString());
+         assistant_phone = validate(in.readString());
+         lead_source = validate(in.readString());
+         reports_to_id = validate(in.readString());
+         birthdate = validate(in.readString());
+         campaign_id = validate(in.readString());
+         id_c = validate(in.readString());
+         genero_c = validate(in.readString());
+         profesion_c = validate(in.readString());
+         certificaciones_c = validate(in.readString());
+         tipocontacto_c = validate(in.readString());
+         departamento_c = validate(in.readString());
+         regalo1_c = validate(in.readString());
+         regalo2_c = validate(in.readString());
+         regalo3_c = validate(in.readString());
+         regalo4_c = validate(in.readString());
+         regalo5_c = validate(in.readString());
+         mregalo1_c = validate(in.readString());
+         mregalo2_c = validate(in.readString());
+         mregalo3_c = validate(in.readString());
+         mregalo4_c = validate(in.readString());
+         mregalo5_c = validate(in.readString());
+         fecregalo1_c = validate(in.readString());
+         fecregalo2_c = validate(in.readString());
+         fecregalo3_c = validate(in.readString());
+         fecregalo4_c = validate(in.readString());
+         fecregalo5_c = validate(in.readString());
+         segmento_c = validate(in.readString());
+         uen_c = validate(in.readString());
+         canal_c = validate(in.readString());
+         grupo_objetivo_c = validate(in.readString());
+         estado_cliente_c = validate(in.readString());
+         direccion_c = validate(in.readString());
+         zona_c = validate(in.readString());
+         extension1_c = validate(in.readString());
+         extension2_c = validate(in.readString());
+         identificacion_c = validate(in.readString());
+         user_id_c = validate(in.readString());
+         sector_c = validate(in.readString());
+         municipio_c = validate(in.readString());
+         email_address = validate(in.readString());
+         idAccount = validate(in.readString());
+         nameAccount = validate(in.readString());
+         reports_to_name = validate(in.readString());
+         created_by_name = validate(in.readString());
+         modified_user_name = validate(in.readString());
+         assigned_user_name = validate(in.readString());
+         nameCampaign = validate(in.readString());
     }
 
     public String getId() {

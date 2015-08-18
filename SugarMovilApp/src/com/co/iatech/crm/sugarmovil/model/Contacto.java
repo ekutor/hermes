@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de los contactos.
  */
-public class Contacto implements Parcelable {
+public class Contacto extends GenericBean implements Parcelable {
 
     public static final Creator<Contacto> CREATOR
             = new Creator<Contacto>() {
@@ -18,27 +21,27 @@ public class Contacto implements Parcelable {
             return new Contacto[size];
         }
     };
-
+    
     private String id, first_name, title, phone_mobile, phone_work, phone_other, phone_fax;
-
-    public Contacto(String id, String first_name, String title, String phone_mobile, String phone_work, String phone_other, String phone_fax) {
-        setId(id);
-        setNombre(first_name);
-        setTitulo(title);
-        setPhone_mobile(phone_mobile);
-        setTelefonoTrabajo(phone_work);
-        setTelefonoOtro(phone_other);
-        setTelefonoFax(phone_fax);
+    
+    public Contacto(JSONObject obj) throws JSONException {
+    	setId(validate(obj.getString("id")));
+        setNombre(validate(obj.getString("first_name")));
+        setTitulo(validate(obj.getString("title")));
+        setPhone_mobile(validate(obj.getString("phone_mobile")));
+        setTelefonoTrabajo(validate(obj.getString("phone_work")));
+        setTelefonoOtro(validate(obj.getString("phone_other")));
+        setTelefonoFax(validate(obj.getString("phone_fax")));
     }
 
     public Contacto(Parcel in) {
-        setId(in.readString());
-        setNombre(in.readString());
-        setTitulo(in.readString());
-        setPhone_mobile(in.readString());
-        setTelefonoTrabajo(in.readString());
-        setTelefonoOtro(in.readString());
-        setTelefonoFax(in.readString());
+    	setId(validate(in.readString()));
+        setNombre(validate(in.readString()));
+        setTitulo(validate(in.readString()));
+        setPhone_mobile(validate(in.readString()));
+        setTelefonoTrabajo(validate(in.readString()));
+        setTelefonoOtro(validate(in.readString()));
+        setTelefonoFax(validate(in.readString()));
     }
 
     @Override

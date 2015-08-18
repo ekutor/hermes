@@ -1,5 +1,8 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -22,29 +25,32 @@ public class User implements Parcelable {
     private String id;
     private String user_name;
     private String user_hash;
-    private String system_generated_password;
-    private String pwd_last_changed;
-    private String authenticate_id;
-    private String sugar_login;
+    private String first_name;
+    private String last_name;
+    private boolean authenticate;
+    private String is_admin;
 
-    public User(String id, String user_name, String user_hash, String system_generated_password, String pwd_last_changed, String authenticate_id, String sugar_login) {
-        setId(id);
-        setUser_name(user_name);
-        setUser_hash(user_hash);
-        setSystem_generated_password(system_generated_password);
-        setPwd_last_changed(pwd_last_changed);
-        setAuthenticate_id(authenticate_id);
-        setSugar_login(sugar_login);
+
+    public User(JSONObject obj) throws JSONException {
+    	setAuthenticate(obj.getString("auth"));
+        setId(obj.getString("idUsuario"));
+        setUser_name(obj.getString("user_name"));
+        setFirst_name(obj.getString("first_name"));
+        setLast_name(obj.getString("last_name"));
+        setIs_admin(obj.getString("is_admin"));
+        setUser_hash(obj.getString("hash"));
+       
     }
 
     public User(Parcel in) {
         setId(in.readString());
+        setAuthenticate(in.readString());
+        setId(in.readString());
         setUser_name(in.readString());
+        setFirst_name(in.readString());
+        setLast_name(in.readString());
+        setIs_admin(in.readString());
         setUser_hash(in.readString());
-        setSystem_generated_password(in.readString());
-        setPwd_last_changed(in.readString());
-        setAuthenticate_id(in.readString());
-        setSugar_login(in.readString());
     }
 
     @Override
@@ -54,13 +60,13 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getId());
-        dest.writeString(getUser_name());
-        dest.writeString(getUser_hash());
-        dest.writeString(getSystem_generated_password());
-        dest.writeString(getPwd_last_changed());
-        dest.writeString(getAuthenticate_id());
-        dest.writeString(getSugar_login());
+        dest.writeString(String.valueOf(this.isAuthenticate()));
+        dest.writeString(this.getId());
+        dest.writeString(this.getUser_name());
+        dest.writeString(this.getFirst_name());
+        dest.writeString(this.getLast_name());
+        dest.writeString(this.getIs_admin());
+        dest.writeString(this.getUser_hash());
     }
 
     public String getId() {
@@ -87,35 +93,45 @@ public class User implements Parcelable {
         this.user_hash = user_hash;
     }
 
-    public String getSystem_generated_password() {
-        return system_generated_password;
+    public boolean isAuthenticate() {
+        return authenticate;
     }
 
-    public void setSystem_generated_password(String system_generated_password) {
-        this.system_generated_password = system_generated_password;
+    public void setAuthenticate(boolean authenticate_id) {
+        this.authenticate = authenticate_id;
+    }
+    
+    public void setAuthenticate(String authenticate_id) {
+    	if("true".equalsIgnoreCase(authenticate_id)){
+    		this.authenticate = true;
+    	}else{
+    		this.authenticate = false;
+    	}
+        
     }
 
-    public String getPwd_last_changed() {
-        return pwd_last_changed;
-    }
+	public String getFirst_name() {
+		return first_name;
+	}
 
-    public void setPwd_last_changed(String pwd_last_changed) {
-        this.pwd_last_changed = pwd_last_changed;
-    }
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
 
-    public String getAuthenticate_id() {
-        return authenticate_id;
-    }
+	public String getLast_name() {
+		return last_name;
+	}
 
-    public void setAuthenticate_id(String authenticate_id) {
-        this.authenticate_id = authenticate_id;
-    }
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
 
-    public String getSugar_login() {
-        return sugar_login;
-    }
+	public String getIs_admin() {
+		return is_admin;
+	}
 
-    public void setSugar_login(String sugar_login) {
-        this.sugar_login = sugar_login;
-    }
+	public void setIs_admin(String is_admin) {
+		this.is_admin = is_admin;
+	}
+    
 }

@@ -10,7 +10,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,19 +25,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerAccountsAdapter;
+import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
-public class AccountActivity extends AppCompatActivity {
-
-    /**
-     * Extras
-     */
-    //public final static String EXTRA_ACCOUNT = "com.taktil.crm.laumayer.ACCOUNT";
+public class AccountActivity extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * Debug.
@@ -60,6 +56,10 @@ public class AccountActivity extends AppCompatActivity {
     private Toolbar mCuentaToolbar;
     private ImageButton mImageButtonEdit;
     private LinearLayout mLayoutContenido;
+    private ImageButton imageButtonContacts;
+    private ImageButton imageButtonOpps;
+    private ImageButton imageButtonCalls;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class AccountActivity extends AppCompatActivity {
         mUrl = globalVariable.getUrl();
         Log.d(TAG, mUrl);
         Intent intent = getIntent();
-        mIdCuenta = intent.getStringExtra(RecyclerAccountsAdapter.EXTRA_ID_CUENTA);
+        mIdCuenta = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
         Log.d(TAG, "Id cuenta " + mIdCuenta);
         
         
@@ -94,7 +94,19 @@ public class AccountActivity extends AppCompatActivity {
                 // TODO
             }
         });
-
+        
+        mImageButtonEdit.setVisibility(View.INVISIBLE);
+        
+        //ToolBar Opciones
+        imageButtonContacts = (ImageButton) findViewById(R.id.image_contacts);
+        imageButtonContacts.setOnClickListener(this);
+        
+        imageButtonOpps = (ImageButton) findViewById(R.id.image_opportunities);
+        imageButtonOpps.setOnClickListener(this);
+        
+        imageButtonCalls =  (ImageButton) findViewById(R.id.image_calls);
+        imageButtonCalls.setVisibility(View.INVISIBLE);
+        
         // Tarea obtener cuenta
         mTareaObtenerCuenta = new GetAccountTask();
         mTareaObtenerCuenta.execute(String.valueOf(mIdCuenta));
@@ -219,7 +231,7 @@ public class AccountActivity extends AppCompatActivity {
         TextView valorAVencer = (TextView) findViewById(R.id.valor_a_vencer);
         valorAVencer.setText(cuentaDetalle.getCarteravencer_c());
     }
-    
+
    
     /**
      * Representa una tarea asincrona de obtencion de cuenta.
@@ -299,4 +311,26 @@ public class AccountActivity extends AppCompatActivity {
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
+	@Override
+	public void onClick(View v) {
+		
+		if(v.getId() == imageButtonContacts.getId()){
+			Log.d(TAG, "Contactos x cuenta ");
+			Intent intent = new Intent(AccountActivity.this,
+					ListContactActivity.class);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			startActivity(intent);
+
+		}else if(v.getId() == imageButtonOpps.getId()){
+			Log.d(TAG, "Oportunidades X Cuenta ");
+			Intent intent = new Intent(AccountActivity.this,
+					ListOpportunityActivity.class);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			startActivity(intent);
+
+		}
+		
+	}
 }

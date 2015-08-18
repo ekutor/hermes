@@ -270,5 +270,5 @@ public class AccountsFragment extends Fragment {
              Log.d(TAG, "Cancelado ");
          }
      }
-    
+
 }
