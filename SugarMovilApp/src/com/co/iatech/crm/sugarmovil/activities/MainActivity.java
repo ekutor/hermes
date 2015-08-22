@@ -5,17 +5,14 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +28,8 @@ import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
+import com.co.iatech.crm.sugarmovil.fragments.ProductsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.TasksFragment;
 import com.co.iatech.crm.sugarmovil.model.DrawerItem;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -115,9 +114,10 @@ public class MainActivity extends AppCompatActivity {
         mDataList.add(new DrawerItem("Contactos", R.drawable.ic_contacts));
         mDataList.add(new DrawerItem("Oportunidades", R.drawable.ic_opportunities));
         mDataList.add(new DrawerItem("Llamadas", R.drawable.ic_calls));
-//        mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
+        mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
+        mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
 //        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
-//        mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
+
 
         mDrawerAdapter = new DrawerAdapter(this, R.layout.item_drawer,
                 mDataList);
@@ -216,15 +216,16 @@ public class MainActivity extends AppCompatActivity {
             case 3:
                 fragment = CallsFragment.newInstance();
                 break;
-//            case 4:
-//                fragment = ProductsFragment.newInstance();
-//                break;
-//            case 5:
+            case 4:
+                fragment = ProductsFragment.newInstance();
+                break;
+            case 5:
+                fragment = TasksFragment.newInstance();
+                break;
+//            case 6:
 //                fragment = ClientsFragment.newInstance();
 //                break;
-//            case 6:
-//                fragment = TasksFragment.newInstance();
-//                break;
+
             default:
             	fragment = AccountsFragment.newInstance();
                 break;

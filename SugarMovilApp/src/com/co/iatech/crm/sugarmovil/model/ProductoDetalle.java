@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de un producto.
  */
-public class ProductoDetalle implements Parcelable {
+public class ProductoDetalle extends GenericBean implements Parcelable {
 
 
     @SuppressWarnings("unused")
@@ -39,40 +42,24 @@ public class ProductoDetalle implements Parcelable {
     private String precio1_c;
     private String precio2_c;
 
-    public ProductoDetalle(String id,
-                           String name,
-                           String date_entered,
-                           String date_modified,
-                           String modified_user_id,
-                           String created_by,
-                           String description,
-                           String deleted,
-                           String assigned_user_id,
-                           String id_c,
-                           String codigo_c,
-                           String referencia_c,
-                           String marca_c,
-                           String grupo_c,
-                           String en_inventario_c,
-                           String precio1_c,
-                           String precio2_c) {
-        setId(id);
-        setName(name);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setId_c(id_c);
-        setCodigo_c(codigo_c);
-        setReferencia_c(referencia_c);
-        setMarca_c(marca_c);
-        setGrupo_c(grupo_c);
-        setEn_inventario_c(en_inventario_c);
-        setPrecio1_c(precio1_c);
-        setPrecio2_c(precio2_c);
+    public ProductoDetalle(JSONObject obj) throws JSONException {
+    	setId(validate(obj.getString("id")));;
+        setName(validate(obj.getString("name")));;
+        setDate_entered(validate(obj.getString("date_entered")));;
+        setDate_modified(validate(obj.getString("date_modified")));;
+        setModified_user_id(validate(obj.getString("modified_user_id")));;
+        setCreated_by(validate(obj.getString("created_by")));;
+        setDescription(validate(obj.getString("description")));;
+        setDeleted(validate(obj.getString("deleted")));;
+        setAssigned_user_id(validate(obj.getString("assigned_user_id")));;
+        setId_c(validate(obj.getString("id_c")));;
+        setCodigo_c(validate(obj.getString("codigo_c")));;
+        setReferencia_c(validate(obj.getString("referencia_c")));;
+        setMarca_c(validate(obj.getString("marca_c")));;
+        setGrupo_c(validate(obj.getString("grupo_c")));;
+        setEn_inventario_c(validate(obj.getString("en_inventario_c")));;
+        setPrecio1_c(validate(obj.getString("precio1_c")));;
+        setPrecio2_c(validate(obj.getString("precio2_c")));;
     }
 
     protected ProductoDetalle(Parcel in) {

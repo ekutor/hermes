@@ -87,6 +87,7 @@ public class ContactActivity extends AppCompatActivity {
                 // TODO
             }
         });
+        mImageButtonEdit.setVisibility(View.INVISIBLE);
 
         // Tarea obtener contacto
         mTareaObtenerContacto = new GetContactTask();

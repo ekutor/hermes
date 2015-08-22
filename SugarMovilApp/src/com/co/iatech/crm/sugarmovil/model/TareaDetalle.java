@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de una tarea.
  */
-public class TareaDetalle implements Parcelable {
+public class TareaDetalle extends GenericBean implements Parcelable {
 
 
     @SuppressWarnings("unused")
@@ -47,56 +50,32 @@ public class TareaDetalle implements Parcelable {
     private String contact_name;
     private String parent_name;
 
-    public TareaDetalle(String id,
-                        String name,
-                        String date_entered,
-                        String date_modified,
-                        String modified_user_id,
-                        String created_by,
-                        String description,
-                        String deleted,
-                        String assigned_user_id,
-                        String status,
-                        String date_due_flag,
-                        String date_due,
-                        String date_start_flag,
-                        String date_start,
-                        String parent_type,
-                        String parent_id,
-                        String contact_id,
-                        String priority,
-                        String id_c,
-                        String aviso_c,
-                        String trabajo_estimado_c,
-                        String ejecuted_date_c,
-                        String assigned_user_name,
-                        String contact_name,
-                        String parent_name) {
-        setId(id);
-        setName(name);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setStatus(status);
-        setDate_due_flag(date_due_flag);
-        setDate_due(date_due);
-        setDate_start_flag(date_start_flag);
-        setDate_start(date_start);
-        setParent_type(parent_type);
-        setParent_id(parent_id);
-        setContact_id(contact_id);
-        setPriority(priority);
-        setId_c(id_c);
-        setAviso_c(aviso_c);
-        setTrabajo_estimado_c(trabajo_estimado_c);
-        setEjecuted_date_c(ejecuted_date_c);
-        setAssigned_user_name(assigned_user_name);
-        setContact_name(contact_name);
-        setParent_name(parent_name);
+    public TareaDetalle(JSONObject obj) throws JSONException {
+		setId(validate(obj.getString("id")));;
+	    setName(validate(obj.getString("name")));;
+	    setDate_entered(validate(obj.getString("date_entered")));;
+	    setDate_modified(validate(obj.getString("date_modified")));;
+	    setModified_user_id(validate(obj.getString("modified_user_id")));;
+	    setCreated_by(validate(obj.getString("created_by")));;
+	    setDescription(validate(obj.getString("description")));;
+	    setDeleted(validate(obj.getString("deleted")));;
+	    setAssigned_user_id(validate(obj.getString("assigned_user_id")));;
+	    setStatus(validate(obj.getString("status")));;
+	    setDate_due_flag(validate(obj.getString("date_due_flag")));;
+	    setDate_due(validate(obj.getString("date_due")));;
+	    setDate_start_flag(validate(obj.getString("date_start_flag")));;
+	    setDate_start(validate(obj.getString("date_start")));;
+	    setParent_type(validate(obj.getString("parent_type")));;
+	    setParent_id(validate(obj.getString("parent_id")));;
+	    setContact_id(validate(obj.getString("contact_id")));;
+	    setPriority(validate(obj.getString("priority")));;
+	    setId_c(validate(obj.getString("id_c")));;
+	    setAviso_c(validate(obj.getString("aviso_c")));;
+	    setTrabajo_estimado_c(validate(obj.getString("trabajo_estimado_c")));;
+	    setEjecuted_date_c(validate(obj.getString("ejecuted_date_c")));;
+	    setAssigned_user_name(validate(obj.getString("assigned_user_name")));;
+	    setContact_name(validate(obj.getString("contact_name")));;
+	    setParent_name(validate(obj.getString("parent_name")));;
     }
 
     protected TareaDetalle(Parcel in) {

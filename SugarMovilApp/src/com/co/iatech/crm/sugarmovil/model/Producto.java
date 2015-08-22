@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de los productos.
  */
-public class Producto implements Parcelable {
+public class Producto extends GenericBean implements Parcelable {
 
     public static final Creator<Producto> CREATOR
             = new Creator<Producto>() {
@@ -21,9 +24,9 @@ public class Producto implements Parcelable {
 
     private String id, name;
 
-    public Producto(String id, String nombre) {
-        setId(id);
-        setName(nombre);
+    public Producto(JSONObject obj) throws JSONException {
+        setId(validate(obj.getString("id")));
+        setName( validate (obj.getString("name")));
     }
 
     public Producto(Parcel in) {
