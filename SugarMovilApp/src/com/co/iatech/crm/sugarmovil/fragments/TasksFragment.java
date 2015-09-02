@@ -1,21 +1,14 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +24,8 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Tarea;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
@@ -95,7 +90,6 @@ public class TasksFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mUrl = mGlobalVariable.getUrl();
         mGlobalVariable.setmSelectedButton(6);
 
         // Main Toolbar
@@ -227,24 +221,9 @@ public class TasksFragment extends Fragment {
                 String tasks;
 
                 // Intento de obtener tareas
-                HttpClient httpClientTasks = new DefaultHttpClient();
-                HttpGet httpGetTasks = new HttpGet(mUrl
-                        + "getTasks");
 
-                try {
-                    HttpResponse response = httpClientTasks
-                            .execute(httpGetTasks);
-                    tasks = EntityUtils.toString(response
-                            .getEntity());
-                    tasks = tasks.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Tareas Response: "
-                            + tasks);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                tasks  = ControlConnection.getInfo(TypeInfoServer.getTasks);
+            
                 mTasksArray.clear();
 
                 JSONObject jObj = new JSONObject(tasks);

@@ -32,6 +32,7 @@
     <string name="title_activity_select_account">SELECCIONAR CUENTA</string>
     <string name="title_activity_select_contact">SELECCIONAR CONTACTO</string>
     <string name="title_activity_select_oppotunity">SELECCIONAR OPORTUNIDAD</string>
+    <string name="title_activity_select_task">SELECCIONAR TAREA</string>
     <string name="title_activity_select_lead">SELECCIONAR CLIENTE POTENCIAL</string>
     <string name="title_activity_select_user">SELECCIONAR USUARIO</string>
     <string name="title_activity_select_campaign">SELECCIONAR CAMPAÑA</string>
@@ -280,12 +281,12 @@
     <string name="tarea_asunto">Asunto:</string>
     <string name="tarea_estado">Estado:</string>
     <string name="tarea_fecha_inicio">Fecha Inicio:</string>
-    <string name="tarea_fecha_vence">Fecha Vence:</string>
+    <string name="tarea_fecha_vence">Fecha Vencimiento:</string>
     <string name="tarea_fecha">Seleccionar Fecha</string>
     <string name="tarea_contacto">Contacto:</string>
-    <string name="tarea_estimado">Estimado días:</string>
+    <string name="tarea_estimado">Trabajo Estimado en días:</string>
     <string name="tarea_prioridad">Prioridad:</string>
-    <string name="tarea_descripcion">Deacripción:</string>
+    <string name="tarea_descripcion">Descripción:</string>
     <string name="tarea_asignado">Asignado a:</string>
     <string name="tarea_titulo_relacion">RELACIÓN</string>
     <string name="tarea_tipo">Tipo:</string>

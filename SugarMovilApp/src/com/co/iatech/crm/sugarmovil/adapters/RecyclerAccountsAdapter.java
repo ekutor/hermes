@@ -55,14 +55,13 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
 
         // Nombre cuenta
         holder.mTextViewNombre.setText(cuenta.getName());
-
+        holder.textViewUen.setText(cuenta.getUen());
         // Eventos
         holder.mItemAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Account Activity
-                Intent intentCuenta = new Intent(mContext,
-                        AccountActivity.class);
+                Intent intentCuenta = new Intent(mContext, AccountActivity.class);
                 intentCuenta.putExtra(Info.CUENTA_ACTUAL.name(), cuenta.getId());
                 mContext.startActivity(intentCuenta);
             }
@@ -99,11 +98,13 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mItemAccount;
         public TextView mTextViewNombre;
+        public TextView textViewUen;
 
         public ViewHolder(View v) {
             super(v);
             mItemAccount = (LinearLayout) v.findViewById(R.id.item_accounts);
             mTextViewNombre = (TextView) v.findViewById(R.id.nombre_cuenta);
+            textViewUen = (TextView) v.findViewById(R.id.txtUen);
         }
     }
 }

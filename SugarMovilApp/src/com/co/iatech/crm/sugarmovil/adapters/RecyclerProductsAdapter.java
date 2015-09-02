@@ -53,7 +53,8 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
 
         // Nombre producto
         holder.mTextViewNombre.setText(producto.getName());
-
+        
+        holder.textViewCant.setText("Saldo:  "+producto.getSaldo());
         // Eventos
         holder.mItemProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +91,9 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
         for (Producto item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);
+            if (item.getId().toLowerCase().contains(queryText))
+                mVisibleDataset.add(item);
+           
         }
         notifyDataSetChanged();
     }
@@ -110,11 +114,13 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mItemProduct;
         public TextView mTextViewNombre;
+        public TextView textViewCant;
 
         public ViewHolder(View v) {
             super(v);
             mItemProduct = (LinearLayout) v.findViewById(R.id.item_product);
             mTextViewNombre = (TextView) v.findViewById(R.id.nombre_producto);
+            textViewCant = (TextView) v.findViewById(R.id.cant_producto);
         }
     }
 }

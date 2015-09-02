@@ -1,12 +1,5 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,10 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
 public class CallActivity extends AppCompatActivity {
@@ -45,7 +38,7 @@ public class CallActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mUrl;
+
     private String mIdLlamada;
     private Llamada mLlamadaDetalle;
 
@@ -54,17 +47,11 @@ public class CallActivity extends AppCompatActivity {
      */
     private Toolbar mLlamadaToolbar;
     private ImageButton mImageButtonEdit;
-    private LinearLayout mLayoutContenido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
 
         Intent intent = getIntent();
         mIdLlamada = intent.getStringExtra(Info.ID_LLAMADA.name());
@@ -77,8 +64,6 @@ public class CallActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         mImageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
 
-        // Contenido
-        mLayoutContenido = (LinearLayout) findViewById(R.id.layout_contenido);
 
         //Eventos
         mImageButtonEdit.setOnClickListener(new View.OnClickListener() {
@@ -144,24 +129,8 @@ public class CallActivity extends AppCompatActivity {
                 String call = null;
 
                 // Intento de obtener cuenta
-                HttpClient httpClientAccount = new DefaultHttpClient();
-                HttpGet httpGetAccount = new HttpGet(mUrl
-                        + "getCall");
-                httpGetAccount.setHeader("idCall", idLlamada);
-
-                try {
-                    HttpResponse response = httpClientAccount
-                            .execute(httpGetAccount);
-                    call = EntityUtils.toString(response
-                            .getEntity());
-                    call = call.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Llamada Response: "
-                            + call);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
+                ControlConnection.addHeader("idCall", idLlamada);
+                call  = ControlConnection.getInfo(TypeInfoServer.getCall);
 
                 JSONObject jObj = new JSONObject(call);
 

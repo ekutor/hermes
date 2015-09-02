@@ -1,12 +1,5 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.animation.Animator;
@@ -29,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -49,10 +44,9 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
     /**
      * Member Variables.
      */
-    private String mUrl;
-    // TODO: Modelo usuario
     GlobalClass globalVariable;
     private User mUsuario;
+    private String mensajeAutenticacion;
 
     /**
      * UI References.
@@ -69,7 +63,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 
         // Variable Global
         globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
+       
         String android_id = Secure.getString(this.getApplicationContext().getContentResolver(),
                 Secure.ANDROID_ID); 
     	
@@ -77,9 +71,9 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
     	
     	String device_id = tm.getDeviceId();
         
-    	globalVariable.setAndroidID(android_id);
-    	globalVariable.setDeviceID(device_id);
-
+    	ControlConnection.android_id = android_id;
+    	ControlConnection.device_id = device_id;
+    	
         // Progress Views
         mVistaFormularioIngreso = findViewById(R.id.login);
         mVistaFormularioIngreso.setVisibility(View.VISIBLE);
@@ -219,38 +213,24 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 
             // Intento de login usuarios
             try {
-                HttpClient httpLoginUsuarios = new DefaultHttpClient();
-                HttpGet httpGetLoginUsuarios = new HttpGet(mUrl
-                        + "loginUsuarios");
-                httpGetLoginUsuarios.setHeader("usuario", user);
-                httpGetLoginUsuarios.setHeader("password", passwordUser);
-                httpGetLoginUsuarios.setHeader("deviceID", globalVariable.getDeviceID());
-                
-                Log.d(TAG, "deviceID: "
-                        +  globalVariable.getDeviceID());
-                Log.d(TAG, "usuario: "
-                        +  user);
-                Log.d(TAG, "password: "
-                        +  passwordUser);
-                try {
-                    HttpResponse response = httpLoginUsuarios
-                            .execute(httpGetLoginUsuarios);
-                    login = EntityUtils.toString(response
-                            .getEntity());
-                    login = login.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Login Usuarios Response: "
-                            + login);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
+            	
+            	ControlConnection.addHeader("usuario", user);
+            	ControlConnection.addHeader("password", passwordUser);
+            	
+            	login = ControlConnection.getInfo(TypeInfoServer.loginUsuarios);
 
                 // Creacion de usuario
                 JSONObject obj = new JSONObject(login);
-                mUsuario = new User(obj);
+                Boolean auth = new Boolean(obj.getString("auth"));
+                if(auth){
+                	mUsuario = new User(obj);
+                	 return true;
+                }else{
+                	mensajeAutenticacion = obj.getString("message");
+                	return false;
+                }
 
-                return true;
+               
             } catch (Exception e) {
                 Log.d(TAG, "Login Usuarios Error: "
                         + e.getClass().getName() + ":" + e.getMessage());
@@ -265,13 +245,16 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
             if (success) {
                 Intent intentMain = new Intent(LoginActivity.this,
                         MainActivity.class);
+                ControlConnection.hash = mUsuario.getUser_hash();
+                Log.d(TAG, "hash seteado: "
+                        + mUsuario.getUser_hash());
                 intentMain.putExtra(Info.USUARIO.name(), mUsuario);
                 startActivity(intentMain);
                 LoginActivity.this.finish();
             } else {
                 showProgress(false);
                 Context context = getApplicationContext();
-                CharSequence text = "Email y/o contraseña incorrectos";
+                CharSequence text = mensajeAutenticacion;
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context, text, duration);

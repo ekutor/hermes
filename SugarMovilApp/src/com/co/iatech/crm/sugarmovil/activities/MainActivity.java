@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private String mUrl;
     private User mUsuario;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -73,11 +75,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Variable Global
         mGlobalVariable = (GlobalClass) getApplicationContext();
-        mUrl = mGlobalVariable.getUrl();
+        //obtener Usuario Autenticado
+        if(mGlobalVariable.getUsuarioAutenticado() != null){
+	        Intent intent = getIntent();
+	        User u = (User) intent.getExtras().get(Info.USUARIO.name());
+	        Log.d(TAG, u.getId());
+	        ControlConnection.hash = u.getUser_hash();
+	        mGlobalVariable.setUsuarioAutenticado(u);
+        }
      
         mSelectedButton = mGlobalVariable.getmSelectedButton();
-        Log.d(TAG, mUrl);
-
+        
+        
         // Main Toolbar
         mMainToolbar = (Toolbar) findViewById(R.id.toolbar_main);
         mMainTextView = (TextView) findViewById(R.id.text_main_toolbar);
@@ -227,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
 //                break;
 
             default:
+            	position = 0;
             	fragment = AccountsFragment.newInstance();
                 break;
         }
@@ -235,9 +245,13 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager frgManager = getFragmentManager();
         frgManager.beginTransaction().replace(R.id.container, fragment)
                 .commit();
-
+        
         mDrawerList.setItemChecked(position, true);
-        setTitle(mDataList.get(position).getItemName());
+        try{
+        	setTitle(mDataList.get(position).getItemName());
+        }catch(java.lang.ArrayIndexOutOfBoundsException aie){
+        	setTitle(mDataList.get(0).getItemName());
+        }
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 

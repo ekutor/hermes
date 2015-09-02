@@ -1,12 +1,5 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,10 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.model.LanguageType;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
 public class TaskActivity extends AppCompatActivity {
@@ -45,7 +39,6 @@ public class TaskActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String mIdTarea;
     private TareaDetalle mTareaDetalle;
 
@@ -61,14 +54,15 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
-
         Intent intent = getIntent();
-        mIdTarea = intent.getStringExtra(Info.ID_TAREA.name());
-        Log.d(TAG, "Id producto " + mIdTarea);
+        mTareaDetalle = null;
+        
+        if(intent.getExtras().get(Info.ID_TAREA.name()) instanceof  TareaDetalle ){
+        	mTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.ID_TAREA.name());
+        }else{
+	        mIdTarea = intent.getStringExtra(Info.ID_TAREA.name());
+	        Log.d(TAG, "Id producto " + mIdTarea);
+        }
 
         // Main Toolbar
         mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
@@ -92,17 +86,21 @@ public class TaskActivity extends AppCompatActivity {
 //                startActivity(intentEditarTarrea);
             }
         });
-
-        // Tarea obtener tarea
-        mTareaObtenerTarea = new GetTaskTask();
-        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
+        
+        if(mTareaDetalle == null){
+	        // Tarea obtener tarea
+	        mTareaObtenerTarea = new GetTaskTask();
+	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
+        }else{
+        	this.ponerValores(mTareaDetalle);
+        }
     }
 
     public void ponerValores(TareaDetalle tareaDetalle) {
         TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(tareaDetalle.getName());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
-        valorEstado.setText(tareaDetalle.getStatus());
+        valorEstado.setText(tareaDetalle.getStatus(LanguageType.SPANISH));
         TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
         valorFechaInicio.setText(tareaDetalle.getDate_start());
         TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
@@ -112,15 +110,15 @@ public class TaskActivity extends AppCompatActivity {
         TextView valorEstimado = (TextView) findViewById(R.id.valor_estimado);
         valorEstimado.setText(tareaDetalle.getTrabajo_estimado_c());
         TextView valorPrioridad = (TextView) findViewById(R.id.valor_prioridad);
-        valorPrioridad.setText(tareaDetalle.getPriority());
+        valorPrioridad.setText(tareaDetalle.getPriority(LanguageType.SPANISH));
         TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
         valorDescripcion.setText(tareaDetalle.getDescription());
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
         valorAsignado.setText(tareaDetalle.getAssigned_user_name());
-        TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
+        /*TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
         valorTipo.setText(tareaDetalle.getParent_type());
         TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-        valorNombre.setText(tareaDetalle.getParent_name());
+        valorNombre.setText(tareaDetalle.getParent_name());*/
     }
 
     @Override
@@ -155,29 +153,13 @@ public class TaskActivity extends AppCompatActivity {
                 String idTarea = params[0];
 
                 // Respuesta
-                String product = null;
+                String resultado = null;
 
                 // Intento de obtener tarea
-                HttpClient httpClientAccount = new DefaultHttpClient();
-                HttpGet httpGetAccount = new HttpGet(mUrl
-                        + "getTask");
-                httpGetAccount.setHeader("idTask", idTarea);
-
-                try {
-                    HttpResponse response = httpClientAccount
-                            .execute(httpGetAccount);
-                    product = EntityUtils.toString(response
-                            .getEntity());
-                    product = product.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Tarea Response: "
-                            + product);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
-                JSONObject jObj = new JSONObject(product);
+                ControlConnection.addHeader("idTask", idTarea);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getTask);
+        
+                JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 if( jArr.length() > 0) {

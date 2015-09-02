@@ -1,13 +1,7 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,9 +26,10 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerOpportunitiesAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.squareup.picasso.Picasso;
 
 
@@ -52,7 +47,6 @@ public class ListOpportunityActivity extends AppCompatActivity  {
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String idCuentaActual;
     private ArrayList<Oportunidad> oportunitiesXAccount = new ArrayList<>();
 
@@ -73,11 +67,6 @@ public class ListOpportunityActivity extends AppCompatActivity  {
 
         // SoftKey
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
         
         Intent intent = getIntent();
         idCuentaActual = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
@@ -203,24 +192,8 @@ public class ListOpportunityActivity extends AppCompatActivity  {
                 String resultado = null;
 
                 // Intento de obtener datos
-                HttpClient httpClientContacts = new DefaultHttpClient();
-                HttpGet httpGetContacts = new HttpGet(mUrl
-                        + "getAccountOpportunities");
-                httpGetContacts.setHeader("idAccount", idCuenta);
-                try {
-                    HttpResponse response = httpClientContacts
-                            .execute(httpGetContacts);
-                    resultado = EntityUtils.toString(response
-                            .getEntity());
-                    resultado = resultado.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Response: "
-                            + resultado);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                ControlConnection.addHeader("idAccount", idCuenta);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getAccountOpportunities);
                 oportunitiesXAccount.clear();
 
                 JSONObject jObj = new JSONObject(resultado);

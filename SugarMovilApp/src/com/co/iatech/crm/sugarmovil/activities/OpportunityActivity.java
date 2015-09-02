@@ -1,12 +1,5 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,10 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerOpportunitiesAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
 public class OpportunityActivity extends AppCompatActivity {
@@ -45,7 +38,6 @@ public class OpportunityActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String mIdOportunidad;
     private OportunidadDetalle mOportunidadDetalle;
 
@@ -60,11 +52,6 @@ public class OpportunityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opportunity);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
 
         Intent intent = getIntent();
         mIdOportunidad = intent.getStringExtra(Info.OPORTUNIDAD_SELECCIONADA.name());
@@ -157,29 +144,13 @@ public class OpportunityActivity extends AppCompatActivity {
                 String idOportunidad = params[0];
 
                 // Respuesta
-                String account = null;
+                String resultado = null;
 
                 // Intento de obtener cuenta
-                HttpClient httpClientOpportunity = new DefaultHttpClient();
-                HttpGet httpGetAccount = new HttpGet(mUrl
-                        + "getOpportunity");
-                httpGetAccount.setHeader("idOpportunity", idOportunidad);
+                ControlConnection.addHeader("idOpportunity", idOportunidad);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getOpportunity);
 
-                try {
-                    HttpResponse response = httpClientOpportunity
-                            .execute(httpGetAccount);
-                    account = EntityUtils.toString(response
-                            .getEntity());
-                    account = account.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Oportunidad Response: "
-                            + account);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
-                JSONObject jObj = new JSONObject(account);
+                JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {

@@ -1,12 +1,5 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,10 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerProductsAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.ProductoDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
 public class ProductActivity extends AppCompatActivity {
@@ -45,7 +38,6 @@ public class ProductActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String mIdProducto;
     private ProductoDetalle mProductoDetalle;
 
@@ -60,12 +52,6 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
-
         Intent intent = getIntent();
         mIdProducto = intent.getStringExtra(Info.ID_PRODUCTO.name());
         Log.d(TAG, "Id producto " + mIdProducto);
@@ -136,29 +122,13 @@ public class ProductActivity extends AppCompatActivity {
                 String idProducto = params[0];
 
                 // Respuesta
-                String product = null;
+                String resultado = null;
 
                 // Intento de obtener producto
-                HttpClient httpClientAccount = new DefaultHttpClient();
-                HttpGet httpGetAccount = new HttpGet(mUrl
-                        + "getProducto");
-                httpGetAccount.setHeader("idProducto", idProducto);
+                ControlConnection.addHeader("idProducto", idProducto);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getProducto);
 
-                try {
-                    HttpResponse response = httpClientAccount
-                            .execute(httpGetAccount);
-                    product = EntityUtils.toString(response
-                            .getEntity());
-                    product = product.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Producto Response: "
-                            + product);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
-                JSONObject jObj = new JSONObject(product);
+                JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 if(jArr.length() > 0) {

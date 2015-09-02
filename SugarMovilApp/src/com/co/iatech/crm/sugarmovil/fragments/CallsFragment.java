@@ -1,14 +1,8 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,6 +24,8 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
@@ -49,7 +45,6 @@ public class CallsFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private String mUrl;
     private ArrayList<Llamada> mCallsArray = new ArrayList<>();
 
     /**
@@ -93,7 +88,7 @@ public class CallsFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mUrl = mGlobalVariable.getUrl();
+
         mGlobalVariable.setmSelectedButton(3);
 
         // Main Toolbar
@@ -221,30 +216,15 @@ public class CallsFragment extends Fragment {
         protected Boolean doInBackground(Void... params) {
             try {
                 // Parametros
-                String opportunities = null;
+                String resultado = null;
 
                 // Intento de obtener llamadas
-                HttpClient httpClientOpportunities = new DefaultHttpClient();
-                HttpGet httpGetOpportunities = new HttpGet(mUrl
-                        + "getCalls");
 
-                try {
-                    HttpResponse response = httpClientOpportunities
-                            .execute(httpGetOpportunities);
-                    opportunities = EntityUtils.toString(response
-                            .getEntity());
-                    opportunities = opportunities.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Llamadas Response: "
-                            + opportunities);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getCalls);
+            
                 mCallsArray.clear();
 
-                JSONObject jObj = new JSONObject(opportunities);
+                JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {

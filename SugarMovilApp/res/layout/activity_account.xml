@@ -2290,10 +2290,10 @@
                         android:gravity="bottom|center_horizontal">
 
                         <ImageButton
-                            android:id="@+id/image_calls"
+                            android:id="@+id/image_tasks"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_calls" />
+                            android:background="@drawable/ic_tasks" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -1,18 +1,8 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,9 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener{
@@ -46,7 +38,6 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String mIdCuenta;
     private CuentaDetalle mCuentaDetalle;
 
@@ -58,7 +49,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout mLayoutContenido;
     private ImageButton imageButtonContacts;
     private ImageButton imageButtonOpps;
-    private ImageButton imageButtonCalls;
+    private ImageButton imageButtonTasks;
     
 
     @Override
@@ -66,10 +57,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         
-     // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
+      
         Intent intent = getIntent();
         mIdCuenta = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
         Log.d(TAG, "Id cuenta " + mIdCuenta);
@@ -104,8 +92,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         imageButtonOpps = (ImageButton) findViewById(R.id.image_opportunities);
         imageButtonOpps.setOnClickListener(this);
         
-        imageButtonCalls =  (ImageButton) findViewById(R.id.image_calls);
-        imageButtonCalls.setVisibility(View.INVISIBLE);
+        imageButtonTasks =  (ImageButton) findViewById(R.id.image_tasks);
+        imageButtonTasks.setOnClickListener(this);
         
         // Tarea obtener cuenta
         mTareaObtenerCuenta = new GetAccountTask();
@@ -121,7 +109,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         TextView valorCodigo = (TextView) findViewById(R.id.valor_codigo);
         valorCodigo.setText(cuentaDetalle.getCod_alterno_c());
         TextView valorCanal = (TextView) findViewById(R.id.valor_canal);
-        valorCanal.setText(cuentaDetalle.getCanal_c());
+        valorCanal.setText(ListsConversor.convertChannel(cuentaDetalle.getCanal_c()));
         TextView valorSector = (TextView) findViewById(R.id.valor_sector);
         valorSector.setText(cuentaDetalle.getSector_c());
         TextView valorTel1 = (TextView) findViewById(R.id.valor_tel1);
@@ -141,13 +129,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         TextView valorMunicipio = (TextView) findViewById(R.id.valor_municipio);
         valorMunicipio.setText(cuentaDetalle.getMunicipio_c());
         TextView valorDepartamento = (TextView) findViewById(R.id.valor_departamento);
-        switch (cuentaDetalle.getDepartamento_c()){
-
-        }
-        valorDepartamento.setText(cuentaDetalle.getDepartamento_c());
+        valorDepartamento.setText(ListsConversor.convertDepto(cuentaDetalle.getDepartamento_c()));
 
         TextView valorZona = (TextView) findViewById(R.id.valor_zona);
-        valorZona.setText(cuentaDetalle.getZona_c());
+        valorZona.setText(ListsConversor.convertZone(cuentaDetalle.getZona_c()));
         TextView valorUen = (TextView) findViewById(R.id.valor_uen);
         valorUen.setText(cuentaDetalle.getUen_c());
         TextView valorEmail = (TextView) findViewById(R.id.valor_email);
@@ -258,25 +243,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 String account = null;
 
                 // Intento de obtener cuenta
-                HttpClient httpClientAccount = new DefaultHttpClient();
-                HttpGet httpGetAccount = new HttpGet(mUrl
-                        + "getAccount");
-                httpGetAccount.setHeader("idAccount", idCuenta);
-
-                try {
-                    HttpResponse response = httpClientAccount
-                            .execute(httpGetAccount);
-                    account = EntityUtils.toString(response
-                            .getEntity());
-                    account = account.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Cuenta Response: "
-                            + account);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                ControlConnection.addHeader("idAccount", idCuenta);
+                account  = ControlConnection.getInfo(TypeInfoServer.getAccount);
                 JSONObject jObj = new JSONObject(account);
 
                 JSONArray jArr = jObj.getJSONArray("results");
@@ -327,6 +295,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 			Log.d(TAG, "Oportunidades X Cuenta ");
 			Intent intent = new Intent(AccountActivity.this,
 					ListOpportunityActivity.class);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			startActivity(intent);
+
+		}else if(v.getId() == imageButtonTasks.getId()){
+			Log.d(TAG, "Tareas X Cuenta ");
+			Intent intent = new Intent(AccountActivity.this,
+					ListTasksActivity.class);
 			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
 			startActivity(intent);
 

@@ -1,13 +1,7 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,9 +23,10 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerAccountsAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
 
 public class AccountsFragment extends Fragment {
 	/**
@@ -95,7 +90,7 @@ public class AccountsFragment extends Fragment {
          // Variable Global
          mGlobalVariable = (GlobalClass) getActivity()
                  .getApplicationContext();
-         mUrl = mGlobalVariable.getUrl();
+
          mGlobalVariable.setmSelectedButton(0);
          
 
@@ -206,37 +201,21 @@ public class AccountsFragment extends Fragment {
          protected Boolean doInBackground(Void... params) {
              try {
                  // Parametros
-                 String accounts = null;
+                 String resultado = null;
 
                  // Intento de obtener cuentas
-                 HttpClient httpClientAccounts = new DefaultHttpClient();
-                 HttpGet httpGetAccounts = new HttpGet(mUrl
-                         + "getAccounts");
 
-                 try {
-                     HttpResponse response = httpClientAccounts
-                             .execute(httpGetAccounts);
-                     accounts = EntityUtils.toString(response
-                             .getEntity());
-                     accounts = accounts.replace("\n", "")
-                             .replace("\r", "");
-                     Log.d(TAG, "Cuentas Response: "
-                             + accounts);
-                 } catch (IOException e) {
-                     e.printStackTrace();
-                     return false;
-                 }
-
+                 resultado  = ControlConnection.getInfo(TypeInfoServer.getAccounts);
+              
                  mAccountsArray.clear();
 
-                 JSONObject jObj = new JSONObject(accounts);
+                 JSONObject jObj = new JSONObject(resultado);
 
                  JSONArray jArr = jObj.getJSONArray("results");
                  for (int i = 0; i < jArr.length(); i++) {
                      JSONObject obj = jArr.getJSONObject(i);
-                     String id = obj.getString("id");
-                     String name = obj.getString("name");
-                     mAccountsArray.add(new Cuenta(id, name));
+        
+                     mAccountsArray.add(new Cuenta(obj));
                  }
 
                  return true;

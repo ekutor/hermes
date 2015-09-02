@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de las cuentas.
  */
-public class Cuenta implements Parcelable {
+public class Cuenta extends GenericBean implements Parcelable {
 
     public static final Creator<Cuenta> CREATOR
             = new Creator<Cuenta>() {
@@ -19,16 +22,18 @@ public class Cuenta implements Parcelable {
         }
     };
 
-    private String id, name;
+    private String id, name, uen;
 
-    public Cuenta(String id, String name) {
-        setId(id);
-        setName(name);
+    public Cuenta(JSONObject obj) throws JSONException {
+        setId(obj.getString("id"));
+        setName(validate(obj.getString("name")));
+        setUen(validate(obj.getString("uen")));
     }
 
     public Cuenta(Parcel in) {
         setId(in.readString());
         setName(in.readString());
+        setUen(in.readString());
     }
 
     @Override
@@ -57,4 +62,13 @@ public class Cuenta implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
+
+	public String getUen() {
+		return uen;
+	}
+
+	public void setUen(String uen) {
+		this.uen = uen;
+	}
+    
 }

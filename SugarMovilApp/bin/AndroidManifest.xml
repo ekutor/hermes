@@ -117,6 +117,16 @@
         </activity>
         
         <activity
+            android:name=".activities.ListTasksActivity"
+            android:label="@string/title_activity_task"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.AccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AccountActivity" />
+        </activity>
+        
+        <activity
             android:name=".activities.ProductActivity"
             android:label="@string/title_activity_product"
             android:launchMode="singleTop"
@@ -126,7 +136,7 @@
                 android:value=".MainActivity" />
         </activity>
         
-        <activity
+        <activity 
             android:name=".activities.TaskActivity"
             android:label="@string/title_activity_task"
             android:launchMode="singleTop"
@@ -136,6 +146,15 @@
                 android:value=".MainActivity" />
         </activity>
         
+        <activity 
+            android:name=".activities.AddOpportunityActivity"
+            android:label="@string/title_activity_create_opportunity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

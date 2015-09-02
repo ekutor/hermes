@@ -1,14 +1,8 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,6 +24,8 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerProductsAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Producto;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
@@ -48,7 +44,6 @@ public class ProductsFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private String mUrl;
     private ArrayList<Producto> mProductsArray = new ArrayList<>();
 
     /**
@@ -91,7 +86,7 @@ public class ProductsFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mUrl = mGlobalVariable.getUrl();
+
         mGlobalVariable.setmSelectedButton(4);
 
         // Main Toolbar
@@ -204,24 +199,8 @@ public class ProductsFragment extends Fragment {
                 String productos = null;
 
                 // Intento de obtener productos
-                HttpClient httpClientProducts = new DefaultHttpClient();
-                HttpGet httpGetProducts = new HttpGet(mUrl
-                        + "getProductos");
-
-                try {
-                    HttpResponse response = httpClientProducts
-                            .execute(httpGetProducts);
-                    productos = EntityUtils.toString(response
-                            .getEntity());
-                    productos = productos.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Productos Response: "
-                            + productos);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                productos  = ControlConnection.getInfo(TypeInfoServer.getProductos);
+                
                 mProductsArray.clear();
 
                 JSONObject jObj = new JSONObject(productos);

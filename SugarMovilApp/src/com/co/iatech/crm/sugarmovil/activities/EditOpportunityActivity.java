@@ -43,7 +43,6 @@ import com.co.iatech.crm.sugarmovil.model.Campana;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
 public class EditOpportunityActivity extends AppCompatActivity {
@@ -93,11 +92,6 @@ public class EditOpportunityActivity extends AppCompatActivity {
 
         // SoftKey
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
 
         Intent intent = getIntent();
         mOportunidadDetalle = intent.getParcelableExtra(Info.OPORTUNIDAD_SELECCIONADA.name());

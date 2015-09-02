@@ -1,14 +1,8 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,6 +24,8 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
@@ -49,7 +45,7 @@ public class ContactsFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private String mUrl;
+
     private ArrayList<Contacto> mContactsArray = new ArrayList<>();
 
     /**
@@ -93,7 +89,7 @@ public class ContactsFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mUrl = mGlobalVariable.getUrl();
+
         mGlobalVariable.setmSelectedButton(1);
 
         // Main Toolbar
@@ -222,30 +218,15 @@ public class ContactsFragment extends Fragment {
         protected Boolean doInBackground(Void... params) {
             try {
                 // Parametros
-                String contacts = null;
+                String resultado = null;
 
                 // Intento de obtener contactos
-                HttpClient httpClientContacts = new DefaultHttpClient();
-                HttpGet httpGetContacts = new HttpGet(mUrl
-                        + "getContacts");
 
-                try {
-                    HttpResponse response = httpClientContacts
-                            .execute(httpGetContacts);
-                    contacts = EntityUtils.toString(response
-                            .getEntity());
-                    contacts = contacts.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Contactos Response: "
-                            + contacts);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getContacts);
+              
                 mContactsArray.clear();
 
-                JSONObject jObj = new JSONObject(contacts);
+                JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {

@@ -41,12 +41,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Campana;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.User;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 
 public class EditCallActivity extends AppCompatActivity {
@@ -72,7 +73,6 @@ public class EditCallActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String mUsuario;
     private Llamada mLlamadaDetalle;
     private ArrayList<String> mNamesArray = new ArrayList<>();
@@ -98,11 +98,6 @@ public class EditCallActivity extends AppCompatActivity {
 
         // SoftKey
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
 
         Intent intent = getIntent();
         mLlamadaDetalle = intent.getParcelableExtra( Info.ID_LLAMADA_ACTUAL.name() );
@@ -334,7 +329,7 @@ public class EditCallActivity extends AppCompatActivity {
 
                 // Intento de obtener contactos
                 HttpClient httpClientUsers = new DefaultHttpClient();
-                HttpGet httpGetUsers = new HttpGet(mUrl
+                HttpGet httpGetUsers = new HttpGet(ControlConnection.URL
                         + "getUsers");
 
                 try {
@@ -417,24 +412,9 @@ public class EditCallActivity extends AppCompatActivity {
                 String accounts = null;
 
                 // Intento de obtener cuentas
-                HttpClient httpClientAccounts = new DefaultHttpClient();
-                HttpGet httpGetAccounts = new HttpGet(mUrl
-                        + "getAccounts");
-
-                try {
-                    HttpResponse response = httpClientAccounts
-                            .execute(httpGetAccounts);
-                    accounts = EntityUtils.toString(response
-                            .getEntity());
-                    accounts = accounts.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Cuentas Response: "
-                            + accounts);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                
+                accounts  = ControlConnection.getInfo(TypeInfoServer.getAccounts);
+          
                 mNamesArray.clear();
                 mAccountsArray.clear();
 
@@ -443,10 +423,10 @@ public class EditCallActivity extends AppCompatActivity {
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    String id = obj.getString("id");
+                   
                     String name = obj.getString("name");
                     mNamesArray.add(name);
-                    mAccountsArray.add(new Cuenta(id, name));
+                    mAccountsArray.add(new Cuenta(obj));
                 }
 
                 return true;
@@ -494,24 +474,8 @@ public class EditCallActivity extends AppCompatActivity {
                 String campana = null;
 
                 // Intento de obtener capanas
-                HttpClient httpClientCampaign = new DefaultHttpClient();
-                HttpGet httpGetCampaign = new HttpGet(mUrl
-                        + "getCampaigns");
-
-                try {
-                    HttpResponse response = httpClientCampaign
-                            .execute(httpGetCampaign);
-                    campana = EntityUtils.toString(response
-                            .getEntity());
-                    campana = campana.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Campanas Response: "
-                            + campana);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                campana = ControlConnection.getInfo(TypeInfoServer.getCampaigns);
+               
                 mNamesCapaignsArray.clear();
                 mCampaignsArray.clear();
 
@@ -587,7 +551,7 @@ public class EditCallActivity extends AppCompatActivity {
 
                 // Intento de editar llamada
                 HttpClient httpClientCall = new DefaultHttpClient();
-                HttpPut httpPutCall = new HttpPut(mUrl
+                HttpPut httpPutCall = new HttpPut(ControlConnection.URL
                         + "editCall");
                 httpPutCall.setHeader("id", id);
                 httpPutCall.setHeader("asunto", asunto);

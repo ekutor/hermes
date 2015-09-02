@@ -1,12 +1,5 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,9 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 
 
 public class ContactActivity extends AppCompatActivity {
@@ -43,7 +38,6 @@ public class ContactActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mUrl;
     private String mIdContacto;
     private ContactoDetalle mContactoDetalle;
 
@@ -58,12 +52,7 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
-
-        // Variable Global
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        mUrl = globalVariable.getUrl();
-        Log.d(TAG, mUrl);
-
+        
         Intent intent = getIntent();
         mIdContacto = intent.getStringExtra(Info.CONTACTO_ACTUAL.name());
         Log.d(TAG, "Id contacto " + mIdContacto);
@@ -127,8 +116,10 @@ public class ContactActivity extends AppCompatActivity {
         valorEmail.setText(contactoDetalle.getEmail_address());
         TextView valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
         valorCuenta.setText(contactoDetalle.getNameAccount());
+        
         TextView valorDepartamento = (TextView) findViewById(R.id.valor_departamento);
-        valorDepartamento.setText(contactoDetalle.getDepartamento_c());
+        valorDepartamento.setText(ListsConversor.convertDepto(contactoDetalle.getDepartamento_c()));
+        
         TextView valorMunicipio = (TextView) findViewById(R.id.valor_municipio);
         valorMunicipio.setText(contactoDetalle.getMunicipio_c());
         TextView valorDireccion = (TextView) findViewById(R.id.valor_direccion);
@@ -139,10 +130,13 @@ public class ContactActivity extends AppCompatActivity {
         valorGrupo.setText(contactoDetalle.getGrupo_objetivo_c());
         TextView valorUen = (TextView) findViewById(R.id.valor_uen);
         valorUen.setText(contactoDetalle.getUen_c());
+        
         TextView valorZona = (TextView) findViewById(R.id.valor_zona);
-        valorZona.setText(contactoDetalle.getZona_c());
+        valorZona.setText(ListsConversor.convertZone(contactoDetalle.getZona_c()));
+        
         TextView valorCanal = (TextView) findViewById(R.id.valor_canal);
-        valorCanal.setText(contactoDetalle.getCanal_c());
+        valorCanal.setText(ListsConversor.convertChannel(contactoDetalle.getCanal_c()));
+        
         TextView valorSector = (TextView) findViewById(R.id.valor_sector);
         valorSector.setText(contactoDetalle.getSector_c());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
@@ -219,25 +213,8 @@ public class ContactActivity extends AppCompatActivity {
                 String contact = null;
 
                 // Intento de obtener cuenta
-                HttpClient httpClientAccount = new DefaultHttpClient();
-                HttpGet httpGetAccount = new HttpGet(mUrl
-                        + "getContact");
-                httpGetAccount.setHeader("idContact", idContact);
-
-                try {
-                    HttpResponse response = httpClientAccount
-                            .execute(httpGetAccount);
-                    contact = EntityUtils.toString(response
-                            .getEntity());
-                    contact = contact.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Contacto Response: "
-                            + contact);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                ControlConnection.addHeader("idContact", idContact);
+                contact  = ControlConnection.getInfo(TypeInfoServer.getContact);
                 JSONObject jObj = new JSONObject(contact);
 
                 JSONArray jArr = jObj.getJSONArray("results");

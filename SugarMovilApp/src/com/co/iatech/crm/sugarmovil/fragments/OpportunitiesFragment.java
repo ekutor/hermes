@@ -1,14 +1,8 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,8 +23,11 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.AddOpportunityActivity;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerOpportunitiesAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
@@ -50,7 +47,6 @@ public class OpportunitiesFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private String mUrl;
     private ArrayList<Oportunidad> mOpportunitiesArray = new ArrayList<>();
 
     /**
@@ -94,7 +90,6 @@ public class OpportunitiesFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mUrl = mGlobalVariable.getUrl();
         mGlobalVariable.setmSelectedButton(2);
 
         // Main Toolbar
@@ -112,7 +107,7 @@ public class OpportunitiesFragment extends Fragment {
         mRecyclerViewOpportunities.setLayoutManager(mRecyclerViewOpportunitiesLayoutManager);
 
         // Action Button
-//        mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
+        mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
 
         // Eventos
         mMainSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -166,15 +161,15 @@ public class OpportunitiesFragment extends Fragment {
             }
         });
 
-//        mActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Create Opportunity Activity
-//                Intent intentCrearOportunidad = new Intent(getActivity(),
-//                        AddOpportunityActivity.class);
-//                getActivity().startActivity(intentCrearOportunidad);
-//            }
-//        });
+        mActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create Opportunity Activity
+                Intent intentCrearOportunidad = new Intent(getActivity(),
+                        AddOpportunityActivity.class);
+                getActivity().startActivity(intentCrearOportunidad);
+            }
+        });
 
         // Tarea para consultar oportunidades
         mTareaObtenerOportunidades = new GetOpportunitiesTask();
@@ -222,30 +217,14 @@ public class OpportunitiesFragment extends Fragment {
         protected Boolean doInBackground(Void... params) {
             try {
                 // Parametros
-                String opportunities = null;
+                String resultado = null;
 
                 // Intento de obtener oportunidades
-                HttpClient httpClientOpportunities = new DefaultHttpClient();
-                HttpGet httpGetOpportunities = new HttpGet(mUrl
-                        + "getOpportunities");
 
-                try {
-                    HttpResponse response = httpClientOpportunities
-                            .execute(httpGetOpportunities);
-                    opportunities = EntityUtils.toString(response
-                            .getEntity());
-                    opportunities = opportunities.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Oportunidades Response: "
-                            + opportunities);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getOpportunities);
                 mOpportunitiesArray.clear();
 
-                JSONObject jObj = new JSONObject(opportunities);
+                JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
