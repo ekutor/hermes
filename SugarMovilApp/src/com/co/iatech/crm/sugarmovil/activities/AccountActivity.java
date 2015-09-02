@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
@@ -56,10 +58,9 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        
       
         Intent intent = getIntent();
-        mIdCuenta = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
+        mIdCuenta = intent.getStringExtra(Info.CUENTA_ACTUAL.name());       
         Log.d(TAG, "Id cuenta " + mIdCuenta);
         
         
@@ -145,8 +146,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         valorSegmento.setText(cuentaDetalle.getSegmento_c());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
         valorEstado.setText(cuentaDetalle.getEstado_c());
+        
         TextView valorDescuento = (TextView) findViewById(R.id.valor_descuento);
-        valorDescuento.setText(cuentaDetalle.getDescuentocomercial_c());
+        valorDescuento.setText(cuentaDetalle.getDescuentocomercial2_c());
+        
+        TextView valorDescuento2 = (TextView) findViewById(R.id.valor_descuento2);
+        valorDescuento2.setText(cuentaDetalle.getDescuentocomercial_c());
+                
         TextView valorPresupuesto = (TextView) findViewById(R.id.valor_presupuesto);
         valorPresupuesto.setText(cuentaDetalle.getPresupuestoanual_c());
         TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);

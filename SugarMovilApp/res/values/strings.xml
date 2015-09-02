@@ -64,7 +64,8 @@
     <string name="cuenta_grupo">Grupo:</string>
     <string name="cuenta_segmento">Segmento:</string>
     <string name="cuenta_estado">Estado:</string>
-    <string name="cuenta_descuento">Descuento:</string>
+    <string name="cuenta_descuento">Descuento Comercial 1:</string>
+    <string name="cuenta_descuento2">Descuento Comercial 2:</string>
     <string name="cuenta_presupuesto">Presupuesto:</string>
     <string name="cuenta_descripcion">Descripción:</string>
     <string name="cuenta_transporte">C. Transporte:</string>

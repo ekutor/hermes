@@ -170,6 +170,7 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
     private String preuba_c;
     private String assigned_user_name;
     private String email_address;
+    private String descuentocomercial2_c;
 
 
     public CuentaDetalle() {
@@ -324,6 +325,7 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
     	 setPrueba_c(validate(obj.getString("preuba_c")));
     	 setAssigned_user_name(validate(obj.getString("assigned_user_name")));
     	 setEmail_address(validate(obj.getString("email_address")));
+    	 setDescuentocomercial2_c(validate(obj.getString("descuentocomercial2_c")));
 	}
     
 
@@ -474,6 +476,7 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
 		setPreuba_c(validate(in.readString()));
 		setAssigned_user_name(validate(in.readString()));
 		setEmail_address(validate(in.readString()));
+		setDescuentocomercial2_c(validate(in.readString()));
 	}
 
 	@Override
@@ -629,6 +632,7 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
         dest.writeString(getPreuba_c());
         dest.writeString(getAssigned_user_name());
         dest.writeString(getEmail_address());
+        dest.writeString(getDescuentocomercial2_c());
     }
 
     public String getId() {
@@ -1798,4 +1802,12 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
     public void setEmail_address(String email_address) {
         this.email_address = email_address;
     }
+
+	public String getDescuentocomercial2_c() {
+		return descuentocomercial2_c;
+	}
+
+	public void setDescuentocomercial2_c(String descuentocomercial2_c) {
+		this.descuentocomercial2_c = descuentocomercial2_c;
+	}
 }
