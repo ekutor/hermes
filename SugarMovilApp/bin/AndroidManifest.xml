@@ -148,8 +148,11 @@
         <activity 
             android:name=".activities.AccountActivityTabs"
             android:label="@string/title_activity_account"
-            
+            android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
            
             
         </activity>

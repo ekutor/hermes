@@ -1,0 +1,50 @@
+
+
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar_account"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:elevation="8dp"
+            android:gravity="start"
+            app:contentInsetEnd="10dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="10dp"
+            app:contentInsetStart="0dp"
+            app:popupTheme="@style/Theme.AppCompat.NoActionBar"
+            app:theme="@style/ToolbarTheme">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center">
+
+                <TextView
+                    android:id="@+id/text_account_toolbar"
+                    fontPath="fonts/DaxlinePro-Regular.ttf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:text="@string/title_activity_account"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    tools:ignore="MissingPrefix" />
+
+                <ImageButton
+                    android:id="@+id/ic_edit"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_edit" />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>

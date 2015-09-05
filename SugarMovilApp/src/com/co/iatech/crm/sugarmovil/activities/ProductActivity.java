@@ -39,6 +39,7 @@ public class ProductActivity extends AppCompatActivity {
      * Member Variables.
      */
     private String mIdProducto;
+    private String cantidadStock;
     private ProductoDetalle mProductoDetalle;
 
     /**
@@ -54,6 +55,7 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
         Intent intent = getIntent();
         mIdProducto = intent.getStringExtra(Info.ID_PRODUCTO.name());
+        cantidadStock = intent.getStringExtra(Info.CANT_PRODUCTO.name());
         Log.d(TAG, "Id producto " + mIdProducto);
 
         // Main Toolbar
@@ -91,7 +93,7 @@ public class ProductActivity extends AppCompatActivity {
         TextView valorMarca = (TextView) findViewById(R.id.valor_marca);
         valorMarca.setText(productoDetalle.getMarca_c());
         TextView valorEnInventario = (TextView) findViewById(R.id.valor_en_inventario);
-        valorEnInventario.setText(productoDetalle.getEn_inventario_c());
+        valorEnInventario.setText(cantidadStock);
         TextView valorPrecioPesos = (TextView) findViewById(R.id.valor_precio_pesos);
         valorPrecioPesos.setText(productoDetalle.getPrecio1_c());
         TextView valorPrecioDolares = (TextView) findViewById(R.id.valor_precio_dolares);

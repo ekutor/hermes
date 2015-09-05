@@ -11,6 +11,7 @@ public abstract class GenericBean {
 	
 	protected String validateNull(String data){
 		String d = "";
+		data = data.trim();
 		if(!"null".equalsIgnoreCase(data)){
 			d = data;
 		}

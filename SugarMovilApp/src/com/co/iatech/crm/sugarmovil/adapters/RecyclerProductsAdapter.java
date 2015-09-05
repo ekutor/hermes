@@ -16,7 +16,7 @@ import com.co.iatech.crm.sugarmovil.activities.ProductActivity;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Producto;
 
-public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProductsAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener{
+public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProductsAdapter.ViewHolder> {
 
 
     /**
@@ -63,12 +63,10 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
                 Intent intentProducto = new Intent(mContext,
                         ProductActivity.class);
                 intentProducto.putExtra(Info.ID_PRODUCTO.name(), producto.getId());
+                intentProducto.putExtra(Info.CANT_PRODUCTO.name(), producto.getSaldo());
                 mContext.startActivity(intentProducto);
             }
         });
-
-        holder.itemView.setOnClickListener(this);
-        holder.itemView.setOnLongClickListener(this);
 
         holder.itemView.setTag(producto);
     }
@@ -98,15 +96,6 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
         notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        return false;
-    }
 
     /**
      * Clase para ViewHolder

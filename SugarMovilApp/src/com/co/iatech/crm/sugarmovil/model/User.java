@@ -41,6 +41,20 @@ public class User implements Parcelable {
         setUser_hash(obj.getString("hash"));
        
     }
+    public User() {       
+    }
+    
+    public static User createUserProof()  {
+    	User u = new User();
+    	u.setAuthenticate(true);
+        u.setId("93ac3a3f-2e2d-41fd-e78c-55e669e0fe32");
+        u.setUser_name("");
+        u.setFirst_name("Luz Estella");
+        u.setLast_name("Rodriguez R");
+        u.setIs_admin("0");
+        u.setUser_hash("7b6ac3e5c197bca87b13ced8b200c96a");
+        return u;
+    }
 
     public User(Parcel in) {
         setId(in.readString());

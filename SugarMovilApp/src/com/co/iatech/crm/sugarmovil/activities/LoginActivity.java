@@ -213,7 +213,8 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 
             // Intento de login usuarios
             try {
-            	
+            	//TODO esto es por pruebas
+        /*   	
             	ControlConnection.addHeader("usuario", user);
             	ControlConnection.addHeader("password", passwordUser);
             	
@@ -222,15 +223,16 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
                 // Creacion de usuario
                 JSONObject obj = new JSONObject(login);
                 Boolean auth = new Boolean(obj.getString("auth"));
+            	
                 if(auth){
                 	mUsuario = new User(obj);
                 	 return true;
                 }else{
                 	mensajeAutenticacion = obj.getString("message");
                 	return false;
-                }
+                }*/
 
-               
+            	mUsuario =  User.createUserProof(); return true;
             } catch (Exception e) {
                 Log.d(TAG, "Login Usuarios Error: "
                         + e.getClass().getName() + ":" + e.getMessage());

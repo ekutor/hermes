@@ -1,25 +1,21 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.activities.ui.SlidingTabLayout;
+import com.co.iatech.crm.sugarmovil.adapters.ViewPagerAdapter;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -32,10 +28,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
      */
     private static final String TAG = "AccountActivity";
 
-    /**
-     * Tasks.
-     */
-    private GetAccountTask mTareaObtenerCuenta = null;
+
 
     /**
      * Member Variables.
@@ -52,37 +45,39 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton imageButtonContacts;
     private ImageButton imageButtonOpps;
     private ImageButton imageButtonTasks;
+    private ImageButton imageButtonCalls;
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.tabs_activity_account);
       
         Intent intent = getIntent();
         mIdCuenta = intent.getStringExtra(Info.CUENTA_ACTUAL.name());       
         Log.d(TAG, "Id cuenta " + mIdCuenta);
-        
-        
-        // Main Toolbar
+     	
+         
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_account);
-        setSupportActionBar(mCuentaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     	setSupportActionBar(mCuentaToolbar);
+     	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        
+     	
+     	final ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
+     	ViewPagerAdapter va = new ViewPagerAdapter(getSupportFragmentManager());
+     	va.setActualAccount(mIdCuenta);
+     	mViewPager.setAdapter(va);
+     	SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+     	mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.abc_search_url_text));   
+     	//mSlidingTabLayout.setDistributeEvenly(true);
+     	mSlidingTabLayout.setViewPager(mViewPager);
+     	
         mImageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
         
         // Contenido
-        mLayoutContenido = (LinearLayout) findViewById(R.id.layout_contenido);
+       // mLayoutContenido = (LinearLayout) findViewById(R.id.layout_contenido);
         
-        //Eventos
-        mImageButtonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Editar cuenta ");
-                // Create Account Activity
-                // TODO
-            }
-        });
         
         mImageButtonEdit.setVisibility(View.INVISIBLE);
         
@@ -96,9 +91,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         imageButtonTasks =  (ImageButton) findViewById(R.id.image_tasks);
         imageButtonTasks.setOnClickListener(this);
         
-        // Tarea obtener cuenta
-        mTareaObtenerCuenta = new GetAccountTask();
-        mTareaObtenerCuenta.execute(String.valueOf(mIdCuenta));
+        imageButtonCalls =  (ImageButton) findViewById(R.id.image_calls);
+        imageButtonCalls.setOnClickListener(this);
+
+
     }
     
     
@@ -223,68 +219,6 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         valorAVencer.setText(cuentaDetalle.getCarteravencer_c());
     }
 
-   
-    /**
-     * Representa una tarea asincrona de obtencion de cuenta.
-     */
-    public class GetAccountTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(AccountActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando informacion de cuenta...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                // Parametros
-                String idCuenta = params[0];
-
-                // Respuesta
-                String account = null;
-
-                // Intento de obtener cuenta
-                ControlConnection.addHeader("idAccount", idCuenta);
-                account  = ControlConnection.getInfo(TypeInfoServer.getAccount);
-                JSONObject jObj = new JSONObject(account);
-
-                JSONArray jArr = jObj.getJSONArray("results");
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                   
-                    mCuentaDetalle = new CuentaDetalle(obj);
-                    
-                }
-
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, "Buscar Cuenta Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-           // mTareaObtenerCuenta = null;
-            progressDialog.dismiss();
-
-            if (success) {
-                ponerValores(mCuentaDetalle);
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-           // mTareaObtenerCuenta = null;
-            Log.d(TAG, "Cancelado ");
-        }
-    }
 
 
 	@Override
@@ -310,6 +244,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 					ListTasksActivity.class);
 			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
 			startActivity(intent);
+
+		}else if(v.getId() == imageButtonCalls.getId()){
+			Log.d(TAG, "Llamadas X Cuenta ");
+			/*Intent intent = new Intent(AccountActivity.this,
+					ListTasksActivity.class);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			startActivity(intent);*/
 
 		}
 		

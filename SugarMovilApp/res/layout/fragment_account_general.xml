@@ -1,77 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/account_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context=".AccountActivity">
-
-    <LinearLayout
-        android:id="@+id/account_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_account"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:elevation="8dp"
-            android:gravity="start"
-            app:contentInsetEnd="10dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetRight="10dp"
-            app:contentInsetStart="0dp"
-            app:popupTheme="@style/Theme.AppCompat.NoActionBar"
-            app:theme="@style/ToolbarTheme">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left|center">
-
-                <TextView
-                    android:id="@+id/text_account_toolbar"
-                    fontPath="fonts/DaxlinePro-Regular.ttf"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:padding="5dp"
-                    android:text="@string/title_activity_account"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
-                    android:textSize="15sp"
-                    tools:ignore="MissingPrefix" />
-
-                <ImageButton
-                    android:id="@+id/ic_edit"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@android:color/transparent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_edit" />
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:minHeight="500dp"
-            android:orientation="vertical">
-
+    android:layout_centerInParent="true"
+    android:layout_marginTop="40dp" >
+    
+	<ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentTop="false"
+	    android:layout_centerInParent="false"
+	    android:gravity="center"
+	    android:orientation="vertical" >
+    
             <LinearLayout
                 android:id="@+id/layout_contenido"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="500dp"
+				android:background="@color/list_background_white"
                 android:orientation="vertical">
 
                 <TextView
@@ -91,8 +38,8 @@
                     android:textColor="@color/crm_gray"
                     android:textSize="20sp"
                     tools:ignore="MissingPrefix" />
-
-                <View
+                
+      			<View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#d1d3d4" />
@@ -132,7 +79,6 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -2263,76 +2209,8 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_views"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom|start"
-            android:background="@color/crm_ligth_gray"
-            android:elevation="4dp"
-            android:gravity="bottom"
-            android:paddingBottom="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#e6e6e6" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical|center_horizontal">
-
-                        <ImageButton
-                            android:id="@+id/image_contacts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_contacts" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical|center_horizontal">
-
-                        <ImageButton
-                            android:id="@+id/image_opportunities"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_opportunities" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal">
-
-                        <ImageButton
-                            android:id="@+id/image_tasks"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_tasks" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
-    </LinearLayout>
-</LinearLayout>
+     </LinearLayout>
+     
+     </ScrollView>
+    
+</RelativeLayout>

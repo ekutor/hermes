@@ -105,6 +105,37 @@
     <string name="cuenta_promedio">Promedio:</string>
     <string name="cuenta_vencida">Vencida:</string>
     <string name="cuenta_a_vencer">A Vencer:</string>
+    
+     
+
+    <string name="cuenta_titulo_estrategia">INFORMACIÓN ESTRATEGIAS</string>
+    <string name="cuenta_titulo_est_anuales">ESTRATEGIAS ANUALES</string>
+    <string name="cuenta_titulo_est_desc_ad">DESCUENTOS ADICIONALES</string>
+    <string name="cuenta_titulo_est_especiales">ESTRATEGIAS ESPECIALES DE ATENCION</string>
+    <string name="cuenta_titulo_est_mercadeo">ESTRATEGIAS DE MERCADEO</string>
+    <string name="cuenta_moeller">Autom. Moeller</string>
+    <string name="cuenta_enerlux">Enerlux:</string>
+    <string name="cuenta_delta">Delta:</string>
+    <string name="cuenta_dkc">DKC:</string>
+    <string name="cuenta_leviton">Leviton WID:</string>
+    <string name="cuenta_vcai">W-VCAI:</string>
+    <string name="cuenta_wohner">Wohner:</string>
+    <string name="cuenta_lp">Comun. LP Dolares:</string>
+    <string name="cuenta_eaton">Maniobra Eaton:</string>
+    <string name="cuenta_xenergy">OEM Xenergy:</string>
+    <string name="cuenta_min_eaton">Precios Minimos EATON:</string>
+    <string name="cuenta_desc_ad">Descuento Adicional:</string>
+    
+    <string name="cuenta_bono_especial">Bonos Especiales:</string>
+    <string name="cuenta_meta_anual">Meta Anual:</string>
+    <string name="cuenta_meta_tri">Meta Trimsestral:</string>
+    <string name="cuenta_meta_bi">Meta Bimestral:</string>
+    <string name="cuenta_por_bon_anual">% Bonificacion Anual:</string>
+    <string name="cuenta_por_bon_bi">% Bonificacion Bimestral:</string>
+    <string name="cuenta_por_bon_tri">% Bonificacion Trimestral:</string>
+    <string name="cuenta_por_bon_compra">Bonificacion x Compra:</string>
+    <string name="cuenta_por_bon_eaton">Bonificacion Eaton:</string>
+    <string name="cuenta_por_bon_leviton">Bonificacion Leviton:</string>
 
     <!-- Contacto Activity -->
     <string name="title_activity_contact">CONTACTO</string>
