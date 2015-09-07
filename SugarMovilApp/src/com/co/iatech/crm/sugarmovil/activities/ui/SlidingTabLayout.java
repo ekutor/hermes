@@ -188,14 +188,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
         return textView;
     }
     
-    protected View createGeneralTabView(Context context) {
-    	
-    	View tabView = LayoutInflater.from(getContext()).inflate(R.layout.fragment1, mTabStrip,
-                 false);
-    	Log.d("TABS", " Crea GENERAl TabView" );
-       return tabView;
-    }
-
 
     private void populateTabStrip() {
         final PagerAdapter adapter = mViewPager.getAdapter();
@@ -206,7 +198,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
             TextView tabTitleView = null;
 
             if (mTabViewLayoutId != 0) {
-                // If there is a custom tab view layout id set, try and inflate it
                 tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                         false);
                 tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
@@ -215,28 +206,15 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
             if (tabView == null) {
                 tabView = createDefaultTabView(getContext());
-            	//tabView = createGeneralTabView(getContext() );
             	 Log.d("TABS", " Ingresa por TabView Null" );
             }
 
             if (tabTitleView == null && TextView.class.isInstance(tabView)) {
                 tabTitleView = (TextView) tabView;
-                //tabTitleView = createDefaultTabView(getContext());
             }
-
-//            if (mDistributeEvenly) {
-//                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tabView.getLayoutParams();
-//                lp.width = 0;
-//                lp.weight = 1;
-//            }
 
             tabTitleView.setText(adapter.getPageTitle(i));
             tabView.setOnClickListener(tabClickListener);
-//            String desc = mContentDescriptions.get(i, null);
-//            if (desc != null) {
-//                tabView.setContentDescription(desc);
-//            }
-
             mTabStrip.addView(tabView);
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);

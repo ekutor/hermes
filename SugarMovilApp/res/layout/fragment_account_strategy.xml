@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerInParent="true">
-    
+    android:layout_centerInParent="true"
+    android:layout_marginTop="40dp" >
     
 	<ScrollView
 	    android:layout_width="match_parent"
@@ -12,12 +12,12 @@
 	    android:layout_alignParentTop="false"
 	    android:layout_centerInParent="false"
 	    android:gravity="center"
-	    android:orientation="vertical">
+	    android:orientation="vertical" >
     
             <LinearLayout
                 android:id="@+id/layout_contenido"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
 				android:background="@color/list_background_white"
                 android:orientation="vertical">
 
@@ -44,39 +44,901 @@
                     android:layout_height="2dp"
                     android:background="#d1d3d4" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+     			<LinearLayout
+     			    android:layout_width="match_parent"
+     			    android:layout_height="30dp"
+     			    android:gravity="center_vertical|center_horizontal"
+     			    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical|center_horizontal" >
 					
                     <CheckBox
                         android:id="@+id/checkbox_moeller"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:text="@string/cuenta_moeller" />
-
-                    <TextView
-      
                         fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:clickable="false"
+                        android:text="@string/cuenta_moeller"
+                        android:textColorLink="@color/hint_foreground_material_light"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:ellipsize="end"
                         android:singleLine="false"
                         android:text="@string/cuenta_desc_ad"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
+                    </LinearLayout>
+					<LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
                     <TextView
                         android:id="@+id/valor_desc_ad_1"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                         android:text="TExtoxx"
+                        tools:ignore="MissingPrefix" />
+                    </LinearLayout>
+                </LinearLayout>
+                
+     			<LinearLayout
+     			    android:layout_width="match_parent"
+     			    android:layout_height="30dp"
+     			    android:gravity="center_vertical|center_horizontal"
+     			    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical|center_horizontal" >
+					
+                    <CheckBox
+                        android:id="@+id/checkbox_enerlux"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:clickable="false"
+                        android:text="@string/cuenta_enerlux"
+                        android:textColorLink="@color/hint_foreground_material_light"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_desc_ad"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+					<LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    <TextView
+                        android:id="@+id/valor_desc_ad_2"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                    </LinearLayout>
+                </LinearLayout>      
+			 <LinearLayout
+    			    android:layout_width="match_parent"
+    			    android:layout_height="30dp"
+    			    android:gravity="center_vertical|center_horizontal"
+    			    android:orientation="horizontal" >
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="2"
+                       android:gravity="center_vertical|center_horizontal" >
+				
+                   <CheckBox
+                       android:id="@+id/checkbox_delta"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:clickable="false"
+                       android:text="@string/cuenta_delta"
+                       android:textColorLink="@color/hint_foreground_material_light"
+                       tools:ignore="MissingPrefix" />
+
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|center_horizontal">
+                   
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:ellipsize="end"
+                       android:singleLine="false"
+                       android:text="@string/cuenta_desc_ad"
+                       android:textSize="12sp"
+                       android:textStyle="bold"
+                       tools:ignore="MissingPrefix" />
+
+                   </LinearLayout>
+				<LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|center_horizontal">
+                   <TextView
+                       android:id="@+id/valor_desc_ad_3"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:ellipsize="end"
+                       android:singleLine="false"
+                       tools:ignore="MissingPrefix" />
+                   </LinearLayout>
+               </LinearLayout>
+               <LinearLayout
+    			    android:layout_width="match_parent"
+    			    android:layout_height="30dp"
+    			    android:gravity="center_vertical|center_horizontal"
+    			    android:orientation="horizontal" >
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="2"
+                       android:gravity="center_vertical|center_horizontal" >
+				
+                   <CheckBox
+                       android:id="@+id/checkbox_dkc"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:clickable="false"
+                       android:text="@string/cuenta_dkc"
+                       android:textColorLink="@color/hint_foreground_material_light"
+                       tools:ignore="MissingPrefix" />
+
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|center_horizontal">
+                   
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:ellipsize="end"
+                       android:singleLine="false"
+                       android:text="@string/cuenta_desc_ad"
+                       android:textSize="12sp"
+                       android:textStyle="bold"
+                       tools:ignore="MissingPrefix" />
+
+                   </LinearLayout>
+				<LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|center_horizontal">
+                   <TextView
+                       android:id="@+id/valor_desc_ad_4"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:ellipsize="end"
+                       android:singleLine="false"
+                       tools:ignore="MissingPrefix" />
+                   </LinearLayout>
+               </LinearLayout>
+               
+               <LinearLayout
+    			    android:layout_width="match_parent"
+    			    android:layout_height="30dp"
+    			    android:gravity="center_vertical|center_horizontal"
+    			    android:orientation="horizontal" >
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="2"
+                       android:gravity="center_vertical|center_horizontal" >
+				
+                   <CheckBox
+                       android:id="@+id/checkbox_leviton"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:clickable="false"
+                       android:text="@string/cuenta_leviton"
+                       android:textColorLink="@color/hint_foreground_material_light"
+                       tools:ignore="MissingPrefix" />
+
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|center_horizontal">
+                   
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:ellipsize="end"
+                       android:singleLine="false"
+                       android:text="@string/cuenta_desc_ad"
+                       android:textSize="12sp"
+                       android:textStyle="bold"
+                       tools:ignore="MissingPrefix" />
+
+                   </LinearLayout>
+				<LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|center_horizontal">
+                   <TextView
+                       android:id="@+id/valor_desc_ad_5"
+                       fontPath="fonts/DaxlinePro-Regular.ttf"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:ellipsize="end"
+                       android:singleLine="false"
+                       tools:ignore="MissingPrefix" />
+                   </LinearLayout>
+               </LinearLayout>
+               
+               <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_vcai"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_vcai"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_desc_ad"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+					<LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_6"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_wohner"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_wohner"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal" >
+
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          fontPath="fonts/DaxlinePro-Regular.ttf"
+                          android:ellipsize="end"
+                          android:singleLine="false"
+                          android:text="@string/cuenta_desc_ad"
+                          android:textSize="12sp"
+                          android:textStyle="bold"
+                          tools:ignore="MissingPrefix" />
+
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:ellipsize="end"
+                          android:singleLine="false"
+                          android:text="@string/cuenta_desc_ad"
+                          android:textSize="12sp"
+                          android:textStyle="bold"
+                          tools:ignore="MissingPrefix" />
+
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:ellipsize="end"
+                          android:singleLine="false"
+                          android:text="@string/cuenta_desc_ad"
+                          android:textSize="12sp"
+                          android:textStyle="bold"
+                          tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_7"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_lp"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_lp"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_desc_ad"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_8"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+               <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_eaton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_eaton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_desc_ad"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_9"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_xenergy"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_xenergy"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_10"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_min_eaton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_min_eaton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                 </LinearLayout>
+				  
+              </LinearLayout>
+              
+              <TextView
+                   fontPath="fonts/DaxlinePro-Regular.ttf"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center"
+                   android:layout_marginBottom="5dp"
+                   android:layout_marginTop="10dp"
+                   android:ellipsize="end"
+                   android:gravity="center"
+                   android:lines="1"
+                   android:maxLines="1"
+                   android:padding="5dp"
+                   android:text="@string/cuenta_titulo_est_anuales"
+                   android:textAppearance="?android:attr/textAppearanceMedium"
+                   android:textColor="@color/crm_gray"
+                   android:textSize="20sp"
+                   tools:ignore="MissingPrefix" />
+
+               <View
+                   android:layout_width="match_parent"
+                   android:layout_height="2dp"
+                   android:background="#d1d3d4" />
+               
+               <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_bono_especial"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_bono_especial"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_meta_anual"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_meta_anual"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_bono_compra"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_por_bon_compra"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_meta_tri"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_meta_tri"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_bono_eaton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_por_bon_eaton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_meta_bi"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_meta_eaton_bi"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_bono_leviton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_por_bon_leviton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_meta_bi"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_meta_leviton_bi"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+			  <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_bon_anual"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_por_bon_anual"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_bon_anual"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="10dp"
@@ -89,14 +951,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-					 <CheckBox android:id="@+id/checkbox_enerlux"
-					        android:layout_width="wrap_content"
-					        android:layout_height="wrap_content"
-					        android:clickable="false"
-					        android:text="@string/cuenta_enerlux"/>
+                    android:orientation="vertical">
+
                     <TextView
-          
+                        android:id="@+id/text_bon_tri"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -107,12 +965,12 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/cuenta_nit"
+                        android:text="@string/cuenta_por_bon_tri"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_desc_ad_2"
+                        android:id="@+id/valor_bon_tri"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -125,41 +983,49 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
-
-                <TextView
-                    fontPath="fonts/DaxlinePro-Regular.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:padding="5dp"
-                    android:text="@string/cuenta_titulo_est_anuales"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/crm_gray"
-                    android:textSize="20sp"
-                    tools:ignore="MissingPrefix" />
-
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#d1d3d4" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_bon_bi_eaton"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_por_bon_bi_eaton"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_bon_bi_eaton"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
                 
-				 <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-					 <CheckBox android:id="@+id/checkbox_delta"
-					        android:layout_width="wrap_content"
-					        android:layout_height="wrap_content"
-					        android:clickable="false"
-					        android:text="@string/cuenta_delta"/>
+                    android:orientation="vertical">
+
                     <TextView
-          
+                        android:id="@+id/text_bon_bi_leviton"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -170,27 +1036,249 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/cuenta_desc_ad"
+                        android:text="@string/cuenta_por_bon_bi_leviton"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_desc_ad_3"
+                        android:id="@+id/valor_bon_bi_leviton"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
+                        
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
-               
+                
+                  <TextView
+                   fontPath="fonts/DaxlinePro-Regular.ttf"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center"
+                   android:layout_marginBottom="5dp"
+                   android:layout_marginTop="10dp"
+                   android:ellipsize="end"
+                   android:gravity="center"
+                   android:lines="1"
+                   android:maxLines="1"
+                   android:padding="5dp"
+                   android:text="@string/cuenta_titulo_est_especiales"
+                   android:textAppearance="?android:attr/textAppearanceMedium"
+                   android:textColor="@color/crm_gray"
+                   android:textSize="20sp"
+                   tools:ignore="MissingPrefix" />
 
-                   
+               <View
+                   android:layout_width="match_parent"
+                   android:layout_height="2dp"
+                   android:background="#d1d3d4" />
+               
+               <LinearLayout
+     			    android:layout_width="match_parent"
+     			    android:layout_height="30dp"
+     			    android:gravity="center_vertical|center_horizontal"
+     			    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical|center_horizontal" >
+					
+                    <CheckBox
+                        android:id="@+id/checkbox_desp_rem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:clickable="false"
+                        android:text="@string/cuenta_desp_rem"
+                        android:textColorLink="@color/hint_foreground_material_light"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <CheckBox
+                        android:id="@+id/checkbox_cobro_anticipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:clickable="false"
+                        android:text="@string/cuenta_no_cobro"
+                        android:textColorLink="@color/hint_foreground_material_light"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+					
+                </LinearLayout>
+                <LinearLayout
+     			    android:layout_width="match_parent"
+     			    android:layout_height="30dp"
+     			    android:gravity="center_vertical|center_horizontal"
+     			    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal" >
+					
+                    <TextView
+                       
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_estrategia1"
+                       
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <TextView
+                         android:id="@+id/valor_estrategia1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_estrategia2"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+					<LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    <TextView
+                        android:id="@+id/valor_estrategia2"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+     			    android:layout_width="match_parent"
+     			    android:layout_height="30dp"
+     			    android:gravity="center_vertical|center_horizontal"
+     			    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal" >
+					
+                    <TextView
+                       
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_estrategia3"
+                       
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <TextView
+                         android:id="@+id/valor_estrategia3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_estrategia4"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    </LinearLayout>
+					<LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal">
+                    <TextView
+                        android:id="@+id/valor_estrategia4"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                    </LinearLayout>
+                </LinearLayout>
+                
+               
+               <TextView
+                       
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                         android:text="TExtoxx"
+                        tools:ignore="MissingPrefix" />
      </LinearLayout>
      
      </ScrollView>

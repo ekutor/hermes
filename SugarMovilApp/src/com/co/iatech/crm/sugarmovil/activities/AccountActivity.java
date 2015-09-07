@@ -3,7 +3,6 @@ package com.co.iatech.crm.sugarmovil.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,14 +10,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.SlidingTabLayout;
 import com.co.iatech.crm.sugarmovil.adapters.ViewPagerAdapter;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener{
@@ -106,7 +106,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         TextView valorCodigo = (TextView) findViewById(R.id.valor_codigo);
         valorCodigo.setText(cuentaDetalle.getCod_alterno_c());
         TextView valorCanal = (TextView) findViewById(R.id.valor_canal);
-        valorCanal.setText(ListsConversor.convertChannel(cuentaDetalle.getCanal_c()));
+        valorCanal.setText(ListsConversor.convert(ConversorsType.CHANNEL, cuentaDetalle.getCanal_c(), DataToGet.VALUE));
         TextView valorSector = (TextView) findViewById(R.id.valor_sector);
         valorSector.setText(cuentaDetalle.getSector_c());
         TextView valorTel1 = (TextView) findViewById(R.id.valor_tel1);
@@ -126,10 +126,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         TextView valorMunicipio = (TextView) findViewById(R.id.valor_municipio);
         valorMunicipio.setText(cuentaDetalle.getMunicipio_c());
         TextView valorDepartamento = (TextView) findViewById(R.id.valor_departamento);
-        valorDepartamento.setText(ListsConversor.convertDepto(cuentaDetalle.getDepartamento_c()));
+        valorDepartamento.setText(
+    			ListsConversor.convert(ConversorsType.DPTO, cuentaDetalle.getDepartamento_c(), DataToGet.VALUE)
+    			);
+    	
 
         TextView valorZona = (TextView) findViewById(R.id.valor_zona);
-        valorZona.setText(ListsConversor.convertZone(cuentaDetalle.getZona_c()));
+        valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, cuentaDetalle.getZona_c(), DataToGet.VALUE));
         TextView valorUen = (TextView) findViewById(R.id.valor_uen);
         valorUen.setText(cuentaDetalle.getUen_c());
         TextView valorEmail = (TextView) findViewById(R.id.valor_email);
@@ -247,10 +250,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
 		}else if(v.getId() == imageButtonCalls.getId()){
 			Log.d(TAG, "Llamadas X Cuenta ");
-			/*Intent intent = new Intent(AccountActivity.this,
-					ListTasksActivity.class);
+			Intent intent = new Intent(AccountActivity.this,
+					ListCallsActivity.class);
 			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
-			startActivity(intent);*/
+			startActivity(intent);
 
 		}
 		

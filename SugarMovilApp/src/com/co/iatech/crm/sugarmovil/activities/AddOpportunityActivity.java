@@ -43,10 +43,16 @@ import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Campana;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
 
@@ -80,8 +86,9 @@ public class AddOpportunityActivity extends AppCompatActivity {
     private ArrayList<String> mNamesCapaignsArray = new ArrayList<>();
     private ArrayList<User> mUsersArray = new ArrayList<>();
     private ArrayList<String> mNamesUsersArray = new ArrayList<>();
-    private String mTipo, mEtapa, mIdCuenta, mFechaCierre, mIdCampana, mMedio, mAsignado, mEnergia, mComunicaciones, mIluminacion;
 
+    
+    
     /**
      * UI References.
      */
@@ -89,6 +96,8 @@ public class AddOpportunityActivity extends AppCompatActivity {
     private ImageButton mImageButtonGuardar;
     private LinearLayout mLayoutContenido;
     private static TextView mValorFechaCierre;
+    private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorFuente,valorPaso,valorDescripcion;
+    private Spinner valorTipo,valorEtapa,valorMedio,valorEnergia,valorComunicaciones,valorIluminacion;
     private Spinner mValorCuenta, mValorCampana, mValorAsignadoA;
 
     @Override
@@ -113,52 +122,67 @@ public class AddOpportunityActivity extends AppCompatActivity {
         // Contenido
         mLayoutContenido = (LinearLayout) findViewById(R.id.layout_contenido);
 
-        // Tarea obtener cuenta
-//        mTareaObtenerOportunidad = new GetOpportunityTask();
-//        mTareaObtenerOportunidad.execute(String.valueOf(mIdOportunidad));
+        chargeLists();
+        createWidgets();
+    }
+    
+    private void chargeLists() {
+    	//Tipo Oportunidad
+        valorTipo = (Spinner) findViewById(R.id.valor_tipo);
+        
+        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_PROYECT));
+        estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        valorTipo.setAdapter(estadoAdapter);
+        
+      //Etapa Oportunidad
+        valorEtapa = (Spinner) findViewById(R.id.valor_etapa);
+        ArrayAdapter<String> etapaAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_STAGE));
+        etapaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valorEtapa.setAdapter(etapaAdapter);
+      
+        // Medio Oportunidad
+        valorMedio = (Spinner) findViewById(R.id.valor_medio);
+        ArrayAdapter<String> medioAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_MEDIUM));
+        medioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valorMedio.setAdapter(medioAdapter);
+        
+        //Energia
+        valorEnergia = (Spinner) findViewById(R.id.valor_energia);       
+        ArrayAdapter<String> energiaAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
+        energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valorEnergia.setAdapter(energiaAdapter);
+
+        // Comunicaciones
+        valorComunicaciones = (Spinner) findViewById(R.id.valor_comunicaciones);
+        ArrayAdapter<String> comunicacionesAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_COMUNICATIONS));
+        comunicacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valorComunicaciones.setAdapter(comunicacionesAdapter);
+        
+        // Iluminacion
+        valorIluminacion = (Spinner) findViewById(R.id.valor_iluminacion);
+        ArrayAdapter<String> iluminacionAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ILUM));
+        iluminacionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valorIluminacion.setAdapter(iluminacionAdapter);
     }
 
-    public void ponerValores(OportunidadDetalle oportunidadDetalle) {
-        // Nombre
-        final EditText valorNombre = (EditText) findViewById(R.id.valor_nombre);
-//        valorNombre.setText(oportunidadDetalle.getName());
-        // Tipo
-        final Spinner valorTipo = (Spinner) findViewById(R.id.valor_tipo);
-        List<String> listTipo = new ArrayList<>();
-        listTipo.add("Seleccionar tipo");
-        listTipo.add("Proyecto de Ingenieria");
-        listTipo.add("Proyecto de Componentes");
-        listTipo.add("Proyecto de Especificacion");
-        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listTipo);
-        estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorTipo.setAdapter(estadoAdapter);
-//        valorTipo.setText(oportunidadDetalle.getTipo_c());
-        // Etapa
-        final Spinner valorEtapa = (Spinner) findViewById(R.id.valor_etapa);
-        List<String> listEtapa = new ArrayList<>();
-        listEtapa.add("Seleccionar etapa");
-        listEtapa.add("ESPECIFICACION");
-        listEtapa.add("OFERTADO");
-        listEtapa.add("PENDIENTE POR OFERTA");
-        listEtapa.add("EN ESPERA DE DECISION");
-        listEtapa.add("ADJUDICADO");
-        listEtapa.add("PERDIDO");
-        listEtapa.add("APLAZADO");
-        listEtapa.add("CANCELADO");
-        listEtapa.add("GANADO POR CANAL");
-        ArrayAdapter<String> etapaAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listEtapa);
-        valorEtapa.setAdapter(etapaAdapter);
-//        valorEtapa.setText(oportunidadDetalle.getSales_stage());
+    public void createWidgets() {
+        valorNombre = (EditText) findViewById(R.id.valor_nombre);
+
         // Cuenta
         mValorCuenta = (Spinner) findViewById(R.id.valor_cuenta);
         mTareaObtenerCuentas = new GetAccountsTask();
         mTareaObtenerCuentas.execute();
-//        valorCuenta.setText(oportunidadDetalle.getNameAccount());
+
         // Usuario Final
-        final EditText valorUsuario = (EditText) findViewById(R.id.valor_usuario);
-//        valorUsuario.setText(oportunidadDetalle.getUsuario_final_c());
+        valorUsuario = (EditText) findViewById(R.id.valor_usuario);
+
         // Fecha Cierre
         Button botonFechaInicio = (Button) findViewById(R.id.boton_fecha_cierre);
         botonFechaInicio.setOnClickListener(new View.OnClickListener() {
@@ -169,102 +193,34 @@ public class AddOpportunityActivity extends AppCompatActivity {
             }
         });
         mValorFechaCierre = (TextView) findViewById(R.id.valor_fecha_cierre);
-//        valorFecha.setText(oportunidadDetalle.getDate_closed());
-        final EditText valorEstimado = (EditText) findViewById(R.id.valor_estimado);
-//        valorEstimado.setText(oportunidadDetalle.getValoroportunidad_c());
-        final EditText valorProbabilidad = (EditText) findViewById(R.id.valor_probabilidad);
-//        valorProbabilidad.setText(oportunidadDetalle.getProbability());
+
+        valorEstimado = (EditText) findViewById(R.id.valor_estimado);
+
+        valorProbabilidad = (EditText) findViewById(R.id.valor_probabilidad);
+
         // Campana
         mValorCampana = (Spinner) findViewById(R.id.valor_campana);
         mTareaObtenerCampanas = new GetCampaignsTask();
         mTareaObtenerCampanas.execute();
-//        valorCampana.setText(oportunidadDetalle.getNameCampaign());
-        // Medio
-        final Spinner valorMedio = (Spinner) findViewById(R.id.valor_medio);
-        List<String> listMedio = new ArrayList<>();
-        listMedio.add("Seleccionar medio");
-        listMedio.add("CAPACITACIONES-EVENTOS");
-        listMedio.add("FERIAS");
-        listMedio.add("PAUTAS PUBLICITARIAS");
-        listMedio.add("E-MAIL MARKETING");
-        listMedio.add("ESPECIFICACION");
-        listMedio.add("PORTALES WEB");
-        listMedio.add("REMITIDO POR PROVEEDOR");
-        listMedio.add("NO APLICA");
-        listMedio.add("OTRO");
-        ArrayAdapter<String> medioAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listMedio);
-        medioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorMedio.setAdapter(medioAdapter);
-//        valorMedio.setText(oportunidadDetalle.getMedio_c());
+
         // Fuente
         TextView valorFuente = (TextView) findViewById(R.id.valor_fuente);
-//        valorFuente.setText(oportunidadDetalle.getFuente_c());
+
         // Paso
-        final EditText valorPaso = (EditText) findViewById(R.id.valor_paso);
-//        valorPaso.setText(oportunidadDetalle.getNext_step());
+        valorPaso = (EditText) findViewById(R.id.valor_paso);
         // Descripcion
-        final EditText valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
-//        valorDescripcion.setText(oportunidadDetalle.getDescription());
+        valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
         // Asignado a
         mValorAsignadoA = (Spinner) findViewById(R.id.valor_asignado_a);
         mTareaObtenerUsuarios = new GetUsersTask();
         mTareaObtenerUsuarios.execute();
-//        valorAsignado.setText(oportunidadDetalle.getAssigned_user_name());
-        // Energia
-        final Spinner valorEnergia = (Spinner) findViewById(R.id.valor_energia);
-        List<String> listEnergia = new ArrayList<>();
-        listEnergia.add("Seleccionar marca energia");
-        listEnergia.add("CABUR");
-        listEnergia.add("CIRPROTEC");
-        listEnergia.add("DELTA");
-        listEnergia.add("DKC");
-        listEnergia.add("EATON");
-        listEnergia.add("ENERLUX");
-        listEnergia.add("ENSAMBLES");
-        listEnergia.add("GEROS");
-        listEnergia.add("GREENLEE");
-        listEnergia.add("KLAUKE");
-        listEnergia.add("LEVITON WID");
-        listEnergia.add("LOVATO");
-        listEnergia.add("VCP ELECTRIC");
-        listEnergia.add("WOHNER");
-        ArrayAdapter<String> energiaAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listEnergia);
-        energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorEnergia.setAdapter(energiaAdapter);
-//        valorEnergia.setText(oportunidadDetalle.getEnergia_c());
-        // Comunicaciones
-        final Spinner valorComunicaciones = (Spinner) findViewById(R.id.valor_comunicaciones);
-        List<String> listComunicaciones = new ArrayList<>();
-        listComunicaciones.add("Seleccionar marca comunicaciones");
-        listComunicaciones.add("CIRPROTEC");
-        listComunicaciones.add("GREENLEE");
-        listComunicaciones.add("KLAUKE");
-        listComunicaciones.add("LEVELONE");
-        listComunicaciones.add("LEVITON");
-        listComunicaciones.add("SUPERIOR ESSEX");
-        listComunicaciones.add("VCP CONNECT +");
-        ArrayAdapter<String> comunicacionesAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listComunicaciones);
-        comunicacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorComunicaciones.setAdapter(comunicacionesAdapter);
-//        valorComunicaciones.setText(oportunidadDetalle.getComunicaciones_c());
-        // Iluminacion
-        final Spinner valorIluminacion = (Spinner) findViewById(R.id.valor_iluminacion);
-        List<String> listIluminacion = new ArrayList<>();
-        listIluminacion.add("Seleccionar marca iluminacion");
-        listIluminacion.add("VCP");
-        ArrayAdapter<String> iluminacionAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, listIluminacion);
-        iluminacionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorIluminacion.setAdapter(iluminacionAdapter);
-//        valorIluminacion.setText(oportunidadDetalle.getIluminacion_c());
 
+        
         // Eventos
         // Guardar Tarea
         mImageButtonGuardar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+            	OportunidadDetalle op = new OportunidadDetalle();
                 // Nombre
                 if (valorNombre.getText().toString().equals("")) {
                     Context context = getApplicationContext();
@@ -276,23 +232,12 @@ public class AddOpportunityActivity extends AppCompatActivity {
                     toast.show();
                     return;
                 }
-
-                // Tipo
-                switch (valorTipo.getSelectedItem().toString()) {
-                    case "Proyecto de Ingenieria":
-                        mTipo = "Proyecto1";
-                        break;
-                    case "Proyecto de Componentes":
-                        mTipo = "Proyecto2";
-                        break;
-                    case "Proyecto de Especificacion":
-                        mTipo = "Proyecto3";
-                        break;
-                }
-
-                if (mTipo.equals("Seleccionar tipo")) {
-                    Context context = getApplicationContext();
-                    CharSequence text = "El campo tipo no puede estar vacio";
+                op.setName(valorNombre.getText().toString());
+                
+                op.setTipo_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_PROYECT, valorTipo.getSelectedItem().toString(), DataToGet.CODE));
+                if (valorTipo.getSelectedItem() == null){
+                	Context context = getApplicationContext();
+                    CharSequence text = "Debe seleccionar un Tipo de Oportunidad";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
@@ -300,13 +245,11 @@ public class AddOpportunityActivity extends AppCompatActivity {
                     toast.show();
                     return;
                 }
-
-                // Etapa
-                mEtapa = valorEtapa.getSelectedItem().toString();
-
-                if (mEtapa.equals("Seleccionar etapa")) {
+                op.setTipo_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_PROYECT, valorTipo.getSelectedItem().toString(), DataToGet.CODE));
+                
+                if (valorEtapa.getSelectedItem()== null) {
                     Context context = getApplicationContext();
-                    CharSequence text = "El campo etapa no puede estar vacio";
+                    CharSequence text = "Debe seleccionar una Etapa de Oportunidad";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
@@ -314,30 +257,21 @@ public class AddOpportunityActivity extends AppCompatActivity {
                     toast.show();
                     return;
                 }
+                op.setSales_stage(ListsConversor.convert(ConversorsType.OPPORTUNITY_STAGE, valorEtapa.getSelectedItem().toString(), DataToGet.CODE));
 
                 // Cuenta
-                try {
-                    mIdCuenta = mValorCuenta.getSelectedItem().toString();
-                } catch (Exception e) {
-                    Context context = getApplicationContext();
-                    CharSequence text = "El campo Cuenta no puede estar vacio";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.setGravity(Gravity.CENTER, 0, 20);
-                    toast.show();
-                    return;
-                }
+                
 
                 // Fecha Cierre
-                mFechaCierre = mValorFechaCierre.getText().toString();
+              //  mFechaCierre = mValorFechaCierre.getText().toString();
 
                 // Camapana
-                try {
-                    mIdCampana = mValorCampana.getSelectedItem().toString();
-                } catch (Exception e) {
+               
+
+                // Medio              
+                if (valorMedio.getSelectedItem() == null) {
                     Context context = getApplicationContext();
-                    CharSequence text = "El campo Camapana no puede estar vacio";
+                    CharSequence text = "Debe seleccionar una Medio ";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
@@ -345,74 +279,31 @@ public class AddOpportunityActivity extends AppCompatActivity {
                     toast.show();
                     return;
                 }
-
-                // Medio
-                switch (valorMedio.getSelectedItem().toString()) {
-                    case "CAPACITACIONES-EVENTOS":
-                        mMedio = "001";
-                        break;
-                    case "FERIAS":
-                        mMedio = "002";
-                        break;
-                    case "PAUTAS PUBLICITARIAS":
-                        mMedio = "003";
-                        break;
-                    case "E-MAIL MARKETING":
-                        mMedio = "006";
-                        break;
-                    case "ESPECIFICACION":
-                        mMedio = "007";
-                        break;
-                    case "PORTALES WEB":
-                        mMedio = "008";
-                        break;
-                    case "REMITIDO POR PROVEEDOR":
-                        mMedio = "011";
-                        break;
-                    case "NO APLICA":
-                        mMedio = "009";
-                        break;
-                    case "OTRO":
-                        mMedio = "010";
-                        break;
-                    default:
-                        mMedio = "Seleccionar medio";
-                        break;
-                }
+                op.setMedio_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM, valorMedio.getSelectedItem().toString(), DataToGet.CODE));
 
                 // Asignado
-                try {
-                    for (User usuario : mUsersArray) {
-                        if (usuario.getUser_name() != null && usuario.getUser_name().contains(mValorAsignadoA.getSelectedItem().toString())) {
-                            mAsignado = usuario.getId();
-                        }
-                    }
-                } catch (Exception e) {
-                    Context context = getApplicationContext();
-                    CharSequence text = "El campo Asignado a no puede estar vacio";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.setGravity(Gravity.CENTER, 0, 20);
-                    toast.show();
-                    return;
-                }
+                
 
                 // Marca energia
-                mEnergia = valorEnergia.getSelectedItem().toString();
+                op.setEnergia_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_ENERGY, valorEnergia.getSelectedItem().toString(), DataToGet.CODE));
 
                 // Marca comunicaciones
-                mComunicaciones = valorComunicaciones.getSelectedItem().toString();
+                op.setComunicaciones_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_COMUNICATIONS, valorComunicaciones.getSelectedItem().toString(), DataToGet.CODE));
 
                 // Marca iluminacion
-                mIluminacion = valorIluminacion.getSelectedItem().toString();
+                op.setIluminacion_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_ILUM, valorIluminacion.getSelectedItem().toString(), DataToGet.CODE));
 
                 mTareaCrearOportunidad = new AddOpportunityTask();
                 // TODO: Cambiar id usuario logueado
                 mUsuario = "2d644d36-14d9-9722-d62e-55269fa6a81d";
-
+                
+                //op.setUsuario_final_c(usuario_final_c)
+                op.setValoroportunidad_c(valorEstimado.getText().toString());
+                op.setProbability(valorProbabilidad.getText().toString());
+                op.setNext_step(valorPaso.getText().toString());
+                op.setDescription(valorDescripcion.getText().toString());
                 // Crear oportunidad
-                mTareaCrearOportunidad.execute(valorNombre.getText().toString(), valorUsuario.getText().toString(), valorEstimado.getText().toString(), valorProbabilidad.getText().toString(), valorPaso.getText().toString(), valorDescripcion.getText().toString(), mTipo, mEtapa, mIdCuenta, mFechaCierre, mIdCampana, mMedio, mAsignado, mEnergia, mComunicaciones, mIluminacion, mUsuario, mUsuario);
+                mTareaCrearOportunidad.execute(op);
             }
         });
     }
@@ -526,7 +417,7 @@ public class AddOpportunityActivity extends AppCompatActivity {
             progressDialog.dismiss();
 
             if (success) {
-                ponerValores(mOportunidadDetalle);
+            	 Log.d(TAG, "Oportunidad Creada");
             }
         }
 
@@ -773,70 +664,21 @@ public class AddOpportunityActivity extends AppCompatActivity {
     /**
      * Representa una tarea asincrona de creacion de oportunidad.
      */
-    public class AddOpportunityTask extends AsyncTask<String, Void, Boolean> {
+    public class AddOpportunityTask extends AsyncTask<Object, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Object... params) {
             try {
                 // Parametros
                 String idOpportunity = "idOpportunity";
-                String name = params[0];
-                String usuarioFinal = params[1];
-                String valorEstimado = params[2];
-                String proximoPaso = params[3];
-                String descripcion = params[4];
-                String tipoProyecto = params[5];
-                String etapa = params[6];
-                String idCuenta = params[7];
-                String fechaCierre = params[8];
-                String idCampana = params[9];
-                String medio = params[10];
-                String idUsuarioAsignado = params[11];
-                String marcasEnergia = params[12];
-                String marcasComunicaciones = params[13];
-                String marcasIluminacion = params[14];
-                String idUsuarioLogueado = params[15];
-                String idContacto = params[16];
+                OportunidadDetalle op = (OportunidadDetalle)params[0];
 
-                String oportunidad = null;
+                // Resultado
+                String resultado = null;
 
-                // Intento de crear llamada
-                HttpClient httpClientOpportunity = new DefaultHttpClient();
-                HttpPut httpPutOpportunity = new HttpPut(ControlConnection.URL
-                        + "addOpportunity");
-                httpPutOpportunity.setHeader("idOpportunity", idOpportunity);
-                httpPutOpportunity.setHeader("name", name);
-                httpPutOpportunity.setHeader("usuarioFinal", usuarioFinal);
-                httpPutOpportunity.setHeader("valorEstimado", valorEstimado);
-                httpPutOpportunity.setHeader("proximoPaso", proximoPaso);
-                httpPutOpportunity.setHeader("descripcion", descripcion);
-                httpPutOpportunity.setHeader("tipoProyecto", tipoProyecto);
-                httpPutOpportunity.setHeader("etapa", etapa);
-                httpPutOpportunity.setHeader("idCuenta", idCuenta);
-                httpPutOpportunity.setHeader("fechaCierre", fechaCierre);
-                httpPutOpportunity.setHeader("idCampana", idCampana);
-                httpPutOpportunity.setHeader("medio", medio);
-                httpPutOpportunity.setHeader("idUsuarioAsignado", idUsuarioAsignado);
-                httpPutOpportunity.setHeader("marcasEnergia", marcasEnergia);
-                httpPutOpportunity.setHeader("marcasComunicaciones", marcasComunicaciones);
-                httpPutOpportunity.setHeader("marcasIluminacion", marcasIluminacion);
-                httpPutOpportunity.setHeader("idUsuarioLogueado", idUsuarioLogueado);
-                httpPutOpportunity.setHeader("idContacto", idContacto);
-
-                try {
-                    HttpResponse response = httpClientOpportunity
-                            .execute(httpPutOpportunity);
-                    oportunidad = EntityUtils.toString(response
-                            .getEntity());
-                    oportunidad = oportunidad.replace("\n", "")
-                            .replace("\r", "");
-                    Log.d(TAG, "Crear Oportunidad Response: "
-                            + oportunidad);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
+               
+                resultado  = ControlConnection.putInfo(TypeInfoServer.addOpportunity, op.getDataBean());
+                Log.d(TAG, "Crear Oportunidad RESPr: "+ resultado);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Crear Oportunidad Error: "

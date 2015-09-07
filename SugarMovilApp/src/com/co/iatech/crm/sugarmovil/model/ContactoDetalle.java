@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -964,4 +966,10 @@ public class ContactoDetalle extends GenericBean implements Parcelable {
         dest.writeString(assigned_user_name);
         dest.writeString(nameCampaign);
     }
+
+	@Override
+	public Map<String, String> getDataBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

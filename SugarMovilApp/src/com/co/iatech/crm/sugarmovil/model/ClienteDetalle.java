@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -957,4 +959,10 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
         dest.writeString(campaign_name);
         dest.writeString(assigned_user_name);
     }
+
+	@Override
+	public Map<String, String> getDataBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

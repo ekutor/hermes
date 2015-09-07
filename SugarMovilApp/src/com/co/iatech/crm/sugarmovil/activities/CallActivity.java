@@ -12,13 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.model.LanguageType;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 
 
@@ -87,7 +87,7 @@ public class CallActivity extends AppCompatActivity {
         TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(llamadaDetalle.getName());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
-        valorEstado.setText(llamadaDetalle.getStatus());
+        valorEstado.setText(llamadaDetalle.getStatus(LanguageType.SPANISH));
         TextView valorInicio = (TextView) findViewById(R.id.valor_inicio);
         valorInicio.setText(llamadaDetalle.getDate_start());
         TextView valorDuracion = (TextView) findViewById(R.id.valor_duracion);

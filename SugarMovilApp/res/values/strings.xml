@@ -33,6 +33,7 @@
     <string name="title_activity_select_contact">SELECCIONAR CONTACTO</string>
     <string name="title_activity_select_oppotunity">SELECCIONAR OPORTUNIDAD</string>
     <string name="title_activity_select_task">SELECCIONAR TAREA</string>
+    <string name="title_activity_select_call">SELECCIONAR LLAMADA</string>
     <string name="title_activity_select_lead">SELECCIONAR CLIENTE POTENCIAL</string>
     <string name="title_activity_select_user">SELECCIONAR USUARIO</string>
     <string name="title_activity_select_campaign">SELECCIONAR CAMPAÑA</string>
@@ -114,28 +115,35 @@
     <string name="cuenta_titulo_est_especiales">ESTRATEGIAS ESPECIALES DE ATENCION</string>
     <string name="cuenta_titulo_est_mercadeo">ESTRATEGIAS DE MERCADEO</string>
     <string name="cuenta_moeller">Autom. Moeller</string>
-    <string name="cuenta_enerlux">Enerlux:</string>
-    <string name="cuenta_delta">Delta:</string>
-    <string name="cuenta_dkc">DKC:</string>
-    <string name="cuenta_leviton">Leviton WID:</string>
-    <string name="cuenta_vcai">W-VCAI:</string>
-    <string name="cuenta_wohner">Wohner:</string>
-    <string name="cuenta_lp">Comun. LP Dolares:</string>
-    <string name="cuenta_eaton">Maniobra Eaton:</string>
-    <string name="cuenta_xenergy">OEM Xenergy:</string>
-    <string name="cuenta_min_eaton">Precios Minimos EATON:</string>
-    <string name="cuenta_desc_ad">Descuento Adicional:</string>
+    <string name="cuenta_enerlux">Enerlux</string>
+    <string name="cuenta_delta">Delta</string>
+    <string name="cuenta_dkc">DKC</string>
+    <string name="cuenta_leviton">Leviton WID</string>
+    <string name="cuenta_vcai">W-VCAI</string>
+    <string name="cuenta_wohner">Wohner</string>
+    <string name="cuenta_lp">Comun. LP Dolares</string>
+    <string name="cuenta_eaton">Maniobra Eaton</string>
+    <string name="cuenta_xenergy">OEM Xenergy</string>
+    <string name="cuenta_min_eaton">Precios Minimos EATON</string>
+    <string name="cuenta_desc_ad">Desc. Adicional:</string>
     
-    <string name="cuenta_bono_especial">Bonos Especiales:</string>
+    <string name="cuenta_bono_especial">Bonos Especiales</string>
     <string name="cuenta_meta_anual">Meta Anual:</string>
     <string name="cuenta_meta_tri">Meta Trimsestral:</string>
     <string name="cuenta_meta_bi">Meta Bimestral:</string>
     <string name="cuenta_por_bon_anual">% Bonificacion Anual:</string>
-    <string name="cuenta_por_bon_bi">% Bonificacion Bimestral:</string>
+    <string name="cuenta_por_bon_bi_eaton">% Bonificacion Bimestral Eaton:</string>
+    <string name="cuenta_por_bon_bi_leviton">% Bonificacion Bimestral Leviton:</string>
     <string name="cuenta_por_bon_tri">% Bonificacion Trimestral:</string>
-    <string name="cuenta_por_bon_compra">Bonificacion x Compra:</string>
-    <string name="cuenta_por_bon_eaton">Bonificacion Eaton:</string>
-    <string name="cuenta_por_bon_leviton">Bonificacion Leviton:</string>
+    <string name="cuenta_por_bon_compra">Bonif. por Compra</string>
+    <string name="cuenta_por_bon_eaton">Bonificacion Eaton</string>
+    <string name="cuenta_por_bon_leviton">Bonificacion Leviton</string>
+    <string name="cuenta_desp_rem">Despacho Remsion por Cierre</string>
+    <string name="cuenta_no_cobro">No Cobro Anticipo</string>
+    <string name="cuenta_estrategia1">Estrategia 1:</string>
+    <string name="cuenta_estrategia2">Estrategia 2:</string>
+    <string name="cuenta_estrategia3">Estrategia 3:</string>
+    <string name="cuenta_estrategia4">Estrategia 4:</string>
 
     <!-- Contacto Activity -->
     <string name="title_activity_contact">CONTACTO</string>
@@ -204,16 +212,17 @@
     <string name="title_activity_create_opportunity">CREAR OPORTUNIDAD</string>
     <string name="title_activity_edit_opportunity">EDITAR OPORTUNIDAD</string>
     <string name="oportunidad_titulo_informacion">INFORMACIÓN</string>
-    <string name="oportunidad_tipo">Tipo:</string>
+    <string name="oportunidad_tipo">Tipo Oportunidad:</string>
     <string name="oportunidad_nombre">Nombre:</string>
     <string name="oportunidad_etapa">Etapa:</string>
     <string name="oportunidad_cuenta">Cuenta:</string>
     <string name="oportunidad_usuario">Usuario final:</string>
-    <string name="oportunidad_fecha_cierre">Fecha cierre:</string>
+    <string name="oportunidad_fecha_cierre">Fecha de cierre:</string>
     <string name="oportunidad_valor_estimado">Valor estimado:</string>
     <string name="oportunidad_probabilidad">Probabilidad:</string>
     <string name="oportunidad_campana">Campaña:</string>
-    <string name="oportunidad_medio">Medio:</string>
+    <string name="oportunidad_medio">Medio por el cual se entero:</string>
+    <string name="oportunidad_moneda">Moneda:</string>
     <string name="oportunidad_fuente">Fuente:</string>
     <string name="oportunidad_paso">Próximo paso:</string>
     <string name="oportunidad_descripcion">Descripción:</string>
@@ -227,9 +236,10 @@
     <string name="dialog_message_opportunity">Se creó la oportunidad con exito</string>
     <string name="dialog_edit_message_opportunity">Se editó la oportunidad con exito</string>
     <string name="dialog_ok_opportunity">Ok</string>
+    
 
     <!-- Llamada Activity -->
-    <string name="title_activity_call">LLAMADA</string>
+    <string name="title_activity_call">LLAMADAS</string>
     <string name="title_activity_create_call">CREAR LLAMADA</string>
     <string name="title_activity_edit_call">EDITAR LLAMADA</string>
     <string name="llamada_titulo_vision">VISIÓN GENERAL</string>

@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1809,5 +1811,11 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
 
 	public void setDescuentocomercial2_c(String descuentocomercial2_c) {
 		this.descuentocomercial2_c = descuentocomercial2_c;
+	}
+
+	@Override
+	public Map<String, String> getDataBean() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

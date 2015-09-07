@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -45,6 +46,38 @@ public class ControlConnection {
         Log.d("ControlConnection", "hash " + hash);
         try {
             HttpResponse response = httpClient.execute(httpGet);
+            String resp = EntityUtils.toString(response.getEntity());
+            resp = resp.replace("\n", "").replace("\r", "");
+            Log.d("ControlConnection", "Response: "
+                    + resp);
+            data= null;
+            return resp;
+        } catch (IOException e) {
+            e.printStackTrace();
+            data= null;
+            return null;
+        }
+	}
+	
+	public static String putInfo( TypeInfoServer type, Map<String,String> data ){
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPut httpPut = new HttpPut(URL + type.name());
+  
+        Log.d("ControlConnection", "URL: " + URL + type.name());
+        if(data != null && data.size() > 0){
+	        for (Map.Entry<String, String> entry : data.entrySet()) {
+	        	httpPut.setHeader(entry.getKey(), entry.getValue());
+	        	Log.d("ControlConnection", entry.getKey()+" "+entry.getValue());
+	        }
+		}
+        
+        httpPut.setHeader("deviceID", device_id);
+        Log.d("ControlConnection", "deviceID " + device_id);
+        if(hash != null)
+        	httpPut.setHeader("hash", hash);
+        Log.d("ControlConnection", "hash " + hash);
+        try {
+            HttpResponse response = httpClient.execute(httpPut);
             String resp = EntityUtils.toString(response.getEntity());
             resp = resp.replace("\n", "").replace("\r", "");
             Log.d("ControlConnection", "Response: "

@@ -7,13 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountFragmentActivity;
 import com.co.iatech.crm.sugarmovil.fragments.AccountStrategyFragmentActivity;
-import com.co.iatech.crm.sugarmovil.fragments.FragmentTab1;
-import com.co.iatech.crm.sugarmovil.fragments.FragmentTab2;
-import com.co.iatech.crm.sugarmovil.fragments.FragmentTab3;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

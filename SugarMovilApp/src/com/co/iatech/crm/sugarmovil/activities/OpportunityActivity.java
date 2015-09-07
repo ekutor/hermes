@@ -20,6 +20,9 @@ import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
 public class OpportunityActivity extends AppCompatActivity {
@@ -88,8 +91,10 @@ public class OpportunityActivity extends AppCompatActivity {
     public void ponerValores(OportunidadDetalle oportunidadDetalle) {
         TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
         valorNombre.setText(oportunidadDetalle.getName());
+        
         TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
-        valorTipo.setText(oportunidadDetalle.getTipo_c());
+        valorTipo.setText(ListsConversor.convert(ConversorsType.OPPORTUNITY_PROYECT,oportunidadDetalle.getTipo_c(), DataToGet.VALUE));
+        
         TextView valorEtapa = (TextView) findViewById(R.id.valor_etapa);
         valorEtapa.setText(oportunidadDetalle.getSales_stage());
         TextView valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
@@ -104,8 +109,10 @@ public class OpportunityActivity extends AppCompatActivity {
         valorProbabilidad.setText(oportunidadDetalle.getProbability());
         TextView valorCampana = (TextView) findViewById(R.id.valor_campana);
         valorCampana.setText(oportunidadDetalle.getNameCampaign());
+        
         TextView valorMedio = (TextView) findViewById(R.id.valor_medio);
-        valorMedio.setText(oportunidadDetalle.getMedio_c());
+        valorMedio.setText(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM,oportunidadDetalle.getMedio_c(), DataToGet.VALUE));
+        
         TextView valorFuente = (TextView) findViewById(R.id.valor_fuente);
         valorFuente.setText(oportunidadDetalle.getFuente_c());
         TextView valorPaso = (TextView) findViewById(R.id.valor_paso);
@@ -120,6 +127,15 @@ public class OpportunityActivity extends AppCompatActivity {
         valorComunicaciones.setText(oportunidadDetalle.getComunicaciones_c());
         TextView valorIluminacion = (TextView) findViewById(R.id.valor_iluminacion);
         valorIluminacion.setText(oportunidadDetalle.getIluminacion_c());
+        
+        TextView valorMoneda = (TextView) findViewById(R.id.valor_moneda);
+        if(oportunidadDetalle.getAmount_usdollar() != null &&
+        		oportunidadDetalle.getAmount_usdollar().equals("0")){
+        	valorMoneda.setText("USD Dolares");
+        }else{
+        	valorMoneda.setText("COP Pesos");
+        }
+        
     }
 
     /**

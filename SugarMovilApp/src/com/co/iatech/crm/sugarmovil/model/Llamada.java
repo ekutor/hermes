@@ -1,7 +1,11 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.co.iatech.crm.sugarmovil.model.GenericBean.ConverterType;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -298,6 +302,11 @@ public class Llamada extends GenericBean implements Parcelable {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    public String getStatus(LanguageType language) {
+        return convert(language, status, ConverterType.CALL_STATUS);
+    }
+    
 
     public String getDirection() {
         return direction;
@@ -458,4 +467,10 @@ public class Llamada extends GenericBean implements Parcelable {
     public void setCampaign_id(String campaign_id) {
         this.campaign_id = campaign_id;
     }
+
+	@Override
+	public Map<String, String> getDataBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

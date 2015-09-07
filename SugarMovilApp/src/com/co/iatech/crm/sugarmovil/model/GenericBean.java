@@ -1,9 +1,11 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
 import com.co.iatech.crm.sugarmovil.model.converters.*;
 
 public abstract class GenericBean {
-	protected enum ConverterType {PRIORITY,STATUS};
+	protected enum ConverterType {PRIORITY,STATUS,CALL_STATUS};
 	public String validate(String data){
 		data =  validateNull(data);
 		return this.validateDefaultValue(data);
@@ -35,10 +37,15 @@ public abstract class GenericBean {
 			case  STATUS: 
 				converter = new StatusConverter();
 				break;
+			case  CALL_STATUS: 
+				converter = new CallsStatusConverter();
+				break;
 		}
 		
 		return converter.Transform(language, value);
 	}
 	
+	
+	public abstract Map<String,String> getDataBean();
 	
 }

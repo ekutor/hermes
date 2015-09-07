@@ -1,5 +1,8 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +60,10 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     private String nameCampaign;
     private String assigned_user_name;
 
-
+    
+    public OportunidadDetalle(){
+    	
+    }
     public OportunidadDetalle(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
     	setName(validate(obj.getString("name")));
@@ -424,4 +430,40 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
         dest.writeString(nameCampaign);
         dest.writeString(assigned_user_name);
     }
+	@Override
+	public Map<String, String> getDataBean() {
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("name",name);
+		data.put("date_entered",date_entered);
+		data.put("date_modified",date_modified);
+		data.put("modified_user_id",modified_user_id);
+		data.put("created_by",created_by);
+		data.put("description",description);
+		data.put("deleted",deleted);
+		data.put("assigned_user_id",assigned_user_id);
+		data.put("opportunity_type",opportunity_type);
+		data.put("campaign_id",campaign_id);
+		data.put("lead_source",lead_source);
+		data.put("amount",amount);
+		data.put("amount_usdollar",amount_usdollar);
+		data.put("currency_id",currency_id);
+		data.put("date_closed",date_closed);
+		data.put("next_step",next_step);
+		data.put("sales_stage",sales_stage);
+		data.put("probability",probability);
+		data.put("id_c",id_c);
+		data.put("valoroportunidad_c",valoroportunidad_c);
+		data.put("medio_c",medio_c);
+		data.put("fuente_c",fuente_c);
+		data.put("tipo_c",tipo_c);
+		data.put("energia_c",energia_c);
+		data.put("comunicaciones_c",comunicaciones_c);
+		data.put("iluminacion_c",iluminacion_c);
+		data.put("usuario_final_c",usuario_final_c);
+		data.put("idAccount",idAccount);
+		data.put("nameAccount",nameAccount);
+		data.put("nameCampaign",nameCampaign);
+		data.put("assigned_user_name",assigned_user_name);
+		return data;
+	}
 }

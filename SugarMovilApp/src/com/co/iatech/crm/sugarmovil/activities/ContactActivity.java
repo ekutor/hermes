@@ -20,7 +20,9 @@ import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
 public class ContactActivity extends AppCompatActivity {
@@ -118,7 +120,7 @@ public class ContactActivity extends AppCompatActivity {
         valorCuenta.setText(contactoDetalle.getNameAccount());
         
         TextView valorDepartamento = (TextView) findViewById(R.id.valor_departamento);
-        valorDepartamento.setText(ListsConversor.convertDepto(contactoDetalle.getDepartamento_c()));
+        valorDepartamento.setText(ListsConversor.convert(ConversorsType.DPTO, contactoDetalle.getDepartamento_c(), DataToGet.VALUE));
         
         TextView valorMunicipio = (TextView) findViewById(R.id.valor_municipio);
         valorMunicipio.setText(contactoDetalle.getMunicipio_c());
@@ -132,10 +134,10 @@ public class ContactActivity extends AppCompatActivity {
         valorUen.setText(contactoDetalle.getUen_c());
         
         TextView valorZona = (TextView) findViewById(R.id.valor_zona);
-        valorZona.setText(ListsConversor.convertZone(contactoDetalle.getZona_c()));
+        valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, contactoDetalle.getZona_c(), DataToGet.VALUE));
         
         TextView valorCanal = (TextView) findViewById(R.id.valor_canal);
-        valorCanal.setText(ListsConversor.convertChannel(contactoDetalle.getCanal_c()));
+        valorCanal.setText(ListsConversor.convert(ConversorsType.CHANNEL,contactoDetalle.getCanal_c(), DataToGet.VALUE));
         
         TextView valorSector = (TextView) findViewById(R.id.valor_sector);
         valorSector.setText(contactoDetalle.getSector_c());
