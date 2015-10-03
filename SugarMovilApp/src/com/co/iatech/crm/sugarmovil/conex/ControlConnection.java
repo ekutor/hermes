@@ -15,12 +15,14 @@ import android.util.Log;
 
 public class ControlConnection {
 	
+	public enum Modo {EDITAR, AGREGAR}
+	
 	public final static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
 	
 	
 	public static String android_id;
 	public static String device_id;
-	public static String hash;
+	public static String hash, userId;
 	private static Map<String,String> data;
 	 
 	
@@ -28,7 +30,7 @@ public class ControlConnection {
 	public static String getInfo( TypeInfoServer type){
 		return getInfo(type, data);
 	}
-	public static String getInfo( TypeInfoServer type, Map<String,String> data ){
+	public static String getInfo( TypeInfoServer type, Map<String,String> data){
 		HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL + type.name());
         Log.d("ControlConnection", "URL: " + URL + type.name());
@@ -44,6 +46,8 @@ public class ControlConnection {
         if(hash != null)
         	httpGet.setHeader("hash", hash);
         Log.d("ControlConnection", "hash " + hash);
+        
+       
         try {
             HttpResponse response = httpClient.execute(httpGet);
             String resp = EntityUtils.toString(response.getEntity());
@@ -59,7 +63,7 @@ public class ControlConnection {
         }
 	}
 	
-	public static String putInfo( TypeInfoServer type, Map<String,String> data ){
+	public static String putInfo( TypeInfoServer type, Map<String,String> data , Modo modo ){
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPut httpPut = new HttpPut(URL + type.name());
   
@@ -70,6 +74,7 @@ public class ControlConnection {
 	        	Log.d("ControlConnection", entry.getKey()+" "+entry.getValue());
 	        }
 		}
+        httpPut.setHeader("modo", modo.name().toLowerCase());
         
         httpPut.setHeader("deviceID", device_id);
         Log.d("ControlConnection", "deviceID " + device_id);

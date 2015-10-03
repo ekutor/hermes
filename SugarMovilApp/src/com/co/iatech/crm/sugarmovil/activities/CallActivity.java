@@ -72,7 +72,7 @@ public class CallActivity extends AppCompatActivity {
                 Log.d(TAG, "Editar llamada ");
                 // Edit Call Activity
                 Intent intentEditarLlamada = new Intent(CallActivity.this,
-                        EditCallActivity.class);
+                        AddCallActivity.class);
                 intentEditarLlamada.putExtra(Info.ID_LLAMADA_ACTUAL.name(), mLlamadaDetalle);
                 startActivity(intentEditarLlamada);
             }

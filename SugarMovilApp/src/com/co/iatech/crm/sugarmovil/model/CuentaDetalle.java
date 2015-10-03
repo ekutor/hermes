@@ -173,7 +173,9 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
     private String assigned_user_name;
     private String email_address;
     private String descuentocomercial2_c;
-
+    private String dkc2_c;
+    private String descuento11_c;
+    private String oemxenergy_c;
 
     public CuentaDetalle() {
       
@@ -328,6 +330,9 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
     	 setAssigned_user_name(validate(obj.getString("assigned_user_name")));
     	 setEmail_address(validate(obj.getString("email_address")));
     	 setDescuentocomercial2_c(validate(obj.getString("descuentocomercial2_c")));
+    	 setDkc2_c(validate(obj.getString("dkc2_c")));
+    	 setDescuento11_c(validate(obj.getString("descuento11_c")));
+    	 setOemxenergy_c(validate(obj.getString("oemxenergy_c")));
 	}
     
 
@@ -479,6 +484,9 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
 		setAssigned_user_name(validate(in.readString()));
 		setEmail_address(validate(in.readString()));
 		setDescuentocomercial2_c(validate(in.readString()));
+		setDkc2_c(validate(in.readString()));
+	   	setDescuento11_c(validate(in.readString()));
+	   	setOemxenergy_c(validate(in.readString()));
 	}
 
 	@Override
@@ -635,6 +643,9 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
         dest.writeString(getAssigned_user_name());
         dest.writeString(getEmail_address());
         dest.writeString(getDescuentocomercial2_c());
+        dest.writeString(this.getDkc2_c());
+        dest.writeString(this.getDescuento11_c());
+        dest.writeString(this.getOemxenergy_c());
     }
 
     public String getId() {
@@ -1811,6 +1822,31 @@ public class CuentaDetalle extends GenericBean implements Parcelable  {
 
 	public void setDescuentocomercial2_c(String descuentocomercial2_c) {
 		this.descuentocomercial2_c = descuentocomercial2_c;
+	}
+	
+
+	public String getDkc2_c() {
+		return dkc2_c;
+	}
+
+	public void setDkc2_c(String dkc2_c) {
+		this.dkc2_c = dkc2_c;
+	}
+
+	public String getDescuento11_c() {
+		return descuento11_c;
+	}
+
+	public void setDescuento11_c(String descuento11_c) {
+		this.descuento11_c = descuento11_c;
+	}
+
+	public String getOemxenergy_c() {
+		return oemxenergy_c;
+	}
+
+	public void setOemxenergy_c(String oemxenergy_c) {
+		this.oemxenergy_c = oemxenergy_c;
 	}
 
 	@Override

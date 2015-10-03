@@ -27,12 +27,14 @@ public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerO
      * Member Variables.
      */
     private Context mContext;
+    private String idCuentaAsociada;
     private ArrayList<Oportunidad> mDataset;
     private ArrayList<Oportunidad> mVisibleDataset;
 
-    public RecyclerOpportunitiesAdapter(Context context, ArrayList<Oportunidad> myDataset) {
+    public RecyclerOpportunitiesAdapter(Context context, ArrayList<Oportunidad> myDataset, String idCuentaAsociada) {
         mContext = context;
         mDataset = myDataset;
+        this.idCuentaAsociada = idCuentaAsociada;
         mVisibleDataset = mDataset;
     }
 
@@ -60,6 +62,7 @@ public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerO
                 // Oportunidad Activity
                 Intent intentOportunidad = new Intent(mContext,
                         OpportunityActivity.class);
+                intentOportunidad.putExtra(Info.CUENTA_ACTUAL.name(), idCuentaAsociada);
                 intentOportunidad.putExtra(Info.OPORTUNIDAD_SELECCIONADA.name(), oportunidad.getId());
                 mContext.startActivity(intentOportunidad);
             }

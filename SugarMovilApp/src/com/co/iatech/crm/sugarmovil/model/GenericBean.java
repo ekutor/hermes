@@ -13,8 +13,8 @@ public abstract class GenericBean {
 	
 	protected String validateNull(String data){
 		String d = "";
-		data = data.trim();
-		if(!"null".equalsIgnoreCase(data)){
+		if(data != null && !"null".equalsIgnoreCase(data)){
+			data = data.trim();
 			d = data;
 		}
 		return d;

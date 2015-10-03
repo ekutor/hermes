@@ -33,7 +33,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * Member Variables.
      */
-    private String mIdCuenta;
+    public static String cuentaActual;
     private CuentaDetalle mCuentaDetalle;
 
     /**
@@ -54,8 +54,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.tabs_activity_account);
       
         Intent intent = getIntent();
-        mIdCuenta = intent.getStringExtra(Info.CUENTA_ACTUAL.name());       
-        Log.d(TAG, "Id cuenta " + mIdCuenta);
+        cuentaActual = intent.getStringExtra(Info.CUENTA_ACTUAL.name());       
+        Log.d(TAG, "Id cuenta " + cuentaActual);
      	
          
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_account);
@@ -66,7 +66,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
      	
      	final ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager);
      	ViewPagerAdapter va = new ViewPagerAdapter(getSupportFragmentManager());
-     	va.setActualAccount(mIdCuenta);
+     	va.setActualAccount(cuentaActual);
      	mViewPager.setAdapter(va);
      	SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
      	mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.abc_search_url_text));   
@@ -231,28 +231,28 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 			Log.d(TAG, "Contactos x cuenta ");
 			Intent intent = new Intent(AccountActivity.this,
 					ListContactActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), cuentaActual);
 			startActivity(intent);
 
 		}else if(v.getId() == imageButtonOpps.getId()){
 			Log.d(TAG, "Oportunidades X Cuenta ");
 			Intent intent = new Intent(AccountActivity.this,
 					ListOpportunityActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), cuentaActual);
 			startActivity(intent);
 
 		}else if(v.getId() == imageButtonTasks.getId()){
 			Log.d(TAG, "Tareas X Cuenta ");
 			Intent intent = new Intent(AccountActivity.this,
 					ListTasksActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), cuentaActual);
 			startActivity(intent);
 
 		}else if(v.getId() == imageButtonCalls.getId()){
 			Log.d(TAG, "Llamadas X Cuenta ");
 			Intent intent = new Intent(AccountActivity.this,
 					ListCallsActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
+			intent.putExtra(Info.CUENTA_ACTUAL.name(), cuentaActual);
 			startActivity(intent);
 
 		}

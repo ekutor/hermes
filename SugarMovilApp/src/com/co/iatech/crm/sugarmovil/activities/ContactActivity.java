@@ -4,28 +4,32 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity implements View.OnClickListener{
 
     /**
      * Debug.
@@ -47,7 +51,7 @@ public class ContactActivity extends AppCompatActivity {
      * UI References.
      */
     private Toolbar mContactoToolbar;
-    private ImageButton mImageButtonEdit;
+    private ImageButton mImageButtonEdit,imageButtonAccounts;
     private LinearLayout mLayoutContenido;
 
     @Override
@@ -79,7 +83,10 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
         mImageButtonEdit.setVisibility(View.INVISIBLE);
-
+        
+        imageButtonAccounts = (ImageButton) findViewById(R.id.image_accounts);
+        imageButtonAccounts.setOnClickListener(this);
+        
         // Tarea obtener contacto
         mTareaObtenerContacto = new GetContactTask();
         mTareaObtenerContacto.execute(String.valueOf(mIdContacto));
@@ -188,6 +195,33 @@ public class ContactActivity extends AppCompatActivity {
         valorModificado.setText(contactoDetalle.getModified_user_name());
         TextView valorUsuario = (TextView) findViewById(R.id.valor_responsable);
         valorUsuario.setText(contactoDetalle.getAssigned_user_name());
+    }
+    
+    @Override
+	public void onClick(View v) {
+		
+		if(v.getId() == imageButtonAccounts.getId()){
+			 Log.d(TAG, "Cuenta de Contacto ");
+	         try{ 
+	            
+	            if( mContactoDetalle.getIdAccount() != null){
+	            						Intent intent = new Intent(ContactActivity.this,
+							AccountActivity.class);
+					intent.putExtra(Info.CONTACTO_ACTUAL.name(), mContactoDetalle.getIdAccount() );
+					this.startActivity(intent);
+	            }else{
+	            	
+	                 CharSequence text = "Este Contacto no Tiene Cuentas Asociadas";
+	                 int duration = Toast.LENGTH_SHORT;
+
+	                 Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+	                 toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 80);
+	                 toast.show();
+	            }
+	         }catch(Exception e ){
+	        	 Log.d("AcountsxContactTask", "Fallo al obtener la cuenta");
+	         }
+		}
     }
 
     /**

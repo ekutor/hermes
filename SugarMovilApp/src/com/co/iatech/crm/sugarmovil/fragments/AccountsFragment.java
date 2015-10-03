@@ -1,6 +1,7 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +28,8 @@ import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 
 public class AccountsFragment extends Fragment {
 	/**
@@ -44,7 +47,7 @@ public class AccountsFragment extends Fragment {
      */
     private GlobalClass mGlobalVariable;
     private String mUrl;
-    private ArrayList<Cuenta> mAccountsArray = new ArrayList<>();
+    private List<Cuenta> mAccountsArray = new ArrayList<Cuenta>();
 
     /**
      * UI References.
@@ -217,7 +220,7 @@ public class AccountsFragment extends Fragment {
         
                      mAccountsArray.add(new Cuenta(obj));
                  }
-
+                 ListsHolder.saveList(ListsHolderType.ACCOUNTS, mAccountsArray);
                  return true;
              } catch (Exception e) {
                  Log.d(TAG, "Buscar Cuentas Error: "

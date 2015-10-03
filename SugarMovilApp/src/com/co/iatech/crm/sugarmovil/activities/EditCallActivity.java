@@ -483,13 +483,8 @@ public class EditCallActivity extends AppCompatActivity {
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                    String id = obj.getString("id");
-                    String name = obj.getString("name");
-
-                    mNamesCapaignsArray.add(name);
-                    mCampaignsArray.add(new Campana(id, name));
-
+                    JSONObject obj = jArr.getJSONObject(i);  
+                    mCampaignsArray.add(new Campana(obj));
                 }
 
                 return true;

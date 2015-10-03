@@ -95,6 +95,16 @@
                 android:value=".AccountActivity" />
         </activity>
         
+         <activity
+            android:name=".activities.ListCallsActivity"
+            android:label="@string/title_activity_call"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.AccountActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AccountActivity" />
+        </activity>
+        
         <activity
             android:name=".activities.ListOpportunityActivity"
             android:label="@string/title_activity_opportunity"

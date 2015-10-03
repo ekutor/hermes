@@ -42,6 +42,7 @@ public class OpportunityActivity extends AppCompatActivity {
      * Member Variables.
      */
     private String mIdOportunidad;
+    private String cuentaAsociada;
     private OportunidadDetalle mOportunidadDetalle;
 
     /**
@@ -58,6 +59,9 @@ public class OpportunityActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mIdOportunidad = intent.getStringExtra(Info.OPORTUNIDAD_SELECCIONADA.name());
+        cuentaAsociada = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
+        
+        Log.d(TAG, "Id cuenat Asociada " + cuentaAsociada);
         Log.d(TAG, "Id oportunidad " + mIdOportunidad);
 
         // Main Toolbar
@@ -77,7 +81,8 @@ public class OpportunityActivity extends AppCompatActivity {
                 Log.d(TAG, "Editar oportunidad ");
                 // Edit Oportunidad Activity
                 Intent intentEditarOportunidad = new Intent(OpportunityActivity.this,
-                        EditOpportunityActivity.class);
+                        AddOpportunityActivity.class);
+          
                 intentEditarOportunidad.putExtra(Info.OPORTUNIDAD_SELECCIONADA.name(), mOportunidadDetalle);
                 startActivity(intentEditarOportunidad);
             }
@@ -129,12 +134,8 @@ public class OpportunityActivity extends AppCompatActivity {
         valorIluminacion.setText(oportunidadDetalle.getIluminacion_c());
         
         TextView valorMoneda = (TextView) findViewById(R.id.valor_moneda);
-        if(oportunidadDetalle.getAmount_usdollar() != null &&
-        		oportunidadDetalle.getAmount_usdollar().equals("0")){
-        	valorMoneda.setText("USD Dolares");
-        }else{
-        	valorMoneda.setText("COP Pesos");
-        }
+        valorMoneda.setText(ListsConversor.convert(ConversorsType.OPPORTUNITY_CURRENCY,
+        		oportunidadDetalle.getAmount_usdollar(), DataToGet.VALUE));
         
     }
 

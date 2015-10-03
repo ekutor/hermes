@@ -11,7 +11,7 @@ import com.co.iatech.crm.sugarmovil.model.converters.Converter;
 public abstract class ListConverter implements Converter{
 	protected Map<String,String> dataMap;
 	
-	public enum DataToGet { VALUE, CODE }
+	public enum DataToGet { VALUE, CODE, POS }
 	
 	
 	public ListConverter (){
@@ -35,6 +35,9 @@ public abstract class ListConverter implements Converter{
 					}
 					
 				}
+				break;
+			case POS:
+				
 				break;
 			default:
 				break;

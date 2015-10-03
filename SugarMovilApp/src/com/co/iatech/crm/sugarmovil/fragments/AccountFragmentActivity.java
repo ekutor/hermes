@@ -131,6 +131,7 @@ public class AccountFragmentActivity extends Fragment {
     
     
     public void ponerValores(CuentaDetalle cuentaDetalle) {
+    	try{
     	valorRazon.setText(cuentaDetalle.getName());
     	valorNit.setText(cuentaDetalle.getNit_c());
     	valorCodigo.setText(cuentaDetalle.getCod_alterno_c());
@@ -190,6 +191,9 @@ public class AccountFragmentActivity extends Fragment {
     	valorPromedio.setText(cuentaDetalle.getPrompago_c());
     	valorVencida.setText(cuentaDetalle.getCarteravencida_c());
     	valorAVencer.setText(cuentaDetalle.getCarteravencer_c());
+    	}catch(java.lang.NullPointerException ne){
+    		
+    	}
     }
     
     public void cargarComponentes(View view) {

@@ -1,12 +1,17 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de las campanas.
  */
-public class Campana implements Parcelable {
+public class Campana extends GenericBean implements Parcelable {
 
     public static final Creator<Campana> CREATOR
             = new Creator<Campana>() {
@@ -21,9 +26,9 @@ public class Campana implements Parcelable {
 
     private String id, name;
 
-    public Campana(String id, String nombre) {
-        setId(id);
-        setName(nombre);
+    public Campana(JSONObject obj) throws JSONException {
+    	 setId(validate(obj.getString("id")));
+         setName(validate(obj.getString("name")));
     }
 
     public Campana(Parcel in) {
@@ -57,4 +62,10 @@ public class Campana implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
+
+	@Override
+	public Map<String, String> getDataBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

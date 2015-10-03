@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,7 +11,7 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de los usuarios.
  */
-public class User implements Parcelable {
+public class User extends GenericBean implements Parcelable {
 
     public static final Creator<User> CREATOR
             = new Creator<User>() {
@@ -32,13 +34,19 @@ public class User implements Parcelable {
 
 
     public User(JSONObject obj) throws JSONException {
-    	setAuthenticate(obj.getString("auth"));
-        setId(obj.getString("idUsuario"));
-        setUser_name(obj.getString("user_name"));
-        setFirst_name(obj.getString("first_name"));
-        setLast_name(obj.getString("last_name"));
-        setIs_admin(obj.getString("is_admin"));
-        setUser_hash(obj.getString("hash"));
+    	
+        setId(validate(obj.getString("id")));
+        setUser_name(validate(obj.getString("user_name")));
+        setFirst_name(validate(obj.getString("first_name")));
+        setLast_name(validate(obj.getString("last_name")));
+        setIs_admin(validate(obj.getString("is_admin")));
+        try{
+	        setAuthenticate(obj.getString("auth"));
+	        setUser_hash(obj.getString("hash"));
+        }catch(Exception ne){
+        	setAuthenticate(false);
+        	setUser_hash("");
+        }
        
     }
     public User() {       
@@ -146,6 +154,11 @@ public class User implements Parcelable {
 
 	public void setIs_admin(String is_admin) {
 		this.is_admin = is_admin;
+	}
+	@Override
+	public Map<String, String> getDataBean() {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }

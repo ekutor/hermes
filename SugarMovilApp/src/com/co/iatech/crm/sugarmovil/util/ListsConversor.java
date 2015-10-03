@@ -8,7 +8,8 @@ import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToG
 
 public class ListsConversor {
     public enum ConversorsType { ZONE,DPTO,CHANNEL,OPPORTUNITY_MEDIUM, OPPORTUNITY_PROYECT,
-    	OPPORTUNITY_STAGE,OPPORTUNITY_COMUNICATIONS, OPPORTUNITY_ENERGY,OPPORTUNITY_ILUM }
+    	OPPORTUNITY_STAGE,OPPORTUNITY_COMUNICATIONS, OPPORTUNITY_ENERGY,OPPORTUNITY_ILUM,
+    	OPPORTUNITY_CURRENCY}
     
     private static ListConverter create(ConversorsType type){
     	ListConverter converter = null;
@@ -40,6 +41,9 @@ public class ListsConversor {
 			case OPPORTUNITY_ILUM:
 				converter = new ListOppIluminationConverter();
 			break;
+			case OPPORTUNITY_CURRENCY:
+				converter = new ListOppCurrencyConverter();
+			break;
 			default: 
 				break;
 		}
@@ -56,6 +60,22 @@ public class ListsConversor {
 		ListConverter converter = create(type);
 		return converter.getList(DataToGet.VALUE);
 	}
+	
+	public static int getPosItemOnList(ConversorsType type, String idItem) {
+		ListConverter converter = create(type);
+		List<String> list = converter.getList(DataToGet.VALUE);
+		String valueItem = converter.convert(idItem, DataToGet.VALUE);
+		int cont = -1;
+		for(String value: list){
+			cont++;
+			if(value.equals(valueItem)){
+				break;
+			}
+			
+		}
+		return cont;
+	}
+	
 	
 	public static List<String> getKeysList(ConversorsType type) {
 		ListConverter converter = create(type);

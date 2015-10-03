@@ -24,6 +24,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.tasks.UsersTask;
 import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.core.Info;
@@ -72,20 +73,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d(TAG, "CREANDOOO");
+        Log.d(TAG, ControlConnection.hash );
+        Log.d(TAG, ControlConnection.device_id);
+        Log.d(TAG, ControlConnection.userId);
         // Variable Global
         mGlobalVariable = (GlobalClass) getApplicationContext();
         //obtener Usuario Autenticado
-        if(mGlobalVariable.getUsuarioAutenticado() != null){
+        
 	        Intent intent = getIntent();
-	        User u = (User) intent.getExtras().get(Info.USUARIO.name());
-	        Log.d(TAG, u.getId());
-	        ControlConnection.hash = u.getUser_hash();
-	        mGlobalVariable.setUsuarioAutenticado(u);
-        }
+//	        User u = (User) intent.getExtras().get(Info.USUARIO.name());
+//	        Log.d(TAG, u.getId());
+//	        if(u != null){
+//	        	ControlConnection.hash = u.getUser_hash();
+//	        	ControlConnection.userId = u.getId();
+//	        }
+//	        mGlobalVariable.setUsuarioAutenticado(u);
+        
      
         mSelectedButton = mGlobalVariable.getmSelectedButton();
-        
+
         
         // Main Toolbar
         mMainToolbar = (Toolbar) findViewById(R.id.toolbar_main);
@@ -125,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         mDataList.add(new DrawerItem("Llamadas", R.drawable.ic_calls));
         mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
         mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
+        mDataList.add(new DrawerItem("Salir", R.drawable.ic_action_cancel));
 //        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
 
 
@@ -230,6 +238,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 5:
                 fragment = TasksFragment.newInstance();
+                break;
+            case 6:
+                System.exit(0);
                 break;
 //            case 6:
 //                fragment = ClientsFragment.newInstance();

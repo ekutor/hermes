@@ -116,13 +116,16 @@
     <string name="cuenta_titulo_est_mercadeo">ESTRATEGIAS DE MERCADEO</string>
     <string name="cuenta_moeller">Autom. Moeller</string>
     <string name="cuenta_enerlux">Enerlux</string>
-    <string name="cuenta_delta">Delta</string>
-    <string name="cuenta_dkc">DKC</string>
+    <string name="cuenta_delta">Delta 1</string>
+    <string name="cuenta_delta2">Delta 2</string>
+    <string name="cuenta_dkc">DKC 1</string>
+    <string name="cuenta_dkc2">DKC 2</string>
     <string name="cuenta_leviton">Leviton WID</string>
+    <string name="cuenta_barras">Barras Flexibles</string>
     <string name="cuenta_vcai">W-VCAI</string>
     <string name="cuenta_wohner">Wohner</string>
     <string name="cuenta_lp">Comun. LP Dolares</string>
-    <string name="cuenta_eaton">Maniobra Eaton</string>
+    <string name="cuenta_eaton">Maniobra EATON</string>
     <string name="cuenta_xenergy">OEM Xenergy</string>
     <string name="cuenta_min_eaton">Precios Minimos EATON</string>
     <string name="cuenta_desc_ad">Desc. Adicional:</string>
@@ -136,14 +139,32 @@
     <string name="cuenta_por_bon_bi_leviton">% Bonificacion Bimestral Leviton:</string>
     <string name="cuenta_por_bon_tri">% Bonificacion Trimestral:</string>
     <string name="cuenta_por_bon_compra">Bonif. por Compra</string>
-    <string name="cuenta_por_bon_eaton">Bonificacion Eaton</string>
+    <string name="cuenta_por_bon_eaton">Maniobra Eaton</string>
     <string name="cuenta_por_bon_leviton">Bonificacion Leviton</string>
-    <string name="cuenta_desp_rem">Despacho Remsion por Cierre</string>
+    <string name="cuenta_desp_rem">Des Remsion x Cierre</string>
     <string name="cuenta_no_cobro">No Cobro Anticipo</string>
     <string name="cuenta_estrategia1">Estrategia 1:</string>
     <string name="cuenta_estrategia2">Estrategia 2:</string>
     <string name="cuenta_estrategia3">Estrategia 3:</string>
     <string name="cuenta_estrategia4">Estrategia 4:</string>
+    
+    <string name="cuenta_exh">Exhibidor:</string>
+    <string name="cuenta_entrega_exh1">Entrega Exhibidor 1:</string>
+    <string name="cuenta_entrega_exh2">Entrega Exhibidor 2:</string>
+    <string name="cuenta_entrega_exh3">Entrega Exhibidor 3:</string>
+    <string name="cuenta_acta_entrega">Acta Entrega:</string>
+    <string name="cuenta_imagen">Imagen:</string>
+    <string name="cuenta_laumayer">Laumayer Apoya tu Empresa:</string>
+    <string name="cuenta_entrega1">Entrega 1:</string>
+    <string name="cuenta_entrega2">Entrega 2:</string>
+    <string name="cuenta_pieza1">Pieza 1:</string>
+    <string name="cuenta_pieza2">Pieza 2:</string>
+    <string name="cuenta_dia_marca">Día de la Marca:</string>
+    <string name="cuenta_fecha_marca">Fecha Día de la Marca:</string>
+    <string name="cuenta_placa_aniv">Placa Aniversario:</string>
+    <string name="cuenta_fecha_placa">Fecha Placa:</string>
+    <string name="cuenta_cert">Certificaciones:</string>
+    <string name="cuenta_otras_estrat">Otras Estrategias:</string>
 
     <!-- Contacto Activity -->
     <string name="title_activity_contact">CONTACTO</string>
@@ -233,6 +254,8 @@
     <string name="oportunidad_iluminacion">Iluminación:</string>
     <string name="dialog_activity_opportunity">OPORTUNIDAD CREADA</string>
     <string name="dialog_edit_activity_opportunity">OPORTUNIDAD EDITADA</string>
+    <string name="dialog_activity_opportunity_error">OPORTUNIDAD NO CREADA</string>
+    <string name="dialog_message_opportunity_error">fallo la creacion de  la oportunidad</string>
     <string name="dialog_message_opportunity">Se creó la oportunidad con exito</string>
     <string name="dialog_edit_message_opportunity">Se editó la oportunidad con exito</string>
     <string name="dialog_ok_opportunity">Ok</string>

@@ -60,6 +60,7 @@ public class ListOpportunityActivity extends AppCompatActivity  {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mRecyclerViewAdapter;
     private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
+    private ActionButton mActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +161,20 @@ public class ListOpportunityActivity extends AppCompatActivity  {
                 return false;
             }
         });
+        
+        // Action Button
+        mActionButton = (ActionButton) findViewById(R.id.action_button);
+        mActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create Opportunity Activity
+                Intent intentCrearOportunidad = new Intent(ListOpportunityActivity.this,
+                        AddOpportunityActivity.class);
+                intentCrearOportunidad.putExtra(Info.CUENTA_ACTUAL.name(), idCuentaActual);
+               startActivity(intentCrearOportunidad);
+            }
+        });
+
 
         // Tarea obtener select
         mTareaObtenerOportunidades = new GetOportunitiesxAccountTask();
@@ -220,7 +235,8 @@ public class ListOpportunityActivity extends AppCompatActivity  {
 
             if (success) {
                 if (oportunitiesXAccount.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerOpportunitiesAdapter(ListOpportunityActivity.this, oportunitiesXAccount);
+                    mRecyclerViewAdapter = new RecyclerOpportunitiesAdapter(ListOpportunityActivity.this,
+                    		oportunitiesXAccount,idCuentaActual);
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 } else {
                 	progressDialog.setMessage("Esta cuenta no tiene oportunidades asociadas.");

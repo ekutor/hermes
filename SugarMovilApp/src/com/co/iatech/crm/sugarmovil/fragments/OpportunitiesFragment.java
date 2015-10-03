@@ -247,7 +247,7 @@ public class OpportunitiesFragment extends Fragment {
 
             if (success) {
                 if (mOpportunitiesArray.size() > 0) {
-                    mRecyclerViewOpportunitiesAdapter = new RecyclerOpportunitiesAdapter(getActivity(), mOpportunitiesArray);
+                    mRecyclerViewOpportunitiesAdapter = new RecyclerOpportunitiesAdapter(getActivity(), mOpportunitiesArray, null);
                     mRecyclerViewOpportunities.setAdapter(mRecyclerViewOpportunitiesAdapter);
                 } else {
                     Log.d(TAG,

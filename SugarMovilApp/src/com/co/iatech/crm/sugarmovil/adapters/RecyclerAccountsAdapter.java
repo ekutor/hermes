@@ -1,6 +1,7 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,13 +30,13 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
      */
     private Context mContext;
     private String mUrl;
-    private ArrayList<Cuenta> mDataset;
-    private ArrayList<Cuenta> mVisibleDataset;
+    private List<Cuenta> mDataset;
+    private List<Cuenta> mVisibleDataset;
 
-    public RecyclerAccountsAdapter(Context context, String url, ArrayList<Cuenta> myDataset) {
+    public RecyclerAccountsAdapter(Context context, String url, List<Cuenta> mAccountsArray) {
         mContext = context;
         mUrl = url;
-        mDataset = myDataset;
+        mDataset = mAccountsArray;
         mVisibleDataset = mDataset;
     }
 

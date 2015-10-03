@@ -1,5 +1,9 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.animation.Animator;
@@ -22,11 +26,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.tasks.CampaignsTask;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 
 public class LoginActivity extends FragmentActivity implements View.OnFocusChangeListener {
 
@@ -73,6 +80,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
         
     	ControlConnection.android_id = android_id;
     	ControlConnection.device_id = device_id;
+    	Log.d("LoginActivity", "device_id: "+ControlConnection.device_id);
     	
         // Progress Views
         mVistaFormularioIngreso = findViewById(R.id.login);
@@ -213,26 +221,51 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 
             // Intento de login usuarios
             try {
-            	//TODO esto es por pruebas
-        /*   	
-            	ControlConnection.addHeader("usuario", user);
-            	ControlConnection.addHeader("password", passwordUser);
-            	
-            	login = ControlConnection.getInfo(TypeInfoServer.loginUsuarios);
 
-                // Creacion de usuario
-                JSONObject obj = new JSONObject(login);
-                Boolean auth = new Boolean(obj.getString("auth"));
-            	
-                if(auth){
-                	mUsuario = new User(obj);
-                	 return true;
-                }else{
-                	mensajeAutenticacion = obj.getString("message");
-                	return false;
-                }*/
+//            	ControlConnection.addHeader("usuario", user);
+//            	ControlConnection.addHeader("password", passwordUser);
+//            	
+//            	login = ControlConnection.getInfo(TypeInfoServer.loginUsuarios);
+//
+//                // Creacion de usuario
+//                JSONObject obj = new JSONObject(login);
+//                Boolean auth = new Boolean(obj.getString("auth"));
+//            	
+//                if(auth){
+//                	mUsuario = new User(obj);
+//                	ControlConnection.hash = mUsuario.getUser_hash();
+//    	        	ControlConnection.userId = mUsuario.getId();
+//                	 return true;
+//                }else{
+//                	mensajeAutenticacion = obj.getString("message");
+//                	return false;
+//                }
 
-            	mUsuario =  User.createUserProof(); return true;
+            	mUsuario =  User.createUserProof(); 
+            	ControlConnection.hash = mUsuario.getUser_hash();
+	        	ControlConnection.userId = mUsuario.getId();
+	        	
+	        	Log.d("LoginActivity", "hashSeteado: "+ControlConnection.hash);
+	        
+	        	
+            	if(mUsuario.isAuthenticate()){
+                	List<User>usersArray = new ArrayList<User>();
+                	Log.d("LoginActivity", "Obteniendo Usuarios");
+                	String resultado  = ControlConnection.getInfo(TypeInfoServer.getUsers);
+                    
+                 
+                    JSONObject jObj = new JSONObject(resultado);
+
+                    JSONArray jArr = jObj.getJSONArray("results");
+                    for (int i = 0; i < jArr.length(); i++) {
+                        JSONObject obj = jArr.getJSONObject(i);
+                        Log.d("UsersTask", "creando usuario "+i);
+                        usersArray.add(new User(obj));
+                    }
+                    ListsHolder.saveList(ListsHolderType.USERS, usersArray);
+            	}
+
+            	return true;
             } catch (Exception e) {
                 Log.d(TAG, "Login Usuarios Error: "
                         + e.getClass().getName() + ":" + e.getMessage());
@@ -245,9 +278,13 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
         	loginTask = null;
 
             if (success) {
+            	CampaignsTask c = new CampaignsTask();
+            	c.execute();
                 Intent intentMain = new Intent(LoginActivity.this,
                         MainActivity.class);
                 ControlConnection.hash = mUsuario.getUser_hash();
+         
+	        	ControlConnection.userId = mUsuario.getId();
                 Log.d(TAG, "hash seteado: "
                         + mUsuario.getUser_hash());
                 intentMain.putExtra(Info.USUARIO.name(), mUsuario);
