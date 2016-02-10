@@ -1,16 +1,10 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,37 +13,32 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.tasks.GetOpportunitiesTask;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerOpportunitiesAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.Oportunidad;
-import com.squareup.picasso.Picasso;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
+import com.squareup.picasso.Picasso;
 
 
-public class ListOpportunityActivity extends AppCompatActivity  {
+public class ListOpportunityActivity extends AppCompatActivity implements OpportunitiesModuleActions  {
     /**
      * Debug.
      */
-    private static final String TAG = "ListContactActivity";
+    private static final String TAG = "ListOpportunityActivity";
 
     /**
      * Tasks.
      */
-    private GetOportunitiesxAccountTask mTareaObtenerOportunidades = null;
-
-    /**
-     * Member Variables.
-     */
-    private String idCuentaActual;
-    private ArrayList<Oportunidad> oportunitiesXAccount = new ArrayList<>();
+    private GetOpportunitiesTask obtenerOportunidades = null;
 
     /**
      * UI References.
@@ -57,10 +46,10 @@ public class ListOpportunityActivity extends AppCompatActivity  {
     private Toolbar mToolbar;
     private TextView mToolbarTextView;
     private SearchView mSearchView;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mRecyclerViewAdapter;
-    private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
-    private ActionButton mActionButton;
+    private RecyclerView recyclerView;
+  
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private ActionButton actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +60,6 @@ public class ListOpportunityActivity extends AppCompatActivity  {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
-        Log.d(TAG, "Id cuenta " + idCuentaActual);
 
         // Main Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar_list_opportunity);
@@ -80,7 +67,7 @@ public class ListOpportunityActivity extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         mToolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_opportunity);
-//        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
+
 
         // SearchView
         mSearchView = (SearchView) findViewById(R.id.search_view_list_opportunity);
@@ -104,11 +91,11 @@ public class ListOpportunityActivity extends AppCompatActivity  {
         searchText.setHintTextColor(Color.GRAY);
 
         // Recycler
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_list_opportunity);
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_list_opportunity);
+        recyclerView.setHasFixedSize(true);
 
-        mRecyclerViewLayoutManager = new LinearLayoutManager(ListOpportunityActivity.this);
-        mRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
+        recyclerViewLayoutManager = new LinearLayoutManager(ListOpportunityActivity.this);
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
         // Eventos
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -127,7 +114,7 @@ public class ListOpportunityActivity extends AppCompatActivity  {
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).flushFilter();
+                    ((RecyclerContactsAdapter) recyclerView.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -141,7 +128,7 @@ public class ListOpportunityActivity extends AppCompatActivity  {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(query);
+                    ((RecyclerContactsAdapter) recyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -153,111 +140,61 @@ public class ListOpportunityActivity extends AppCompatActivity  {
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(newText);
+                    ((RecyclerContactsAdapter) recyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error añadiendo el filtro de busqueda");
+                    Log.d(TAG, "Error anhadiendo el filtro de busqueda");
                 }
 
                 return false;
             }
         });
         
-        // Action Button
-        mActionButton = (ActionButton) findViewById(R.id.action_button);
-        mActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create Opportunity Activity
-                Intent intentCrearOportunidad = new Intent(ListOpportunityActivity.this,
-                        AddOpportunityActivity.class);
-                intentCrearOportunidad.putExtra(Info.CUENTA_ACTUAL.name(), idCuentaActual);
-               startActivity(intentCrearOportunidad);
-            }
-        });
+        this.applyActions();
 
-
-        // Tarea obtener select
-        mTareaObtenerOportunidades = new GetOportunitiesxAccountTask();
-        mTareaObtenerOportunidades.execute(idCuentaActual);
+        //Cargar Oportunidades
+        obtenerOportunidades = new GetOpportunitiesTask(this, recyclerView);
+        obtenerOportunidades.execute();
     }
+    
+    @Override
+	public ActionButton getActionButton() {
+		return actionButton;
+	}
 
-    /**
-     * Representa una tarea asincrona de obtencion de oportunidades por cuenta.
-     */
-    public class GetOportunitiesxAccountTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog progressDialog;
+	@Override
+	public ImageButton getEditButton() {
+		return null;
+	}
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(ListOpportunityActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando Oportunidades...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
 
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-            	
-            	//Params
-            	
-            	 String idCuenta = params[0];
-            	 
-                // Resultado
-                String resultado = null;
 
-                // Intento de obtener datos
-                ControlConnection.addHeader("idAccount", idCuenta);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getAccountOpportunities);
-                oportunitiesXAccount.clear();
+	@Override
+	public String getAssignedUser() {
+		return "";
+	}
 
-                JSONObject jObj = new JSONObject(resultado);
 
-                JSONArray jArr = jObj.getJSONArray("results");
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                    oportunitiesXAccount.add(new Oportunidad(obj));
-                }
+	@Override
+	public Parcelable getBean() {
+		return null;
+	}
 
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, "Buscar Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
-                return false;
-            }
-        }
 
-        @Override
-        protected void onPostExecute(final Boolean success) {
-        	mTareaObtenerOportunidades = null;
-           
-
-            if (success) {
-                if (oportunitiesXAccount.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerOpportunitiesAdapter(ListOpportunityActivity.this,
-                    		oportunitiesXAccount,idCuentaActual);
-                    mRecyclerView.setAdapter(mRecyclerViewAdapter);
-                } else {
-                	progressDialog.setMessage("Esta cuenta no tiene oportunidades asociadas.");
-                    Log.d(TAG,
-                            "No hay valores: "
-                                    + oportunitiesXAccount.size());
-                }
-            }
-            try {
-				Thread.sleep(5000);
-				progressDialog.dismiss();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-            
-        }
-
-        @Override
-        protected void onCancelled() {
-        	mTareaObtenerOportunidades = null;
-            Log.d(TAG, "Cancelado ");
-        }
+	@Override
+	public void applyActions() {
+		actionButton = (ActionButton) findViewById(R.id.action_button); 
+		ActionsStrategy.definePermittedActions(this,(GlobalClass) getApplicationContext());
+	}
+	
+    @Override
+    public void onBackPressed() {
+    	String prevID = ActivitiesMediator.getInstance().getPreviusID();
+    	ActivitiesMediator.getInstance().returnPrevID();
+    	Log.d(TAG, "BAck Pressed "+prevID);
+    	super.onBackPressed();
     }
 }

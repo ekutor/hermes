@@ -3,7 +3,6 @@ package com.co.iatech.crm.sugarmovil.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ContactActivity;
-import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 
 public class RecyclerContactsAdapter extends RecyclerView.Adapter<RecyclerContactsAdapter.ViewHolder> {
@@ -60,10 +59,9 @@ public class RecyclerContactsAdapter extends RecyclerView.Adapter<RecyclerContac
             @Override
             public void onClick(View v) {
                 // Contact Activity
-                Intent intentContact = new Intent(mContext,
-                        ContactActivity.class);
-                intentContact.putExtra(Info.CONTACTO_ACTUAL.name(), contacto.getId());
-                mContext.startActivity(intentContact);
+            	ActivitiesMediator.getInstance().setActualID( contacto.getId());
+            	ActivitiesMediator.getInstance().showActivity(mContext,Modules.CONTACTS);
+ 
             }
         });
 

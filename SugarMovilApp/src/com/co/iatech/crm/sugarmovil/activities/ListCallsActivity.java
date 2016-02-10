@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,21 +20,27 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
 
-public class ListCallsActivity extends AppCompatActivity  {
+public class ListCallsActivity extends AppCompatActivity implements ContactsModuleActions {
     /**
      * Debug.
      */
@@ -59,6 +66,8 @@ public class ListCallsActivity extends AppCompatActivity  {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mRecyclerViewAdapter;
     private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
+    
+    private ActionButton actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,7 @@ public class ListCallsActivity extends AppCompatActivity  {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
+        idCuentaActual = intent.getStringExtra(Info.ID.name());
         Log.d(TAG, "Id cuenta " + idCuentaActual);
 
         // Main Toolbar
@@ -78,7 +87,6 @@ public class ListCallsActivity extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         mToolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_call);
-//        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 
         // SearchView
         mSearchView = (SearchView) findViewById(R.id.search_view_list_call);
@@ -159,10 +167,49 @@ public class ListCallsActivity extends AppCompatActivity  {
                 return false;
             }
         });
-
-        // Tarea obtener select
+        
+        this.applyActions();
         mTareaObtenerLlamadas= new GetCallsxAccountTask();
         mTareaObtenerLlamadas.execute(idCuentaActual);
+    }
+    
+    @Override
+   	public ActionButton getActionButton() {
+   		return actionButton;
+   	}
+
+   	@Override
+   	public ImageButton getEditButton() {
+   		return null;
+   	}
+
+   	@Override
+   	public Modules getModule() {
+   		return MODULE;
+   	}
+
+
+   	@Override
+   	public String getAssignedUser() {
+   		return "";
+   	}
+
+
+   	@Override
+   	public Parcelable getBean() {
+   		return null;
+   	}
+
+
+   	@Override
+   	public void applyActions() {
+   		actionButton = (ActionButton) findViewById(R.id.action_button); 
+   		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+   	}
+    @Override
+    public void onBackPressed() {
+    	ActivitiesMediator.getInstance().returnPrevID();
+    	super.onBackPressed();
     }
 
     /**
@@ -193,7 +240,7 @@ public class ListCallsActivity extends AppCompatActivity  {
 
                 // Intento de obtener datos
                 ControlConnection.addHeader("idAccount", idCuenta);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getAccountCalls);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getAccountCalls, ListCallsActivity.this);
                 LlamadasXAccount.clear();
 
                 JSONObject jObj = new JSONObject(resultado);

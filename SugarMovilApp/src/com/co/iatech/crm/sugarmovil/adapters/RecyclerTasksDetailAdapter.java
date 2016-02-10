@@ -3,7 +3,6 @@ package com.co.iatech.crm.sugarmovil.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.TaskActivity;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.Tarea;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 
 public class RecyclerTasksDetailAdapter extends RecyclerView.Adapter<RecyclerTasksDetailAdapter.ViewHolder> {
@@ -60,11 +58,10 @@ public class RecyclerTasksDetailAdapter extends RecyclerView.Adapter<RecyclerTas
         holder.mItemTarea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tarea Activity
-                Intent intentTarea = new Intent(mContext,
-                        TaskActivity.class);
-                intentTarea.putExtra(Info.ID_TAREA.name(), tarea);
-                mContext.startActivity(intentTarea);
+            	ActivitiesMediator.getInstance().addObjectInfo(tarea);
+             	ActivitiesMediator.getInstance().showActivity(mContext, Modules.TASKS);
+                 
+               
             }
         });
 

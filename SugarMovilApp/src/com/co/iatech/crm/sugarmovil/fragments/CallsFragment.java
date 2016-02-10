@@ -1,8 +1,6 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,19 +17,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
-public class CallsFragment extends Fragment {
+public class CallsFragment extends Fragment implements CallsModuleActions {
     /**
      * Debug.
      */
@@ -39,13 +43,13 @@ public class CallsFragment extends Fragment {
     /**
      * Tasks.
      */
-    private GetCallsTask mTareaObtenerLlamadas = null;
+    private GetCallsTask obtenerLlamadas = null;
 
     /**
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private ArrayList<Llamada> mCallsArray = new ArrayList<>();
+
 
     /**
      * UI References.
@@ -56,7 +60,7 @@ public class CallsFragment extends Fragment {
     private RecyclerView mRecyclerViewCalls;
     private RecyclerView.Adapter mRecyclerViewCallsAdapter;
     private RecyclerView.LayoutManager mRecyclerViewCallsLayoutManager;
-    private ActionButton mActionButton;
+    private ActionButton actionButton;
 
     public CallsFragment() {
         // Required empty public constructor
@@ -89,7 +93,7 @@ public class CallsFragment extends Fragment {
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setmSelectedButton(3);
+        mGlobalVariable.setSelectedItem(3);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
@@ -104,9 +108,6 @@ public class CallsFragment extends Fragment {
 
         mRecyclerViewCallsLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewCalls.setLayoutManager(mRecyclerViewCallsLayoutManager);
-
-        // Action Button
-//        mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
 
         // Eventos
         mMainSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -159,25 +160,31 @@ public class CallsFragment extends Fragment {
                 return false;
             }
         });
+ 
+       this.applyActions();
 
-//        mActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Create Client Activity
-//                Intent intentCrearLlamada = new Intent(getActivity(),
-//                        AddCallActivity.class);
-//                getActivity().startActivity(intentCrearLlamada);
-//            }
-//        });
-
-        // Tarea para consultar llamadas
-        mTareaObtenerLlamadas = new GetCallsTask();
-        mTareaObtenerLlamadas.execute();
-
+        if(DataManager.getInstance().callsInfo.size() <= 0){
+        	// Tarea para consultar llamadas
+        	Log.d(TAG,"Cargando Llamadas desde BACKEND");
+        	 // Tarea para consultar llamadas
+            obtenerLlamadas = new GetCallsTask();
+            obtenerLlamadas.execute();
+            
+        }else{
+        	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
+        	showCalls();
+        }
+        
         return mRootView;
     }
 
-    @Override
+    
+    private void showCalls() {
+    	mRecyclerViewCallsAdapter = new RecyclerCallsAdapter(getActivity(), DataManager.getInstance().callsInfo);
+        mRecyclerViewCalls.setAdapter(mRecyclerViewCallsAdapter);
+	}
+
+	@Override
     public void onResume() {
         super.onResume();
         mMainSearchView.clearFocus();
@@ -186,10 +193,7 @@ public class CallsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Tarea para consultar llamadas
-        mTareaObtenerLlamadas = new GetCallsTask();
-        mTareaObtenerLlamadas.execute();
+        showCalls();
     }
 
     @Override
@@ -197,6 +201,40 @@ public class CallsFragment extends Fragment {
         super.onPause();
     }
 
+    @Override
+	public ActionButton getActionButton() {
+		return actionButton;
+	}
+
+	@Override
+	public ImageButton getEditButton() {
+		return null;
+	}
+
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
+
+
+	@Override
+	public String getAssignedUser() {
+		return "";
+	}
+
+
+	@Override
+	public Parcelable getBean() {
+		return null;
+	}
+
+
+	@Override
+	public void applyActions() {
+		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
+		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
+		ActionsStrategy.definePermittedActions(this, this.getActivity(), gc);
+	}
     /**
      * Representa una tarea asincrona de obtencion de oportunidades.
      */
@@ -220,16 +258,16 @@ public class CallsFragment extends Fragment {
 
                 // Intento de obtener llamadas
 
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getCalls);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getCalls, getActivity());
             
-                mCallsArray.clear();
+                DataManager.getInstance().callsInfo.clear();
 
                 JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    mCallsArray.add(new Llamada(obj));
+                    DataManager.getInstance().callsInfo.add(new Llamada(obj));
                 }
 
                 return true;
@@ -242,25 +280,25 @@ public class CallsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mTareaObtenerLlamadas = null;
+            obtenerLlamadas = null;
             progressDialog.dismiss();
 
             if (success) {
-                if (mCallsArray.size() > 0) {
-                    mRecyclerViewCallsAdapter = new RecyclerCallsAdapter(getActivity(), mCallsArray);
-                    mRecyclerViewCalls.setAdapter(mRecyclerViewCallsAdapter);
+                if (DataManager.getInstance().callsInfo.size() > 0) {
+                    showCalls();
                 } else {
                     Log.d(TAG,
                             "No hay Llamadas: "
-                                    + mCallsArray.size());
+                                    + DataManager.getInstance().callsInfo.size());
                 }
             }
         }
 
         @Override
         protected void onCancelled() {
-            mTareaObtenerLlamadas = null;
+            obtenerLlamadas = null;
             Log.d(TAG, "Cancelado ");
         }
     }
+
 }

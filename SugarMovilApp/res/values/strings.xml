@@ -98,14 +98,14 @@
     <string name="cuenta_destino_pendientes">Destino:</string>
     <string name="cuenta_motivo">Motivo:</string>
     <string name="cuenta_titulo_cartera">INFORMACIÓN DE CARTERA</string>
-    <string name="cuenta_cupo">Cupo:</string>
+    <string name="cuenta_cupo">Cupo Disponible:</string>
     <string name="cuenta_cupo_cr">Cupo CR:</string>
-    <string name="cuenta_total">Total:</string>
-    <string name="cuenta_condicion">Condición:</string>
-    <string name="cuenta_plazo">Plazo:</string>
-    <string name="cuenta_promedio">Promedio:</string>
-    <string name="cuenta_vencida">Vencida:</string>
-    <string name="cuenta_a_vencer">A Vencer:</string>
+    <string name="cuenta_total">Total Cartera:</string>
+    <string name="cuenta_condicion">Condición Pago:</string>
+    <string name="cuenta_plazo">Plazo Pago:</string>
+    <string name="cuenta_promedio">Promedio Pago:</string>
+    <string name="cuenta_vencida">Cartera Vencida:</string>
+    <string name="cuenta_a_vencer">Cartera a Vencer:</string>
     
      
 
@@ -248,17 +248,22 @@
     <string name="oportunidad_paso">Próximo paso:</string>
     <string name="oportunidad_descripcion">Descripción:</string>
     <string name="oportunidad_asignado_a">Asignado a:</string>
+    <string name="oportunidad_asignado_text">SELECCIONE...</string>
     <string name="oportunidad_titulo_marcas">MARCAS</string>
     <string name="oportunidad_energia">Energía:</string>
     <string name="oportunidad_comunicaciones">Comunicaciones:</string>
     <string name="oportunidad_iluminacion">Iluminación:</string>
-    <string name="dialog_activity_opportunity">OPORTUNIDAD CREADA</string>
-    <string name="dialog_edit_activity_opportunity">OPORTUNIDAD EDITADA</string>
-    <string name="dialog_activity_opportunity_error">OPORTUNIDAD NO CREADA</string>
-    <string name="dialog_message_opportunity_error">fallo la creacion de  la oportunidad</string>
-    <string name="dialog_message_opportunity">Se creó la oportunidad con exito</string>
-    <string name="dialog_edit_message_opportunity">Se editó la oportunidad con exito</string>
-    <string name="dialog_ok_opportunity">Ok</string>
+    
+    
+    <string name="dialog_activity_created">CREADA</string>
+    <string name="dialog_activity_edited">EDITADA</string>
+    <string name="dialog_activity_error">NO CREADA</string>
+    <string name="dialog_activity_edit_error">NO EDITADA</string>
+    <string name="dialog_message_error">fallo la creacion de</string>
+    <string name="dialog_message_edit_error">fallo la edicion de</string>
+    <string name="dialog_message_save_ok">Se creó</string>
+    <string name="dialog_message_edit_ok">Se editó</string>
+    <string name="dialog_ok">Ok</string>
     
 
     <!-- Llamada Activity -->
@@ -267,17 +272,15 @@
     <string name="title_activity_edit_call">EDITAR LLAMADA</string>
     <string name="llamada_titulo_vision">VISIÓN GENERAL</string>
     <string name="llamada_asunto">Asunto:</string>
-    <string name="llamada_direccion">Estado:</string>
     <string name="llamada_estado">Estado:</string>
     <string name="llamada_inicio">Inicio:</string>
-    <string name="llamada_duracion">Duración:</string>
+    <string name="llamada_duracion">Duración(horas/minutos):</string>
     <string name="llamada_resultado">Resultado:</string>
     <string name="llamada_descripcion">Descripción:</string>
     <string name="llamada_asignado_a">Asignado a:</string>
     <string name="llamada_cuenta">Cuenta:</string>
     <string name="llamada_campana">Campaña:</string>
-    <string name="dialog_activity_call">LLAMADA CREADA</string>
-    <string name="dialog_edit_activity_call">LLAMADA EDITADA</string>
+
     <string name="dialog_message_call">Se creó la llamada con exito</string>
     <string name="dialog_edit_message_call">Se editó la llamada con exito</string>
     <string name="dialog_ok_call">Ok</string>
@@ -348,6 +351,7 @@
     <string name="tarea_fecha_inicio">Fecha Inicio:</string>
     <string name="tarea_fecha_vence">Fecha Vencimiento:</string>
     <string name="tarea_fecha">Seleccionar Fecha</string>
+    <string name="tarea_hora">Definir Hora</string>
     <string name="tarea_contacto">Contacto:</string>
     <string name="tarea_estimado">Trabajo Estimado en días:</string>
     <string name="tarea_prioridad">Prioridad:</string>
@@ -356,9 +360,18 @@
     <string name="tarea_titulo_relacion">RELACIÓN</string>
     <string name="tarea_tipo">Tipo:</string>
     <string name="tarea_nombre">Nombre:</string>
-    <string name="dialog_activity_task">TAREA CREADA</string>
-    <string name="dialog_edit_activity_task">TAREA EDITADA</string>
+
     <string name="dialog_message_task">Se creó la tarea con exito</string>
     <string name="dialog_edit_message_task">Se editó la tarea con exito</string>
     <string name="dialog_ok_task">Ok</string>
+    
+     <!-- Users Dialog  -->
+    <string name="dialog_users_title">Buscar Usuario a Asignar:</string>
+    <string name="dialog_users_buscar_nombre">Nombre:</string>
+    <string name="dialog_users_buscar_apellido">Apellido: </string>
+    <string name="dialog_users_button_buscar">Buscar</string>
+    <string name="dialog_users_button_sel">Seleccionar</string>
+    <string name="dialog_users_button_borrar">Borrar</string>
+     <string name="dialog_users_button_cancelar">Cancelar</string>
+   
 </resources>

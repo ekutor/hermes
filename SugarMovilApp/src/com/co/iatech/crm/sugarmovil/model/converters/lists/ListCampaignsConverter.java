@@ -1,7 +1,8 @@
 package com.co.iatech.crm.sugarmovil.model.converters.lists;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import android.util.Log;
 
 import com.co.iatech.crm.sugarmovil.model.Campana;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
@@ -25,12 +26,14 @@ public class ListCampaignsConverter extends ListModelConverter{
 	@Override
 	public String convert(String value, DataToGet dataType) {
 		String resp= "";
+		boolean  finded = false;
 		List<Campana> lista = (List<Campana>) ListsHolder.getList(typelist);
 		switch(dataType){
 			case VALUE:
 				if(lista != null){
 					for(Campana c : lista){
-						if(c.getId().contains(value)){
+						if(c.getId().equals(value)){
+							finded = true;
 							resp = c.getName();
 							break;
 						}
@@ -41,7 +44,8 @@ public class ListCampaignsConverter extends ListModelConverter{
 				
 				if(lista != null){
 					for(Campana c : lista){
-						if(c.getName().contains(value)){
+						if(c.getName().equals(value)){
+							finded = true;
 							resp = c.getId();
 							break;
 						}
@@ -49,16 +53,23 @@ public class ListCampaignsConverter extends ListModelConverter{
 				}
 				break;
 			case POS:
-				int cont = -1;
-				if(lista != null){
+				int cont = 0;
+				
+				if(lista != null && value != null){
 					
 					for(Campana c : lista){
 						cont++;
 						if(c.getId().equals(value)){
+							finded = true;
+							Log.d("BusquedaPosCAmp","posEnc "+cont+" "+c.getId()+" "+c.getName());
 							break;
 						}
 					}
 				}
+				if(!finded){
+					cont = 0;
+				}
+				Log.d("BusquedaPosCAmp","valor buscado "+value+" pos "+cont);
 				resp = String.valueOf(cont);
 				break;
 			default:
@@ -69,12 +80,13 @@ public class ListCampaignsConverter extends ListModelConverter{
 
 	@Override
 	public List<String> getListInfo() {
-		List<String> data = new ArrayList<String>();
-		List<Campana> lista = (List<Campana>) ListsHolder.getList(typelist);
-		for(Campana c : lista){
-			data.add(c.getName());
+		if(data.size()<= 0){
+			List<Campana> lista = (List<Campana>) ListsHolder.getList(typelist);
+			data.add("SELECCIONAR");
+			for(Campana c : lista){
+				data.add(c.getName());
+			}
 		}
-		data.add("SELECCIONAR");
 		return data;
 	}
 	

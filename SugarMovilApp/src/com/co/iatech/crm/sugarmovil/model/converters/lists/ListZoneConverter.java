@@ -6,8 +6,9 @@ import java.util.HashMap;
 
 public class ListZoneConverter extends ListConverter{
 
+	private static ListZoneConverter instance;
 	
-	public ListZoneConverter (){
+	private ListZoneConverter (){
 		dataMap = new HashMap<String,String>();
 		dataMap.put("1", "ANTIOQUIA");
 		dataMap.put("2", "BOGOTA CENTRO");
@@ -16,7 +17,14 @@ public class ListZoneConverter extends ListConverter{
 		dataMap.put("5", "SANTANDER");
 		dataMap.put("6", "EJE CAFETERO");
 	}
-
+	
+	public static ListZoneConverter getInstance(){
+		if(instance == null){
+			instance = new ListZoneConverter();
+		}
+		
+		return instance;
+	}
 
 	
 }

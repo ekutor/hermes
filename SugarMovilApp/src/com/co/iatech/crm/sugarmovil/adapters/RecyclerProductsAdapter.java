@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.ProductActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Producto;
 
@@ -27,12 +29,12 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
     /**
      * Member Variables.
      */
-    private Context mContext;
+    private Context context;
     private ArrayList<Producto> mDataset;
     private ArrayList<Producto> mVisibleDataset;
 
     public RecyclerProductsAdapter(Context context, ArrayList<Producto> myDataset) {
-        mContext = context;
+        context = context;
         mDataset = myDataset;
         mVisibleDataset = mDataset;
     }
@@ -60,11 +62,10 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
             @Override
             public void onClick(View v) {
                 // Account Activity
-                Intent intentProducto = new Intent(mContext,
-                        ProductActivity.class);
-                intentProducto.putExtra(Info.ID_PRODUCTO.name(), producto.getId());
-                intentProducto.putExtra(Info.CANT_PRODUCTO.name(), producto.getSaldo());
-                mContext.startActivity(intentProducto);
+            	ActivitiesMediator.getInstance().setActualID( producto.getId());
+                ActivitiesMediator.getInstance().showActivity(context,Modules.PRODUCTS);
+               
+                //intentProducto.putExtra(Info.PRODUCTO_CANTIDAD.name(), producto.getSaldo());
             }
         });
 

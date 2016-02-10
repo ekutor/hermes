@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model.converters.lists;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 public class ListOppEnergyConverter extends ListConverter{
 
-	public ListOppEnergyConverter (){
-		dataMap = new HashMap<String,String>();
+	private static ListOppEnergyConverter instance;
+	
+	private ListOppEnergyConverter (){
+		dataMap = new LinkedHashMap<String,String>();
+		dataMap.put(defaultListKey, defaultListValue);
 		dataMap.put("CABUR", "CABUR");
 		dataMap.put("CIRPROTEC", "CIRPROTEC");
 		dataMap.put("DELTA", "DELTA");	
@@ -23,4 +26,11 @@ public class ListOppEnergyConverter extends ListConverter{
 		dataMap.put("WOHNER", "WOHNER");	
 	}
 	
+	
+	public static ListOppEnergyConverter getInstance(){
+		if(instance == null){
+			instance = new ListOppEnergyConverter();
+		}	
+		return instance;
+	}
 }

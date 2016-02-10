@@ -9,40 +9,62 @@ import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToG
 public class ListsConversor {
     public enum ConversorsType { ZONE,DPTO,CHANNEL,OPPORTUNITY_MEDIUM, OPPORTUNITY_PROYECT,
     	OPPORTUNITY_STAGE,OPPORTUNITY_COMUNICATIONS, OPPORTUNITY_ENERGY,OPPORTUNITY_ILUM,
-    	OPPORTUNITY_CURRENCY}
+    	OPPORTUNITY_CURRENCY,CALLS_STATUS,CALLS_DIRECTION,CALLS_MINS_DURATION,CALLS_RESULT,
+    	TASKS_STATUS, TASKS_TYPE, TASKS_PRIORITY }
     
     private static ListConverter create(ConversorsType type){
     	ListConverter converter = null;
     	switch(type){
 			case  DPTO: 
-				converter = new ListDptoConverter();
+				converter = ListDptoConverter.getInstance();
 				break;
 			case  CHANNEL: 
-				converter = new ListChannelConverter();
+				converter = ListChannelConverter.getInstance();
 				break;
 			case  ZONE: 
-				converter = new ListZoneConverter();
+				converter = ListZoneConverter.getInstance();
 				break;
 			case  OPPORTUNITY_MEDIUM: 
-				converter = new ListOppMediumConverter();
+				converter = ListOppMediumConverter.getInstance();
 				break;
 			case  OPPORTUNITY_PROYECT: 
-				converter = new ListOppProyTypeConverter();
+				converter = ListOppProyTypeConverter.getInstance();
 				break;
 			case  OPPORTUNITY_STAGE: 
-				converter = new ListOppProyStageConverter();
+				converter = ListOppProyStageConverter.getInstance();
 				break;
 			case OPPORTUNITY_ENERGY:
-				converter = new ListOppEnergyConverter();
+				converter = ListOppEnergyConverter.getInstance();
 			break;
 			case OPPORTUNITY_COMUNICATIONS:
-				converter = new ListOppComunicationsConverter();
+				converter = ListOppComunicationsConverter.getInstance();
 			break;
 			case OPPORTUNITY_ILUM:
-				converter = new ListOppIluminationConverter();
+				converter = ListOppIluminationConverter.getInstance();
 			break;
 			case OPPORTUNITY_CURRENCY:
-				converter = new ListOppCurrencyConverter();
+				converter = ListOppCurrencyConverter.getInstance();
+			break;
+			case CALLS_STATUS:
+				converter = ListCallStatusConverter.getInstance();
+			break;
+			case CALLS_DIRECTION:
+				converter = ListCallDirectionConverter.getInstance();
+			break;
+			case CALLS_MINS_DURATION:
+				converter = ListCallDurationConverter.getInstance();
+			break;
+			case CALLS_RESULT:
+				converter = ListCallResultConverter.getInstance();
+			break;
+			case TASKS_STATUS:
+				converter = ListTasksStatusConverter.getInstance();
+			break;
+			case TASKS_TYPE:
+				converter = ListTasksRelationsConverter.getInstance();
+			break;
+			case TASKS_PRIORITY:
+				converter = ListTasksPriorityConverter.getInstance();
 			break;
 			default: 
 				break;
@@ -66,12 +88,17 @@ public class ListsConversor {
 		List<String> list = converter.getList(DataToGet.VALUE);
 		String valueItem = converter.convert(idItem, DataToGet.VALUE);
 		int cont = -1;
+		boolean encontrado = false;
 		for(String value: list){
 			cont++;
 			if(value.equals(valueItem)){
+				encontrado = true;
 				break;
 			}
 			
+		}
+		if( !encontrado ){
+			cont = 0;
 		}
 		return cont;
 	}

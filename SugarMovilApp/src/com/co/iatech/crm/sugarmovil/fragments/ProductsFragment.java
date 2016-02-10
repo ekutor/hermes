@@ -87,7 +87,7 @@ public class ProductsFragment extends Fragment {
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setmSelectedButton(4);
+        mGlobalVariable.setSelectedItem(4);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
@@ -199,7 +199,7 @@ public class ProductsFragment extends Fragment {
                 String productos = null;
 
                 // Intento de obtener productos
-                productos  = ControlConnection.getInfo(TypeInfoServer.getProductos);
+                productos  = ControlConnection.getInfo(TypeInfoServer.getProductos, getActivity());
                 
                 mProductsArray.clear();
 

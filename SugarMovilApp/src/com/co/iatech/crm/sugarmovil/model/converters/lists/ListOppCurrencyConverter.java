@@ -1,16 +1,15 @@
 package com.co.iatech.crm.sugarmovil.model.converters.lists;
 
-import java.util.HashMap;
-
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import java.util.LinkedHashMap;
 
 
 public class ListOppCurrencyConverter extends ListConverter{
-
-	public ListOppCurrencyConverter (){
-		dataMap = new HashMap<String,String>();
-		dataMap.put("0", "USD Dolares");
-		dataMap.put("1", "COP Pesos");
+	
+	private static ListOppCurrencyConverter instance;
+	private ListOppCurrencyConverter (){
+		dataMap = new LinkedHashMap<String,String>();
+		dataMap.put("0", "COP Pesos");
+		dataMap.put("1", "USD Dolares");
 	}
 	
 	@Override
@@ -20,6 +19,13 @@ public class ListOppCurrencyConverter extends ListConverter{
 		}
 		return super.convert(value, dataType);
 	}
-
+	
+	public static ListOppCurrencyConverter getInstance(){
+		if(instance == null){
+			instance = new ListOppCurrencyConverter();
+		}
+		
+		return instance;
+	}
 	
 }

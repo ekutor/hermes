@@ -51,7 +51,11 @@ public class TareaDetalle extends GenericBean implements Parcelable {
     private String assigned_user_name;
     private String contact_name;
     private String parent_name;
-
+    
+    public TareaDetalle(){
+    	
+    }
+    
     public TareaDetalle(JSONObject obj) throws JSONException {
 		setId(validate(obj.getString("id")));;
 	    setName(validate(obj.getString("name")));;
@@ -184,9 +188,6 @@ public class TareaDetalle extends GenericBean implements Parcelable {
         return status;
     }
     
-    public String getStatus(LanguageType language) {
-        return convert(language, status, ConverterType.STATUS);
-    }
     
     public void setStatus(String status) {
         this.status = status;
@@ -246,10 +247,6 @@ public class TareaDetalle extends GenericBean implements Parcelable {
 
     public void setContact_id(String contact_id) {
         this.contact_id = contact_id;
-    }
-
-    public String getPriority(LanguageType language) {
-        return convert(language, priority, ConverterType.PRIORITY);
     }
     
     public String getPriority() {

@@ -1,8 +1,5 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,15 +19,19 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModule;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
-public class ContactsFragment extends Fragment {
+public class ContactsFragment extends Fragment implements ContactsModule{
     /**
      * Debug.
      */
@@ -39,14 +40,12 @@ public class ContactsFragment extends Fragment {
     /**
      * Tasks.
      */
-    private GetContactsTask mTareaObtenerContactos = null;
+    private GetContactsTask obtenerContactos = null;
 
     /**
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-
-    private ArrayList<Contacto> mContactsArray = new ArrayList<>();
 
     /**
      * UI References.
@@ -57,7 +56,6 @@ public class ContactsFragment extends Fragment {
     private RecyclerView mRecyclerViewContacts;
     private RecyclerView.Adapter mRecyclerViewContactsAdapter;
     private RecyclerView.LayoutManager mRecyclerViewContactsLayoutManager;
-    private ActionButton mActionButton;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -90,7 +88,7 @@ public class ContactsFragment extends Fragment {
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setmSelectedButton(1);
+        mGlobalVariable.setSelectedItem(1);
 
         // Main Toolbar
         
@@ -108,8 +106,6 @@ public class ContactsFragment extends Fragment {
         mRecyclerViewContactsLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewContacts.setLayoutManager(mRecyclerViewContactsLayoutManager);
 
-        // Action Button
-//        mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
 
         // Eventos
         mMainSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -161,25 +157,31 @@ public class ContactsFragment extends Fragment {
                 return false;
             }
         });
+        
 
-//        mActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Create Contact Activity
-//                Intent intentCrearContacto = new Intent(getActivity(),
-//                        AddContactActivity.class);
-//                getActivity().startActivity(intentCrearContacto);
-//            }
-//        });
-
-        // Tarea para consultar contactos
-        mTareaObtenerContactos = new GetContactsTask();
-        mTareaObtenerContactos.execute();
+        
+        if(DataManager.getInstance().contactsInfo.size() <= 0){
+        	// Tarea para consultar llamadas
+        	Log.d(TAG,"Cargando Contactos desde BACKEND");
+        	 // Tarea para consultar llamadas
+        	obtenerContactos = new GetContactsTask();
+            obtenerContactos.execute();
+            
+        }else{
+        	Log.d(TAG,"Cargando Contactos desde MEMORIA");
+        	showContacts();
+        }
+      
 
         return mRootView;
     }
 
-    @Override
+    private void showContacts() {
+    	mRecyclerViewContactsAdapter = new RecyclerContactsAdapter(getActivity(), DataManager.getInstance().contactsInfo);
+        mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
+	}
+
+	@Override
     public void onResume() {
         super.onResume();
         mMainSearchView.clearFocus();
@@ -189,9 +191,7 @@ public class ContactsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // Tarea para consultar contactos
-        mTareaObtenerContactos = new GetContactsTask();
-        mTareaObtenerContactos.execute();
+        showContacts();
     }
 
     @Override
@@ -222,16 +222,16 @@ public class ContactsFragment extends Fragment {
 
                 // Intento de obtener contactos
 
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getContacts);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getContacts, getActivity());
               
-                mContactsArray.clear();
+                DataManager.getInstance().contactsInfo.clear();
 
                 JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    mContactsArray.add(new Contacto(obj));
+                    DataManager.getInstance().contactsInfo.add(new Contacto(obj));
                 }
 
                 return true;
@@ -244,25 +244,27 @@ public class ContactsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mTareaObtenerContactos = null;
+            obtenerContactos = null;
             progressDialog.dismiss();
 
             if (success) {
-                if (mContactsArray.size() > 0) {
-                    mRecyclerViewContactsAdapter = new RecyclerContactsAdapter(getActivity(), mContactsArray);
-                    mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
+                if (DataManager.getInstance().contactsInfo.size() > 0) {
+                	
+                    showContacts();
                 } else {
                     Log.d(TAG,
                             "No hay Contactos: "
-                                    + mContactsArray.size());
+                                    + DataManager.getInstance().contactsInfo.size());
                 }
             }
         }
 
         @Override
         protected void onCancelled() {
-            mTareaObtenerContactos = null;
+            obtenerContactos = null;
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
 }

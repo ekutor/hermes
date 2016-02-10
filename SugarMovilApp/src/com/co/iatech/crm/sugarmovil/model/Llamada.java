@@ -1,19 +1,21 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.co.iatech.crm.sugarmovil.model.GenericBean.ConverterType;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
+import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
 
 /**
  * Representa un objeto parcelable para el manejo de las llamadas.
  */
-public class Llamada extends GenericBean implements Parcelable {
+public class Llamada extends GenericBean implements Parcelable, Visitable {
 
     public static final Creator<Llamada> CREATOR
             = new Creator<Llamada>() {
@@ -138,7 +140,10 @@ public class Llamada extends GenericBean implements Parcelable {
     	setCampaign_id(validate(in.readString()));
     }
 
-    @Override
+    public Llamada() {
+	}
+
+	@Override
     public int describeContents() {
         return 0;
     }
@@ -302,11 +307,6 @@ public class Llamada extends GenericBean implements Parcelable {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    public String getStatus(LanguageType language) {
-        return convert(language, status, ConverterType.CALL_STATUS);
-    }
-    
 
     public String getDirection() {
         return direction;
@@ -469,8 +469,48 @@ public class Llamada extends GenericBean implements Parcelable {
     }
 
 	@Override
+	public void accept(DataVisitor visitor) {
+		visitor.add(this);
+	}
+
+	@Override
 	public Map<String, String> getDataBean() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id",id);
+		data.put("name",name);
+		data.put("date_entered",date_entered);
+		data.put("date_modified",date_modified);
+		data.put("modified_user_id",modified_user_id);
+		data.put("created_by",created_by);
+		data.put("description",description);
+		data.put("deleted",deleted);
+		data.put("assigned_user_id",assigned_user_id);
+		data.put("duration_hours",duration_hours);
+		data.put("duration_minutes",duration_minutes);
+		data.put("date_start",date_start);
+		data.put("date_end",date_end);
+		data.put("parent_type",parent_type);
+		data.put("status",status);
+		data.put("direction",direction);
+		data.put("parent_id",parent_id);
+		data.put("reminder_time",reminder_time);
+		data.put("email_reminder_time",email_reminder_time);
+		data.put("email_reminder_sent",email_reminder_sent);
+		data.put("outlook_id",outlook_id);
+		data.put("repeat_type",repeat_type);
+		data.put("repeat_interval",repeat_interval);
+		data.put("repeat_dow",repeat_dow);
+		data.put("repeat_until",repeat_until);
+		data.put("repeat_count",repeat_count);
+		data.put("repeat_parent_id",repeat_parent_id);
+		data.put("recurring_source",recurring_source);
+		data.put("id_c",id_c);
+		data.put("resultadodelallamada_c",resultadodelallamada_c);
+		data.put("created_by_name",created_by_name);
+		data.put("assigned_user_name",assigned_user_name);
+		data.put("parent_name",parent_name);
+		data.put("campaign_name",campaign_name);
+		data.put("campaign_id",campaign_id);
+		return data;
 	}
 }

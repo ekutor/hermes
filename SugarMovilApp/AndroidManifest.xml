@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.co.iatech.crm.sugarmovil"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="2"
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="19"
@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".util.GlobalClass"
+        android:name="com.co.iatech.crm.sugarmovil.util.GlobalClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -55,9 +55,19 @@
                 android:value=".MainActivity" />
         </activity>
         
-        <activity
-            android:name=".activities.EditOpportunityActivity"
-            android:label="@string/title_activity_opportunity"
+        <activity 
+            android:name=".activities.AddOpportunityActivity"
+            android:label="@string/title_activity_create_opportunity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
+        <activity 
+            android:name=".activities.TaskActivity"
+            android:label="@string/title_activity_task"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
@@ -75,15 +85,16 @@
                 android:value=".MainActivity" />
         </activity>
         
-         <activity
-            android:name=".activities.EditCallActivity"
-            android:label="@string/title_activity_edit_call"
+         <activity 
+            android:name=".activities.AddCallActivity"
+            android:label="@string/title_activity_create_call"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.CallActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CallActivity" />
+                android:value=".MainActivity" />
         </activity>
+        
         
          <activity
             android:name=".activities.ListContactActivity"
@@ -128,26 +139,6 @@
         <activity
             android:name=".activities.ProductActivity"
             android:label="@string/title_activity_product"
-            android:launchMode="singleTop"
-            android:parentActivityName=".activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        
-        <activity 
-            android:name=".activities.TaskActivity"
-            android:label="@string/title_activity_task"
-            android:launchMode="singleTop"
-            android:parentActivityName=".activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        
-        <activity 
-            android:name=".activities.AddOpportunityActivity"
-            android:label="@string/title_activity_create_opportunity"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity">
             <meta-data

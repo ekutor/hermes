@@ -1,17 +1,15 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,20 +17,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.AddOpportunityActivity;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerOpportunitiesAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
-public class OpportunitiesFragment extends Fragment {
+public class OpportunitiesFragment extends Fragment implements OpportunitiesModuleActions {
     /**
      * Debug.
      */
@@ -47,8 +49,7 @@ public class OpportunitiesFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private ArrayList<Oportunidad> mOpportunitiesArray = new ArrayList<>();
-
+    
     /**
      * UI References.
      */
@@ -58,7 +59,8 @@ public class OpportunitiesFragment extends Fragment {
     private RecyclerView mRecyclerViewOpportunities;
     private RecyclerView.Adapter mRecyclerViewOpportunitiesAdapter;
     private RecyclerView.LayoutManager mRecyclerViewOpportunitiesLayoutManager;
-    private ActionButton mActionButton;
+    private ActionButton actionButton;
+
 
     public OpportunitiesFragment() {
         // Required empty public constructor
@@ -90,7 +92,7 @@ public class OpportunitiesFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mGlobalVariable.setmSelectedButton(2);
+        mGlobalVariable.setSelectedItem(2);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
@@ -106,8 +108,7 @@ public class OpportunitiesFragment extends Fragment {
         mRecyclerViewOpportunitiesLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewOpportunities.setLayoutManager(mRecyclerViewOpportunitiesLayoutManager);
 
-        // Action Button
-        mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
+        
 
         // Eventos
         mMainSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -160,21 +161,18 @@ public class OpportunitiesFragment extends Fragment {
                 return false;
             }
         });
-
-        mActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create Opportunity Activity
-                Intent intentCrearOportunidad = new Intent(getActivity(),
-                        AddOpportunityActivity.class);
-                getActivity().startActivity(intentCrearOportunidad);
-            }
-        });
-
-        // Tarea para consultar oportunidades
-        mTareaObtenerOportunidades = new GetOpportunitiesTask();
-        mTareaObtenerOportunidades.execute();
-
+     
+        this.applyActions();
+        if(DataManager.getInstance().opportunitiesInfo.size() <= 0){
+        	// Tarea para consultar oportunidades
+        	Log.d(TAG,"Cargando Oportunidades desde BACKEND");
+	        mTareaObtenerOportunidades = new GetOpportunitiesTask();
+	        mTareaObtenerOportunidades.execute();
+        
+        }else{
+        	Log.d(TAG,"Cargando Oportunidades desde MEMORIA");
+        	showOpprotunities();
+        }
         return mRootView;
     }
 
@@ -187,16 +185,49 @@ public class OpportunitiesFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Tarea para consultar oportunidades
-        mTareaObtenerOportunidades = new GetOpportunitiesTask();
-        mTareaObtenerOportunidades.execute();
+        showOpprotunities();
     }
 
     @Override
     public void onPause() {
         super.onPause();
     }
+    
+    @Override
+	public ActionButton getActionButton() {
+		return actionButton;
+	}
+
+	@Override
+	public ImageButton getEditButton() {
+		return null;
+	}
+
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
+
+
+	@Override
+	public String getAssignedUser() {
+		return "";
+	}
+
+
+	@Override
+	public Parcelable getBean() {
+		return null;
+	}
+
+
+	@Override
+	public void applyActions() {
+		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
+		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
+		ActionsStrategy.definePermittedActions(this, this.getActivity(), gc);
+	}
+   
 
     /**
      * Representa una tarea asincrona de obtencion de oportunidades.
@@ -221,15 +252,15 @@ public class OpportunitiesFragment extends Fragment {
 
                 // Intento de obtener oportunidades
 
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getOpportunities);
-                mOpportunitiesArray.clear();
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getOpportunities, getActivity());
+                DataManager.getInstance().opportunitiesInfo.clear();
 
                 JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    mOpportunitiesArray.add(new Oportunidad(obj));
+                    DataManager.getInstance().opportunitiesInfo.add(new Oportunidad(obj));
                 }
 
                 return true;
@@ -246,13 +277,12 @@ public class OpportunitiesFragment extends Fragment {
             progressDialog.dismiss();
 
             if (success) {
-                if (mOpportunitiesArray.size() > 0) {
-                    mRecyclerViewOpportunitiesAdapter = new RecyclerOpportunitiesAdapter(getActivity(), mOpportunitiesArray, null);
-                    mRecyclerViewOpportunities.setAdapter(mRecyclerViewOpportunitiesAdapter);
+                if (DataManager.getInstance().opportunitiesInfo.size() > 0) {
+                	showOpprotunities();
                 } else {
                     Log.d(TAG,
                             "No hay Oportunidades: "
-                                    + mOpportunitiesArray.size());
+                                    + DataManager.getInstance().opportunitiesInfo.size());
                 }
             }
         }
@@ -263,4 +293,12 @@ public class OpportunitiesFragment extends Fragment {
             Log.d(TAG, "Cancelado ");
         }
     }
+
+	public void showOpprotunities() {
+	    mRecyclerViewOpportunitiesAdapter = new RecyclerOpportunitiesAdapter(getActivity(), DataManager.getInstance().opportunitiesInfo);
+        mRecyclerViewOpportunities.setAdapter(mRecyclerViewOpportunitiesAdapter);
+		
+	}
+
+
 }

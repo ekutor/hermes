@@ -5,8 +5,17 @@ import java.util.HashMap;
 
 public class ListDptoConverter extends ListConverter{
 	
+	private static ListDptoConverter instance;
 	
-	public ListDptoConverter (){
+	public static ListDptoConverter getInstance(){
+		if(instance == null){
+			instance = new ListDptoConverter();
+		}
+		
+		return instance;
+	}
+	
+	private ListDptoConverter (){
 		dataMap = new HashMap<String,String>();
 		dataMap.put("91","AMAZONAS");
 		dataMap.put("05", "ANTIOQUIA");

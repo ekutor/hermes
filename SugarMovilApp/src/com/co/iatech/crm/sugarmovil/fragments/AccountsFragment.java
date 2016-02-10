@@ -1,8 +1,5 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,6 +23,7 @@ import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerAccountsAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder;
@@ -47,7 +45,7 @@ public class AccountsFragment extends Fragment {
      */
     private GlobalClass mGlobalVariable;
     private String mUrl;
-    private List<Cuenta> mAccountsArray = new ArrayList<Cuenta>();
+    
 
     /**
      * UI References.
@@ -94,7 +92,7 @@ public class AccountsFragment extends Fragment {
          mGlobalVariable = (GlobalClass) getActivity()
                  .getApplicationContext();
 
-         mGlobalVariable.setmSelectedButton(0);
+         mGlobalVariable.setSelectedItem(0);
          
 
          // Main Toolbar
@@ -167,23 +165,28 @@ public class AccountsFragment extends Fragment {
              }
          });
 
-//         mActionButton.setOnClickListener(new View.OnClickListener() {
-//             @Override
-//             public void onClick(View v) {
-//                 // Create Account Activity
-////                 Intent intentCrearCuenta = new Intent(getActivity(),
-////                         AddAccountActivity.class);
-////                 getActivity().startActivity(intentCrearCuenta);
-//             }
-//         });
 
          // Tarea para consultar cuentas
-         mTareaObtenerCuentas = new GetAccountsTask();
-         mTareaObtenerCuentas.execute();
+  
+         Log.d(TAG, "tamaño  "+DataManager.getInstance().accountsInfo.size());
+         if(DataManager.getInstance().accountsInfo.size() <= 0){
+        
+        	 mTareaObtenerCuentas = new GetAccountsTask();
+        	 mTareaObtenerCuentas.execute();
+        	 
+         }else{
+        	 this.showAccounts();
+         }
 
          
          return mRootView;
      }
+     
+     public void showAccounts() {
+ 		mRecyclerViewAccountsAdapter = new RecyclerAccountsAdapter(this.getActivity(),DataManager.getInstance().accountsInfo);
+         mRecyclerViewAccounts.setAdapter(mRecyclerViewAccountsAdapter);
+ 		
+ 	}
      
      /**
       * Representa una tarea asincrona de obtencion de cuentas.
@@ -207,10 +210,10 @@ public class AccountsFragment extends Fragment {
                  String resultado = null;
 
                  // Intento de obtener cuentas
-
-                 resultado  = ControlConnection.getInfo(TypeInfoServer.getAccounts);
+                 Log.d(TAG, "Obteniendo cuentas ");
+                 resultado  = ControlConnection.getInfo(TypeInfoServer.getAccounts, getActivity());
               
-                 mAccountsArray.clear();
+                 DataManager.getInstance().accountsInfo.clear();
 
                  JSONObject jObj = new JSONObject(resultado);
 
@@ -218,9 +221,9 @@ public class AccountsFragment extends Fragment {
                  for (int i = 0; i < jArr.length(); i++) {
                      JSONObject obj = jArr.getJSONObject(i);
         
-                     mAccountsArray.add(new Cuenta(obj));
+                     DataManager.getInstance().accountsInfo.add(new Cuenta(obj));
                  }
-                 ListsHolder.saveList(ListsHolderType.ACCOUNTS, mAccountsArray);
+                 ListsHolder.saveList(ListsHolderType.ACCOUNTS, DataManager.getInstance().accountsInfo);
                  return true;
              } catch (Exception e) {
                  Log.d(TAG, "Buscar Cuentas Error: "
@@ -235,13 +238,12 @@ public class AccountsFragment extends Fragment {
              progressDialog.dismiss();
 
              if (success) {
-                 if (mAccountsArray.size() > 0) {
-                     mRecyclerViewAccountsAdapter = new RecyclerAccountsAdapter(getActivity(), mUrl, mAccountsArray);
-                     mRecyclerViewAccounts.setAdapter(mRecyclerViewAccountsAdapter);
+                 if (DataManager.getInstance().accountsInfo.size() > 0) {
+                     showAccounts();
                  } else {
                      Log.d(TAG,
                              "No hay Cuentas: "
-                                     + mAccountsArray.size());
+                                     + DataManager.getInstance().accountsInfo.size());
                  }
              }
          }
@@ -252,5 +254,7 @@ public class AccountsFragment extends Fragment {
              Log.d(TAG, "Cancelado ");
          }
      }
+
+	
 
 }

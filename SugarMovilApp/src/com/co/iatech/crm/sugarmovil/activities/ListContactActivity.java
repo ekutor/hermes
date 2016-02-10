@@ -32,7 +32,7 @@ import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.squareup.picasso.Picasso;
 
 
-public class ListContactActivity extends AppCompatActivity  {
+public class ListContactActivity extends AppCompatActivity {
     /**
      * Debug.
      */
@@ -70,7 +70,7 @@ public class ListContactActivity extends AppCompatActivity  {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
+        idCuentaActual = intent.getStringExtra(Info.ID.name());
         Log.d(TAG, "Id cuenta " + idCuentaActual);
 
         // Main Toolbar
@@ -79,7 +79,6 @@ public class ListContactActivity extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         mToolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_contact);
-//        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 
         // SearchView
         mSearchView = (SearchView) findViewById(R.id.search_view_list_contact);
@@ -174,6 +173,12 @@ public class ListContactActivity extends AppCompatActivity  {
         setResult(RESULT_OK, returnIntent);
         finish();
     }
+    
+    @Override
+    public void onBackPressed() {
+    	ActivitiesMediator.getInstance().returnPrevID();
+    	super.onBackPressed();
+    }
 
     /**
      * Representa una tarea asincrona de obtencion de contactos.
@@ -203,7 +208,7 @@ public class ListContactActivity extends AppCompatActivity  {
 
                 // Intento de obtener datos
                 ControlConnection.addHeader("idAccount", idCuenta);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getContactsxAccount);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getContactsxAccount, ListContactActivity.this);
                
                 mContactsArray.clear();
 

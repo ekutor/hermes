@@ -10,6 +10,8 @@ import com.co.iatech.crm.sugarmovil.model.converters.Converter;
 
 public abstract class ListConverter implements Converter{
 	protected Map<String,String> dataMap;
+	protected final String defaultListValue = "SELECCIONAR";
+	protected final String defaultListKey = "NULL";
 	
 	public enum DataToGet { VALUE, CODE, POS }
 	

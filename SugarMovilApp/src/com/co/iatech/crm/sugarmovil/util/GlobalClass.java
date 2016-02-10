@@ -7,22 +7,23 @@ import android.app.Application;
 
 public class GlobalClass extends Application {
 	
-    // Global Variables
-    private int mSelectedButton;
     private User usuarioAutenticado;
+    private String androidId, deviceId;
+    private int selectedItem;
     
     public GlobalClass(){
     	
-    }
+    }	
+    
+    
+	public int getSelectedItem() {
+		return selectedItem;
+	}
 
 
-	public int getmSelectedButton() {
-        return mSelectedButton;
-    }
-
-    public void setmSelectedButton(int mSelectedButton) {
-        this.mSelectedButton = mSelectedButton;
-    }
+	public void setSelectedItem(int selectedItem) {
+		this.selectedItem = selectedItem;
+	}
 
 
 	public User getUsuarioAutenticado() {
@@ -32,6 +33,32 @@ public class GlobalClass extends Application {
 
 	public void setUsuarioAutenticado(User usuarioAutenticado) {
 		this.usuarioAutenticado = usuarioAutenticado;
+	}
+
+
+	public String getAndroidId() {
+		return androidId;
+	}
+
+
+	public void setAndroidId(String androidId) {
+		this.androidId = androidId;
+	}
+
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+
+	public void setAuthParams(String android_id, String device_id) {
+		deviceId = device_id;
+		androidId = android_id;
 	}
     
     

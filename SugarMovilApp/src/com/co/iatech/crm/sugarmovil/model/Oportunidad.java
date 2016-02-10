@@ -8,10 +8,13 @@ import org.json.JSONObject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
+import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
+
 /**
  * Representa un objeto parcelable para el manejo de las oportunidades.
  */
-public class Oportunidad extends GenericBean implements Parcelable {
+public class Oportunidad extends GenericBean implements Parcelable, Visitable {
 
     public static final Creator<Oportunidad> CREATOR
             = new Creator<Oportunidad>() {
@@ -29,6 +32,11 @@ public class Oportunidad extends GenericBean implements Parcelable {
     public Oportunidad(JSONObject obj ) throws JSONException {
         setId(validate(obj.getString("id")));
         setName(validate(obj.getString("name")));
+    }
+    
+    public Oportunidad(OportunidadDetalle obj ) throws JSONException {
+        setId(obj.getId_c());
+        setName(obj.getName());
     }
 
     public Oportunidad(Parcel in) {
@@ -68,5 +76,10 @@ public class Oportunidad extends GenericBean implements Parcelable {
 	public Map<String, String> getDataBean() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void accept(DataVisitor visitor) {
+		visitor.add(this);
 	}
 }

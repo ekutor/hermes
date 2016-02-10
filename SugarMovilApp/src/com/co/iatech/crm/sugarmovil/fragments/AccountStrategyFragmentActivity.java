@@ -7,14 +7,11 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
@@ -35,18 +32,13 @@ public class AccountStrategyFragmentActivity extends Fragment {
     /**
      * Member Variables.
      */
-    private String mIdCuenta;
+
     private CuentaDetalle mCuentaDetalle;
 
     /**
      * UI References.
      */
-    private Toolbar mCuentaToolbar;
-    private ImageButton mImageButtonEdit;
-    private LinearLayout mLayoutContenido;
-  
-    
-    
+        
     private TextView descAdicional1,descAdicional2,descAdicional3,descAdicional4,descAdicional5,
     				descAdicional6,descAdicional7,descAdicional8,descAdicional9,descAdicional10,descAdicional11;
     private TextView txtMetaAnual;
@@ -90,14 +82,11 @@ public class AccountStrategyFragmentActivity extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_strategy, container, false);
     	 
         Bundle args = getArguments();
-
-        
-        String idCuenta = args.getString(Info.CUENTA_ACTUAL.name());
+        CuentaDetalle cuenta = args.getParcelable(Info.OBJECT.name());
   
-        this.cargarComponentes(rootView);
-        GetAccountTask mTareaObtenerCuenta = new GetAccountTask();
-        mTareaObtenerCuenta.execute(idCuenta);
-        Log.d(TAG, "Id cuenta " + idCuenta);
+        cargarComponentes(rootView);
+        ponerValores(cuenta);
+        Log.d(TAG, "Id cuenta " + cuenta.getId());
         	
         
        
@@ -263,110 +252,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
     public void onCheckboxClicked(View view) {
         boolean checked = ((CheckBox) view).isChecked();
  
-        /*
-        switch(view.getId()) {
-            case R.id.checkbox_aut_moeller:
-                if (checked)
-                    // Put some meat on the sandwich
-                else
-                    // Remove the meat
-                break;
-            case R.id.checkbox_cheese:
-                if (checked)
-                    // Cheese me
-                else
-                    // I'm lactose intolerant
-                break;
-            // TODO: Veggie sandwich
-        }*/
     }
-
-		
-		/*if(v.getId() == imageButtonContacts.getId()){
-			Log.d(TAG, "Contactos x cuenta ");
-			Intent intent = new Intent(AccountFragmentActivity.this,
-					ListContactActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
-			startActivity(intent);
-
-		}else if(v.getId() == imageButtonOpps.getId()){
-			Log.d(TAG, "Oportunidades X Cuenta ");
-			Intent intent = new Intent(AccountFragmentActivity.this,
-					ListOpportunityActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
-			startActivity(intent);
-
-		}else if(v.getId() == imageButtonTasks.getId()){
-			Log.d(TAG, "Tareas X Cuenta ");
-			Intent intent = new Intent(AccountFragmentActivity.this,
-					ListTasksActivity.class);
-			intent.putExtra(Info.CUENTA_ACTUAL.name(), mIdCuenta);
-			startActivity(intent);
-
-		}*/
-		
 	
-	
-	 /**
-     * Representa una tarea asincrona de obtencion de cuenta.
-     */
-    public class GetAccountTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(AccountStrategyFragmentActivity.this.getActivity(), ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando informacion de cuenta...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                // Parametros
-                String idCuenta = params[0];
-
-                // Respuesta
-                String account = null;
-
-                // Intento de obtener cuenta
-                ControlConnection.addHeader("idAccount", idCuenta);
-                account  = ControlConnection.getInfo(TypeInfoServer.getAccount);
-                JSONObject jObj = new JSONObject(account);
-
-                JSONArray jArr = jObj.getJSONArray("results");
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                   
-                    mCuentaDetalle = new CuentaDetalle(obj);
-                    
-                }
-
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, "Buscar Cuenta Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-           // mTareaObtenerCuenta = null;
-            progressDialog.dismiss();
-
-            if (success) {
-                ponerValores(mCuentaDetalle);
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-           // mTareaObtenerCuenta = null;
-            Log.d(TAG, "Cancelado ");
-        }
-    }
 
 }

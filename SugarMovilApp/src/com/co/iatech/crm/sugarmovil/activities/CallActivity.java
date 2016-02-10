@@ -7,22 +7,30 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.LanguageType;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.software.shell.fab.ActionButton;
 
 
-public class CallActivity extends AppCompatActivity {
+public class CallActivity extends AppCompatActivity implements CallsModuleActions{
 
 
     /**
@@ -39,14 +47,15 @@ public class CallActivity extends AppCompatActivity {
      * Member Variables.
      */
 
-    private String mIdLlamada;
-    private Llamada mLlamadaDetalle;
-
+    private String idLlamada;
+    private Llamada llamadaDetalle;
+    private ListUsersConverter lc = new ListUsersConverter();
+    
     /**
      * UI References.
      */
     private Toolbar mLlamadaToolbar;
-    private ImageButton mImageButtonEdit;
+    private ImageButton imageButtonEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,50 +63,41 @@ public class CallActivity extends AppCompatActivity {
         setContentView(R.layout.activity_call);
 
         Intent intent = getIntent();
-        mIdLlamada = intent.getStringExtra(Info.ID_LLAMADA.name());
-        Log.d(TAG, "Id llamada " + mIdLlamada);
+        idLlamada = intent.getStringExtra(Info.ID.name());
+        Log.d(TAG, "Id llamada " + idLlamada);
 
         // Main Toolbar
         mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
         setSupportActionBar(mLlamadaToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        mImageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
-
-
-        //Eventos
-        mImageButtonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Editar llamada ");
-                // Edit Call Activity
-                Intent intentEditarLlamada = new Intent(CallActivity.this,
-                        AddCallActivity.class);
-                intentEditarLlamada.putExtra(Info.ID_LLAMADA_ACTUAL.name(), mLlamadaDetalle);
-                startActivity(intentEditarLlamada);
-            }
-        });
-
+        
+        this.applyActions();
         // Tarea obtener llamada
         mTareaObtenerLlamada = new GetCallTask();
-        mTareaObtenerLlamada.execute(String.valueOf(mIdLlamada));
+        mTareaObtenerLlamada.execute(String.valueOf(idLlamada));
     }
 
     public void ponerValores(Llamada llamadaDetalle) {
         TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(llamadaDetalle.getName());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
-        valorEstado.setText(llamadaDetalle.getStatus(LanguageType.SPANISH));
+             
+        valorEstado.setText(
+        		ListsConversor.convert(ConversorsType.CALLS_DIRECTION,llamadaDetalle.getDirection(), DataToGet.VALUE) + " -> "+
+        		ListsConversor.convert(ConversorsType.CALLS_STATUS,llamadaDetalle.getStatus(), DataToGet.VALUE));
+        
         TextView valorInicio = (TextView) findViewById(R.id.valor_inicio);
         valorInicio.setText(llamadaDetalle.getDate_start());
         TextView valorDuracion = (TextView) findViewById(R.id.valor_duracion);
-        valorDuracion.setText(llamadaDetalle.getDuration_minutes());
+        valorDuracion.setText(llamadaDetalle.getDuration_hours()+"h "+llamadaDetalle.getDuration_minutes()+"m");
         TextView valorResultado = (TextView) findViewById(R.id.valor_resultado);
         valorResultado.setText(llamadaDetalle.getResultadodelallamada_c());
         TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
         valorDescripcion.setText(llamadaDetalle.getDescription());
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
-        valorAsignado.setText(llamadaDetalle.getAssigned_user_name());
+        valorAsignado.setText(lc.convert(llamadaDetalle.getAssigned_user_id(), DataToGet.VALUE ));
+        
         TextView valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
         valorCuenta.setText(llamadaDetalle.getParent_name());
         TextView valorCampana = (TextView) findViewById(R.id.valor_campana);
@@ -114,7 +114,7 @@ public class CallActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(CallActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando información llamada...");
+            progressDialog.setMessage("Cargando informacion llamada...");
             progressDialog.setIndeterminate(true);
             progressDialog.show();
         }
@@ -130,16 +130,15 @@ public class CallActivity extends AppCompatActivity {
 
                 // Intento de obtener cuenta
                 ControlConnection.addHeader("idCall", idLlamada);
-                call  = ControlConnection.getInfo(TypeInfoServer.getCall);
+                call  = ControlConnection.getInfo(TypeInfoServer.getCall, CallActivity.this);
 
                 JSONObject jObj = new JSONObject(call);
 
                 JSONArray jArr = jObj.getJSONArray("results");
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                    
+                if(jArr.length() > 0) {
+                    JSONObject obj = jArr.getJSONObject(0);
 
-                    mLlamadaDetalle = new Llamada(obj);
+                    llamadaDetalle = new Llamada(obj);
                     }
 
                 return true;
@@ -156,7 +155,7 @@ public class CallActivity extends AppCompatActivity {
             progressDialog.dismiss();
 
             if (success) {
-                ponerValores(mLlamadaDetalle);
+                ponerValores(llamadaDetalle);
             }
         }
 
@@ -166,4 +165,38 @@ public class CallActivity extends AppCompatActivity {
             Log.d(TAG, "Cancelado ");
         }
     }
+    
+    @Override
+	public void applyActions() {
+		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
+        ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+
+	}
+    
+    @Override
+	public ActionButton getActionButton() {
+		return null;
+	}
+
+	@Override
+	public ImageButton getEditButton() {
+		return imageButtonEdit;
+	}
+
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
+
+
+	@Override
+	public String getAssignedUser() {
+		return llamadaDetalle.getAssigned_user_id();
+	}
+
+
+	@Override
+	public Parcelable getBean() {
+		return llamadaDetalle;
+	}
 }

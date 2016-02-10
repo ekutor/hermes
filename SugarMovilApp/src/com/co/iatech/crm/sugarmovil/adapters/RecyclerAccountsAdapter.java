@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.AccountActivity;
-import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 
 public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccountsAdapter.ViewHolder> {
@@ -28,19 +27,18 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
     /**
      * Member Variables.
      */
-    private Context mContext;
-    private String mUrl;
+    private Context context;
+
     private List<Cuenta> mDataset;
     private List<Cuenta> mVisibleDataset;
 
-    public RecyclerAccountsAdapter(Context context, String url, List<Cuenta> mAccountsArray) {
-        mContext = context;
-        mUrl = url;
+    public RecyclerAccountsAdapter(Context context,List<Cuenta> mAccountsArray) {
+        this.context = context;
         mDataset = mAccountsArray;
         mVisibleDataset = mDataset;
     }
 
-    @Override
+	@Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -62,10 +60,9 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
         holder.mItemAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Account Activity
-                Intent intentCuenta = new Intent(mContext, AccountActivity.class);
-                intentCuenta.putExtra(Info.CUENTA_ACTUAL.name(), cuenta.getId());
-                mContext.startActivity(intentCuenta);
+                // Account Activity     
+            	ActivitiesMediator.getInstance().setActualID(cuenta.getId());
+                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS);
             }
         });
 

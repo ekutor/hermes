@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.CallActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 
@@ -58,11 +60,8 @@ public class RecyclerCallsAdapter extends RecyclerView.Adapter<RecyclerCallsAdap
         holder.mItemLlamada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Llamada Activity
-                Intent intentLlamada = new Intent(mContext,
-                        CallActivity.class);
-                intentLlamada.putExtra(Info.ID_LLAMADA.name(), llamada.getId());
-                mContext.startActivity(intentLlamada);
+            	ActivitiesMediator.getInstance().setActualID(llamada.getId());
+            	ActivitiesMediator.getInstance().showActivity(mContext,Modules.CALLS);
             }
         });
 

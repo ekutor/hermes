@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -21,8 +22,10 @@ import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 public class UsersTask extends AsyncTask<Void, Void, Boolean> {
    
     private List<User> usersArray;
+    private Activity context;
     
-    public UsersTask(){
+    public UsersTask(Activity context){
+    	this.context = context;
     }
     
     @Override
@@ -38,7 +41,7 @@ public class UsersTask extends AsyncTask<Void, Void, Boolean> {
 
             // Intento de obtener cuentas
             usersArray = new ArrayList<User>();
-            resultado  = ControlConnection.getInfo(TypeInfoServer.getUsers);
+            resultado  = ControlConnection.getInfo(TypeInfoServer.getUsers,  context);
             
             Log.d("UsersTask", "Obteniendo Usuarios");
             JSONObject jObj = new JSONObject(resultado);

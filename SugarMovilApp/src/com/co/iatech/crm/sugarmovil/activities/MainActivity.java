@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,10 +23,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.tasks.UsersTask;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
@@ -35,7 +32,6 @@ import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
 import com.co.iatech.crm.sugarmovil.fragments.ProductsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.TasksFragment;
 import com.co.iatech.crm.sugarmovil.model.DrawerItem;
-import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.squareup.picasso.Picasso;
 
@@ -51,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private User mUsuario;
+
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private int mSelectedButton = 0;
+    private int selectedItem = 0;
     private DrawerAdapter mDrawerAdapter;
     private List<DrawerItem> mDataList;
 
@@ -68,31 +64,16 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mMainToolbar;
     private TextView mMainTextView;
     private SearchView mMainSearchView;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "CREANDOOO");
-        Log.d(TAG, ControlConnection.hash );
-        Log.d(TAG, ControlConnection.device_id);
-        Log.d(TAG, ControlConnection.userId);
         // Variable Global
         mGlobalVariable = (GlobalClass) getApplicationContext();
-        //obtener Usuario Autenticado
+        selectedItem = mGlobalVariable.getSelectedItem();
         
-	        Intent intent = getIntent();
-//	        User u = (User) intent.getExtras().get(Info.USUARIO.name());
-//	        Log.d(TAG, u.getId());
-//	        if(u != null){
-//	        	ControlConnection.hash = u.getUser_hash();
-//	        	ControlConnection.userId = u.getId();
-//	        }
-//	        mGlobalVariable.setUsuarioAutenticado(u);
-        
-     
-        mSelectedButton = mGlobalVariable.getmSelectedButton();
-
         
         // Main Toolbar
         mMainToolbar = (Toolbar) findViewById(R.id.toolbar_main);
@@ -145,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
-                mSelectedButton = position;
+                selectedItem = position;
             }
         });
 
@@ -171,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
 
-        selectItem(mSelectedButton);
+        selectItem(selectedItem);
     }
 
     @Override
@@ -184,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Nada en Backstack, Salir");
             // DialogFragment closeFragment = new CloseAppDialogFragment();
             // closeFragment.show(getFragmentManager(), "close");
-            Log.d(TAG, "Salir de la aplicación");
-            finish();
+            Log.d(TAG, "Salir de la aplicacion");
+            this.selectItem(0);
         }
     }
 
@@ -222,21 +203,27 @@ public class MainActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.ACCOUNTS);
                 fragment = AccountsFragment.newInstance();
                 break;
             case 1:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.ACCOUNTS);
                 fragment = ContactsFragment.newInstance();
                 break;
             case 2:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.OPPORTUNITIES);
                 fragment = OpportunitiesFragment.newInstance();
                 break;
             case 3:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.CALLS);
                 fragment = CallsFragment.newInstance();
                 break;
             case 4:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.PRODUCTS);
                 fragment = ProductsFragment.newInstance();
                 break;
             case 5:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.TASKS);
                 fragment = TasksFragment.newInstance();
                 break;
             case 6:

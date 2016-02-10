@@ -3,7 +3,6 @@ package com.co.iatech.crm.sugarmovil.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.OpportunityActivity;
-import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerOpportunitiesAdapter.ViewHolder> {
@@ -26,15 +25,14 @@ public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerO
     /**
      * Member Variables.
      */
-    private Context mContext;
-    private String idCuentaAsociada;
+    private Context context;
+
     private ArrayList<Oportunidad> mDataset;
     private ArrayList<Oportunidad> mVisibleDataset;
 
-    public RecyclerOpportunitiesAdapter(Context context, ArrayList<Oportunidad> myDataset, String idCuentaAsociada) {
-        mContext = context;
+    public RecyclerOpportunitiesAdapter(Context context, ArrayList<Oportunidad> myDataset) {
+        this.context = context;
         mDataset = myDataset;
-        this.idCuentaAsociada = idCuentaAsociada;
         mVisibleDataset = mDataset;
     }
 
@@ -59,17 +57,15 @@ public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerO
         holder.mItemOportunidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Oportunidad Activity
-                Intent intentOportunidad = new Intent(mContext,
-                        OpportunityActivity.class);
-                intentOportunidad.putExtra(Info.CUENTA_ACTUAL.name(), idCuentaAsociada);
-                intentOportunidad.putExtra(Info.OPORTUNIDAD_SELECCIONADA.name(), oportunidad.getId());
-                mContext.startActivity(intentOportunidad);
+            	ActivitiesMediator.getInstance().setActualID( oportunidad.getId());
+                ActivitiesMediator.getInstance().showActivity(context,Modules.OPPORTUNITIES);
+                
             }
         });
 
         holder.itemView.setTag(oportunidad);
     }
+    
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

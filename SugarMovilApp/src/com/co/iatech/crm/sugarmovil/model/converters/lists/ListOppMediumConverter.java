@@ -1,13 +1,16 @@
 package com.co.iatech.crm.sugarmovil.model.converters.lists;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 public class ListOppMediumConverter extends ListConverter{
-
 	
-	public ListOppMediumConverter (){
-		dataMap = new HashMap<String,String>();
+	private static ListOppMediumConverter instance;
+	
+	private ListOppMediumConverter (){
+		dataMap = new LinkedHashMap<String,String>();
+		
+		dataMap.put(defaultListValue, defaultListValue);
 		dataMap.put("001", "CAPACITACIONES-EVENTOS");
 		dataMap.put("002", "FERIAS");
 		dataMap.put("003", "PAUTAS PUBLICITARIAS");
@@ -20,6 +23,12 @@ public class ListOppMediumConverter extends ListConverter{
 		dataMap.put("011", "REMITIDO POR PROVEEDOR");
 	}
 
-
+	
+	public static ListOppMediumConverter getInstance(){
+		if(instance == null){
+			instance = new ListOppMediumConverter();
+		}	
+		return instance;
+	}
 	
 }

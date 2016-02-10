@@ -10,16 +10,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountFragmentActivity;
 import com.co.iatech.crm.sugarmovil.fragments.AccountStrategyFragmentActivity;
+import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private String id;
+    private CuentaDetalle cuentaActual;
 
 	public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
-    public void setActualAccount(String id){
-    	this.id = id;
+    public void setActualAccount(CuentaDetalle cuentaActual){
+    	this.cuentaActual = cuentaActual;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         // Returns a new instance of the fragment
     	Fragment f= null;
     	Bundle args = new Bundle();
-        args.putString(Info.CUENTA_ACTUAL.name(), id);
+        args.putParcelable(Info.OBJECT.name(), cuentaActual);
         
         switch (position) {
             case 0:

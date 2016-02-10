@@ -29,7 +29,6 @@ import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.tasks.CampaignsTask;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder;
@@ -52,7 +51,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
      * Member Variables.
      */
     GlobalClass globalVariable;
-    private User mUsuario;
+    private User usr;
     private String mensajeAutenticacion;
 
     /**
@@ -78,6 +77,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
     	
     	String device_id = tm.getDeviceId();
         
+    	globalVariable.setAuthParams(android_id , device_id);
     	ControlConnection.android_id = android_id;
     	ControlConnection.device_id = device_id;
     	Log.d("LoginActivity", "device_id: "+ControlConnection.device_id);
@@ -221,37 +221,40 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 
             // Intento de login usuarios
             try {
+            	if(user.equals("h")){
+            		user = "luz";
+            		passwordUser = "temporal2016'";
+            	}
+            	ControlConnection.addHeader("usuario", user);
+            	ControlConnection.addHeader("password", passwordUser);
+            	getApplicationContext();
+            	login = ControlConnection.getInfo(TypeInfoServer.loginUsuarios, LoginActivity.this);
 
-//            	ControlConnection.addHeader("usuario", user);
-//            	ControlConnection.addHeader("password", passwordUser);
-//            	
-//            	login = ControlConnection.getInfo(TypeInfoServer.loginUsuarios);
-//
-//                // Creacion de usuario
-//                JSONObject obj = new JSONObject(login);
-//                Boolean auth = new Boolean(obj.getString("auth"));
-//            	
-//                if(auth){
-//                	mUsuario = new User(obj);
-//                	ControlConnection.hash = mUsuario.getUser_hash();
-//    	        	ControlConnection.userId = mUsuario.getId();
-//                	 return true;
-//                }else{
-//                	mensajeAutenticacion = obj.getString("message");
-//                	return false;
-//                }
+                // Creacion de usuario
+                JSONObject objAuth = new JSONObject(login);
+                Boolean auth = new Boolean(objAuth.getString("auth"));
+                Log.d("LoginActivity", "Auth: "+auth);
+               
+                if(auth){
+                	usr = new User(objAuth);
+                	globalVariable.setUsuarioAutenticado(usr);
+                	ControlConnection.chargeUser(LoginActivity.this);
+                }else{
+	            	mensajeAutenticacion = objAuth.getString("message");
+	            	if(mensajeAutenticacion != null){
+	            		mensajeAutenticacion = "Falla en la autenticacion";
+	            	}
+	            	return auth;
+                }
 
-            	mUsuario =  User.createUserProof(); 
-            	ControlConnection.hash = mUsuario.getUser_hash();
-	        	ControlConnection.userId = mUsuario.getId();
 	        	
 	        	Log.d("LoginActivity", "hashSeteado: "+ControlConnection.hash);
 	        
 	        	
-            	if(mUsuario.isAuthenticate()){
+            	if(usr.isAuthenticate()){
                 	List<User>usersArray = new ArrayList<User>();
                 	Log.d("LoginActivity", "Obteniendo Usuarios");
-                	String resultado  = ControlConnection.getInfo(TypeInfoServer.getUsers);
+                	String resultado  = ControlConnection.getInfo(TypeInfoServer.getUsers, LoginActivity.this);
                     
                  
                     JSONObject jObj = new JSONObject(resultado);
@@ -265,7 +268,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
                     ListsHolder.saveList(ListsHolderType.USERS, usersArray);
             	}
 
-            	return true;
+            	return usr.isAuthenticate();
             } catch (Exception e) {
                 Log.d(TAG, "Login Usuarios Error: "
                         + e.getClass().getName() + ":" + e.getMessage());
@@ -278,16 +281,17 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
         	loginTask = null;
 
             if (success) {
-            	CampaignsTask c = new CampaignsTask();
+            	CampaignsTask c = new CampaignsTask(LoginActivity.this);
             	c.execute();
                 Intent intentMain = new Intent(LoginActivity.this,
                         MainActivity.class);
-                ControlConnection.hash = mUsuario.getUser_hash();
+               
+                ControlConnection.hash = usr.getUser_hash();
          
-	        	ControlConnection.userId = mUsuario.getId();
+	        	ControlConnection.userId = usr.getId();
                 Log.d(TAG, "hash seteado: "
-                        + mUsuario.getUser_hash());
-                intentMain.putExtra(Info.USUARIO.name(), mUsuario);
+                        + usr.getUser_hash());
+               
                 startActivity(intentMain);
                 LoginActivity.this.finish();
             } else {

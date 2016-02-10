@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,21 +20,27 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksDetailAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
 
-public class ListTasksActivity extends AppCompatActivity  {
+public class ListTasksActivity extends AppCompatActivity implements TasksModuleActions  {
     /**
      * Debug.
      */
@@ -60,6 +67,8 @@ public class ListTasksActivity extends AppCompatActivity  {
     private RecyclerView.Adapter mRecyclerViewAdapter;
     private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
 
+	private ActionButton actionButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +78,7 @@ public class ListTasksActivity extends AppCompatActivity  {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.CUENTA_ACTUAL.name());
+        idCuentaActual = intent.getStringExtra(Info.ID.name());
         Log.d(TAG, "Id cuenta " + idCuentaActual);
 
         // Main Toolbar
@@ -159,10 +168,51 @@ public class ListTasksActivity extends AppCompatActivity  {
                 return false;
             }
         });
-
+        
+        this.applyActions();
         // Tarea obtener select
         mTareaObtenerTareas= new GetTasksxAccountTask();
         mTareaObtenerTareas.execute(idCuentaActual);
+    }
+    
+    @Override
+   	public ActionButton getActionButton() {
+   		return actionButton;
+   	}
+
+   	@Override
+   	public ImageButton getEditButton() {
+   		return null;
+   	}
+
+   	@Override
+   	public Modules getModule() {
+   		return MODULE;
+   	}
+
+
+   	@Override
+   	public String getAssignedUser() {
+   		return "";
+   	}
+
+
+   	@Override
+   	public Parcelable getBean() {
+   		return null;
+   	}
+
+
+   	@Override
+   	public void applyActions() {
+   		actionButton = (ActionButton) findViewById(R.id.action_button); 
+   		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+   	}
+    
+    @Override
+    public void onBackPressed() {
+    	ActivitiesMediator.getInstance().returnPrevID();
+    	super.onBackPressed();
     }
 
     /**
@@ -193,7 +243,7 @@ public class ListTasksActivity extends AppCompatActivity  {
 
                 // Intento de obtener datos
                 ControlConnection.addHeader("idAccount", idCuenta);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getTaskxAccount);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getTaskxAccount, ListTasksActivity.this);
                 TareasXAccount.clear();
 
                 JSONObject jObj = new JSONObject(resultado);
@@ -222,7 +272,7 @@ public class ListTasksActivity extends AppCompatActivity  {
                     mRecyclerViewAdapter = new RecyclerTasksDetailAdapter(ListTasksActivity.this, TareasXAccount);
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 } else {
-                	progressDialog.setMessage("Esta cuenta no tiene oportunidades asociadas.");
+                	progressDialog.setMessage("Esta cuenta no tiene tareas asociadas.");
                     Log.d(TAG,
                             "No hay valores: "
                                     + TareasXAccount.size());

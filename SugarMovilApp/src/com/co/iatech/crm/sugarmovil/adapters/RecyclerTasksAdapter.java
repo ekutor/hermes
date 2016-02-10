@@ -3,7 +3,6 @@ package com.co.iatech.crm.sugarmovil.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.TaskActivity;
-import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Tarea;
 
 public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdapter.ViewHolder> {
-
-
 
     /**
      * Debug.
@@ -29,13 +26,11 @@ public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdap
      * Member Variables.
      */
     private Context mContext;
-    private String mUrl;
     private ArrayList<Tarea> mDataset;
     private ArrayList<Tarea> mVisibleDataset;
 
-    public RecyclerTasksAdapter(Context context, String url, ArrayList<Tarea> myDataset) {
+    public RecyclerTasksAdapter(Context context, ArrayList<Tarea> myDataset) {
         mContext = context;
-        mUrl = url;
         mDataset = myDataset;
         mVisibleDataset = mDataset;
     }
@@ -62,10 +57,10 @@ public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdap
             @Override
             public void onClick(View v) {
                 // Tarea Activity
-                Intent intentTarea = new Intent(mContext,
-                        TaskActivity.class);
-                intentTarea.putExtra(Info.ID_TAREA.name(), tarea.getId());
-                mContext.startActivity(intentTarea);
+      
+                ActivitiesMediator.getInstance().setActualID(tarea.getId());
+            	ActivitiesMediator.getInstance().showActivity(mContext, Modules.TASKS);
+                
             }
         });
 

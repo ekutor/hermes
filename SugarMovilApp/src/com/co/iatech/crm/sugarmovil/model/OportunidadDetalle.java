@@ -6,6 +6,8 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.util.Utils;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -84,7 +86,7 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     	setNext_step(validate(obj.getString("next_step")));
     	setSales_stage(validate(obj.getString("sales_stage")));
     	setProbability(validate(obj.getString("probability")));
-    	setId(validate(obj.getString("id_c")));
+    	setId_c(validate(obj.getString("id_c")));
     	setValoroportunidad_c(validate(obj.getString("valoroportunidad_c")));
     	setMedio_c(validate(obj.getString("medio_c")));
     	setFuente_c(validate(obj.getString("fuente_c")));
@@ -299,7 +301,7 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     }
 
     public void setValoroportunidad_c(String valoroportunidad_c) {
-        this.valoroportunidad_c = valoroportunidad_c;
+        this.valoroportunidad_c = Utils.delSpecialChars(valoroportunidad_c);
     }
 
     public String getMedio_c() {
@@ -327,27 +329,27 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     }
 
     public String getEnergia_c() {
-        return energia_c;
+    	return deleteSpecialChar(energia_c);
     }
 
     public void setEnergia_c(String energia_c) {
-        this.energia_c = energia_c;
+        this.energia_c = addSpecialChar(energia_c);
     }
 
     public String getComunicaciones_c() {
-        return comunicaciones_c;
+        return deleteSpecialChar(comunicaciones_c);
     }
 
     public void setComunicaciones_c(String comunicaciones_c) {
-        this.comunicaciones_c = comunicaciones_c;
+        this.comunicaciones_c = addSpecialChar(comunicaciones_c);
     }
 
     public String getIluminacion_c() {
-        return iluminacion_c;
+        return deleteSpecialChar(iluminacion_c);
     }
 
     public void setIluminacion_c(String iluminacion_c) {
-        this.iluminacion_c = iluminacion_c;
+        this.iluminacion_c = addSpecialChar(iluminacion_c);
     }
 
     public String getUsuario_final_c() {
@@ -433,12 +435,13 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
 	@Override
 	public Map<String, String> getDataBean() {
 		Map<String, String> data = new HashMap<String, String>();
+		data.put("id",id);
 		data.put("name",name);
 		data.put("date_entered",date_entered);
 		data.put("date_modified",date_modified);
 		data.put("modified_user_id",modified_user_id);
 		data.put("created_by",created_by);
-		data.put("description",description);
+		data.put("description",Utils.hideTabs(description));
 		data.put("deleted",deleted);
 		data.put("assigned_user_id",assigned_user_id);
 		data.put("opportunity_type",opportunity_type);

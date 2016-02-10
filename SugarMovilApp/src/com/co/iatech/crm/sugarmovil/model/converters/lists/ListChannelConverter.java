@@ -6,7 +6,9 @@ import java.util.HashMap;
 
 public class ListChannelConverter extends ListConverter{
 	
-	public ListChannelConverter (){
+	private static ListChannelConverter instance;
+	
+	private ListChannelConverter (){
 		dataMap = new HashMap<String,String>();
 		dataMap.put("01", "ALMACEN");
 		dataMap.put("02", "TABLERISTA");
@@ -31,5 +33,11 @@ public class ListChannelConverter extends ListConverter{
 	}
 
 
-	
+	public static ListChannelConverter getInstance(){
+		if(instance == null){
+			instance = new ListChannelConverter();
+		}
+		
+		return instance;
+	}
 }

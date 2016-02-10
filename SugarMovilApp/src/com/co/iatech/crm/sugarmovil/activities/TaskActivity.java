@@ -7,23 +7,29 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.LanguageType;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.software.shell.fab.ActionButton;
 
 
-public class TaskActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity implements TasksModuleActions {
 
 
     /**
@@ -40,14 +46,14 @@ public class TaskActivity extends AppCompatActivity {
      * Member Variables.
      */
     private String mIdTarea;
-    private TareaDetalle mTareaDetalle;
+    private TareaDetalle objTareaDetalle;
 
     /**
      * UI References.
      */
     private Toolbar mTareaToolbar;
-    private ImageButton mImageButtonEdit;
-    private LinearLayout mLayoutContenido;
+    private ImageButton imageButtonEdit;
+  
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,52 +61,36 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
 
         Intent intent = getIntent();
-        mTareaDetalle = null;
+        objTareaDetalle = null;
         
-        if(intent.getExtras().get(Info.ID_TAREA.name()) instanceof  TareaDetalle ){
-        	mTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.ID_TAREA.name());
-        }else{
-	        mIdTarea = intent.getStringExtra(Info.ID_TAREA.name());
-	        Log.d(TAG, "Id producto " + mIdTarea);
-        }
 
         // Main Toolbar
         mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
         setSupportActionBar(mTareaToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        mImageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
-
-        // Contenido
-        mLayoutContenido = (LinearLayout) findViewById(R.id.layout_contenido);
-
-        //Eventos
-        mImageButtonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Editar tarea ");
-                // Edit Task Activity
-//                Intent intentEditarTarrea = new Intent(TaskActivity.this,
-//                        EditTaskActivity.class);
-//                intentEditarTarrea.putExtra(Info.TAREA_ACTUAL.name(), mTareaDetalle);
-//                startActivity(intentEditarTarrea);
-            }
-        });
         
-        if(mTareaDetalle == null){
-	        // Tarea obtener tarea
-	        mTareaObtenerTarea = new GetTaskTask();
-	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
+        this.applyActions();
+        
+        if(intent.getExtras().get(Info.OBJECT.name()) instanceof  TareaDetalle ){
+        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.OBJECT.name());
+        	this.ponerValores(objTareaDetalle);
         }else{
-        	this.ponerValores(mTareaDetalle);
+	        mIdTarea = intent.getStringExtra(Info.ID.name());
+	        Log.d(TAG, "Id tarea " + mIdTarea);
+	        mTareaObtenerTarea = new GetTaskTask();
+  	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
+	      
         }
     }
+    
 
     public void ponerValores(TareaDetalle tareaDetalle) {
         TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(tareaDetalle.getName());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
-        valorEstado.setText(tareaDetalle.getStatus(LanguageType.SPANISH));
+        valorEstado.setText(ListsConversor.convert(ConversorsType.TASKS_STATUS,tareaDetalle.getStatus(), DataToGet.VALUE));
+        
         TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
         valorFechaInicio.setText(tareaDetalle.getDate_start());
         TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
@@ -110,7 +100,7 @@ public class TaskActivity extends AppCompatActivity {
         TextView valorEstimado = (TextView) findViewById(R.id.valor_estimado);
         valorEstimado.setText(tareaDetalle.getTrabajo_estimado_c());
         TextView valorPrioridad = (TextView) findViewById(R.id.valor_prioridad);
-        valorPrioridad.setText(tareaDetalle.getPriority(LanguageType.SPANISH));
+        valorPrioridad.setText(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,tareaDetalle.getPriority(), DataToGet.VALUE));
         TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
         valorDescripcion.setText(tareaDetalle.getDescription());
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
@@ -126,10 +116,42 @@ public class TaskActivity extends AppCompatActivity {
         Log.d(TAG, "onResume Task Activity");
         super.onResume();
 
-        // Tarea obtener tarea
-//        mTareaObtenerTarea = new GetTaskTask();
-//        mTareaObtenerTarea.execute(String.valueOf(mTareaDetalle.getId()));
     }
+    
+    @Override
+   	public void applyActions() {
+   		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
+           ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+
+   	}
+       
+       @Override
+   	public ActionButton getActionButton() {
+   		return null;
+   	}
+
+   	@Override
+   	public ImageButton getEditButton() {
+   		return imageButtonEdit;
+   	}
+
+   	@Override
+   	public Modules getModule() {
+   		return MODULE;
+   	}
+
+
+   	@Override
+   	public String getAssignedUser() {
+   		return objTareaDetalle.getAssigned_user_id();
+   	}
+
+
+   	@Override
+   	public Parcelable getBean() {
+   		return objTareaDetalle;
+   	}
+
 
     /**
      * Representa una tarea asincrona de obtencion de tarea.
@@ -157,14 +179,14 @@ public class TaskActivity extends AppCompatActivity {
 
                 // Intento de obtener tarea
                 ControlConnection.addHeader("idTask", idTarea);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getTask);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getTask, TaskActivity.this);
         
                 JSONObject jObj = new JSONObject(resultado);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 if( jArr.length() > 0) {
                     JSONObject obj = jArr.getJSONObject(0);
-                    mTareaDetalle = new TareaDetalle(obj);
+                    objTareaDetalle = new TareaDetalle(obj);
                  }
 
                 return true;
@@ -181,7 +203,7 @@ public class TaskActivity extends AppCompatActivity {
             progressDialog.dismiss();
 
             if (success) {
-                ponerValores(mTareaDetalle);
+                ponerValores(objTareaDetalle);
 
             }
         }

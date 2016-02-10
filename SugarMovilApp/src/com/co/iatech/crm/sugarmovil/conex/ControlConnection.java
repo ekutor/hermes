@@ -8,29 +8,38 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+
+import com.co.iatech.crm.sugarmovil.model.User;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 
 public class ControlConnection {
 	
 	public enum Modo {EDITAR, AGREGAR}
 	
-	public final static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
+	public static String URL2 = "http://181.143.40.162/movil/CRMLaumayerWS/index.php/";
+	public static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
 	
 	
 	public static String android_id;
 	public static String device_id;
 	public static String hash, userId;
+	
 	private static Map<String,String> data;
 	 
 	
 	
-	public static String getInfo( TypeInfoServer type){
-		return getInfo(type, data);
+	public static String getInfo( TypeInfoServer type, Activity activity){
+		return getInfo(type, data, (GlobalClass) activity.getApplicationContext());
 	}
-	public static String getInfo( TypeInfoServer type, Map<String,String> data){
+	public static String getInfo( TypeInfoServer type, Map<String,String> data, GlobalClass context){
+		String resp = "";
 		HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL + type.name());
         Log.d("ControlConnection", "URL: " + URL + type.name());
@@ -40,30 +49,55 @@ public class ControlConnection {
 	        	Log.d("ControlConnection", entry.getKey()+" "+entry.getValue());
 	        }
 		}
-        
-        httpGet.setHeader("deviceID", device_id);
-        Log.d("ControlConnection", "deviceID " + device_id);
-        if(hash != null)
-        	httpGet.setHeader("hash", hash);
-        Log.d("ControlConnection", "hash " + hash);
+      
+        chargeID(httpGet, context);
         
        
         try {
             HttpResponse response = httpClient.execute(httpGet);
-            String resp = EntityUtils.toString(response.getEntity());
+            resp = EntityUtils.toString(response.getEntity());
             resp = resp.replace("\n", "").replace("\r", "");
             Log.d("ControlConnection", "Response: "
                     + resp);
             data= null;
             return resp;
-        } catch (IOException e) {
+        }catch(java.net.UnknownHostException he){
+        	if(!URL.equals(URL2)){
+        		URL = URL2;
+        		resp = getInfo(  type, data, context);
+        	}
+        	
+        }catch (IOException e) {
             e.printStackTrace();
             data= null;
-            return null;
+           
         }
+        return resp;
 	}
 	
-	public static String putInfo( TypeInfoServer type, Map<String,String> data , Modo modo ){
+	private static void chargeID(HttpRequestBase httpGet, GlobalClass global) {
+	
+		if(device_id == null){
+			device_id = global.getDeviceId();
+			 Log.d("ControlConnection", "deviceID desde Global " + device_id);
+		}
+		httpGet.setHeader("deviceID", device_id);
+		Log.d("ControlConnection", "deviceID " + device_id);
+		
+		try{	
+			if(hash == null){
+				hash = global.getUsuarioAutenticado().getUser_hash();
+		        Log.d("ControlConnection", "hash desde Global" + hash);
+		    }
+			httpGet.setHeader("hash", hash);
+			Log.d("ControlConnection", "hash " + hash);
+		}catch(Exception e){
+			Log.d("ControlConnection", "Falla al ejecutar chargeID ");
+			e.printStackTrace();
+		}
+		
+	}
+	public static String putInfo( TypeInfoServer type, Map<String,String> data , Modo modo , Activity activity ){
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPut httpPut = new HttpPut(URL + type.name());
   
@@ -75,6 +109,10 @@ public class ControlConnection {
 	        }
 		}
         httpPut.setHeader("modo", modo.name().toLowerCase());
+        Log.d("ControlConnection", "modo"+" "+modo.name().toLowerCase());
+        
+        
+        chargeID(httpPut, (GlobalClass) activity.getApplicationContext());
         
         httpPut.setHeader("deviceID", device_id);
         Log.d("ControlConnection", "deviceID " + device_id);
@@ -102,4 +140,12 @@ public class ControlConnection {
 		}
 		data.put(header, value);
 	}
+	public static void chargeUser(Activity activity) {
+		GlobalClass global = (GlobalClass) activity.getApplicationContext();
+		User u = global.getUsuarioAutenticado();
+		ControlConnection.userId = u.getId();
+		ControlConnection.hash = u.getUser_hash();
+	}
+	
+
 }

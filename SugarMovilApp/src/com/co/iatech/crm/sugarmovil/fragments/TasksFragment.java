@@ -1,8 +1,6 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,19 +17,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Tarea;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment implements TasksModuleActions {
 
     /**
      * Debug.
@@ -40,14 +44,13 @@ public class TasksFragment extends Fragment {
     /**
      * Tasks.
      */
-    private GetTasksTask mTareaObtenerTareas = null;
+    private GetTasksTask obtenerTareas = null;
 
     /**
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
     private String mUrl;
-    private ArrayList<Tarea> mTasksArray = new ArrayList<>();
 
     /**
      * UI References.
@@ -58,7 +61,7 @@ public class TasksFragment extends Fragment {
     private RecyclerView mRecyclerViewTasks;
     private RecyclerView.Adapter mRecyclerViewTasksAdapter;
     private RecyclerView.LayoutManager mRecyclerViewTasksLayoutManager;
-    private ActionButton mActionButton;
+    private ActionButton actionButton;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -90,7 +93,7 @@ public class TasksFragment extends Fragment {
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
-        mGlobalVariable.setmSelectedButton(6);
+        mGlobalVariable.setSelectedItem(6);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
@@ -106,8 +109,6 @@ public class TasksFragment extends Fragment {
         mRecyclerViewTasksLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewTasks.setLayoutManager(mRecyclerViewTasksLayoutManager);
 
-        // Action Button
-//        mActionButton = (ActionButton) mRootView.findViewById(R.id.action_button);
 
         // Eventos
         mMainSearchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -161,24 +162,30 @@ public class TasksFragment extends Fragment {
             }
         });
 
-//        mActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Create Task Activity
-//                Intent intentCrearTarrea = new Intent(getActivity(),
-//                        AddTaskActivity.class);
-//                getActivity().startActivity(intentCrearTarrea);
-//            }
-//        });
-
-        // Tarea para consultar tares
-        mTareaObtenerTareas = new GetTasksTask();
-        mTareaObtenerTareas.execute();
-
+        this.applyActions();
+        
+        if(DataManager.getInstance().tasksInfo.size() <= 0){
+        	// Tarea para consultar llamadas
+        	Log.d(TAG,"Cargando Contactos desde BACKEND");
+        	 // Tarea para consultar llamadas
+        	 // Tarea para consultar tares
+            obtenerTareas = new GetTasksTask();
+            obtenerTareas.execute();
+            
+        }else{
+        	Log.d(TAG,"Cargando Contactos desde MEMORIA");
+        	showTasks();
+        }
         return mRootView;
     }
 
-    @Override
+    private void showTasks() {
+       mRecyclerViewTasksAdapter = new RecyclerTasksAdapter(getActivity(), DataManager.getInstance().tasksInfo);
+ 	   mRecyclerViewTasks.setAdapter(mRecyclerViewTasksAdapter);
+		
+	}
+
+	@Override
     public void onResume() {
         Log.d(TAG, "onResume Fragment Contacts");
         super.onResume();
@@ -189,15 +196,48 @@ public class TasksFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // Tarea para consultar tares
-        mTareaObtenerTareas = new GetTasksTask();
-        mTareaObtenerTareas.execute();
+        showTasks();
     }
 
     @Override
     public void onPause() {
         super.onPause();
     }
+    
+    @Override
+	public ActionButton getActionButton() {
+		return actionButton;
+	}
+
+	@Override
+	public ImageButton getEditButton() {
+		return null;
+	}
+
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
+
+
+	@Override
+	public String getAssignedUser() {
+		return "";
+	}
+
+
+	@Override
+	public Parcelable getBean() {
+		return null;
+	}
+
+
+	@Override
+	public void applyActions() {
+		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
+		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
+		ActionsStrategy.definePermittedActions(this, this.getActivity(), gc);
+	}
 
     /**
      * Representa una tarea asincrona de obtencion de tareas.
@@ -222,9 +262,9 @@ public class TasksFragment extends Fragment {
 
                 // Intento de obtener tareas
 
-                tasks  = ControlConnection.getInfo(TypeInfoServer.getTasks);
+                tasks  = ControlConnection.getInfo(TypeInfoServer.getTasks, getActivity());
             
-                mTasksArray.clear();
+                DataManager.getInstance().tasksInfo.clear();
 
                 JSONObject jObj = new JSONObject(tasks);
 
@@ -233,7 +273,7 @@ public class TasksFragment extends Fragment {
                     JSONObject obj = jArr.getJSONObject(i);
                     String id = obj.getString("id");
                     String name = obj.getString("name");
-                    mTasksArray.add(new Tarea(id, name));
+                    DataManager.getInstance().tasksInfo.add(new Tarea(id, name));
                 }
 
                 return true;
@@ -246,25 +286,25 @@ public class TasksFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mTareaObtenerTareas = null;
+            obtenerTareas = null;
             progressDialog.dismiss();
 
             if (success) {
-                if (mTasksArray.size() > 0) {
-                    mRecyclerViewTasksAdapter = new RecyclerTasksAdapter(getActivity(), mUrl, mTasksArray);
-                    mRecyclerViewTasks.setAdapter(mRecyclerViewTasksAdapter);
+                if (DataManager.getInstance().tasksInfo.size() > 0) {
+                    showTasks();
                 } else {
                     Log.d(TAG,
                             "No hay Tareas: "
-                                    + mTasksArray.size());
+                                    + DataManager.getInstance().tasksInfo.size());
                 }
             }
         }
 
         @Override
         protected void onCancelled() {
-            mTareaObtenerTareas = null;
+            obtenerTareas = null;
             Log.d(TAG, "Cancelado ");
         }
     }
+
 }

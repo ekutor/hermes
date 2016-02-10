@@ -46,16 +46,15 @@ public class ProductActivity extends AppCompatActivity {
      * UI References.
      */
     private Toolbar mProductoToolbar;
-    private ImageButton mImageButtonEdit;
-    private LinearLayout mLayoutContenido;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         Intent intent = getIntent();
-        mIdProducto = intent.getStringExtra(Info.ID_PRODUCTO.name());
-        cantidadStock = intent.getStringExtra(Info.CANT_PRODUCTO.name());
+        mIdProducto = intent.getStringExtra(Info.ID.name());
+        cantidadStock = intent.getStringExtra(Info.ID.name());
         Log.d(TAG, "Id producto " + mIdProducto);
 
         // Main Toolbar
@@ -63,20 +62,6 @@ public class ProductActivity extends AppCompatActivity {
         setSupportActionBar(mProductoToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        mImageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
-
-        // Contenido
-        mLayoutContenido = (LinearLayout) findViewById(R.id.layout_contenido);
-
-        //Eventos
-        mImageButtonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Editar producto ");
-                // Edit Producto Activity
-                // TODO
-            }
-        });
 
         // Tarea obtener producto
         mTareaObtenerProducto = new GetProductTask();
@@ -128,7 +113,7 @@ public class ProductActivity extends AppCompatActivity {
 
                 // Intento de obtener producto
                 ControlConnection.addHeader("idProducto", idProducto);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getProducto);
+                resultado  = ControlConnection.getInfo(TypeInfoServer.getProducto, ProductActivity.this);
 
                 JSONObject jObj = new JSONObject(resultado);
 
