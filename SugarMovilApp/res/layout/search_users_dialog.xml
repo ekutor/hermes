@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="10dp"
+    android:orientation="vertical">
+	
+     <SearchView
+        android:id="@+id/searchViewUserDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+     </SearchView>
+      <ListView
+        android:id="@+id/listSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+     </ListView>
+  
+    <Button
+        android:id="@+id/searchDialog_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_users_button_sel" />
+    
+</LinearLayout >
