@@ -329,6 +329,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 			if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){
 				return;
 			}
+			mImageButtonGuardar.setEnabled(false);
 	        // Nombre
 	        oportSeleccionada.setName(valorNombre.getText().toString());
 	        
@@ -450,7 +451,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         @Override
         protected void onPostExecute(final Boolean success) {
             mTareaCrearOportunidad = null;
-
+        	mImageButtonGuardar.setEnabled(true);
             if (success) {
             	 if(modoEdicion){
             		 Message.showFinalMessage(getFragmentManager(),DialogType.EDITED, AddOpportunityActivity.this, MODULE );

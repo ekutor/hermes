@@ -534,7 +534,7 @@ int id action_bar_root 0x7f080040
 int id action_bar_spinner 0x7f080003
 int id action_bar_subtitle 0x7f080029
 int id action_bar_title 0x7f080028
-int id action_button 0x7f08010b
+int id action_button 0x7f080103
 int id action_context_bar 0x7f080046
 int id action_divider 0x7f0801dc
 int id action_menu_divider 0x7f080006
@@ -663,8 +663,8 @@ int id recycler_view_accounts 0x7f0801be
 int id recycler_view_calls 0x7f0801bf
 int id recycler_view_contacts 0x7f0801c0
 int id recycler_view_list_call 0x7f080102
-int id recycler_view_list_contact 0x7f080106
-int id recycler_view_list_opportunity 0x7f08010a
+int id recycler_view_list_contact 0x7f080107
+int id recycler_view_list_opportunity 0x7f08010b
 int id recycler_view_list_task 0x7f08010f
 int id recycler_view_opportunities 0x7f0801c2
 int id recycler_view_products 0x7f0801c3
@@ -683,8 +683,8 @@ int id search_mag_icon 0x7f08004c
 int id search_plate 0x7f08004d
 int id search_src_text 0x7f08004e
 int id search_view_list_call 0x7f080101
-int id search_view_list_contact 0x7f080105
-int id search_view_list_opportunity 0x7f080109
+int id search_view_list_contact 0x7f080106
+int id search_view_list_opportunity 0x7f08010a
 int id search_view_list_task 0x7f08010e
 int id search_view_main_toolbar 0x7f08011a
 int id search_voice_btn 0x7f080052
@@ -714,7 +714,7 @@ int id text_actual 0x7f080145
 int id text_acumulada 0x7f080151
 int id text_alianzas 0x7f08014b
 int id text_anterior 0x7f080147
-int id text_asignado_a 0x7f08006a
+int id text_asignado_a 0x7f08006e
 int id text_asunto 0x7f08005a
 int id text_autorizada 0x7f080155
 int id text_bon_anual 0x7f08019a
@@ -723,7 +723,7 @@ int id text_bon_bi_leviton 0x7f0801a0
 int id text_bon_tri 0x7f08019c
 int id text_c_transporte 0x7f08013f
 int id text_call_toolbar 0x7f080057
-int id text_campana 0x7f08006e
+int id text_campana 0x7f08006c
 int id text_canal 0x7f0800ca
 int id text_cargo 0x7f0800a9
 int id text_celular 0x7f0800b7
@@ -735,7 +735,7 @@ int id text_constitucion 0x7f080143
 int id text_contact_toolbar 0x7f0800a2
 int id text_contacto 0x7f080095
 int id text_creado 0x7f080141
-int id text_cuenta 0x7f08006c
+int id text_cuenta 0x7f08006a
 int id text_cumpleanos 0x7f0800a5
 int id text_cumplimiento 0x7f080153
 int id text_cupo 0x7f080159
@@ -792,7 +792,7 @@ int id text_mumero_alianzas 0x7f080149
 int id text_municipio 0x7f0800bf
 int id text_nit 0x7f080135
 int id text_no 0x7f0800f0
-int id text_nombre 0x7f08009b
+int id text_nombre 0x7f08009a
 int id text_opportunity_toolbar 0x7f080072
 int id text_origen 0x7f08014d
 int id text_paso 0x7f08008b
@@ -821,11 +821,11 @@ int id text_segmento 0x7f0800c2
 int id text_task_toolbar 0x7f080090
 int id text_tel1 0x7f0800af
 int id text_tel2 0x7f0800b3
-int id text_tipo 0x7f08009a
+int id text_tipo 0x7f080099
 int id text_toma 0x7f0800ee
 int id text_toolbar_list_call 0x7f080100
-int id text_toolbar_list_contact 0x7f080104
-int id text_toolbar_list_opportunity 0x7f080108
+int id text_toolbar_list_contact 0x7f080105
+int id text_toolbar_list_opportunity 0x7f080109
 int id text_toolbar_list_task 0x7f08010d
 int id text_total 0x7f08015d
 int id text_uen 0x7f0800c6
@@ -843,8 +843,8 @@ int id toolbar_bottom_contact 0x7f0800f8
 int id toolbar_call 0x7f080056
 int id toolbar_contact 0x7f0800a1
 int id toolbar_list_call 0x7f0800ff
-int id toolbar_list_contact 0x7f080103
-int id toolbar_list_opportunity 0x7f080107
+int id toolbar_list_contact 0x7f080104
+int id toolbar_list_opportunity 0x7f080108
 int id toolbar_list_task 0x7f08010c
 int id toolbar_main 0x7f080118
 int id toolbar_opportunity 0x7f080071
@@ -854,7 +854,7 @@ int id toolbar_views 0x7f0801ee
 int id topPanel 0x7f080033
 int id txtNit 0x7f0801c8
 int id txtUen 0x7f0801c7
-int id txt_valor_asignado_a 0x7f08006b
+int id txt_valor_asignado_a 0x7f08006f
 int id udialog_button 0x7f0801f2
 int id up 0x7f080002
 int id useLogo 0x7f080018
@@ -884,7 +884,7 @@ int id valor_actual 0x7f080146
 int id valor_acumulada 0x7f080152
 int id valor_alianzas 0x7f08014c
 int id valor_anterior 0x7f080148
-int id valor_asignado_a 0x7f080099
+int id valor_asignado_a 0x7f08009b
 int id valor_asunto 0x7f08005b
 int id valor_autorizada 0x7f080156
 int id valor_bon_anual 0x7f08019b
@@ -892,7 +892,7 @@ int id valor_bon_bi_eaton 0x7f08019f
 int id valor_bon_bi_leviton 0x7f0801a1
 int id valor_bon_tri 0x7f08019d
 int id valor_c_transporte 0x7f080140
-int id valor_campana 0x7f08006f
+int id valor_campana 0x7f08006d
 int id valor_canal 0x7f0800cb
 int id valor_cargo 0x7f0800aa
 int id valor_celular 0x7f0800b8
@@ -903,7 +903,7 @@ int id valor_condicion 0x7f080160
 int id valor_constitucion 0x7f080144
 int id valor_contacto 0x7f080096
 int id valor_creado 0x7f080142
-int id valor_cuenta 0x7f08006d
+int id valor_cuenta 0x7f08006b
 int id valor_cumpleanos 0x7f0800a6
 int id valor_cumplimiento 0x7f080154
 int id valor_cupo 0x7f08015a

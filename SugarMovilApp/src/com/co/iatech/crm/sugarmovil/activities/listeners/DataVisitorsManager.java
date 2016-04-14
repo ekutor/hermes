@@ -4,6 +4,7 @@ import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 
 public class DataVisitorsManager implements DataVisitor{
 	
@@ -33,6 +34,22 @@ public class DataVisitorsManager implements DataVisitor{
 	public void clear(Oportunidad bean) {
 		DataManager.getInstance().opportunitiesInfo.clear();
 		
+	}
+	
+	@Override
+	public void add(TareaDetalle bean) {
+		DataManager.getInstance().tasksInfo.add(bean);
+		
+	}
+
+	@Override
+	public int size(TareaDetalle bean) {
+		return DataManager.getInstance().tasksInfo.size();
+	}
+	
+	@Override
+	public void clear(TareaDetalle bean) {
+		DataManager.getInstance().tasksInfo.clear();
 	}
 
 	@Override

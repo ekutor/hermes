@@ -2283,7 +2283,7 @@ Material Red
         public static final int action_bar_spinner=0x7f080003;
         public static final int action_bar_subtitle=0x7f080029;
         public static final int action_bar_title=0x7f080028;
-        public static final int action_button=0x7f08010b;
+        public static final int action_button=0x7f080103;
         public static final int action_context_bar=0x7f080046;
         public static final int action_divider=0x7f0801dc;
         public static final int action_menu_divider=0x7f080006;
@@ -2414,8 +2414,8 @@ Material Red
         public static final int recycler_view_calls=0x7f0801bf;
         public static final int recycler_view_contacts=0x7f0801c0;
         public static final int recycler_view_list_call=0x7f080102;
-        public static final int recycler_view_list_contact=0x7f080106;
-        public static final int recycler_view_list_opportunity=0x7f08010a;
+        public static final int recycler_view_list_contact=0x7f080107;
+        public static final int recycler_view_list_opportunity=0x7f08010b;
         public static final int recycler_view_list_task=0x7f08010f;
         public static final int recycler_view_opportunities=0x7f0801c2;
         public static final int recycler_view_products=0x7f0801c3;
@@ -2434,8 +2434,8 @@ Material Red
         public static final int search_plate=0x7f08004d;
         public static final int search_src_text=0x7f08004e;
         public static final int search_view_list_call=0x7f080101;
-        public static final int search_view_list_contact=0x7f080105;
-        public static final int search_view_list_opportunity=0x7f080109;
+        public static final int search_view_list_contact=0x7f080106;
+        public static final int search_view_list_opportunity=0x7f08010a;
         public static final int search_view_list_task=0x7f08010e;
         public static final int search_view_main_toolbar=0x7f08011a;
         public static final int search_voice_btn=0x7f080052;
@@ -2465,7 +2465,7 @@ Material Red
         public static final int text_acumulada=0x7f080151;
         public static final int text_alianzas=0x7f08014b;
         public static final int text_anterior=0x7f080147;
-        public static final int text_asignado_a=0x7f08006a;
+        public static final int text_asignado_a=0x7f08006e;
         public static final int text_asunto=0x7f08005a;
         public static final int text_autorizada=0x7f080155;
         public static final int text_bon_anual=0x7f08019a;
@@ -2474,7 +2474,7 @@ Material Red
         public static final int text_bon_tri=0x7f08019c;
         public static final int text_c_transporte=0x7f08013f;
         public static final int text_call_toolbar=0x7f080057;
-        public static final int text_campana=0x7f08006e;
+        public static final int text_campana=0x7f08006c;
         public static final int text_canal=0x7f0800ca;
         public static final int text_cargo=0x7f0800a9;
         public static final int text_celular=0x7f0800b7;
@@ -2486,7 +2486,7 @@ Material Red
         public static final int text_contact_toolbar=0x7f0800a2;
         public static final int text_contacto=0x7f080095;
         public static final int text_creado=0x7f080141;
-        public static final int text_cuenta=0x7f08006c;
+        public static final int text_cuenta=0x7f08006a;
         public static final int text_cumpleanos=0x7f0800a5;
         public static final int text_cumplimiento=0x7f080153;
         public static final int text_cupo=0x7f080159;
@@ -2543,7 +2543,7 @@ Material Red
         public static final int text_municipio=0x7f0800bf;
         public static final int text_nit=0x7f080135;
         public static final int text_no=0x7f0800f0;
-        public static final int text_nombre=0x7f08009b;
+        public static final int text_nombre=0x7f08009a;
         public static final int text_opportunity_toolbar=0x7f080072;
         public static final int text_origen=0x7f08014d;
         public static final int text_paso=0x7f08008b;
@@ -2572,11 +2572,11 @@ Material Red
         public static final int text_task_toolbar=0x7f080090;
         public static final int text_tel1=0x7f0800af;
         public static final int text_tel2=0x7f0800b3;
-        public static final int text_tipo=0x7f08009a;
+        public static final int text_tipo=0x7f080099;
         public static final int text_toma=0x7f0800ee;
         public static final int text_toolbar_list_call=0x7f080100;
-        public static final int text_toolbar_list_contact=0x7f080104;
-        public static final int text_toolbar_list_opportunity=0x7f080108;
+        public static final int text_toolbar_list_contact=0x7f080105;
+        public static final int text_toolbar_list_opportunity=0x7f080109;
         public static final int text_toolbar_list_task=0x7f08010d;
         public static final int text_total=0x7f08015d;
         public static final int text_uen=0x7f0800c6;
@@ -2594,8 +2594,8 @@ Material Red
         public static final int toolbar_call=0x7f080056;
         public static final int toolbar_contact=0x7f0800a1;
         public static final int toolbar_list_call=0x7f0800ff;
-        public static final int toolbar_list_contact=0x7f080103;
-        public static final int toolbar_list_opportunity=0x7f080107;
+        public static final int toolbar_list_contact=0x7f080104;
+        public static final int toolbar_list_opportunity=0x7f080108;
         public static final int toolbar_list_task=0x7f08010c;
         public static final int toolbar_main=0x7f080118;
         public static final int toolbar_opportunity=0x7f080071;
@@ -2605,7 +2605,7 @@ Material Red
         public static final int topPanel=0x7f080033;
         public static final int txtNit=0x7f0801c8;
         public static final int txtUen=0x7f0801c7;
-        public static final int txt_valor_asignado_a=0x7f08006b;
+        public static final int txt_valor_asignado_a=0x7f08006f;
         public static final int udialog_button=0x7f0801f2;
         public static final int up=0x7f080002;
         public static final int useLogo=0x7f080018;
@@ -2635,7 +2635,7 @@ Material Red
         public static final int valor_acumulada=0x7f080152;
         public static final int valor_alianzas=0x7f08014c;
         public static final int valor_anterior=0x7f080148;
-        public static final int valor_asignado_a=0x7f080099;
+        public static final int valor_asignado_a=0x7f08009b;
         public static final int valor_asunto=0x7f08005b;
         public static final int valor_autorizada=0x7f080156;
         public static final int valor_bon_anual=0x7f08019b;
@@ -2643,7 +2643,7 @@ Material Red
         public static final int valor_bon_bi_leviton=0x7f0801a1;
         public static final int valor_bon_tri=0x7f08019d;
         public static final int valor_c_transporte=0x7f080140;
-        public static final int valor_campana=0x7f08006f;
+        public static final int valor_campana=0x7f08006d;
         public static final int valor_canal=0x7f0800cb;
         public static final int valor_cargo=0x7f0800aa;
         public static final int valor_celular=0x7f0800b8;
@@ -2654,7 +2654,7 @@ Material Red
         public static final int valor_constitucion=0x7f080144;
         public static final int valor_contacto=0x7f080096;
         public static final int valor_creado=0x7f080142;
-        public static final int valor_cuenta=0x7f08006d;
+        public static final int valor_cuenta=0x7f08006b;
         public static final int valor_cumpleanos=0x7f0800a6;
         public static final int valor_cumplimiento=0x7f080154;
         public static final int valor_cupo=0x7f08015a;

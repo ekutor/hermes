@@ -119,7 +119,7 @@ SearchDialogInterface, TasksModuleValidations{
 	}
     
     private void chargeLists() {
-		asignadoA = (TextView) findViewById(R.id.txt_valor_asignado_a);
+		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
         
         // Estado
         valorEstado = (Spinner) findViewById(R.id.valor_estado);
@@ -197,6 +197,8 @@ SearchDialogInterface, TasksModuleValidations{
       
         // Asignado
         asignadoA.setText(lc.convert(tareaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
+        
+        
         
     }
 
@@ -289,7 +291,7 @@ SearchDialogInterface, TasksModuleValidations{
         protected Boolean doInBackground(Object... params) {
             try {
                 
-                Llamada obj = (Llamada)params[0];
+            	TareaDetalle obj = (TareaDetalle)params[0];
 
                 // Resultado
                 String resultado = null;
