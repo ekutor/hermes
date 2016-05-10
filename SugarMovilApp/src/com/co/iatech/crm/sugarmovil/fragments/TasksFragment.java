@@ -30,7 +30,7 @@ import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Tarea;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
@@ -273,7 +273,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
                     JSONObject obj = jArr.getJSONObject(i);
                     String id = obj.getString("id");
                     String name = obj.getString("name");
-                    DataManager.getInstance().tasksInfo.add(new Tarea(id, name));
+                    DataManager.getInstance().tasksInfo.add(new TareaDetalle(id, name));
                 }
 
                 return true;

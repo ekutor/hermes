@@ -85,8 +85,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
         // Main Toolbar
         mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
         setSupportActionBar(mLlamadaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
         imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 
         
@@ -129,27 +129,27 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 		 
 		 // Direccion Llamada        
         valorDireccion = (Spinner) findViewById(R.id.valor_direccion);
-        ArrayAdapter<String> dirAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> dirAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_DIRECTION));
         dirAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorDireccion.setAdapter(dirAdapter);
         
         // Estado
         valorEstado = (Spinner) findViewById(R.id.valor_estado);
-        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_STATUS));
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEstado.setAdapter(estadoAdapter);
         //Resultado
         valorResultado = (Spinner) findViewById(R.id.valor_resultado);
-        ArrayAdapter<String> resAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> resAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_RESULT));
         resAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorResultado.setAdapter(resAdapter);
         
         // Duracion
         valorDuracionMin = (Spinner) findViewById(R.id.valor_duracion);
-        ArrayAdapter<String> durAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> durAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_MINS_DURATION));
         durAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorDuracionMin.setAdapter(durAdapter);
@@ -158,7 +158,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
       //Carga Campañas
         valorCampana = (Spinner) findViewById(R.id.valor_campana);
         ListCampaignsConverter lcc = new ListCampaignsConverter();
-        ArrayAdapter<String> campAdapter = new ArrayAdapter<>(AddCallActivity.this,
+        ArrayAdapter<String> campAdapter = new ArrayAdapter<String>(AddCallActivity.this,
                 android.R.layout.simple_spinner_item,  lcc.getListInfo());
         valorCampana.setAdapter(campAdapter);
         valorCampana.setSelection(0);
@@ -167,7 +167,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
       //Carga Cuentas
         valorCuenta = (Spinner) findViewById(R.id.valor_cuenta);
         ListAccountConverter lac = new ListAccountConverter();
-        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<>(AddCallActivity.this,
+        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddCallActivity.this,
                 android.R.layout.simple_spinner_item,  lac.getListInfo());
         valorCuenta.setAdapter(cuentaAdapter);
         valorCuenta.setSelection(0);

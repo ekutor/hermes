@@ -52,11 +52,12 @@ public class ActionsStrategy {
 			});
 		}
 		if (actionModule.getActionButton() != null) {	
-			if (AccessControl.validateEdit(actionModule.getModule(),  global)) {
+			if (true) {
 				actionModule.getActionButton().setVisibility(View.VISIBLE);
 				Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" Visible");
 				actionModule.getActionButton().setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
+						Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" CLICK !");
 						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule());
 					}
 				});
@@ -64,7 +65,7 @@ public class ActionsStrategy {
 				 Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" invisible");
 				actionModule.getActionButton().setVisibility(View.INVISIBLE);
 			}
-		}
+		}	
 	}
 }
 		

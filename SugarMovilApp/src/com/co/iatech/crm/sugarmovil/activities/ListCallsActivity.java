@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
@@ -40,7 +40,7 @@ import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
 
-public class ListCallsActivity extends AppCompatActivity implements ContactsModuleActions {
+public class ListCallsActivity extends AppCompatActivity implements CallsModuleActions {
     /**
      * Debug.
      */

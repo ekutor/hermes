@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.model.Tarea;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;;
 
 public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdapter.ViewHolder> {
 
@@ -26,10 +26,10 @@ public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdap
      * Member Variables.
      */
     private Context mContext;
-    private ArrayList<Tarea> mDataset;
-    private ArrayList<Tarea> mVisibleDataset;
+    private ArrayList<TareaDetalle> mDataset;
+    private ArrayList<TareaDetalle> mVisibleDataset;
 
-    public RecyclerTasksAdapter(Context context, ArrayList<Tarea> myDataset) {
+    public RecyclerTasksAdapter(Context context, ArrayList<TareaDetalle> myDataset) {
         mContext = context;
         mDataset = myDataset;
         mVisibleDataset = mDataset;
@@ -47,7 +47,7 @@ public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Tarea tarea = mVisibleDataset.get(position);
+        final TareaDetalle tarea = mVisibleDataset.get(position);
 
         // Nombre tarea
         holder.mTextViewNombre.setText(tarea.getName());
@@ -74,15 +74,15 @@ public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdap
     }
 
     public void flushFilter() {
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<TareaDetalle>();
         mVisibleDataset.addAll(mDataset);
         notifyDataSetChanged();
     }
 
     public void setFilter(String queryText) {
 
-        mVisibleDataset = new ArrayList<>();
-        for (Tarea item : mDataset) {
+        mVisibleDataset = new ArrayList<TareaDetalle>();
+        for (TareaDetalle item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);
         }

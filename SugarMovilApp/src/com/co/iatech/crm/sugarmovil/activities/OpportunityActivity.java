@@ -71,8 +71,8 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
         // Main Toolbar
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_opportunity);
         setSupportActionBar(mCuentaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
         
         this.applyActions();
 		

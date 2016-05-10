@@ -130,17 +130,17 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
         boolean cancel = false;
         View focusView = null;
 
-        // Verificar clave valida
-        if (TextUtils.isEmpty(clave)) {
-        	textPass.setError(getString(R.string.error_field_required));
-            focusView = textPass;
-            cancel = true;
-        }
-
         // Verificar usuario valido
         if (TextUtils.isEmpty(usuario)) {
         	textUser.setError(getString(R.string.error_field_required));
             focusView = textUser;
+            cancel = true;
+        }
+     // Verificar clave valida
+        if (TextUtils.isEmpty(clave)) {
+        	
+        	textPass.setError(getString(R.string.error_field_required));
+            focusView = textPass;
             cancel = true;
         }
 
@@ -222,8 +222,8 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
             // Intento de login usuarios
             try {
             	if(user.equals("h")){
-            		user = "luz";
-            		passwordUser = "temporal2016'";
+            		user = "crm";
+            		passwordUser = "M4rk3tingLAU+*";
             	}
             	ControlConnection.addHeader("usuario", user);
             	ControlConnection.addHeader("password", passwordUser);

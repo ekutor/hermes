@@ -3,6 +3,7 @@ package com.co.iatech.crm.sugarmovil.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
@@ -64,6 +65,7 @@ public class ActivitiesMediator implements IMediator {
 	@Override
 	public void showEditActivity(Context context, Modules module) {
 		Intent intent = null;
+		Log.d("ActionMediator ", module.name()+" Click + Show Edit Activity");
 		switch( module){
 			case ACCOUNTS:
 				break;
@@ -74,6 +76,7 @@ public class ActivitiesMediator implements IMediator {
 				intent = new Intent(context, AddTaskActivity.class);
 				break;
 			case CALLS:
+				intent = new Intent(context, AddCallActivity.class);
 				break;
 		default:
 			break;

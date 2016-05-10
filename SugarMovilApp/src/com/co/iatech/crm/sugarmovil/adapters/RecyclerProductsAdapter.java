@@ -79,14 +79,14 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
     }
 
     public void flushFilter() {
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Producto>();
         mVisibleDataset.addAll(mDataset);
         notifyDataSetChanged();
     }
 
     public void setFilter(String queryText) {
 
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Producto>();
         for (Producto item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);

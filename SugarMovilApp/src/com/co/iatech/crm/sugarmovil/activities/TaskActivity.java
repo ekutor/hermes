@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import java.security.MessageDigestSpi;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
@@ -25,6 +28,7 @@ import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
@@ -59,55 +63,69 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-
-        Intent intent = getIntent();
-        objTareaDetalle = null;
-        
-
-        // Main Toolbar
-        mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
-        setSupportActionBar(mTareaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        
-        this.applyActions();
-        
-        if(intent.getExtras().get(Info.OBJECT.name()) instanceof  TareaDetalle ){
-        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.OBJECT.name());
-        	this.ponerValores(objTareaDetalle);
-        }else{
-	        mIdTarea = intent.getStringExtra(Info.ID.name());
-	        Log.d(TAG, "Id tarea " + mIdTarea);
-	        mTareaObtenerTarea = new GetTaskTask();
-  	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
-	      
+        try{
+	        Intent intent = getIntent();
+	        objTareaDetalle = null;
+	        
+	
+	        // Main Toolbar
+	        mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
+	        setSupportActionBar(mTareaToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        
+	        this.applyActions();
+	        
+	        if(intent.getExtras().get(Info.OBJECT.name()) instanceof  TareaDetalle ){
+	        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.OBJECT.name());
+	        	this.ponerValores(objTareaDetalle);
+	        }else{
+		        mIdTarea = intent.getStringExtra(Info.ID.name());
+		        Log.d(TAG, "Id tarea " + mIdTarea);
+		        mTareaObtenerTarea = new GetTaskTask();
+	  	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
+		      
+	        }
+        }catch(Exception e){
+     	   Message.showShortExt(Utils.errorToString(e), this);
         }
     }
     
 
     public void ponerValores(TareaDetalle tareaDetalle) {
-        TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
+    	TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(tareaDetalle.getName());
+        
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
         valorEstado.setText(ListsConversor.convert(ConversorsType.TASKS_STATUS,tareaDetalle.getStatus(), DataToGet.VALUE));
         
         TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
-        valorFechaInicio.setText(tareaDetalle.getDate_start());
+        valorFechaInicio.setText(Utils.convertTimetoString(tareaDetalle.getDate_start()));
+       
         TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
-        valorFechaVence.setText(tareaDetalle.getDate_due());
+        valorFechaVence.setText(Utils.convertTimetoString(tareaDetalle.getDate_due()));
+        
         TextView valorContacto = (TextView) findViewById(R.id.valor_contacto);
         valorContacto.setText(tareaDetalle.getContact_name());
+        
         TextView valorEstimado = (TextView) findViewById(R.id.valor_estimado);
         valorEstimado.setText(tareaDetalle.getTrabajo_estimado_c());
         TextView valorPrioridad = (TextView) findViewById(R.id.valor_prioridad);
+        
         valorPrioridad.setText(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,tareaDetalle.getPriority(), DataToGet.VALUE));
+        
         TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
         valorDescripcion.setText(tareaDetalle.getDescription());
+        
+        TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
+    	valorTipo.setText(ListsConversor.convert(ConversorsType.TASKS_TYPE, tareaDetalle.getParent_type(), DataToGet.VALUE));
+        
+    	
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
         valorAsignado.setText(tareaDetalle.getAssigned_user_name());
-        /*TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
-        valorTipo.setText(tareaDetalle.getParent_type());
-        TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
+        
+       
+       /* TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
         valorNombre.setText(tareaDetalle.getParent_name());*/
     }
 
@@ -163,7 +181,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(TaskActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando información tarea...");
+            progressDialog.setMessage("Cargando informacion de tarea...");
             progressDialog.setIndeterminate(true);
             progressDialog.show();
         }

@@ -69,8 +69,8 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
         // Main Toolbar
         mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
         setSupportActionBar(mLlamadaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
         
         this.applyActions();
         // Tarea obtener llamada

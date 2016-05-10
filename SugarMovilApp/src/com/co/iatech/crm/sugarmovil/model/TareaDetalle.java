@@ -1,9 +1,13 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
+import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,7 +15,7 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de una tarea.
  */
-public class TareaDetalle extends GenericBean implements Parcelable {
+public class TareaDetalle extends GenericBean implements Parcelable , Visitable{
 
 
     @SuppressWarnings("unused")
@@ -54,6 +58,11 @@ public class TareaDetalle extends GenericBean implements Parcelable {
     
     public TareaDetalle(){
     	
+    }
+    
+    public TareaDetalle(String id,String name){
+    	this.id = id;
+    	this.name = name;
     }
     
     public TareaDetalle(JSONObject obj) throws JSONException {
@@ -349,7 +358,37 @@ public class TareaDetalle extends GenericBean implements Parcelable {
 
 	@Override
 	public Map<String, String> getDataBean() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id",id);
+		data.put("name",name);
+		data.put("date_entered",date_entered);
+		data.put("date_modified",date_modified);
+		data.put("modified_user_id",modified_user_id);
+		data.put("created_by",created_by);
+		data.put("description",description);
+		data.put("deleted",deleted);
+		data.put("assigned_user_id",assigned_user_id);
+		data.put("status",status);
+		data.put("date_due_flag",date_due_flag);
+		data.put("date_due",date_due);
+		data.put("date_start_flag",date_start_flag);
+		data.put("date_start",date_start);
+		data.put("parent_type",parent_type);
+		data.put("parent_id",parent_id);
+		data.put("contact_id",contact_id);
+		data.put("priority",priority);
+		data.put("id_c",id_c);
+		data.put("aviso_c",aviso_c);
+		data.put("trabajo_estimado_c",trabajo_estimado_c);
+		data.put("ejecuted_date_c",ejecuted_date_c);
+		data.put("assigned_user_name",assigned_user_name);
+		data.put("contact_name",contact_name);
+		data.put("parent_name",parent_name);
+		return data;
+	}
+
+	@Override
+	public void accept(DataVisitor visitor) {
+		visitor.add(this);
 	}
 }
