@@ -44,7 +44,7 @@ public class ProductsFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private ArrayList<Producto> mProductsArray = new ArrayList<>();
+    private ArrayList<Producto> mProductsArray = new ArrayList<Producto>();
 
     /**
      * UI References.

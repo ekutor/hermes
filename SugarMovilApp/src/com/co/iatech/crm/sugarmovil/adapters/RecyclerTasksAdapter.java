@@ -74,14 +74,14 @@ public class RecyclerTasksAdapter extends RecyclerView.Adapter<RecyclerTasksAdap
     }
 
     public void flushFilter() {
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<TareaDetalle>();
         mVisibleDataset.addAll(mDataset);
         notifyDataSetChanged();
     }
 
     public void setFilter(String queryText) {
 
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<TareaDetalle>();
         for (TareaDetalle item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);

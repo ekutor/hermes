@@ -79,14 +79,14 @@ public class RecyclerUsersAdapter extends RecyclerView.Adapter<RecyclerUsersAdap
     }
 
     public void flushFilter() {
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Oportunidad>();
         mVisibleDataset.addAll(mDataset);
         notifyDataSetChanged();
     }
 
     public void setFilter(String queryText) {
 
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Oportunidad>();
         for (Oportunidad item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);

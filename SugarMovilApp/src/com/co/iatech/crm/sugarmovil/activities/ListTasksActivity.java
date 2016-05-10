@@ -5,6 +5,20 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
+import com.squareup.picasso.Picasso;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -25,22 +39,8 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksDetailAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
-import com.squareup.picasso.Picasso;
 
-
-public class ListTasksActivity extends AppCompatActivity implements TasksModuleActions  {
+public class ListTasksActivity extends AppCompatActivity implements TasksModuleActions {
     /**
      * Debug.
      */
@@ -66,8 +66,8 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mRecyclerViewAdapter;
     private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
-
-	private ActionButton actionButton;
+    
+    private ActionButton actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,6 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         mToolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_task);
-//        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 
         // SearchView
         mSearchView = (SearchView) findViewById(R.id.search_view_list_task);
@@ -150,7 +149,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
                     // Filtro para select
                     ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error aÃ±adiendo el filtro de busqueda");
+                    Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
 
                 return false;
@@ -162,7 +161,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
                     // Filtro para select
                     ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error aÃ±adiendo el filtro de busqueda");
+                    Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
 
                 return false;
@@ -170,7 +169,6 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         });
         
         this.applyActions();
-        // Tarea obtener select
         mTareaObtenerTareas= new GetTasksxAccountTask();
         mTareaObtenerTareas.execute(idCuentaActual);
     }
@@ -208,7 +206,6 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
    		actionButton = (ActionButton) findViewById(R.id.action_button); 
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
-    
     @Override
     public void onBackPressed() {
     	ActivitiesMediator.getInstance().returnPrevID();
@@ -216,7 +213,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
     }
 
     /**
-     * Representa una tarea asincrona de obtencion de oportunidades por cuenta.
+     * Representa una tarea asincrona de obtencion de tareas por cuenta.
      */
     public class GetTasksxAccountTask extends AsyncTask<String, Void, Boolean> {
         private ProgressDialog progressDialog;
@@ -225,7 +222,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(ListTasksActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando Tareas...");
+            progressDialog.setMessage("Cargando Tareas x Cuenta...");
             progressDialog.setIndeterminate(true);
             progressDialog.show();
         }
@@ -269,10 +266,10 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
 
             if (success) {
                 if (TareasXAccount.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerTasksDetailAdapter(ListTasksActivity.this, TareasXAccount);
+                    mRecyclerViewAdapter = new RecyclerTasksAdapter(ListTasksActivity.this, TareasXAccount);
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 } else {
-                	progressDialog.setMessage("Esta cuenta no tiene tareas asociadas.");
+                	progressDialog.setMessage("Esta cuenta no tiene Tareas asociadas.");
                     Log.d(TAG,
                             "No hay valores: "
                                     + TareasXAccount.size());

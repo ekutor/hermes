@@ -357,7 +357,7 @@
     <string name="tarea_prioridad">Prioridad:</string>
     <string name="tarea_descripcion">Descripción:</string>
     <string name="tarea_asignado">Asignado a:</string>
-    <string name="tarea_titulo_relacion">RELACIÓN</string>
+    <string name="tarea_titulo_relacion">RELACIONADO CON:</string>
     <string name="tarea_tipo">Tipo:</string>
     <string name="tarea_nombre">Nombre:</string>
 

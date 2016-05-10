@@ -28,7 +28,7 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 	
 	private ListOpportunityActivity activity;
 	private RecyclerView recyclerView;
-	 private ArrayList<Oportunidad> oportunitiesXAccount = new ArrayList<>();
+	 private ArrayList<Oportunidad> oportunitiesXAccount = new ArrayList<Oportunidad>();
 	
 	public GetOpportunitiesTask(ListOpportunityActivity listOpportunityActivity, RecyclerView recyclerView) {
 		activity = listOpportunityActivity;

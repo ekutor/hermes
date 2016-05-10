@@ -49,7 +49,7 @@ public class ListContactActivity extends AppCompatActivity {
 
     private String idCuentaActual;
     private Contacto mContacto;
-    private ArrayList<Contacto> mContactsArray = new ArrayList<>();
+    private ArrayList<Contacto> mContactsArray = new ArrayList<Contacto>();
 
     /**
      * UI References.

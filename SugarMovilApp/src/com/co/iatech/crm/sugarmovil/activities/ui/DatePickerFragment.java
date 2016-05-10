@@ -32,9 +32,9 @@ public class DatePickerFragment extends DialogFragment implements
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the current date as the default date in the picker
 		c = Calendar.getInstance();
-
-		if (modoEdicion) {
-			c = Utils.getDate(textResponse.getText().toString());
+		String value = textResponse.getText().toString();
+		if (modoEdicion && value!= null) {
+			c = Utils.getDate(value);
 		}
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);

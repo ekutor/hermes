@@ -99,8 +99,8 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         // Main Toolbar
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_opportunity);
         setSupportActionBar(mCuentaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
         mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 
         chargeLists();
@@ -136,7 +136,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     	//Tipo Oportunidad
         valorTipo = (Spinner) findViewById(R.id.valor_tipo);
         
-        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_PROYECT));
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         
@@ -144,42 +144,42 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
       //Etapa Oportunidad
         valorEtapa = (Spinner) findViewById(R.id.valor_etapa);
-        ArrayAdapter<String> etapaAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> etapaAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_STAGE));
         etapaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEtapa.setAdapter(etapaAdapter);
       
         // Medio Oportunidad
         valorMedio = (Spinner) findViewById(R.id.valor_medio);
-        ArrayAdapter<String> medioAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> medioAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_MEDIUM));
         medioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorMedio.setAdapter(medioAdapter);
         
         //Energia
         valorEnergia = (Spinner) findViewById(R.id.valor_energia);       
-        ArrayAdapter<String> energiaAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> energiaAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
         energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEnergia.setAdapter(energiaAdapter);
 
         // Comunicaciones
         valorComunicaciones = (Spinner) findViewById(R.id.valor_comunicaciones);
-        ArrayAdapter<String> comunicacionesAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> comunicacionesAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_COMUNICATIONS));
         comunicacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorComunicaciones.setAdapter(comunicacionesAdapter);
         
         // Iluminacion
         valorIluminacion = (Spinner) findViewById(R.id.valor_iluminacion);
-        ArrayAdapter<String> iluminacionAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> iluminacionAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ILUM));
         iluminacionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorIluminacion.setAdapter(iluminacionAdapter);        
         
         // Moneda
         valorMoneda = (Spinner) findViewById(R.id.valor_moneda);
-        ArrayAdapter<String> monedaAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> monedaAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_CURRENCY));
         monedaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorMoneda.setAdapter(monedaAdapter);
@@ -187,7 +187,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
       //Carga Cuentas
         valorCuenta = (Spinner) findViewById(R.id.valor_cuenta);
         ListAccountConverter lac = new ListAccountConverter();
-        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<>(AddOpportunityActivity.this,
+        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddOpportunityActivity.this,
                 android.R.layout.simple_spinner_item,  lac.getListInfo());
         valorCuenta.setAdapter(cuentaAdapter);
         valorCuenta.setSelection(0);
@@ -215,7 +215,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
       //Carga Campañas
         valorCampana = (Spinner) findViewById(R.id.valor_campana);
         ListCampaignsConverter lcc = new ListCampaignsConverter();
-        ArrayAdapter<String> campAdapter = new ArrayAdapter<>(AddOpportunityActivity.this,
+        ArrayAdapter<String> campAdapter = new ArrayAdapter<String>(AddOpportunityActivity.this,
                 android.R.layout.simple_spinner_item,  lcc.getListInfo());
         valorCampana.setAdapter(campAdapter);
         valorCampana.setSelection(0);
@@ -344,7 +344,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        try{
 	        	// Fecha Cierre
 	            if(mValorFechaCierre.getText().toString() != null && mValorFechaCierre.getText().toString().length() > 1){
-	            	oportSeleccionada.setDate_closed(Utils.getTimetoBackend(mValorFechaCierre.getText().toString()));
+	            	oportSeleccionada.setDate_closed(Utils.transformTimetoBackend( mValorFechaCierre.getText().toString() ));
 	            }
 	            
 			}catch(java.lang.NullPointerException ne){
