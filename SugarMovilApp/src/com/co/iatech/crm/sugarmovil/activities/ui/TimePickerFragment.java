@@ -45,7 +45,7 @@ TimePickerDialog.OnTimeSetListener {
 		c.set(Calendar.HOUR, hourOfDay);
 		c.set(Calendar.MINUTE, minute);
 		c.set(Calendar.SECOND, 0);
-		textResponse.setText(Utils.convertTimetoString(c));
+		textResponse.setText(Utils.convertTimetoStringFrontEnd(c));
 	}
 
 }

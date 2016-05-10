@@ -192,8 +192,8 @@ SearchDialogInterface, TasksModuleValidations{
     	valorAsunto.setText(tareaSeleccionada.getName());
     	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, tareaSeleccionada.getStatus());
 		valorEstado.setSelection(pos);
-		valorFechaInicio.setText(Utils.convertTimetoString(tareaSeleccionada.getDate_start()));
-		valorFechaVen.setText(Utils.convertTimetoString(tareaSeleccionada.getDate_due()));
+		valorFechaInicio.setText(Utils.transformTimeBakendToUI(tareaSeleccionada.getDate_start()));
+		valorFechaVen.setText(Utils.transformTimeBakendToUI(tareaSeleccionada.getDate_due()));
 	    
 	    valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
 	//contacto
@@ -251,11 +251,11 @@ SearchDialogInterface, TasksModuleValidations{
 			tareaSeleccionada.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS, valorEstado.getSelectedItem().toString(), DataToGet.CODE));
 			
 			if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
-            	tareaSeleccionada.setDate_start(Utils.transformTimetoBackend(valorFechaInicio.getText().toString()));
+            	tareaSeleccionada.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
             }
             
 			if(valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1){
-            	tareaSeleccionada.setDate_due(Utils.transformTimetoBackend(valorFechaVen.getText().toString()));
+            	tareaSeleccionada.setDate_due(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
             }
 			
 			//contacto

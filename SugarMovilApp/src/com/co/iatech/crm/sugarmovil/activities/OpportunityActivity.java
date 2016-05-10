@@ -96,7 +96,7 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
         TextView valorUsuario = (TextView) findViewById(R.id.valor_usuario);
         valorUsuario.setText(oportunidadDetalle.getUsuario_final_c());
         TextView valorFecha = (TextView) findViewById(R.id.valor_fecha);
-        valorFecha.setText(Utils.convertTimetoString(oportunidadDetalle.getDate_closed()));
+        valorFecha.setText(Utils.transformTimeBakendToUI(oportunidadDetalle.getDate_closed()));
         TextView valorEstimado = (TextView) findViewById(R.id.valor_estimado);
         valorEstimado.setText(Utils.addSepMiles(oportunidadDetalle.getValoroportunidad_c()));
         TextView valorProbabilidad = (TextView) findViewById(R.id.valor_probabilidad);

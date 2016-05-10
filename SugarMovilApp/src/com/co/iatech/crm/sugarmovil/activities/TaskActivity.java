@@ -93,6 +93,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
     
 
     public void ponerValores(TareaDetalle tareaDetalle) {
+    	try{
     	TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(tareaDetalle.getName());
         
@@ -100,10 +101,10 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
         valorEstado.setText(ListsConversor.convert(ConversorsType.TASKS_STATUS,tareaDetalle.getStatus(), DataToGet.VALUE));
         
         TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
-        valorFechaInicio.setText(Utils.convertTimetoString(tareaDetalle.getDate_start()));
+        valorFechaInicio.setText(Utils.transformTimeBakendToUI(tareaDetalle.getDate_start()));
        
         TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
-        valorFechaVence.setText(Utils.convertTimetoString(tareaDetalle.getDate_due()));
+        valorFechaVence.setText(Utils.transformTimeBakendToUI(tareaDetalle.getDate_due()));
         
         TextView valorContacto = (TextView) findViewById(R.id.valor_contacto);
         valorContacto.setText(tareaDetalle.getContact_name());
@@ -123,7 +124,9 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
     	
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
         valorAsignado.setText(tareaDetalle.getAssigned_user_name());
-        
+    	 }catch(Exception e){
+       	   Message.showShortExt(Utils.errorToString(e), this);
+          }
        
        /* TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
         valorNombre.setText(tareaDetalle.getParent_name());*/

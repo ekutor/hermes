@@ -258,7 +258,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         // Usuario Final
         valorUsuario.setText(oportSeleccionada.getUsuario_final_c());
         // Fecha Cierre
-        mValorFechaCierre.setText(Utils.convertTimetoString(oportSeleccionada.getDate_closed()));
+        mValorFechaCierre.setText(Utils.transformTimeBakendToUI(oportSeleccionada.getDate_closed()));
         valorEstimado.setText(oportSeleccionada.getValoroportunidad_c());
         valorProbabilidad.setText(oportSeleccionada.getProbability());
         // Paso
@@ -344,7 +344,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        try{
 	        	// Fecha Cierre
 	            if(mValorFechaCierre.getText().toString() != null && mValorFechaCierre.getText().toString().length() > 1){
-	            	oportSeleccionada.setDate_closed(Utils.transformTimetoBackend( mValorFechaCierre.getText().toString() ));
+	            	oportSeleccionada.setDate_closed(Utils.transformTimeUItoBackend( mValorFechaCierre.getText().toString() ));
 	            }
 	            
 			}catch(java.lang.NullPointerException ne){
