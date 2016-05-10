@@ -76,14 +76,14 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
     }
 
     public void flushFilter() {
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Cuenta>();
         mVisibleDataset.addAll(mDataset);
         notifyDataSetChanged();
     }
 
     public void setFilter(String queryText) {
 
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Cuenta>();
         for (Cuenta item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);

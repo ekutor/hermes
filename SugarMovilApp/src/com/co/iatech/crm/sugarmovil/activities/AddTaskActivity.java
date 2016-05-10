@@ -3,22 +3,6 @@ package com.co.iatech.crm.sugarmovil.activities;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import android.app.DialogFragment;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.TextView;
-
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
 import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
@@ -34,14 +18,31 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+
+import android.app.DialogFragment;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 
 public class AddTaskActivity extends AppCompatActivity implements View.OnClickListener, 
@@ -74,31 +75,40 @@ SearchDialogInterface, TasksModuleValidations{
     private Button botonFechaInicio,botonFechaVen, botonHoraInicio, botonHoraVen;
     private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
+	public String resultado;
+
+	private AddTask editarTarea;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
-        modoEdicion = false;
-        
-        // SoftKey
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        
-        getInfoFromMediator();
-      
-        // Main Toolbar
-        mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
-        setSupportActionBar(mTareaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
-
-        chargeLists();
-        createWidgets();
-        defineValidations();
-        asignadoA.setOnClickListener(this);
+        try{
+	        modoEdicion = false;
+	        
+	        // SoftKey
+	        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	        
+	        getInfoFromMediator();
+	      
+	        // Main Toolbar
+	        mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
+	        setSupportActionBar(mTareaToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
+	
+	        chargeLists();
+	        createWidgets();
+	        defineValidations();
+	        asignadoA.setOnClickListener(this);
         
         if(modoEdicion){
         	chargeValues();
+        }
+       
+        }catch(Exception e){
+     	   Message.showShortExt(Utils.errorToString(e), this);
         }
     }
     
@@ -119,23 +129,23 @@ SearchDialogInterface, TasksModuleValidations{
 	}
     
     private void chargeLists() {
-		asignadoA = (TextView) findViewById(R.id.txt_valor_asignado_a);
+		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
         
         // Estado
         valorEstado = (Spinner) findViewById(R.id.valor_estado);
-        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.TASKS_STATUS));
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEstado.setAdapter(estadoAdapter);
       
         valorTipo = (Spinner) findViewById(R.id.valor_tipo);
-        ArrayAdapter<String> tipoAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> tipoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.TASKS_TYPE));
         tipoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorTipo.setAdapter(tipoAdapter);
         
         valorPrioridad = (Spinner) findViewById(R.id.valor_prioridad);
-        ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.TASKS_PRIORITY));
         prioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorPrioridad.setAdapter(prioridadAdapter);
@@ -157,6 +167,7 @@ SearchDialogInterface, TasksModuleValidations{
 	    valorAsunto = (EditText) findViewById(R.id.valor_asunto);
 	    valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
 	    valorFechaInicio = (TextView) findViewById(R.id.valor_fecha_inicio);
+	    valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
 	    
 	    valorTrabajoEstimado = (EditText) findViewById(R.id.valor_estimado);
 	    
@@ -177,19 +188,21 @@ SearchDialogInterface, TasksModuleValidations{
 	 
 	  }
     public void chargeValues() {
+    	imgButtonGuardar.setVisibility(View.VISIBLE);
     	valorAsunto.setText(tareaSeleccionada.getName());
-	    valorDescripcion.setText(tareaSeleccionada.getDescription());
-	    valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
-	
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, tareaSeleccionada.getStatus());
+    	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, tareaSeleccionada.getStatus());
 		valorEstado.setSelection(pos);
-		
+		valorFechaInicio.setText(Utils.convertTimetoString(tareaSeleccionada.getDate_start()));
+		valorFechaVen.setText(Utils.convertTimetoString(tareaSeleccionada.getDate_due()));
+	    
+	    valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
+	//contacto
+	    valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
+	    pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority());
+		valorPrioridad.setSelection(pos);
+		valorDescripcion.setText(tareaSeleccionada.getDescription());
 		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, tareaSeleccionada.getParent_type());
 		valorTipo.setSelection(pos);
-		
-		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority());
-		valorPrioridad.setSelection(pos);
-		
         
         // Contacto
       //  mValorContacto = (TextView) findViewById(R.id.valor_contacto);
@@ -197,6 +210,7 @@ SearchDialogInterface, TasksModuleValidations{
       
         // Asignado
         asignadoA.setText(lc.convert(tareaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
+
         
     }
 
@@ -231,19 +245,34 @@ SearchDialogInterface, TasksModuleValidations{
 				return;
 			}
 			
-
-            if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
-            	tareaSeleccionada.setDate_start(valorFechaInicio.getText().toString());
+			imgButtonGuardar.setVisibility(View.INVISIBLE);
+            
+			tareaSeleccionada.setName(valorAsunto.getText().toString());
+			tareaSeleccionada.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS, valorEstado.getSelectedItem().toString(), DataToGet.CODE));
+			
+			if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
+            	tareaSeleccionada.setDate_start(Utils.transformTimetoBackend(valorFechaInicio.getText().toString()));
             }
             
-            tareaSeleccionada.setDescription(valorDescripcion.getText().toString());
-            tareaSeleccionada.setName(valorAsunto.getText().toString());
+			if(valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1){
+            	tareaSeleccionada.setDate_due(Utils.transformTimetoBackend(valorFechaVen.getText().toString()));
+            }
+			
+			//contacto
+			
+			tareaSeleccionada.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
+			tareaSeleccionada.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY, valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
+			tareaSeleccionada.setDescription(valorDescripcion.getText().toString());
+			tareaSeleccionada.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, valorTipo.getSelectedItem().toString(), DataToGet.CODE));
+            
+            ListAccountConverter lac = new ListAccountConverter();
+	       // tareaSeleccionada.setParent_id(lac.convert(.getSelectedItem().toString(), DataToGet.CODE));
+            
 //            tareaSeleccionada.setDuration_hours(valorDuracionHrs.getText().toString());
-            tareaSeleccionada.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS, valorEstado.getSelectedItem().toString(), DataToGet.CODE));
+            
 //            tareaSeleccionada.setDuration_minutes(ListsConversor.convert(ConversorsType.CALLS_MINS_DURATION, valorDuracionMin.getSelectedItem().toString(), DataToGet.CODE));
             
-//	        ListAccountConverter lac = new ListAccountConverter();
-//	        llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getSelectedItem().toString(), DataToGet.CODE));
+
 //	        
 //	        llamadaSeleccionada.setParent_type("Accounts");
 	        
@@ -253,7 +282,7 @@ SearchDialogInterface, TasksModuleValidations{
 	        
 	        
 	
-	        AddTask editarTarea = new AddTask();
+	        editarTarea = new AddTask();
 	        
 	        editarTarea.execute(tareaSeleccionada);
 		}
@@ -289,10 +318,10 @@ SearchDialogInterface, TasksModuleValidations{
         protected Boolean doInBackground(Object... params) {
             try {
                 
-                Llamada obj = (Llamada)params[0];
+            	TareaDetalle obj = (TareaDetalle)params[0];
 
                 // Resultado
-                String resultado = null;
+                 resultado = null;
                 
                 if(modoEdicion){
                 	resultado  = ControlConnection.putInfo(TypeInfoServer.addTask, obj.getDataBean(),Modo.EDITAR,  AddTaskActivity.this);
@@ -300,6 +329,7 @@ SearchDialogInterface, TasksModuleValidations{
                    	resultado  = ControlConnection.putInfo(TypeInfoServer.addTask, obj.getDataBean(),Modo.AGREGAR,  AddTaskActivity.this);
                 }
                 Log.d(TAG, "Crear Tarea Resp: "+ resultado);
+              
                 if(resultado.contains("OK")){
  
                 	obj.accept(new DataVisitorsManager());
@@ -311,13 +341,14 @@ SearchDialogInterface, TasksModuleValidations{
             } catch (Exception e) {
                 Log.d(TAG, "Crear Llamada Error: "
                         + e.getClass().getName() + ":" + e.getMessage());
+                resultado = Utils.errorToString(e);
                 return false;
             }
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-         
+        	//Message.showShortExt(resultado+" "+success+ resultado.length(), AddTaskActivity.this);
             if (success) {
             	 if(modoEdicion){
             		 Message.showFinalMessage(getFragmentManager(),DialogType.EDITED, AddTaskActivity.this, MODULE );

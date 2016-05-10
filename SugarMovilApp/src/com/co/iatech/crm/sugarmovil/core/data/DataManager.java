@@ -6,7 +6,7 @@ import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
-import com.co.iatech.crm.sugarmovil.model.Tarea;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 
 
 public class DataManager  {
@@ -17,7 +17,7 @@ public class DataManager  {
 	public ArrayList<Cuenta> accountsInfo;
     public ArrayList<Llamada> callsInfo;
     public ArrayList<Contacto> contactsInfo;
-    public ArrayList<Tarea> tasksInfo;
+    public ArrayList<TareaDetalle> tasksInfo;
     
     
 	private DataManager(){
@@ -25,7 +25,7 @@ public class DataManager  {
 		accountsInfo  = new ArrayList<Cuenta>();
 		callsInfo = new ArrayList<Llamada>();
 		contactsInfo = new ArrayList<Contacto>();
-		tasksInfo = new ArrayList<Tarea>();
+		tasksInfo = new ArrayList<TareaDetalle>();
 	}
 	
 	public static DataManager getInstance(){

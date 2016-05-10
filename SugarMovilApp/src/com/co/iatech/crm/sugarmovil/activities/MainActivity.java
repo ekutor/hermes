@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
                 GravityCompat.START);
         mDrawerList = (ListView) findViewById(R.id.drawer_list);
-        mDataList = new ArrayList<>();
+        mDataList = new ArrayList<DrawerItem>();
         mTitle = mDrawerTitle = getTitle();
 
         // Anhadir Drawer Item a mDataList

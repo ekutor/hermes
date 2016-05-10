@@ -20,7 +20,7 @@ public class Message {
 	}
 	
 	public static void showShortExt(CharSequence text, Context context){
-	   	 int duration = Toast.LENGTH_SHORT;
+	   	 int duration = Toast.LENGTH_LONG;
 	        Toast toast = Toast.makeText(context, text, duration);
 	        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 80);
 	        toast.show();

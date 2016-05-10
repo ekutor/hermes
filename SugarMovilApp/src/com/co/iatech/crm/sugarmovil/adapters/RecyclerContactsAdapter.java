@@ -75,14 +75,14 @@ public class RecyclerContactsAdapter extends RecyclerView.Adapter<RecyclerContac
     }
 
     public void flushFilter() {
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Contacto>();
         mVisibleDataset.addAll(mDataset);
         notifyDataSetChanged();
     }
 
     public void setFilter(String queryText) {
 
-        mVisibleDataset = new ArrayList<>();
+        mVisibleDataset = new ArrayList<Contacto>();
         for (Contacto item : mDataset) {
             if (item.getNombre().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);

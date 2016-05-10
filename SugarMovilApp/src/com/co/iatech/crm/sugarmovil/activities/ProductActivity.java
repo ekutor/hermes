@@ -60,8 +60,8 @@ public class ProductActivity extends AppCompatActivity {
         // Main Toolbar
         mProductoToolbar = (Toolbar) findViewById(R.id.toolbar_product);
         setSupportActionBar(mProductoToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
 
         // Tarea obtener producto
         mTareaObtenerProducto = new GetProductTask();
