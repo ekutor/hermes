@@ -24,7 +24,7 @@ public class Cuenta extends GenericBean implements Parcelable {
         }
     };
 
-    private String id, name, uen;
+    private String name, uen;
 
     public Cuenta(JSONObject obj) throws JSONException {
         setId(obj.getString("id"));

@@ -1,6 +1,12 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.Contacto;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.model.Contacto;
 
 public class RecyclerContactsAdapter extends RecyclerView.Adapter<RecyclerContactsAdapter.ViewHolder> {
 
@@ -28,10 +29,10 @@ public class RecyclerContactsAdapter extends RecyclerView.Adapter<RecyclerContac
      */
     private Context mContext;
     private String mUrl;
-    private ArrayList<Contacto> mDataset;
-    private ArrayList<Contacto> mVisibleDataset;
+    private List<Contacto> mDataset;
+    private List<Contacto> mVisibleDataset;
 
-    public RecyclerContactsAdapter(Context context, ArrayList<Contacto> myDataset) {
+    public RecyclerContactsAdapter(Context context, List<Contacto> myDataset) {
         mContext = context;
         mDataset = myDataset;
         mVisibleDataset = mDataset;

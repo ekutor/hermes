@@ -1,22 +1,20 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activities.OpportunityActivity;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 public class RecyclerUsersAdapter extends RecyclerView.Adapter<RecyclerUsersAdapter.ViewHolder> {
 
@@ -30,8 +28,8 @@ public class RecyclerUsersAdapter extends RecyclerView.Adapter<RecyclerUsersAdap
      */
     private Context mContext;
     private String idCuentaAsociada;
-    private ArrayList<Oportunidad> mDataset;
-    private ArrayList<Oportunidad> mVisibleDataset;
+    private List<Oportunidad> mDataset;
+    private List<Oportunidad> mVisibleDataset;
 
     public RecyclerUsersAdapter(Context context, ArrayList<Oportunidad> myDataset, String idCuentaAsociada) {
         mContext = context;

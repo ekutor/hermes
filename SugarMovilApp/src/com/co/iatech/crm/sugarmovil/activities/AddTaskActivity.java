@@ -104,6 +104,8 @@ SearchDialogInterface, TasksModuleValidations{
 	        asignadoA.setOnClickListener(this);
         
         if(modoEdicion){
+        	TextView title = (TextView) findViewById(R.id.text_task_toolbar);
+        	title.setText("EDITAR TAREA");
         	chargeValues();
         }
        
@@ -188,7 +190,7 @@ SearchDialogInterface, TasksModuleValidations{
 	 
 	  }
     public void chargeValues() {
-    	imgButtonGuardar.setVisibility(View.VISIBLE);
+    	
     	valorAsunto.setText(tareaSeleccionada.getName());
     	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, tareaSeleccionada.getStatus());
 		valorEstado.setSelection(pos);
@@ -210,7 +212,7 @@ SearchDialogInterface, TasksModuleValidations{
       
         // Asignado
         asignadoA.setText(lc.convert(tareaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
-
+        imgButtonGuardar.setVisibility(View.VISIBLE);
         
     }
 
@@ -331,7 +333,7 @@ SearchDialogInterface, TasksModuleValidations{
                 Log.d(TAG, "Crear Tarea Resp: "+ resultado);
               
                 if(resultado.contains("OK")){
- 
+                	tareaSeleccionada = obj;
                 	obj.accept(new DataVisitorsManager());
                 	 return true;
                 }else{

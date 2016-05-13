@@ -1,9 +1,11 @@
 package com.co.iatech.crm.sugarmovil.core.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
@@ -13,11 +15,11 @@ public class DataManager  {
 	
 	private static DataManager instance;
 	
-	public ArrayList<Oportunidad> opportunitiesInfo;
-	public ArrayList<Cuenta> accountsInfo;
-    public ArrayList<Llamada> callsInfo;
-    public ArrayList<Contacto> contactsInfo;
-    public ArrayList<TareaDetalle> tasksInfo;
+	public List<Oportunidad> opportunitiesInfo;
+	public List<Cuenta> accountsInfo;
+    public List<Llamada> callsInfo;
+    public List<Contacto> contactsInfo;
+    public List<TareaDetalle> tasksInfo;
     
     
 	private DataManager(){

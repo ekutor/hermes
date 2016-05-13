@@ -1,6 +1,12 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 
 public class RecyclerTasksDetailAdapter extends RecyclerView.Adapter<RecyclerTasksDetailAdapter.ViewHolder> {
 
@@ -28,10 +29,10 @@ public class RecyclerTasksDetailAdapter extends RecyclerView.Adapter<RecyclerTas
      * Member Variables.
      */
     private Context mContext;
-    private ArrayList<TareaDetalle> mDataset;
-    private ArrayList<TareaDetalle> mVisibleDataset;
+    private List<TareaDetalle> mDataset;
+    private List<TareaDetalle> mVisibleDataset;
 
-    public RecyclerTasksDetailAdapter(Context context, ArrayList<TareaDetalle> myDataset) {
+    public RecyclerTasksDetailAdapter(Context context, List<TareaDetalle> myDataset) {
         mContext = context;
         mDataset = myDataset;
         mVisibleDataset = mDataset;

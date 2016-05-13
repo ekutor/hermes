@@ -58,6 +58,7 @@ public class ActionsStrategy {
 				actionModule.getActionButton().setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" CLICK !");
+						ActivitiesMediator.getInstance().deleteSelectedBean();
 						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule());
 					}
 				});

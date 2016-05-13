@@ -173,6 +173,10 @@ public class ActivitiesMediator implements IMediator {
 	public void addObjectInfo(Parcelable beanInfo) {
 		this.beanInfo =  beanInfo;
 	}
+	
+	public void deleteSelectedBean(){
+		this.beanInfo = null;
+	}
 
 	@Override
 	public void setActualID(String actualID) {

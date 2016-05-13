@@ -42,6 +42,7 @@ import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToG
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
@@ -79,25 +80,30 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_call);
-        
-        getInfoFromMediator();
-      
-        // Main Toolbar
-        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
-        setSupportActionBar(mLlamadaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
-
-        
-        chargeLists();
-        createWidgets();
-        defineValidations();
-        asignadoA.setOnClickListener(this);
-        
-        if(modoEdicion){
-        	chargeValues();
-        }
+        try{
+	        getInfoFromMediator();
+	      
+	        // Main Toolbar
+	        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
+	        setSupportActionBar(mLlamadaToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
+	
+	        
+	        chargeLists();
+	        createWidgets();
+	        defineValidations();
+	        asignadoA.setOnClickListener(this);
+	        
+	        if(modoEdicion){
+	        	TextView title = (TextView) findViewById(R.id.text_call_toolbar);
+	        	title.setText("EDITAR TAREA");
+	        	chargeValues();
+	        }
+        }catch(Exception e){
+       	   Message.showShortExt(Utils.errorToString(e), this);
+          }
     }
     
     private void getInfoFromMediator() {

@@ -1,7 +1,11 @@
 package com.co.iatech.crm.sugarmovil.activities.listeners;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
@@ -38,7 +42,7 @@ public class DataVisitorsManager implements DataVisitor{
 	
 	@Override
 	public void add(TareaDetalle bean) {
-		DataManager.getInstance().tasksInfo.add(bean);
+		this.addObject(DataManager.getInstance().tasksInfo, bean);
 		
 	}
 
@@ -73,6 +77,22 @@ public class DataVisitorsManager implements DataVisitor{
 	public void clear(Llamada bean) {
 		DataManager.getInstance().callsInfo.clear();
 		
+	}
+	
+	private void addObject(List data, GenericBean otherObj){
+		boolean finded = false;
+		for(int i= 0; i< data.size(); i++){
+			GenericBean obj = (GenericBean) data.get(i);
+			if(obj.id.equals(otherObj.id)){
+				finded = true;
+				data.remove(obj);
+				data.add(otherObj);
+			}
+		}
+		
+		if(!finded){
+			data.add(otherObj);
+		}
 	}
 
 }

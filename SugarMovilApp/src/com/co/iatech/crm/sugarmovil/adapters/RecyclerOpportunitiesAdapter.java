@@ -1,6 +1,12 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerOpportunitiesAdapter.ViewHolder> {
 
@@ -27,10 +28,10 @@ public class RecyclerOpportunitiesAdapter extends RecyclerView.Adapter<RecyclerO
      */
     private Context context;
 
-    private ArrayList<Oportunidad> mDataset;
-    private ArrayList<Oportunidad> mVisibleDataset;
+    private List<Oportunidad> mDataset;
+    private List<Oportunidad> mVisibleDataset;
 
-    public RecyclerOpportunitiesAdapter(Context context, ArrayList<Oportunidad> myDataset) {
+    public RecyclerOpportunitiesAdapter(Context context, List<Oportunidad> myDataset) {
         this.context = context;
         mDataset = myDataset;
         mVisibleDataset = mDataset;

@@ -67,7 +67,6 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 	        Intent intent = getIntent();
 	        objTareaDetalle = null;
 	        
-	
 	        // Main Toolbar
 	        mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
 	        setSupportActionBar(mTareaToolbar);
@@ -142,7 +141,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
     @Override
    	public void applyActions() {
    		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
-           ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+        ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
 
    	}
        

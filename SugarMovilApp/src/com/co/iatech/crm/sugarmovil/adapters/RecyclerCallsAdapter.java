@@ -1,6 +1,12 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.Llamada;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
 
 public class RecyclerCallsAdapter extends RecyclerView.Adapter<RecyclerCallsAdapter.ViewHolder> {
 
@@ -27,10 +28,10 @@ public class RecyclerCallsAdapter extends RecyclerView.Adapter<RecyclerCallsAdap
      * Member Variables.
      */
     private Context mContext;
-    private ArrayList<Llamada> mDataset;
-    private ArrayList<Llamada> mVisibleDataset;
+    private List<Llamada> mDataset;
+    private List<Llamada> mVisibleDataset;
 
-    public RecyclerCallsAdapter(Context context, ArrayList<Llamada> myDataset) {
+    public RecyclerCallsAdapter(Context context, List<Llamada> myDataset) {
         mContext = context;
         mDataset = myDataset;
         mVisibleDataset = mDataset;

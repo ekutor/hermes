@@ -6,6 +6,9 @@ import java.util.Map;
 public abstract class GenericBean {
 	protected static final String specialSugarChar = "^";
 	protected enum ConverterType {PRIORITY,STATUS,CALL_STATUS};
+	
+	public String id;
+	 
 	public String validate(String data){
 		data =  validateNull(data);
 		return this.validateDefaultValue(data);
