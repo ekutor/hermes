@@ -170,8 +170,7 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
         });
         
         this.applyActions();
-        mTareaObtenerLlamadas= new GetCallsxAccountTask();
-        mTareaObtenerLlamadas.execute(idCuentaActual);
+       
     }
     
     @Override
@@ -207,9 +206,21 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
    		actionButton = (ActionButton) findViewById(R.id.action_button);
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
+   	
+	@Override
+	protected void onResume() {
+		this.chargeListInfo();
+		super.onResume();
+	}
 
 
-    /**
+    private void chargeListInfo() {
+    	 mTareaObtenerLlamadas= new GetCallsxAccountTask();
+         mTareaObtenerLlamadas.execute(idCuentaActual);
+	}
+
+
+	/**
      * Representa una tarea asincrona de obtencion de llamadas por cuenta.
      */
     public class GetCallsxAccountTask extends AsyncTask<String, Void, Boolean> {

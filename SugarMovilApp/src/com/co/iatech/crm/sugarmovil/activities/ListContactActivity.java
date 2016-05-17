@@ -160,9 +160,6 @@ public class ListContactActivity extends AppCompatActivity {
             }
         });
 
-        // Tarea obtener select
-        mTareaObtenerContactos = new GetContactsTask();
-        mTareaObtenerContactos.execute(idCuentaActual);
     }
 
     
@@ -174,12 +171,20 @@ public class ListContactActivity extends AppCompatActivity {
         finish();
     }
     
-    @Override
-    public void onBackPressed() {
-    	super.onBackPressed();
-    }
+	@Override
+	protected void onResume() {
+		this.chargeListInfo();
+		super.onResume();
+	}
 
-    /**
+    private void chargeListInfo() {
+    	  // Tarea obtener select
+        mTareaObtenerContactos = new GetContactsTask();
+        mTareaObtenerContactos.execute(idCuentaActual);
+		
+	}
+
+	/**
      * Representa una tarea asincrona de obtencion de contactos.
      */
     public class GetContactsTask extends AsyncTask<String, Void, Boolean> {

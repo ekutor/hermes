@@ -1,6 +1,9 @@
 package com.co.iatech.crm.sugarmovil.activities.listeners;
 
-import com.co.iatech.crm.sugarmovil.model.*;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 
 public interface DataVisitor {
 	

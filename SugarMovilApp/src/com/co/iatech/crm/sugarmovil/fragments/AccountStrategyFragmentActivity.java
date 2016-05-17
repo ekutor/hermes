@@ -102,7 +102,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	chargeCheck(cbDkc, cuentaDetalle.getDkc_c());
     	chargeCheck(cbDkc2, cuentaDetalle.getDkc2_c());
 		chargeCheck(cbLeviton, cuentaDetalle.getLeviton_c());
-//		chargeCheck(cbBarras, cuentaDetalle.getBarras);
+		chargeCheck(cbBarras, cuentaDetalle.getWvcai_c());
 		chargeCheck(cbWohner, cuentaDetalle.getWohner_c());
 		chargeCheck(cbLP, cuentaDetalle.getComunicaciones_c());
 		chargeCheck(cbEaton, cuentaDetalle.getManiobraeaton_c());

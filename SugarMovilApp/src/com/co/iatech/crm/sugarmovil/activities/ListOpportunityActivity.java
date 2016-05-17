@@ -153,7 +153,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
         this.applyActions();
     }
     
-    private void chargeOpportunities() {
+    private void chargeListInfo() {
     	 //Cargar Oportunidades
         obtenerOportunidades = new GetOpportunitiesTask(this, recyclerView);
         obtenerOportunidades.execute();
@@ -209,7 +209,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
 	@Override
 	protected void onResume() {
 		//Message.showShort("Resume", getApplicationContext());
-		this.chargeOpportunities();
+		this.chargeListInfo();
 		super.onResume();
 	}
 

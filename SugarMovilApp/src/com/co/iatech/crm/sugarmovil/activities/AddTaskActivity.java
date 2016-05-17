@@ -71,11 +71,12 @@ SearchDialogInterface, TasksModuleValidations{
     private Toolbar mTareaToolbar;
     private ImageButton imgButtonGuardar;
     private TextView valorTrabajoEstimado,valorAsunto,valorDescripcion;
-    private Spinner valorEstado,valorTipo,valorPrioridad;
+    private Spinner valorEstado,valorTipo,valorPrioridad,valorNombre;
     private Button botonFechaInicio,botonFechaVen, botonHoraInicio, botonHoraVen;
     private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
 	public String resultado;
+	private String associatedAccount;
 
 	private AddTask editarTarea;
 
@@ -98,8 +99,9 @@ SearchDialogInterface, TasksModuleValidations{
 	        getSupportActionBar().setHomeButtonEnabled(false);
 	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 	
-	        chargeLists();
+	        
 	        createWidgets();
+	        chargeLists();
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
         
@@ -125,6 +127,7 @@ SearchDialogInterface, TasksModuleValidations{
 			Log.d(TAG, "tarea Recibida " + tareaSeleccionada);
 		} else {
 			tareaSeleccionada = new TareaDetalle();
+			associatedAccount = intent.getStringExtra(Info.ID.name());
 		}
 		Log.d(TAG, "Modo Edicion " + modoEdicion);
          
@@ -161,6 +164,21 @@ SearchDialogInterface, TasksModuleValidations{
 			
 	        asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
 	        tareaSeleccionada.setAssigned_user_id(u.getId());
+	        
+	        //Carga Cuentas
+	        	    
+	        ListAccountConverter lac = new ListAccountConverter();
+	        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddTaskActivity.this,
+	                android.R.layout.simple_spinner_item,  lac.getListInfo());
+	        valorNombre.setAdapter(cuentaAdapter);
+	        valorNombre.setSelection(0);
+	        if(associatedAccount != null){
+	        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
+	    		valorTipo.setSelection(pos);
+	        	String nombreCuenta = lac.convert(associatedAccount, DataToGet.VALUE);
+	        	valorNombre.setSelection(lac.getListInfo().indexOf(nombreCuenta));
+	        }
+	        
 		}
         
     }
@@ -170,6 +188,9 @@ SearchDialogInterface, TasksModuleValidations{
 	    valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
 	    valorFechaInicio = (TextView) findViewById(R.id.valor_fecha_inicio);
 	    valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
+	    valorNombre = (Spinner) findViewById(R.id.valor_nombre);
+	    //TODO mejorar la pantalla de cuenta y poner eventos a tipo para que muestre o no un tipo
+	    
 	    
 	    valorTrabajoEstimado = (EditText) findViewById(R.id.valor_estimado);
 	    
@@ -205,6 +226,12 @@ SearchDialogInterface, TasksModuleValidations{
 		valorDescripcion.setText(tareaSeleccionada.getDescription());
 		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, tareaSeleccionada.getParent_type());
 		valorTipo.setSelection(pos);
+		
+		// Cuenta
+		if( valorNombre.getSelectedItemPosition() > 0){
+	        ListAccountConverter lac = new ListAccountConverter();
+	        tareaSeleccionada.setParent_id(lac.convert(valorNombre.getSelectedItem().toString(), DataToGet.CODE));
+		}
         
         // Contacto
       //  mValorContacto = (TextView) findViewById(R.id.valor_contacto);

@@ -3,21 +3,7 @@ package com.co.iatech.crm.sugarmovil.activities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.SlidingTabLayout;
 import com.co.iatech.crm.sugarmovil.activtities.modules.AccountsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
@@ -32,6 +18,19 @@ import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener, AccountsModuleActions{
@@ -60,6 +59,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton imageButtonOpps;
     private ImageButton imageButtonTasks;
     private ImageButton imageButtonCalls;
+    private String idAccount;
     
 
     @Override
@@ -68,9 +68,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.tabs_activity_account);
 
         Intent intent = getIntent();
-        String cuentaId= intent.getStringExtra(Info.ID.name());       
-        Log.d(TAG, "Id cuenta " + cuentaId);
-        
+        idAccount= intent.getStringExtra(Info.ID.name());       
+                
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_account);
      	setSupportActionBar(mCuentaToolbar);
      	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -86,7 +85,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
        this.applyActions();
 
         GetAccountTask mTareaObtenerCuenta = new GetAccountTask();
-        mTareaObtenerCuenta.execute(cuentaId);
+        mTareaObtenerCuenta.execute(idAccount);
 
     }
     
@@ -236,8 +235,15 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 	}
 
 
+	@Override
+	protected void onResume() {
+		ActivitiesMediator.getInstance().setActualID(idAccount);
+		super.onResume();
+	}
 
-	 /**
+
+
+	/**
     * Representa una tarea asincrona de obtencion de cuenta.
     */
    public class GetAccountTask extends AsyncTask<String, Void, Boolean> {
@@ -256,13 +262,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
        protected Boolean doInBackground(String... params) {
            try {
                // Parametros
-               String idCuenta = params[0];
+               String idAccount = params[0];
 
                // Respuesta
                String account = null;
 
                // Intento de obtener cuenta
-               ControlConnection.addHeader("idAccount", idCuenta);
+               ControlConnection.addHeader("idAccount", idAccount);
                account  = ControlConnection.getInfo(TypeInfoServer.getAccount, AccountActivity.this);
                JSONObject jObj = new JSONObject(account);
 

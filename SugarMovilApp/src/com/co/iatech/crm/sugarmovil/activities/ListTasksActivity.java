@@ -170,12 +170,15 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         });
        
         this.applyActions();
-        
-        mTareaObtenerTareas= new GetTasksxAccountTask();
-        mTareaObtenerTareas.execute(idCuentaActual);
     }
     
-    @Override
+    private void chargeListInfo() {
+    	mTareaObtenerTareas= new GetTasksxAccountTask();
+        mTareaObtenerTareas.execute(idCuentaActual);
+		
+	}
+
+	@Override
    	public ActionButton getActionButton() {
    		return actionButton;
    	}
@@ -208,6 +211,11 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
    		actionButton = (ActionButton) findViewById(R.id.action_button);
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
+   	@Override
+	protected void onResume() {
+		this.chargeListInfo();
+		super.onResume();
+	}
 
 
     /**
