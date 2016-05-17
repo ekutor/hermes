@@ -160,7 +160,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
         
 
         
-        if(DataManager.getInstance().contactsInfo.size() <= 0){
+        if( !DataManager.getInstance().IsSynchronized(MODULE) ){
         	// Tarea para consultar llamadas
         	Log.d(TAG,"Cargando Contactos desde BACKEND");
         	 // Tarea para consultar llamadas
@@ -233,6 +233,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().contactsInfo.add(new Contacto(obj));
                 }
+                DataManager.getInstance().defSynchronize(MODULE);
 
                 return true;
             } catch (Exception e) {

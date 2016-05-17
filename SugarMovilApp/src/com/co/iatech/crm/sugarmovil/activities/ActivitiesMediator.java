@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
 /**
  * clase que implementa el Patron Mediator
@@ -64,8 +66,7 @@ public class ActivitiesMediator implements IMediator {
 	}
 	@Override
 	public void showEditActivity(Context context, Modules module) {
-		Intent intent = null;
-		Log.d("ActionMediator ", module.name()+" Click + Show Edit Activity");
+		Intent intent = null;     
 		switch( module){
 			case ACCOUNTS:
 				break;

@@ -23,7 +23,7 @@ public class ActionsStrategy {
 	
 	public static void definePermittedActions(final IMovilModuleActions actionModule, 
 			final Context context,final GlobalClass global) {
-		
+		  
 		if (actionModule.getEditButton() != null) {
 			if (AccessControl.validateEdit(actionModule.getModule(), global)) {
 				actionModule.getEditButton().setVisibility(View.VISIBLE);
@@ -53,7 +53,9 @@ public class ActionsStrategy {
 		}
 		if (actionModule.getActionButton() != null) {	
 			if (true) {
+				
 				actionModule.getActionButton().setVisibility(View.VISIBLE);
+				
 				Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" Visible");
 				actionModule.getActionButton().setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {

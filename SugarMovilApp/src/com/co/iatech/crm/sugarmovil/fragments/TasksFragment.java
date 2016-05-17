@@ -164,7 +164,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
 
         this.applyActions();
         
-        if(DataManager.getInstance().tasksInfo.size() <= 0){
+        if( !DataManager.getInstance().IsSynchronized(MODULE) ){
         	// Tarea para consultar llamadas
         	Log.d(TAG,"Cargando Contactos desde BACKEND");
         	 // Tarea para consultar llamadas
@@ -275,7 +275,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
                     String name = obj.getString("name");
                     DataManager.getInstance().tasksInfo.add(new TareaDetalle(id, name));
                 }
-
+                DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Buscar Tareas Error: "

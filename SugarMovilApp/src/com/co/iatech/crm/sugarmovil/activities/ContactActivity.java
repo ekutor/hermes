@@ -237,7 +237,13 @@ public class ContactActivity extends AppCompatActivity implements
 		TextView valorUsuario = (TextView) findViewById(R.id.valor_responsable);
 		valorUsuario.setText(contactoDetalle.getAssigned_user_name());
 	}
-
+	
+	@Override
+    public void onBackPressed() {
+    	String prevID = ActivitiesMediator.getInstance().getPreviusID();
+    	ActivitiesMediator.getInstance().returnPrevID();
+    }
+	
 	@Override
 	public void onClick(View v) {
 		if (contactoDetalle.getIdAccount() != null) {

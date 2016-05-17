@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GetOpportunitiesTask;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
@@ -150,13 +151,16 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
         });
         
         this.applyActions();
-
-        //Cargar Oportunidades
-        obtenerOportunidades = new GetOpportunitiesTask(this, recyclerView);
-        obtenerOportunidades.execute();
     }
     
-    @Override
+    private void chargeOpportunities() {
+    	 //Cargar Oportunidades
+        obtenerOportunidades = new GetOpportunitiesTask(this, recyclerView);
+        obtenerOportunidades.execute();
+		
+	}
+
+	@Override
 	public ActionButton getActionButton() {
 		return actionButton;
 	}
@@ -192,9 +196,31 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
 	
     @Override
     public void onBackPressed() {
-    	String prevID = ActivitiesMediator.getInstance().getPreviusID();
-    	ActivitiesMediator.getInstance().returnPrevID();
-    	Log.d(TAG, "BAck Pressed "+prevID);
+    	//String prevID = ActivitiesMediator.getInstance().getPreviusID();
+    	//Message.showShortExt("PrevID "+prevID+" "+ActivitiesMediator.getInstance().getActualID(), this);
     	super.onBackPressed();
     }
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		//Message.showShort("Resume", getApplicationContext());
+		this.chargeOpportunities();
+		super.onResume();
+	}
+
+	@Override
+	protected void onResumeFragments() {
+		super.onResumeFragments();
+	}
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+	}
+    
 }

@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.SlidingTabLayout;
 import com.co.iatech.crm.sugarmovil.activtities.modules.AccountsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
@@ -213,8 +214,6 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         TextView valorAVencer = (TextView) findViewById(R.id.valor_a_vencer);
         valorAVencer.setText(cuentaDetalle.getCarteravencer_c());
     }
-
-
 
 	@Override
 	public void onClick(View v) {

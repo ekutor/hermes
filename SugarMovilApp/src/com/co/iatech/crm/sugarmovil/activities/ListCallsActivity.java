@@ -26,6 +26,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -203,14 +204,10 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
 
    	@Override
    	public void applyActions() {
-   		actionButton = (ActionButton) findViewById(R.id.action_button); 
+   		actionButton = (ActionButton) findViewById(R.id.action_button);
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
-    @Override
-    public void onBackPressed() {
-    	ActivitiesMediator.getInstance().returnPrevID();
-    	super.onBackPressed();
-    }
+
 
     /**
      * Representa una tarea asincrona de obtencion de llamadas por cuenta.

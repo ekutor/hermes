@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
@@ -62,7 +63,7 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opportunity);
-
+try{
         Intent intent = getIntent();
         mIdOportunidad = intent.getStringExtra(Info.ID.name());
       
@@ -79,6 +80,9 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
         // Tarea obtener cuenta
         mTareaObtenerOportunidad = new GetOpportunityTask();
         mTareaObtenerOportunidad.execute(String.valueOf(mIdOportunidad));
+}catch(Exception e){
+	   Message.showShortExt(Utils.errorToString(e), this);
+ }
     }
 
 

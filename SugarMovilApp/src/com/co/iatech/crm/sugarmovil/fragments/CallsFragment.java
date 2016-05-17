@@ -163,7 +163,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
  
        this.applyActions();
 
-        if(DataManager.getInstance().callsInfo.size() <= 0){
+        if(!DataManager.getInstance().IsSynchronized(MODULE)){
         	// Tarea para consultar llamadas
         	Log.d(TAG,"Cargando Llamadas desde BACKEND");
         	 // Tarea para consultar llamadas
@@ -269,7 +269,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().callsInfo.add(new Llamada(obj));
                 }
-
+                DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Buscar Llamadas Error: "

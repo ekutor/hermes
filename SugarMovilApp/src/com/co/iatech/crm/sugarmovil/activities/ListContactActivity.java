@@ -176,7 +176,6 @@ public class ListContactActivity extends AppCompatActivity {
     
     @Override
     public void onBackPressed() {
-    	ActivitiesMediator.getInstance().returnPrevID();
     	super.onBackPressed();
     }
 

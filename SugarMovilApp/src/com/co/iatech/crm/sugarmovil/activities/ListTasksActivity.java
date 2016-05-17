@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
@@ -167,8 +168,9 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
                 return false;
             }
         });
-        
+       
         this.applyActions();
+        
         mTareaObtenerTareas= new GetTasksxAccountTask();
         mTareaObtenerTareas.execute(idCuentaActual);
     }
@@ -203,14 +205,10 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
 
    	@Override
    	public void applyActions() {
-   		actionButton = (ActionButton) findViewById(R.id.action_button); 
+   		actionButton = (ActionButton) findViewById(R.id.action_button);
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
-    @Override
-    public void onBackPressed() {
-    	ActivitiesMediator.getInstance().returnPrevID();
-    	super.onBackPressed();
-    }
+
 
     /**
      * Representa una tarea asincrona de obtencion de tareas por cuenta.

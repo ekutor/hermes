@@ -163,7 +163,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         });
      
         this.applyActions();
-        if(DataManager.getInstance().opportunitiesInfo.size() <= 0){
+        if( !DataManager.getInstance().IsSynchronized(MODULE) ){
         	// Tarea para consultar oportunidades
         	Log.d(TAG,"Cargando Oportunidades desde BACKEND");
 	        mTareaObtenerOportunidades = new GetOpportunitiesTask();
@@ -262,7 +262,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().opportunitiesInfo.add(new Oportunidad(obj));
                 }
-
+                DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Buscar Oportunidades Error: "
