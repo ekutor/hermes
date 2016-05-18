@@ -1,14 +1,15 @@
 package com.co.iatech.crm.sugarmovil.activities.ui;
 
+import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.fragments.AccountsDialog;
+import com.co.iatech.crm.sugarmovil.fragments.UsersDialog;
+
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.widget.Toast;
-
-import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.fragments.UsersDialog;
 
 public class Message {
 	
@@ -29,6 +30,10 @@ public class Message {
 	 public static void showUsersDialog(FragmentManager fm ) {
 	        UsersDialog userDialog = new UsersDialog();
 	        userDialog.show(fm, "users_dialog");
+	  }
+	 public static void showAccountsDialog(FragmentManager fm ) {
+	        AccountsDialog dialog = new AccountsDialog();
+	        dialog.show(fm, "accounts_dialog");
 	  }
 	 
 	 public static void showDatePicker(){

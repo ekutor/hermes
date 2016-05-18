@@ -3,6 +3,33 @@ package com.co.iatech.crm.sugarmovil.activities;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
+import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
+import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
+import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleValidations;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
+import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
+import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
+import com.co.iatech.crm.sugarmovil.model.User;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListCampaignsConverter;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,32 +45,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
-import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
-import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
-import com.co.iatech.crm.sugarmovil.activities.ui.Message;
-import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
-import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
-import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleValidations;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
-import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
-import com.co.iatech.crm.sugarmovil.model.Oportunidad;
-import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
-import com.co.iatech.crm.sugarmovil.model.User;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListCampaignsConverter;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
-import com.co.iatech.crm.sugarmovil.util.Utils;
 
 
 
@@ -404,12 +405,12 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	}
 
 	@Override
-	public void onFinishSearchDialog(User selectedUser) {
-		asignadoA.setText(selectedUser.getUser_name());
-		Log.d(TAG, "Recibido por Pattern Listener: "+ selectedUser.getUser_name());
+	public void onFinishSearchDialog(GenericBean selectedUser) {
+		if(selectedUser instanceof User){
+			User su = (User) selectedUser;
+			asignadoA.setText(su.getUser_name());
+		}
 	}
-
-	
 	
 	 /**
      * Representa una tarea asincrona de creacion de oportunidad.

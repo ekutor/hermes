@@ -1,10 +1,14 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import java.util.List;
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.User;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,65 +21,57 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
-import com.co.iatech.crm.sugarmovil.model.User;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
-
-public class UsersDialog extends DialogFragment  {
+public class AccountsDialog extends DialogFragment  {
 
 	private Button btnSeleccionar;
-	private ListView listUsers;
+	private ListView listAccounts;
 	private SearchView searchView;
 	private ArrayAdapter<String> adapter;
-	private List<String> users;
-	private ListUsersConverter luc = new ListUsersConverter();
-	private User usr;
+	private ListAccountConverter lac;
+	private Cuenta account;
 		
-	public UsersDialog(){
-		luc = new ListUsersConverter();
-		users = luc.getListInfo();
+	public AccountsDialog(){
+		lac = new ListAccountConverter();
 	}
 
 	 @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	        View rootView = inflater.inflate(R.layout.search_users_dialog, container, false);
-	        getDialog().setTitle(R.string.dialog_users_title);
+	        View rootView = inflater.inflate(R.layout.search_accounts_dialog, container, false);
+	        getDialog().setTitle(R.string.dialog_accounts_title);
 	        
-	        btnSeleccionar = (Button) rootView.findViewById(R.id.searchDialog_button);
-	        listUsers = (ListView) rootView.findViewById(R.id.listSearchView);
-	        searchView = (SearchView) rootView.findViewById(R.id.searchViewUserDialog);
+	        btnSeleccionar = (Button) rootView.findViewById(R.id.searchAccountDialog_button);
+	        listAccounts = (ListView) rootView.findViewById(R.id.listSearchAccountView);
+	        searchView = (SearchView) rootView.findViewById(R.id.searchViewAccountDialog);
 	        
 	        
 	        adapter = new ArrayAdapter<String>(getActivity(), 
-	        		android.R.layout.simple_list_item_1, users);
-	        listUsers.setAdapter(adapter);
+	        		android.R.layout.simple_list_item_1, lac.getListInfo());
+	        listAccounts.setAdapter(adapter);
 	        
-	        listUsers.setOnItemClickListener(new OnItemClickListener(){
+	        listAccounts.setOnItemClickListener(new OnItemClickListener(){
 
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					usr = new User();
-					usr.setUser_name(adapter.getItem(position));
+					account = new Cuenta();
+					account.setName(adapter.getItem(position));
 					
-					String iduser = luc.convert(usr.getUser_name(),
+					String accID = lac.convert(account.getName(),
 							DataToGet.CODE);
 					
 					
-					usr.setId(iduser);
+					account.setId(accID);
 				
 					//Pasar por Listener Pattern 
 					SearchDialogInterface listener = (SearchDialogInterface) getActivity();
-		            listener.onFinishSearchDialog(usr);
+		            listener.onFinishSearchDialog(account);
 		            dismiss();
 				}
 
 	        	
 	        });
 	        //busquedas
-	        searchView.setQueryHint("Digite Usuario..");
+	        searchView.setQueryHint("Digite Cuenta...");
 	        searchView.setOnQueryTextListener(new OnQueryTextListener(){
 
 				@Override

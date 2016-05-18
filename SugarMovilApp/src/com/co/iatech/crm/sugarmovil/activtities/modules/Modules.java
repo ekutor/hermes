@@ -15,9 +15,9 @@ public enum Modules {
 	
 	
 	Modules(String sugarDBName,String  moduleName, String visualName){
+		this.sugarDBName = sugarDBName;
 		this.moduleName = moduleName;
 		this.visualName = visualName;
-		this.sugarDBName = sugarDBName;
 	}
 
 

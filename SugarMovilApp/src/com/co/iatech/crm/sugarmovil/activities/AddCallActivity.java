@@ -34,6 +34,7 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
@@ -123,10 +124,13 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
          }
          
 	}
+	
 	@Override
-	public void onFinishSearchDialog(User selectedUser) {
-		asignadoA.setText(selectedUser.getUser_name());
-		Log.d(TAG, "Recibido por Pattern Listener: "+ selectedUser.getUser_name());
+	public void onFinishSearchDialog(GenericBean selectedUser) {
+		if(selectedUser instanceof User){
+			User su = (User) selectedUser;
+			asignadoA.setText(su.getUser_name());
+		}
 	}
 	
 	

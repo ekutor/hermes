@@ -205,4 +205,13 @@ public class Utils {
 		return value;
 	}
 
+	public static String getIDFromBackend(String value) {
+		String r = "";
+		int pos =  value.indexOf("id");
+		if( pos != -1){
+			r = value.substring(pos+5);
+		}
+		return r;
+	}
+
 }

@@ -42,11 +42,11 @@ public class ControlConnection {
 		String resp = "";
 		HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL + type.name());
-        Log.d("ControlConnection", "URL: " + URL + type.name());
+
         if(data != null && data.size() > 0){
 	        for (Map.Entry<String, String> entry : data.entrySet()) {
 	        	httpGet.setHeader(entry.getKey(), entry.getValue());
-	        	Log.d("ControlConnection", entry.getKey()+" "+entry.getValue());
+	        	
 	        }
 		}
       
@@ -57,8 +57,7 @@ public class ControlConnection {
             HttpResponse response = httpClient.execute(httpGet);
             resp = EntityUtils.toString(response.getEntity());
             resp = resp.replace("\n", "").replace("\r", "");
-            Log.d("ControlConnection", "Response: "
-                    + resp);
+          
             data= null;
             return resp;
         }catch(java.net.UnknownHostException he){
@@ -79,20 +78,19 @@ public class ControlConnection {
 	
 		if(device_id == null){
 			device_id = global.getDeviceId();
-			 Log.d("ControlConnection", "deviceID desde Global " + device_id);
 		}
 		httpGet.setHeader("deviceID", device_id);
-		Log.d("ControlConnection", "deviceID " + device_id);
+		
 		
 		try{	
 			if(hash == null){
 				hash = global.getUsuarioAutenticado().getUser_hash();
-		        Log.d("ControlConnection", "hash desde Global" + hash);
+		       
 		    }
 			httpGet.setHeader("hash", hash);
-			Log.d("ControlConnection", "hash " + hash);
+		
 		}catch(Exception e){
-			Log.d("ControlConnection", "Falla al ejecutar chargeID ");
+			
 			e.printStackTrace();
 		}
 		
@@ -101,30 +99,27 @@ public class ControlConnection {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPut httpPut = new HttpPut(URL + type.name());
   
-        Log.d("ControlConnection", "URL: " + URL + type.name());
+
         if(data != null && data.size() > 0){
 	        for (Map.Entry<String, String> entry : data.entrySet()) {
 	        	httpPut.setHeader(entry.getKey(), entry.getValue());
-	        	Log.d("ControlConnection", entry.getKey()+" "+entry.getValue());
 	        }
 		}
         httpPut.setHeader("modo", modo.name().toLowerCase());
-        Log.d("ControlConnection", "modo"+" "+modo.name().toLowerCase());
         
         
         chargeID(httpPut, (GlobalClass) activity.getApplicationContext());
         
         httpPut.setHeader("deviceID", device_id);
-        Log.d("ControlConnection", "deviceID " + device_id);
+       
         if(hash != null)
         	httpPut.setHeader("hash", hash);
-        Log.d("ControlConnection", "hash " + hash);
+       
         try {
             HttpResponse response = httpClient.execute(httpPut);
             String resp = EntityUtils.toString(response.getEntity());
             resp = resp.replace("\n", "").replace("\r", "");
-            Log.d("ControlConnection", "Response: "
-                    + resp);
+           
             data= null;
             return resp;
         } catch (IOException e) {

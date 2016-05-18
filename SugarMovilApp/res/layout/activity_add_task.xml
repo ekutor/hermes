@@ -530,7 +530,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_nombre"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -543,6 +543,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
+                        android:textColor="@color/link"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
                 
@@ -580,6 +581,7 @@
                         android:ellipsize="end"
                         android:singleLine="false"
                         android:textStyle="bold"
+                        android:textColor="@color/link"
                         tools:ignore="MissingPrefix" />
                     
                 </LinearLayout>
