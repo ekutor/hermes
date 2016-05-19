@@ -207,9 +207,13 @@ public class Utils {
 
 	public static String getIDFromBackend(String value) {
 		String r = "";
-		int pos =  value.indexOf("id");
-		if( pos != -1){
-			r = value.substring(pos+5);
+		try{
+			int pos =  value.indexOf("id");
+			if( pos != -1){
+				r = value.substring(pos+6, value.length()-2);
+			}
+		}catch(Exception e){
+			
 		}
 		return r;
 	}

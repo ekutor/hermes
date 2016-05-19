@@ -46,4 +46,10 @@ public class Message {
 		 m.setCancelable(false);
 		 m.show(fragmentManager, "createFinalMessage");
 	 }
+	 public static void showFinalMessage(android.app.FragmentManager fragmentManager, String message, 
+			 Activity activity , Modules module){
+		 ResponseDialogFragment m =  new ResponseDialogFragment( activity,module, message);
+		 m.setCancelable(false);
+		 m.show(fragmentManager, "createFinalGenMessage");
+	 }
 }

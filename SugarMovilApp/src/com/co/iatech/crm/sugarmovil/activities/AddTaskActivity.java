@@ -18,6 +18,7 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
@@ -70,8 +71,8 @@ SearchDialogInterface, TasksModuleValidations{
      */
     private Toolbar mTareaToolbar;
     private ImageButton imgButtonGuardar;
-    private TextView valorTrabajoEstimado,valorAsunto,valorDescripcion;
-    private Spinner valorEstado,valorTipo,valorPrioridad,valorNombre;
+    private TextView valorTrabajoEstimado,valorAsunto,valorDescripcion,valorNombre;
+    private Spinner valorEstado,valorTipo,valorPrioridad;
     private Button botonFechaInicio,botonFechaVen, botonHoraInicio, botonHoraVen;
     private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
@@ -167,7 +168,7 @@ SearchDialogInterface, TasksModuleValidations{
 	        
 	        //Carga Cuentas
 	        	    
-	        ListAccountConverter lac = new ListAccountConverter();
+	      /*  ListAccountConverter lac = new ListAccountConverter();
 	        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddTaskActivity.this,
 	                android.R.layout.simple_spinner_item,  lac.getListInfo());
 	        valorNombre.setAdapter(cuentaAdapter);
@@ -177,7 +178,7 @@ SearchDialogInterface, TasksModuleValidations{
 	    		valorTipo.setSelection(pos);
 	        	String nombreCuenta = lac.convert(associatedAccount, DataToGet.VALUE);
 	        	valorNombre.setSelection(lac.getListInfo().indexOf(nombreCuenta));
-	        }
+	        }*/
 	        
 		}
         
@@ -188,7 +189,7 @@ SearchDialogInterface, TasksModuleValidations{
 	    valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
 	    valorFechaInicio = (TextView) findViewById(R.id.valor_fecha_inicio);
 	    valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
-	    valorNombre = (Spinner) findViewById(R.id.valor_nombre);
+	    valorNombre = (TextView) findViewById(R.id.valor_nombre);
 	    //TODO mejorar la pantalla de cuenta y poner eventos a tipo para que muestre o no un tipo
 	    
 	    
@@ -228,10 +229,10 @@ SearchDialogInterface, TasksModuleValidations{
 		valorTipo.setSelection(pos);
 		
 		// Cuenta
-		if( valorNombre.getSelectedItemPosition() > 0){
+	/*	if( valorNombre.getSelectedItemPosition() > 0){
 	        ListAccountConverter lac = new ListAccountConverter();
 	        tareaSeleccionada.setParent_id(lac.convert(valorNombre.getSelectedItem().toString(), DataToGet.CODE));
-		}
+		}*/
         
         // Contacto
       //  mValorContacto = (TextView) findViewById(R.id.valor_contacto);
@@ -332,9 +333,11 @@ SearchDialogInterface, TasksModuleValidations{
 	}
 
 	@Override
-	public void onFinishSearchDialog(User selectedUser) {
-		asignadoA.setText(selectedUser.getUser_name());
-		Log.d(TAG, "Recibido por Pattern Listener: "+ selectedUser.getUser_name());
+	public void onFinishSearchDialog(GenericBean selectedBean) {
+		if(selectedBean instanceof User){
+			User selectedUser = (User) selectedBean;
+			asignadoA.setText(selectedUser.getUser_name());
+		}
 
 	}
 	
@@ -360,8 +363,10 @@ SearchDialogInterface, TasksModuleValidations{
                 Log.d(TAG, "Crear Tarea Resp: "+ resultado);
               
                 if(resultado.contains("OK")){
-                	tareaSeleccionada = obj;
+                	obj.id = Utils.getIDFromBackend(resultado);
+                	resultado = obj.id+" ";
                 	obj.accept(new DataVisitorsManager());
+                	tareaSeleccionada = obj;
                 	 return true;
                 }else{
                 	 return false;
@@ -370,7 +375,7 @@ SearchDialogInterface, TasksModuleValidations{
             } catch (Exception e) {
                 Log.d(TAG, "Crear Llamada Error: "
                         + e.getClass().getName() + ":" + e.getMessage());
-                resultado = Utils.errorToString(e);
+                resultado += Utils.errorToString(e);
                 return false;
             }
         }
@@ -392,7 +397,8 @@ SearchDialogInterface, TasksModuleValidations{
            		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddTaskActivity.this, MODULE );
            		 
            	 }else{
-           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddTaskActivity.this, MODULE );
+           		 Message.showFinalMessage(getFragmentManager(), resultado, AddTaskActivity.this, MODULE );
+           		 //Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddTaskActivity.this, MODULE );
            		 
            	 }
                 Log.d(TAG, "Crear Tarea error");

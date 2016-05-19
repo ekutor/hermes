@@ -23,7 +23,7 @@ public abstract class ValidatorActivities implements Validator {
 	@Override
 	public boolean validate(EditText edit) {
 		 if (edit.getText() == null || edit.getText().toString().equals("")
-				 || SELECT_MESSAGE.equals(edit.getText().toString())){
+				 ){
 			 return false;
 		 }
 		return true;
