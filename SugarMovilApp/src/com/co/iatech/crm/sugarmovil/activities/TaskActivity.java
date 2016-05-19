@@ -93,6 +93,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 
     public void ponerValores(TareaDetalle tareaDetalle) {
     	try{
+  
     	TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(tareaDetalle.getName());
         
@@ -133,7 +134,14 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume Task Activity");
+    	try{
+	    	objTareaDetalle = (TareaDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+	    	if(objTareaDetalle != null){
+	    		this.ponerValores(objTareaDetalle);
+	    	}
+    	}catch(Exception e){
+    		
+    	}
         super.onResume();
 
     }

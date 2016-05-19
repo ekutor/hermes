@@ -210,7 +210,7 @@ public class Utils {
 		try{
 			int pos =  value.indexOf("id");
 			if( pos != -1){
-				r = value.substring(pos+6, value.length()-2);
+				r = value.substring(pos+5, value.length()-2);
 			}
 		}catch(Exception e){
 			

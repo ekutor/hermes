@@ -175,6 +175,10 @@ public class ActivitiesMediator implements IMediator {
 		this.beanInfo =  beanInfo;
 	}
 	
+	public Parcelable getBeanInfo() {
+		return beanInfo;
+	}
+
 	public void deleteSelectedBean(){
 		this.beanInfo = null;
 	}

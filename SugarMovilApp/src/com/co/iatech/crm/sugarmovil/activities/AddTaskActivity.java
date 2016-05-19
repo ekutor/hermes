@@ -364,9 +364,8 @@ SearchDialogInterface, TasksModuleValidations{
               
                 if(resultado.contains("OK")){
                 	obj.id = Utils.getIDFromBackend(resultado);
-                	resultado = obj.id+" ";
                 	obj.accept(new DataVisitorsManager());
-                	tareaSeleccionada = obj;
+                	ActivitiesMediator.getInstance().addObjectInfo(obj);
                 	 return true;
                 }else{
                 	 return false;
@@ -391,7 +390,7 @@ SearchDialogInterface, TasksModuleValidations{
             		 Message.showFinalMessage(getFragmentManager(),DialogType.CREATED, AddTaskActivity.this, MODULE );
             		 
             	 }
-            	 chargeValues();
+            	 
             } else {
             	if(modoEdicion){
            		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddTaskActivity.this, MODULE );
