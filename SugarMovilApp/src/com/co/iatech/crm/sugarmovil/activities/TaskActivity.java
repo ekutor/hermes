@@ -13,6 +13,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -86,7 +87,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 		      
 	        }
         }catch(Exception e){
-     	   Message.showShortExt(Utils.errorToString(e), this);
+        	Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
         }
     }
     
@@ -125,11 +126,17 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
         valorAsignado.setText(tareaDetalle.getAssigned_user_name());
     	 }catch(Exception e){
-       	   Message.showShortExt(Utils.errorToString(e), this);
+       
+    		 Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
           }
        
-       /* TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-        valorNombre.setText(tareaDetalle.getParent_name());*/
+    	TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
+    	if(!Modules.ACCOUNTS.getSugarDBName().equalsIgnoreCase(tareaDetalle.getParent_type())){
+    		valorNombre.setVisibility(View.INVISIBLE);
+    	}else{
+    		valorNombre.setText(tareaDetalle.getParent_name());
+    	}
+        valorNombre.setText(tareaDetalle.getParent_name());
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public abstract class ValidatorActivities implements Validator {
 
@@ -22,8 +23,15 @@ public abstract class ValidatorActivities implements Validator {
 	
 	@Override
 	public boolean validate(EditText edit) {
+		 if (edit.getText() == null || edit.getText().toString().equals("")){
+			 return false;
+		 }
+		return true;
+	}
+	@Override
+	public boolean validate(TextView edit) {
 		 if (edit.getText() == null || edit.getText().toString().equals("")
-				 ){
+				|| SELECT_MESSAGE.equals(edit.getText().toString()) ){
 			 return false;
 		 }
 		return true;
