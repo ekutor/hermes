@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -16,6 +17,7 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
@@ -262,11 +264,10 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
                     JSONObject obj = jArr.getJSONObject(i);
                     LlamadasXAccount.add(new Llamada(obj));
                 }
-
+                
                 return true;
             } catch (Exception e) {
-                Log.d(TAG, "Buscar Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
+            	Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), ListCallsActivity.this, MODULE);
                 return false;
             }
         }

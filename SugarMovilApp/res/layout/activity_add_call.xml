@@ -397,7 +397,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_cuenta"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -410,6 +410,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
+                        android:textColor="@color/link"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
 
@@ -485,6 +486,7 @@
 				      android:singleLine="false"
 				      android:text="@string/oportunidad_asignado_text"
 				      android:textStyle="bold"
+				      android:textColor="@color/link"
 				      tools:ignore="MissingPrefix"  />
                 </LinearLayout>
                 

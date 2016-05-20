@@ -9,6 +9,7 @@ import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
 import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
+import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleValidations;
@@ -18,6 +19,7 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
@@ -73,6 +75,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     private static boolean modoEdicion;
     private String idCuentaAsociada;
     private TypeActions tipoPermiso;
+    private ListAccountConverter lac = new ListAccountConverter();
     
     /**
      * UI References.
@@ -80,10 +83,10 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     private Toolbar mCuentaToolbar;
     private ImageButton mImageButtonGuardar;
     private Button botonFechaCierre;
-    private static TextView mValorFechaCierre,asignadoA;
+    private TextView mValorFechaCierre,asignadoA,valorCuenta;
     private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorFuente,valorPaso,valorDescripcion;
     private Spinner valorTipo,valorEtapa,valorMedio,valorEnergia,valorComunicaciones,valorIluminacion,valorMoneda;
-    private Spinner valorCuenta, valorCampana;
+    private Spinner valorCampana;
     private ListUsersConverter lc = new ListUsersConverter();
     
 
@@ -91,44 +94,50 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_opportunity);
-        modoEdicion = false;
-        // SoftKey
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        
-        getInfoFromMediator();
-        
-        // Main Toolbar
-        mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_opportunity);
-        setSupportActionBar(mCuentaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
-
-        chargeLists();
-        createWidgets();
-        defineValidations();
-        asignadoA.setOnClickListener(this);
-        
-        if(modoEdicion){
-        	chargeValues();
+        try{
+	        modoEdicion = false;
+	        // SoftKey
+	        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	        
+	        getInfoFromMediator();
+	        
+	        // Main Toolbar
+	        mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_opportunity);
+	        setSupportActionBar(mCuentaToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
+	
+	        chargeLists();
+	        createWidgets();
+	        defineValidations();
+	        asignadoA.setOnClickListener(this);
+	        
+	        if(modoEdicion){
+	        	TextView title = (TextView) findViewById(R.id.text_opportunity_toolbar);
+	        	title.setText("EDITAR OPORTUNIDAD");
+	        	chargeValues();
+	        }
+        }catch(Exception e){
+       	  Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddOpportunityActivity.this, MODULE );
         }
         
     }
 
     private void getInfoFromMediator() {
     	
-		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
+		 tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
     	 Intent intent = getIntent();
-    	
-         idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
-         Log.d(TAG, "idCuentaAsociada " + idCuentaAsociada);
+         
+         
          oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
 
          if(oportSeleccionada != null){
          	modoEdicion = true;
-         	Log.d(TAG, "Oportunidad Recibida " + oportSeleccionada);
+
          }else{
          	oportSeleccionada = new OportunidadDetalle();
+         	idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
          }
 		
 	}
@@ -185,18 +194,6 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         monedaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorMoneda.setAdapter(monedaAdapter);
         
-      //Carga Cuentas
-        valorCuenta = (Spinner) findViewById(R.id.valor_cuenta);
-        ListAccountConverter lac = new ListAccountConverter();
-        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddOpportunityActivity.this,
-                android.R.layout.simple_spinner_item,  lac.getListInfo());
-        valorCuenta.setAdapter(cuentaAdapter);
-        valorCuenta.setSelection(0);
-        if(idCuentaAsociada != null){
-        	String nombreCuenta = lac.convert(idCuentaAsociada, DataToGet.VALUE);
-        	valorCuenta.setSelection(lac.getListInfo().indexOf(nombreCuenta));
-        }
-        
       //Carga Usuarios
 
         asignadoA = (TextView) findViewById(R.id.txt_valor_asignado_a);
@@ -206,8 +203,6 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 		
 		oportSeleccionada.setCreated_by(u.getId());
 		if(!modoEdicion){
-			
-			Log.d(TAG, "NOOO ES MODO EDICION");
 			
 	        asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
 	        oportSeleccionada.setAssigned_user_id(u.getId());
@@ -225,7 +220,12 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 
     public void createWidgets() {
         valorNombre = (EditText) findViewById(R.id.valor_nombre);
-
+        
+        //Carga Cuentas
+        valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
+        valorCuenta.setOnClickListener(this);
+        valorCuenta.setText(ValidatorActivities.SELECT_MESSAGE);
+        
         // Usuario Final
         valorUsuario = (EditText) findViewById(R.id.valor_usuario);
 
@@ -291,11 +291,8 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_CURRENCY, oportSeleccionada.getAmount_usdollar());
         valorMoneda.setSelection(pos);
         
-     // Cuenta
-        ListAccountConverter lac = new ListAccountConverter();
-        pos = Integer.parseInt(lac.convert(oportSeleccionada.getIdAccount(), DataToGet.POS ));
-        Log.d("EditOportunidad","pos Cuenta ");
-        valorCuenta.setSelection(pos);
+        // Cuenta
+        valorCuenta.setText(lac.convert(oportSeleccionada.getIdAccount(), DataToGet.VALUE));
         
         //Campaña
         ListCampaignsConverter lcc = new ListCampaignsConverter();
@@ -325,6 +322,8 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 		}else if(v.getId() == botonFechaCierre.getId()){
 			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,modoEdicion);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
+		}else if(v.getId() == valorCuenta.getId()){
+			Message.showAccountsDialog(getSupportFragmentManager());
 		}else if(v.getId() == mImageButtonGuardar.getId()){
 	        //Realizar Validaciones
 			if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){
@@ -339,8 +338,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        oportSeleccionada.setSales_stage(ListsConversor.convert(ConversorsType.OPPORTUNITY_STAGE, valorEtapa.getSelectedItem().toString(), DataToGet.CODE));
 	
 	        // Cuenta
-	        ListAccountConverter lac = new ListAccountConverter();
-	        oportSeleccionada.setIdAccount(lac.convert(valorCuenta.getSelectedItem().toString(), DataToGet.CODE));
+	        oportSeleccionada.setIdAccount(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
 
 	        try{
 	        	// Fecha Cierre
@@ -405,10 +403,13 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedUser) {
-		if(selectedUser instanceof User){
-			User su = (User) selectedUser;
+	public void onFinishSearchDialog(GenericBean selectedBean) {
+		if(selectedBean instanceof User){
+			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());
+		}else if(selectedBean instanceof Cuenta){
+			Cuenta ac = (Cuenta) selectedBean;
+			valorCuenta.setText(ac.getName());
 		}
 	}
 	

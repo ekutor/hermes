@@ -25,6 +25,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
+import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleValidations;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -34,6 +35,7 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.User;
@@ -65,6 +67,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     private static boolean modoEdicion;
     private Llamada llamadaSeleccionada;
     private ListUsersConverter lc = new ListUsersConverter();
+    private ListAccountConverter lac = new ListAccountConverter();
     private TypeActions tipoPermiso;
     /**
      * UI References.
@@ -72,9 +75,9 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     private Toolbar mLlamadaToolbar;
     private Button botonFechaInicio, botonHoraInicio;
     private ImageButton imgButtonGuardar;
-    private TextView asignadoA,valorFechaInicio;
+    private TextView asignadoA,valorFechaInicio, valorCuenta;
     private EditText valorAsunto,valorDescripcion,valorDuracionHrs;
-    private Spinner valorCuenta, valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
+    private Spinner valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +93,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	        getSupportActionBar().setHomeButtonEnabled(false);
 	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 	
-	        
-	        chargeLists();
 	        createWidgets();
+	        chargeLists();
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
 	        
@@ -112,12 +114,11 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     	 Intent intent = getIntent();
  
          idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
-         Log.d(TAG, "idCuentaAsociada " + idCuentaAsociada);
+
          llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          
          if(llamadaSeleccionada != null){
          	modoEdicion = true;
-         	Log.d(TAG, "Modo Edicion" + llamadaSeleccionada.getId());
          }else{
          	llamadaSeleccionada = new Llamada();
          }
@@ -125,10 +126,13 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	}
 	
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedUser) {
-		if(selectedUser instanceof User){
-			User su = (User) selectedUser;
+	public void onFinishSearchDialog(GenericBean selectedBean) {
+		if(selectedBean instanceof User){
+			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());
+		}else if(selectedBean instanceof Cuenta){
+			Cuenta ac = (Cuenta) selectedBean;
+			valorCuenta.setText(ac.getName());
 		}
 	}
 	
@@ -171,19 +175,6 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
                 android.R.layout.simple_spinner_item,  lcc.getListInfo());
         valorCampana.setAdapter(campAdapter);
         valorCampana.setSelection(0);
-       
-        
-      //Carga Cuentas
-        valorCuenta = (Spinner) findViewById(R.id.valor_cuenta);
-        ListAccountConverter lac = new ListAccountConverter();
-        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddCallActivity.this,
-                android.R.layout.simple_spinner_item,  lac.getListInfo());
-        valorCuenta.setAdapter(cuentaAdapter);
-        valorCuenta.setSelection(0);
-        if(idCuentaAsociada != null){
-        	String nombreCuenta = lac.convert(idCuentaAsociada, DataToGet.VALUE);
-        	valorCuenta.setSelection(lac.getListInfo().indexOf(nombreCuenta));
-        }
         
         GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
@@ -212,6 +203,11 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
         botonHoraInicio.setOnClickListener(this);
         
         imgButtonGuardar.setOnClickListener(this);
+        
+        //Cuentas
+        valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
+        valorCuenta.setOnClickListener(this);
+        valorCuenta.setText(ValidatorActivities.SELECT_MESSAGE);
 	 
 	  }
 	 
@@ -234,10 +230,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 		
 		valorDuracionHrs.setText(llamadaSeleccionada.getDuration_hours());
   
-	     // Cuenta
-        ListAccountConverter lac = new ListAccountConverter();
-        pos = Integer.parseInt(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.POS ));
-        valorCuenta.setSelection(pos);
+        // Cuenta
+        valorCuenta.setText(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.VALUE));
         
         //Campaña
         ListCampaignsConverter lcc = new ListCampaignsConverter();
@@ -279,6 +273,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 			}else if(v.getId() == botonHoraInicio.getId()){
 				DialogFragment newFragment = new TimePickerFragment(this,valorFechaInicio,modoEdicion);
 				newFragment.show(getFragmentManager(), "hourCierrePicker");
+			}else if(v.getId() == valorCuenta.getId()){
+				Message.showAccountsDialog(getSupportFragmentManager());
 			}else if(v.getId() == botonFechaInicio.getId()){
 				DialogFragment newFragment = new DatePickerFragment(this,valorFechaInicio,modoEdicion);
 				newFragment.show(getFragmentManager(), "dateCierrePicker");
@@ -301,8 +297,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            llamadaSeleccionada.setDuration_minutes(ListsConversor.convert(ConversorsType.CALLS_MINS_DURATION, valorDuracionMin.getSelectedItem().toString(), DataToGet.CODE));
 	            llamadaSeleccionada.setResultadodelallamada_c(ListsConversor.convert(ConversorsType.CALLS_RESULT, valorResultado.getSelectedItem().toString(), DataToGet.CODE));
 	            
-		        ListAccountConverter lac = new ListAccountConverter();
-		        llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getSelectedItem().toString(), DataToGet.CODE));
+	            // Cuenta
+		        llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
 		        
 		        llamadaSeleccionada.setParent_type("Accounts");
 		        
