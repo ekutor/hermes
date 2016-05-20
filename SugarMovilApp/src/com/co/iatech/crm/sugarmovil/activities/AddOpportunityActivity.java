@@ -96,7 +96,6 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
         getInfoFromMediator();
         
-        Log.d(TAG, "Modo Edicion " + modoEdicion);
         // Main Toolbar
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_opportunity);
         setSupportActionBar(mCuentaToolbar);

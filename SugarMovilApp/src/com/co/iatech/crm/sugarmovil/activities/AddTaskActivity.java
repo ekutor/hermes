@@ -132,12 +132,11 @@ SearchDialogInterface, TasksModuleValidations{
 
 		if (tareaSeleccionada != null) {
 			modoEdicion = true;
-			Log.d(TAG, "tarea Recibida " + tareaSeleccionada);
+
 		} else {
 			tareaSeleccionada = new TareaDetalle();
 			associatedAccount = intent.getStringExtra(Info.ID.name());
 		}
-		Log.d(TAG, "Modo Edicion " + modoEdicion);
          
 	}
     
@@ -169,7 +168,8 @@ SearchDialogInterface, TasksModuleValidations{
        		 }
        		 
        		 valorNombre.setVisibility(visibility);
-       		 if( tareaSeleccionada.getParent_name() == null || tareaSeleccionada.getParent_name().length() <= 1 ){
+       		 if( (tareaSeleccionada.getParent_name() == null || tareaSeleccionada.getParent_name().length() <= 1)
+       				 && modoEdicion){
        			 valorNombre.setText(ValidatorActivities.SELECT_MESSAGE);
        		 }
    			 txtNombre.setVisibility(visibility);
@@ -201,6 +201,7 @@ SearchDialogInterface, TasksModuleValidations{
 	        if(associatedAccount != null){
 	        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
 	    		valorTipo.setSelection(pos);
+	    		valorNombre.setText(lac.convert(associatedAccount, DataToGet.VALUE ));
 	        }
 	        
 		}
