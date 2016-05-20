@@ -39,7 +39,7 @@ public class ActionsStrategy {
 					if (AccessControl.validateEditType(actionModule.getModule(),
 							actionModule.getAssignedUser(),global)) {
 						ActivitiesMediator.getInstance().addObjectInfo( actionModule.getBean() );
-						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule());
+						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule());
 
 					} else {
 					
@@ -61,7 +61,7 @@ public class ActionsStrategy {
 					public void onClick(View v) {
 						Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" CLICK !");
 						ActivitiesMediator.getInstance().deleteSelectedBean();
-						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule());
+						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule());
 					}
 				});
 			} else {

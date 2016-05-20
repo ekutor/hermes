@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountFragmentActivity;
 import com.co.iatech.crm.sugarmovil.fragments.AccountStrategyFragmentActivity;
@@ -34,7 +35,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         // Returns a new instance of the fragment
     	Fragment f= null;
     	Bundle args = new Bundle();
-        args.putParcelable(Info.OBJECT.name(), cuentaActual);
+        args.putParcelable(Modules.ACCOUNTS.getModuleName(), cuentaActual);
         
         switch (position) {
             case 0:

@@ -76,11 +76,11 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	        
 	        this.applyActions();
 	        
-	        if(intent.getExtras().get(Info.OBJECT.name()) instanceof  Llamada ){
-	        	llamadaDetalle = (Llamada) intent.getExtras().get(Info.OBJECT.name());
+	        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Llamada ){
+	        	llamadaDetalle = (Llamada) intent.getExtras().get(MODULE.getModuleName());
 	        	this.ponerValores(llamadaDetalle);
 	        }else{
-	        	idLlamada = intent.getStringExtra(Info.ID.name());
+	        	idLlamada = intent.getStringExtra(MODULE.name());
 	        	// Tarea obtener llamada
 		        mTareaObtenerLlamada = new GetCallTask();
 		        mTareaObtenerLlamada.execute(String.valueOf(idLlamada));
@@ -212,5 +212,11 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	@Override
 	public Parcelable getBean() {
 		return llamadaDetalle;
+	}
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

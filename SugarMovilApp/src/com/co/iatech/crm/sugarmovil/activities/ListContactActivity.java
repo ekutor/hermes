@@ -5,6 +5,16 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.model.Contacto;
+import com.squareup.picasso.Picasso;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,14 +32,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.Contacto;
-import com.squareup.picasso.Picasso;
 
 
 public class ListContactActivity extends AppCompatActivity {
@@ -70,7 +72,7 @@ public class ListContactActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.ID.name());
+        idCuentaActual = intent.getStringExtra(Modules.ACCOUNTS.name());
         Log.d(TAG, "Id cuenta " + idCuentaActual);
 
         // Main Toolbar
@@ -125,7 +127,7 @@ public class ListContactActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -139,7 +141,7 @@ public class ListContactActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -151,7 +153,7 @@ public class ListContactActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -239,7 +241,8 @@ public class ListContactActivity extends AppCompatActivity {
 
             if (success) {
                 if (mContactsArray.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerContactsAdapter(ListContactActivity.this, mContactsArray);
+                    mRecyclerViewAdapter = new RecyclerGenericAdapter(ListContactActivity.this,
+                    		AdapterSearchUtil.transform(mContactsArray), Modules.CONTACTS);
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 } else {
                 	progressDialog.setMessage("Esta cuenta no tiene contactos asociados.");

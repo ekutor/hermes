@@ -68,7 +68,7 @@ public class ContactActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_contact);
 
 		Intent intent = getIntent();
-		mIdContacto = intent.getStringExtra(Info.ID.name());
+		mIdContacto = intent.getStringExtra(MODULE.name());
 		Log.d(TAG, "Id contacto " + mIdContacto);
 
 		// Main Toolbar
@@ -241,14 +241,13 @@ public class ContactActivity extends AppCompatActivity implements
 	@Override
     public void onBackPressed() {
     	String prevID = ActivitiesMediator.getInstance().getPreviusID();
-    	ActivitiesMediator.getInstance().returnPrevID();
+    	//ActivitiesMediator.getInstance().returnPrevID();
     }
 	
 	@Override
 	public void onClick(View v) {
 		if (contactoDetalle.getIdAccount() != null) {
-			ActivitiesMediator.getInstance().setActualID(
-					contactoDetalle.getIdAccount());
+			ActivitiesMediator.getInstance().setActualID(contactoDetalle.getIdAccount(), MODULE);
 		} else {
 			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas",
 					this);
@@ -258,8 +257,7 @@ public class ContactActivity extends AppCompatActivity implements
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
 			Log.d(TAG, "Cuenta de Contacto ");
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this,
-					Modules.ACCOUNTS);
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS,null);
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;
@@ -268,7 +266,7 @@ public class ContactActivity extends AppCompatActivity implements
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
 		}
-		ActivitiesMediator.getInstance().showList(ContactActivity.this, module);
+		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, true);
 
 	}
 
@@ -334,6 +332,12 @@ public class ContactActivity extends AppCompatActivity implements
 			mTareaObtenerContacto = null;
 			Log.d(TAG, "Cancelado ");
 		}
+	}
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

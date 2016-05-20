@@ -1,5 +1,6 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import org.apache.http.impl.io.IdentityOutputStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -65,7 +66,7 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
         setContentView(R.layout.activity_opportunity);
 try{
         Intent intent = getIntent();
-        mIdOportunidad = intent.getStringExtra(Info.ID.name());
+        mIdOportunidad = intent.getStringExtra(MODULE.name());
       
         Log.d(TAG, "Id oportunidad " + mIdOportunidad);
 
@@ -231,13 +232,21 @@ try{
 		imageButtonTasks.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS);
+				ActivitiesMediator.getInstance().setActualID( mIdOportunidad , MODULE);
+				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS, true);
 				
 			}
 
 		});
 		
 		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+	}
+
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -60,8 +60,8 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
             @Override
             public void onClick(View v) {
                 // Account Activity
-            	ActivitiesMediator.getInstance().setActualID( producto.getId());
-                ActivitiesMediator.getInstance().showActivity(context,Modules.PRODUCTS);
+        
+                ActivitiesMediator.getInstance().showActivity(context,Modules.PRODUCTS, producto.getId());
                
                 //intentProducto.putExtra(Info.PRODUCTO_CANTIDAD.name(), producto.getSaldo());
             }

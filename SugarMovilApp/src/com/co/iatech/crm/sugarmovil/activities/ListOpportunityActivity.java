@@ -1,5 +1,15 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.tasks.GetOpportunitiesTask;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,17 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.tasks.GetOpportunitiesTask;
-import com.co.iatech.crm.sugarmovil.activities.ui.Message;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
-import com.squareup.picasso.Picasso;
 
 
 public class ListOpportunityActivity extends AppCompatActivity implements OpportunitiesModuleActions  {
@@ -59,8 +58,6 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
 
         // SoftKey
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        
-        Intent intent = getIntent();
 
         // Main Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar_list_opportunity);
@@ -115,7 +112,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerContactsAdapter) recyclerView.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) recyclerView.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -129,7 +126,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) recyclerView.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) recyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -141,7 +138,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) recyclerView.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) recyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error anhadiendo el filtro de busqueda");
                 }
@@ -221,6 +218,11 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+	}
+	
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return true;
 	}
     
 }

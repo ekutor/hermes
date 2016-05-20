@@ -68,7 +68,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.tabs_activity_account);
 
         Intent intent = getIntent();
-        idAccount= intent.getStringExtra(Info.ID.name());       
+        idAccount= intent.getStringExtra(MODULE.name());       
                 
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_account);
      	setSupportActionBar(mCuentaToolbar);
@@ -231,13 +231,14 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 			Log.d(TAG, "Llamadas X Cuenta ");
 			module = Modules.CALLS;
 		}
-		ActivitiesMediator.getInstance().showList(AccountActivity.this, module);
+		ActivitiesMediator.getInstance().setActualID(idAccount, MODULE);
+		ActivitiesMediator.getInstance().showList(AccountActivity.this, module, true);
 	}
 
 
 	@Override
 	protected void onResume() {
-		ActivitiesMediator.getInstance().setActualID(idAccount);
+		ActivitiesMediator.getInstance().setActualID(idAccount, MODULE);
 		super.onResume();
 	}
 
@@ -354,5 +355,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         GlobalClass gc = (GlobalClass)getApplicationContext();
         ActionsStrategy.definePermittedActions(this, gc);
 
+	}
+
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return idAccount != null;
 	}
 }

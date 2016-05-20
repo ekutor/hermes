@@ -6,15 +6,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
@@ -79,7 +77,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.ID.name());
+        idCuentaActual = intent.getStringExtra(Modules.ACCOUNTS.name());
         Log.d(TAG, "Id cuenta " + idCuentaActual);
 
         // Main Toolbar
@@ -134,7 +132,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -148,7 +146,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -160,7 +158,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -272,7 +270,8 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
 
             if (success) {
                 if (TareasXAccount.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerTasksAdapter(ListTasksActivity.this, TareasXAccount);
+                    mRecyclerViewAdapter = new RecyclerGenericAdapter(ListTasksActivity.this, 
+                    		AdapterSearchUtil.transform(TareasXAccount), MODULE);
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 } else {
                 	progressDialog.setMessage("Esta cuenta no tiene Tareas asociadas.");
@@ -296,4 +295,10 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return idCuentaActual != null;
+	}
 }

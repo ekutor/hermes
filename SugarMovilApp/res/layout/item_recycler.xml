@@ -1,10 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_margin="2dp"
-    android:id="@+id/item_opportunity"
+    android:id="@+id/item_recycler_linear_layout"
     android:background="@android:color/white"
     android:orientation="horizontal">
 
@@ -14,7 +13,7 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/nombre_oportunidad"
+            android:id="@+id/name_item"
             fontPath="fonts/DaxlinePro-Regular.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

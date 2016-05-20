@@ -61,8 +61,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
             @Override
             public void onClick(View v) {
                 // Account Activity     
-            	ActivitiesMediator.getInstance().setActualID(cuenta.getId());
-                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS);
+                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS, cuenta.getId());
             }
         });
 

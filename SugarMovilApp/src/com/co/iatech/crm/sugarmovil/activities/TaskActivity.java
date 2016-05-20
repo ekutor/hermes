@@ -1,9 +1,22 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.security.MessageDigestSpi;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+import com.software.shell.fab.ActionButton;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,22 +29,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ui.Message;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.Utils;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
-import com.software.shell.fab.ActionButton;
 
 
 public class TaskActivity extends AppCompatActivity implements TasksModuleActions {
@@ -76,11 +73,11 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 	        
 	        this.applyActions();
 	        
-	        if(intent.getExtras().get(Info.OBJECT.name()) instanceof  TareaDetalle ){
-	        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.OBJECT.name());
+	        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  TareaDetalle ){
+	        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(MODULE.getModuleName());
 	        	this.ponerValores(objTareaDetalle);
 	        }else{
-		        mIdTarea = intent.getStringExtra(Info.ID.name());
+		        mIdTarea = intent.getStringExtra(MODULE.name());
 		        Log.d(TAG, "Id tarea " + mIdTarea);
 		        mTareaObtenerTarea = new GetTaskTask();
 	  	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
@@ -131,11 +128,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
           }
        
     	TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-    	if(!Modules.ACCOUNTS.getSugarDBName().equalsIgnoreCase(tareaDetalle.getParent_type())){
-    		valorNombre.setVisibility(View.INVISIBLE);
-    	}else{
-    		valorNombre.setText(tareaDetalle.getParent_name());
-    	}
+    	
         valorNombre.setText(tareaDetalle.getParent_name());
     }
 
@@ -249,4 +242,10 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return false;
+	}
 }

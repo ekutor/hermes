@@ -128,14 +128,14 @@ SearchDialogInterface, TasksModuleValidations{
     	
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
         Intent intent = getIntent();		
-		tareaSeleccionada = intent.getParcelableExtra(Info.OBJECT.name());
+		tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
 
 		if (tareaSeleccionada != null) {
 			modoEdicion = true;
 
 		} else {
 			tareaSeleccionada = new TareaDetalle();
-			associatedAccount = intent.getStringExtra(Info.ID.name());
+			associatedAccount = intent.getStringExtra(Modules.ACCOUNTS.name());
 		}
          
 	}
@@ -168,8 +168,7 @@ SearchDialogInterface, TasksModuleValidations{
        		 }
        		 
        		 valorNombre.setVisibility(visibility);
-       		 if( (tareaSeleccionada.getParent_name() == null || tareaSeleccionada.getParent_name().length() <= 1)
-       				 && modoEdicion){
+       		 if(associatedAccount == null && !modoEdicion){
        			 valorNombre.setText(ValidatorActivities.SELECT_MESSAGE);
        		 }
    			 txtNombre.setVisibility(visibility);
@@ -186,7 +185,7 @@ SearchDialogInterface, TasksModuleValidations{
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.TASKS_PRIORITY));
         prioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorPrioridad.setAdapter(prioridadAdapter);
-         
+        valorPrioridad.setSelection(1);
         
         GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();

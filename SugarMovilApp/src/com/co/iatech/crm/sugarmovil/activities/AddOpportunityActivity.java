@@ -10,6 +10,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleValidations;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
@@ -119,9 +120,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
     	 Intent intent = getIntent();
     	
-         idCuentaAsociada = intent.getStringExtra(Info.ID.name());
+         idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
          Log.d(TAG, "idCuentaAsociada " + idCuentaAsociada);
-         oportSeleccionada = intent.getParcelableExtra(Info.OBJECT.name());
+         oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
 
          if(oportSeleccionada != null){
          	modoEdicion = true;

@@ -3,6 +3,18 @@ package com.co.iatech.crm.sugarmovil.fragments;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModule;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
+import com.co.iatech.crm.sugarmovil.model.Contacto;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,19 +29,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activities.MainActivity;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModule;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
-import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Contacto;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
 
 public class ContactsFragment extends Fragment implements ContactsModule{
     /**
@@ -123,7 +122,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
                 try {
-                    ((RecyclerContactsAdapter) mRecyclerViewContacts.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerViewContacts.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -137,7 +136,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para contactos
-                    ((RecyclerContactsAdapter) mRecyclerViewContacts.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerViewContacts.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -149,7 +148,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para contactos
-                    ((RecyclerContactsAdapter) mRecyclerViewContacts.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerViewContacts.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -177,7 +176,8 @@ public class ContactsFragment extends Fragment implements ContactsModule{
     }
 
     private void showContacts() {
-    	mRecyclerViewContactsAdapter = new RecyclerContactsAdapter(getActivity(), DataManager.getInstance().contactsInfo);
+    	mRecyclerViewContactsAdapter = new RecyclerGenericAdapter(getActivity(), 
+    			AdapterSearchUtil.transform(DataManager.getInstance().contactsInfo), MODULE);
         mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
 	}
 

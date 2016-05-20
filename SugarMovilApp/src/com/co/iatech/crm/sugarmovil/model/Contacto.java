@@ -123,5 +123,10 @@ public class Contacto extends GenericBean implements Parcelable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String getName() {
+		return title + " "+ first_name;
+	}
 }
 

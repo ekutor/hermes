@@ -65,7 +65,6 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     private static boolean modoEdicion;
     private Llamada llamadaSeleccionada;
     private ListUsersConverter lc = new ListUsersConverter();
-    private static final Modules MODULE = Modules.CALLS;
     private TypeActions tipoPermiso;
     /**
      * UI References.
@@ -112,9 +111,9 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
     	 Intent intent = getIntent();
  
-         idCuentaAsociada = intent.getStringExtra(Info.ID.name());
+         idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
          Log.d(TAG, "idCuentaAsociada " + idCuentaAsociada);
-         llamadaSeleccionada = intent.getParcelableExtra(Info.OBJECT.name());
+         llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          
          if(llamadaSeleccionada != null){
          	modoEdicion = true;
