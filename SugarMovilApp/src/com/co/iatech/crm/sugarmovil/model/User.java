@@ -209,5 +209,9 @@ public class User extends GenericBean implements Parcelable {
 	public void setAccess(Map<Modules, ActionsInfo> access) {
 		this.access = access;
 	}
-
+	
+	@Override
+	public String getName() {
+		return first_name + " "+last_name;
+	}
 }

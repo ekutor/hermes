@@ -1,12 +1,15 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
-import android.util.Log;
-
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.core.Info;
 
 /**
  * clase que implementa el Patron Mediator
@@ -16,12 +19,14 @@ import com.co.iatech.crm.sugarmovil.core.Info;
 public class ActivitiesMediator implements IMediator {
 	
 	private Modules actualModule;
-	private String actualID, previusID;
+	private String previusID;
 	private Parcelable beanInfo;
 	private static ActivitiesMediator instance;
+	private Map<Modules,String> currentIDs;
+	private Modules moduleflag;
 	
 	private ActivitiesMediator(){
-		
+		currentIDs = new HashMap<Modules,String>();
 	}
 	
 	public static ActivitiesMediator getInstance(){
@@ -38,7 +43,8 @@ public class ActivitiesMediator implements IMediator {
 	}
 
 	@Override
-	public void showActivity(Context context, Modules module) {
+	public void showActivity(Context context, Modules module, String newActualID) {
+		setActualID(newActualID, module);
 		Intent intent = null;
 		switch( module){
 			case ACCOUNTS:
@@ -59,13 +65,13 @@ public class ActivitiesMediator implements IMediator {
 		default:
 			break;
 		}
-		start(context, intent);
+		addInfotoActivity(intent, module);
+    	context.startActivity(intent);
 		
 	}
 	@Override
-	public void showEditActivity(Context context, Modules module) {
-		Intent intent = null;
-		Log.d("ActionMediator ", module.name()+" Click + Show Edit Activity");
+	public void showEditActivity(Context context, Modules module, boolean addActualModule) {
+		Intent intent = null;     
 		switch( module){
 			case ACCOUNTS:
 				break;
@@ -81,26 +87,24 @@ public class ActivitiesMediator implements IMediator {
 		default:
 			break;
 		}
-		addBeanInfo(intent);
-        start(context, intent);
+		if(addActualModule){
+			addInfotoActivity(intent, actualModule);
+		}
+		addBeanInfo(intent, module );
+		addInfotoActivity(intent, module);
+    	context.startActivity(intent);
 		
 	}
 	
-	private void addBeanInfo(Intent intent) {
+	private void addBeanInfo(Intent intent , Modules module) {
 		 if(intent != null){
-			 intent.putExtra(Info.OBJECT.name(), beanInfo);
+			 intent.putExtra(module.getModuleName(), beanInfo);
 		 }
 		
 	}
 
-	private void start(Context context, Intent intent) {
-		 if(intent != null){
-	        	addInfotoActivity(intent);
-	        	context.startActivity(intent);
-		 }
-	}
-
-	public void showList(Context context, Modules module) {
+	public void showList(Context context, Modules module, boolean chargeActualModule) {
+		try{
 		Intent intent = null;
 		switch( module){
 			case CONTACTS:
@@ -119,13 +123,27 @@ public class ActivitiesMediator implements IMediator {
 			break;
 			
 		}
-		start(context, intent);
+		if(chargeActualModule){
+			//set current module id to activity
+			this.addInfotoActivity(intent, actualModule);
+			//set id from activity to new activity
+			this.addInfotoActivity(intent, moduleflag);
+			//set actual module from
+			intent.putExtra(Modules.PREVIOUS_UI.name(), moduleflag.getSugarDBName());
+		}
+	
+    	context.startActivity(intent);
+		}catch(Exception e){
+			Message.showShortExt(Utils.errorToString(e) , context);
+		}
 		
 	}
 	
 	@Override
-	public void addInfotoActivity(Intent intent){
-		intent.putExtra(Info.ID.name(), actualID);
+	public void addInfotoActivity(Intent intent, Modules mod){
+		if(intent != null){
+			intent.putExtra(mod.name(), currentIDs.get(mod));
+		}
 	}
 	
 	
@@ -135,34 +153,6 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 	
-	@Override
-	public String getActualKey() {
-		String res = "";
-		switch( actualModule ){
-			case ACCOUNTS:
-				res = "idAccount";
-			break;
-			case OPPORTUNITIES:	
-				res = "idAccount";
-			break;
-			case TASKS:
-				res = "idAccount";
-			break;
-			case CALLS:
-				res = "idAccount";
-			break;
-			default:
-				break;
-			
-		}
-		return res;
-		
-	}
-	
-	@Override
-	public String getActualID() {
-		return actualID;
-	}
 	
 	@Override
 	public String getPreviusID() {
@@ -173,15 +163,28 @@ public class ActivitiesMediator implements IMediator {
 	public void addObjectInfo(Parcelable beanInfo) {
 		this.beanInfo =  beanInfo;
 	}
-
-	@Override
-	public void setActualID(String actualID) {
-		this.previusID = this.actualID;
-		this.actualID = actualID;
+	
+	public Parcelable getBeanInfo() {
+		return beanInfo;
 	}
 
-	public void returnPrevID() {
-		this.actualID = previusID;
+	public void deleteSelectedBean(){
+		this.beanInfo = null;
+	}
+
+	@Override
+	public void setActualID(String actualID, Modules module) {
+		if(actualID != null){
+			this.previusID = currentIDs.get(module);
+			currentIDs.put(module, actualID);
+			moduleflag = module;
+		}
+	}
+
+
+	@Override
+	public String getActualID(Modules module) {
+		return currentIDs.get(module);
 	}	
 	
 

@@ -8,16 +8,17 @@ public enum Modules {
 	OPPORTUNITIES("Opportunities","OPORTUNIDADES", "OPORTUNIDAD"),
 	CALLS("Calls","LLAMADAS", "LLAMADA"),
 	PRODUCTS("psg_Productos","PRODUCTOS", "PRODUCTO"),
-	TASKS("Tasks","TAREAS", "TAREA")
+	TASKS("Tasks","TAREAS", "TAREA"),
+	PREVIOUS_UI("PREVIOUS_UI","PREVIOUS_UI", "PREVIOUS_UI")
 	;
 	
 	private String moduleName,visualName,sugarDBName;
 	
 	
 	Modules(String sugarDBName,String  moduleName, String visualName){
+		this.sugarDBName = sugarDBName;
 		this.moduleName = moduleName;
 		this.visualName = visualName;
-		this.sugarDBName = sugarDBName;
 	}
 
 

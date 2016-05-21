@@ -28,7 +28,6 @@ public class Llamada extends GenericBean implements Parcelable, Visitable {
         }
     };
 
-    private String id;
     private String name;
     private String date_entered;
     private String date_modified;

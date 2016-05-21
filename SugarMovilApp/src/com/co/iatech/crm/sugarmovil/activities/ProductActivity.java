@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
@@ -53,8 +54,8 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         Intent intent = getIntent();
-        mIdProducto = intent.getStringExtra(Info.ID.name());
-        cantidadStock = intent.getStringExtra(Info.ID.name());
+        mIdProducto = intent.getStringExtra(Modules.OPPORTUNITIES.name());
+        cantidadStock = intent.getStringExtra("cantidad");
         Log.d(TAG, "Id producto " + mIdProducto);
 
         // Main Toolbar

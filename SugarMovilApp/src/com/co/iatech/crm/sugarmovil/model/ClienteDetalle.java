@@ -965,4 +965,9 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getName() {
+		return first_name + " " + last_name;
+	}
 }

@@ -1,9 +1,22 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import java.security.MessageDigestSpi;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+import com.software.shell.fab.ActionButton;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,22 +28,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ui.Message;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.Utils;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
-import com.software.shell.fab.ActionButton;
 
 
 public class TaskActivity extends AppCompatActivity implements TasksModuleActions {
@@ -67,7 +64,6 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 	        Intent intent = getIntent();
 	        objTareaDetalle = null;
 	        
-	
 	        // Main Toolbar
 	        mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
 	        setSupportActionBar(mTareaToolbar);
@@ -76,23 +72,25 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 	        
 	        this.applyActions();
 	        
-	        if(intent.getExtras().get(Info.OBJECT.name()) instanceof  TareaDetalle ){
-	        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(Info.OBJECT.name());
+	        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  TareaDetalle ){
+	        	objTareaDetalle = (TareaDetalle) intent.getExtras().get(MODULE.getModuleName());
 	        	this.ponerValores(objTareaDetalle);
 	        }else{
-		        mIdTarea = intent.getStringExtra(Info.ID.name());
-		        Log.d(TAG, "Id tarea " + mIdTarea);
+		        mIdTarea = intent.getStringExtra(MODULE.name());
+		        
 		        mTareaObtenerTarea = new GetTaskTask();
 	  	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
 		      
 	        }
         }catch(Exception e){
-     	   Message.showShortExt(Utils.errorToString(e), this);
+        	Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
         }
     }
     
 
     public void ponerValores(TareaDetalle tareaDetalle) {
+    	try{
+  
     	TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(tareaDetalle.getName());
         
@@ -100,10 +98,10 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
         valorEstado.setText(ListsConversor.convert(ConversorsType.TASKS_STATUS,tareaDetalle.getStatus(), DataToGet.VALUE));
         
         TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
-        valorFechaInicio.setText(Utils.convertTimetoString(tareaDetalle.getDate_start()));
+        valorFechaInicio.setText(Utils.transformTimeBakendToUI(tareaDetalle.getDate_start()));
        
         TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
-        valorFechaVence.setText(Utils.convertTimetoString(tareaDetalle.getDate_due()));
+        valorFechaVence.setText(Utils.transformTimeBakendToUI(tareaDetalle.getDate_due()));
         
         TextView valorContacto = (TextView) findViewById(R.id.valor_contacto);
         valorContacto.setText(tareaDetalle.getContact_name());
@@ -123,15 +121,26 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
     	
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
         valorAsignado.setText(tareaDetalle.getAssigned_user_name());
-        
+    	 }catch(Exception e){
        
-       /* TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-        valorNombre.setText(tareaDetalle.getParent_name());*/
+    		 Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
+          }
+       
+    	TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
+    	
+        valorNombre.setText(tareaDetalle.getParent_name());
     }
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume Task Activity");
+    	try{
+	    	objTareaDetalle = (TareaDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+	    	if(objTareaDetalle != null){
+	    		this.ponerValores(objTareaDetalle);
+	    	}
+    	}catch(Exception e){
+    		
+    	}
         super.onResume();
 
     }
@@ -139,7 +148,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
     @Override
    	public void applyActions() {
    		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
-           ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+        ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
 
    	}
        
@@ -232,4 +241,10 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return false;
+	}
 }

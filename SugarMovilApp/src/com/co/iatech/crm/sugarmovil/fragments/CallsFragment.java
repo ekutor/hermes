@@ -4,6 +4,20 @@ package com.co.iatech.crm.sugarmovil.fragments;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
+import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,19 +34,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.MainActivity;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
 
 public class CallsFragment extends Fragment implements CallsModuleActions {
     /**
@@ -126,7 +127,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
                 imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerCallsAdapter) mRecyclerViewCalls.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerViewCalls.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -140,7 +141,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para llamadas
-                    ((RecyclerCallsAdapter) mRecyclerViewCalls.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerViewCalls.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -152,7 +153,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para llamadas
-                    ((RecyclerCallsAdapter) mRecyclerViewCalls.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerViewCalls.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -163,7 +164,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
  
        this.applyActions();
 
-        if(DataManager.getInstance().callsInfo.size() <= 0){
+        if(!DataManager.getInstance().IsSynchronized(MODULE)){
         	// Tarea para consultar llamadas
         	Log.d(TAG,"Cargando Llamadas desde BACKEND");
         	 // Tarea para consultar llamadas
@@ -180,7 +181,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 
     
     private void showCalls() {
-    	mRecyclerViewCallsAdapter = new RecyclerCallsAdapter(getActivity(), DataManager.getInstance().callsInfo);
+    	mRecyclerViewCallsAdapter = new RecyclerGenericAdapter(getActivity(), AdapterSearchUtil.transform(DataManager.getInstance().callsInfo), MODULE);
         mRecyclerViewCalls.setAdapter(mRecyclerViewCallsAdapter);
 	}
 
@@ -235,6 +236,12 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
 		ActionsStrategy.definePermittedActions(this, this.getActivity(), gc);
 	}
+	
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return false;
+	}
+	
     /**
      * Representa una tarea asincrona de obtencion de oportunidades.
      */
@@ -269,7 +276,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().callsInfo.add(new Llamada(obj));
                 }
-
+                DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Buscar Llamadas Error: "

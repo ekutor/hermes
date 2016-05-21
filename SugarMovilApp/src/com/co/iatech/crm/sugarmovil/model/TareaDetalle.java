@@ -30,7 +30,7 @@ public class TareaDetalle extends GenericBean implements Parcelable , Visitable{
             return new TareaDetalle[size];
         }
     };
-    private String id;
+   
     private String name;
     private String date_entered;
     private String date_modified;

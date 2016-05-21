@@ -24,7 +24,7 @@ public class Contacto extends GenericBean implements Parcelable {
         }
     };
     
-    private String id, first_name, title, phone_mobile, phone_work, phone_other, phone_fax;
+    private String first_name, title, phone_mobile, phone_work, phone_other, phone_fax;
     
     public Contacto(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
@@ -122,6 +122,11 @@ public class Contacto extends GenericBean implements Parcelable {
 	public Map<String, String> getDataBean() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public String getName() {
+		return title + " "+ first_name;
 	}
 }
 

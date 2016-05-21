@@ -10,7 +10,9 @@ import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
+import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleValidations;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
@@ -18,6 +20,8 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
@@ -37,6 +41,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,6 +68,7 @@ SearchDialogInterface, TasksModuleValidations{
     private static boolean modoEdicion;
  
     private ListUsersConverter lc = new ListUsersConverter();
+    private ListAccountConverter lac = new ListAccountConverter();
     private TypeActions tipoPermiso;
 
 
@@ -70,12 +77,14 @@ SearchDialogInterface, TasksModuleValidations{
      */
     private Toolbar mTareaToolbar;
     private ImageButton imgButtonGuardar;
-    private TextView valorTrabajoEstimado,valorAsunto,valorDescripcion;
+    private TextView valorTrabajoEstimado,valorAsunto,valorDescripcion,valorNombre,txtNombre;
     private Spinner valorEstado,valorTipo,valorPrioridad;
     private Button botonFechaInicio,botonFechaVen, botonHoraInicio, botonHoraVen;
     private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
 	public String resultado;
+	private String associatedAccount;
+	private boolean selectedTypeTaskAccount;
 
 	private AddTask editarTarea;
 
@@ -98,17 +107,20 @@ SearchDialogInterface, TasksModuleValidations{
 	        getSupportActionBar().setHomeButtonEnabled(false);
 	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 	
-	        chargeLists();
+	        
 	        createWidgets();
+	        chargeLists();
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
         
         if(modoEdicion){
+        	TextView title = (TextView) findViewById(R.id.text_task_toolbar);
+        	title.setText("EDITAR TAREA");
         	chargeValues();
         }
        
         }catch(Exception e){
-     	   Message.showShortExt(Utils.errorToString(e), this);
+     	  Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddTaskActivity.this, MODULE );
         }
     }
     
@@ -116,15 +128,15 @@ SearchDialogInterface, TasksModuleValidations{
     	
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
         Intent intent = getIntent();		
-		tareaSeleccionada = intent.getParcelableExtra(Info.OBJECT.name());
+		tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
 
 		if (tareaSeleccionada != null) {
 			modoEdicion = true;
-			Log.d(TAG, "tarea Recibida " + tareaSeleccionada);
+
 		} else {
 			tareaSeleccionada = new TareaDetalle();
+			associatedAccount = intent.getStringExtra(Modules.ACCOUNTS.name());
 		}
-		Log.d(TAG, "Modo Edicion " + modoEdicion);
          
 	}
     
@@ -143,13 +155,37 @@ SearchDialogInterface, TasksModuleValidations{
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.TASKS_TYPE));
         tipoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorTipo.setAdapter(tipoAdapter);
+        valorTipo.setOnItemSelectedListener(new OnItemSelectedListener(){
+       	 @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+       		 int visibility;
+       		 if( Modules.ACCOUNTS.getVisualName().equalsIgnoreCase( valorTipo.getSelectedItem().toString() ) ){
+       			visibility = View.VISIBLE;
+       			selectedTypeTaskAccount = true;
+       		 }else{
+       			 visibility = View.INVISIBLE;
+       			 selectedTypeTaskAccount = false;
+       		 }
+       		 
+       		 valorNombre.setVisibility(visibility);
+       		 if(associatedAccount == null && !modoEdicion){
+       			 valorNombre.setText(ValidatorActivities.SELECT_MESSAGE);
+       		 }
+   			 txtNombre.setVisibility(visibility);
+            }
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+								
+			}
+       });
         
         valorPrioridad = (Spinner) findViewById(R.id.valor_prioridad);
         ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.TASKS_PRIORITY));
         prioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorPrioridad.setAdapter(prioridadAdapter);
-         
+        valorPrioridad.setSelection(1);
         
         GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
@@ -159,6 +195,14 @@ SearchDialogInterface, TasksModuleValidations{
 			
 	        asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
 	        tareaSeleccionada.setAssigned_user_id(u.getId());
+	        
+	      //Carga Cuentas
+	        if(associatedAccount != null){
+	        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
+	    		valorTipo.setSelection(pos);
+	    		valorNombre.setText(lac.convert(associatedAccount, DataToGet.VALUE ));
+	        }
+	        
 		}
         
     }
@@ -168,7 +212,12 @@ SearchDialogInterface, TasksModuleValidations{
 	    valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
 	    valorFechaInicio = (TextView) findViewById(R.id.valor_fecha_inicio);
 	    valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
+	    txtNombre = (TextView) findViewById(R.id.text_nombre);
+	    valorNombre = (TextView) findViewById(R.id.valor_nombre);
+	    valorNombre.setOnClickListener(this);
 	    
+	    //TODO mejorar la pantalla de cuenta y poner eventos a tipo para que muestre o no un tipo
+	    	    
 	    valorTrabajoEstimado = (EditText) findViewById(R.id.valor_estimado);
 	    
      // Fecha Inicio
@@ -188,29 +237,29 @@ SearchDialogInterface, TasksModuleValidations{
 	 
 	  }
     public void chargeValues() {
-    	imgButtonGuardar.setVisibility(View.VISIBLE);
+    	
     	valorAsunto.setText(tareaSeleccionada.getName());
     	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, tareaSeleccionada.getStatus());
 		valorEstado.setSelection(pos);
-		valorFechaInicio.setText(Utils.convertTimetoString(tareaSeleccionada.getDate_start()));
-		valorFechaVen.setText(Utils.convertTimetoString(tareaSeleccionada.getDate_due()));
+		valorFechaInicio.setText(Utils.transformTimeBakendToUI(tareaSeleccionada.getDate_start()));
+		valorFechaVen.setText(Utils.transformTimeBakendToUI(tareaSeleccionada.getDate_due()));
+		
+	    //contacto
 	    
-	    valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
-	//contacto
 	    valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
 	    pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority());
 		valorPrioridad.setSelection(pos);
 		valorDescripcion.setText(tareaSeleccionada.getDescription());
 		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, tareaSeleccionada.getParent_type());
 		valorTipo.setSelection(pos);
-        
-        // Contacto
-      //  mValorContacto = (TextView) findViewById(R.id.valor_contacto);
-//        mValorContacto.setText(tareaDetalle.getContact_name());
-      
+		
+		// Cuenta
+		if(tareaSeleccionada.getParent_id() != null && tareaSeleccionada.getParent_id().length() > 1){
+			valorNombre.setText(tareaSeleccionada.getParent_name());
+		}      
         // Asignado
         asignadoA.setText(lc.convert(tareaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
-
+        imgButtonGuardar.setVisibility(View.VISIBLE);
         
     }
 
@@ -239,23 +288,29 @@ SearchDialogInterface, TasksModuleValidations{
 		}else if(v.getId() == botonFechaVen.getId()){
 			DialogFragment newFragment = new DatePickerFragment(this,valorFechaVen,modoEdicion);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
+		}else if(v.getId() == valorNombre.getId()){
+			Message.showAccountsDialog(getSupportFragmentManager());
 		}else if(v.getId() == imgButtonGuardar.getId()){
 			//Realizar Validaciones
 			if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){
 				return;
 			}
-			
+			if(selectedTypeTaskAccount &&
+				!ValidatorGeneric.getInstance().execute(valorNombre, "Seleccionó un tipo Cuenta, debe seleccionar la cuenta relacionada", getApplicationContext())
+					){
+				return;
+			}
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
             
 			tareaSeleccionada.setName(valorAsunto.getText().toString());
 			tareaSeleccionada.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS, valorEstado.getSelectedItem().toString(), DataToGet.CODE));
 			
 			if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
-            	tareaSeleccionada.setDate_start(Utils.transformTimetoBackend(valorFechaInicio.getText().toString()));
+            	tareaSeleccionada.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
             }
             
 			if(valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1){
-            	tareaSeleccionada.setDate_due(Utils.transformTimetoBackend(valorFechaVen.getText().toString()));
+            	tareaSeleccionada.setDate_due(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
             }
 			
 			//contacto
@@ -263,20 +318,12 @@ SearchDialogInterface, TasksModuleValidations{
 			tareaSeleccionada.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
 			tareaSeleccionada.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY, valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
 			tareaSeleccionada.setDescription(valorDescripcion.getText().toString());
-			tareaSeleccionada.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, valorTipo.getSelectedItem().toString(), DataToGet.CODE));
-            
-            ListAccountConverter lac = new ListAccountConverter();
-	       // tareaSeleccionada.setParent_id(lac.convert(.getSelectedItem().toString(), DataToGet.CODE));
-            
-//            tareaSeleccionada.setDuration_hours(valorDuracionHrs.getText().toString());
-            
-//            tareaSeleccionada.setDuration_minutes(ListsConversor.convert(ConversorsType.CALLS_MINS_DURATION, valorDuracionMin.getSelectedItem().toString(), DataToGet.CODE));
-            
-
-//	        
-//	        llamadaSeleccionada.setParent_type("Accounts");
-	        
-	        
+			
+			tareaSeleccionada.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, valorTipo.getSelectedItem().toString(), DataToGet.CODE));       
+			if(valorNombre.getText() != null && valorNombre.getText().length() > 0 ){
+				tareaSeleccionada.setParent_id(lac.convert(valorNombre.getText().toString(), DataToGet.CODE));
+			}
+			
 	        String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(),DataToGet.CODE);
 	        tareaSeleccionada.setAssigned_user_id(idUsuarioAsignado);
 	        
@@ -303,9 +350,14 @@ SearchDialogInterface, TasksModuleValidations{
 	}
 
 	@Override
-	public void onFinishSearchDialog(User selectedUser) {
-		asignadoA.setText(selectedUser.getUser_name());
-		Log.d(TAG, "Recibido por Pattern Listener: "+ selectedUser.getUser_name());
+	public void onFinishSearchDialog(GenericBean selectedBean) {
+		if(selectedBean instanceof User){
+			User selectedUser = (User) selectedBean;
+			asignadoA.setText(selectedUser.getUser_name());
+		}else if(selectedBean instanceof Cuenta){
+			Cuenta ac = (Cuenta) selectedBean;
+			valorNombre.setText(ac.getName());
+		}
 
 	}
 	
@@ -331,8 +383,9 @@ SearchDialogInterface, TasksModuleValidations{
                 Log.d(TAG, "Crear Tarea Resp: "+ resultado);
               
                 if(resultado.contains("OK")){
- 
+                	obj.id = Utils.getIDFromBackend(resultado);
                 	obj.accept(new DataVisitorsManager());
+                	ActivitiesMediator.getInstance().addObjectInfo(obj);
                 	 return true;
                 }else{
                 	 return false;
@@ -341,7 +394,7 @@ SearchDialogInterface, TasksModuleValidations{
             } catch (Exception e) {
                 Log.d(TAG, "Crear Llamada Error: "
                         + e.getClass().getName() + ":" + e.getMessage());
-                resultado = Utils.errorToString(e);
+                resultado += Utils.errorToString(e);
                 return false;
             }
         }
@@ -357,13 +410,14 @@ SearchDialogInterface, TasksModuleValidations{
             		 Message.showFinalMessage(getFragmentManager(),DialogType.CREATED, AddTaskActivity.this, MODULE );
             		 
             	 }
-            	 chargeValues();
+            	 
             } else {
             	if(modoEdicion){
            		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddTaskActivity.this, MODULE );
            		 
            	 }else{
-           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddTaskActivity.this, MODULE );
+           		 Message.showFinalMessage(getFragmentManager(), resultado, AddTaskActivity.this, MODULE );
+           		 //Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddTaskActivity.this, MODULE );
            		 
            	 }
                 Log.d(TAG, "Crear Tarea error");

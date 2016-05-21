@@ -8,13 +8,12 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 public interface IMediator {
 
 	public void defineActualModule(Modules module);
-	public void showActivity(Context context,Modules module);
 	public void returnView();
-	public void addInfotoActivity(Intent intent);
-	public void showEditActivity(Context context, Modules module);
-	public String getActualKey();
-	public String getActualID();
-	public void setActualID(String actualID);
+	public void addInfotoActivity(Intent intent, Modules mod);
+	public void showEditActivity(Context context, Modules module,  boolean addActualModule);
+	public String getActualID(Modules module);
+	public void setActualID(String actualID, Modules mod);
 	public String getPreviusID();
+	void showActivity(Context context, Modules module, String newActualID);
 	
 }

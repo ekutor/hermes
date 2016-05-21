@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.TaskActivity.GetTaskTask;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -22,10 +24,12 @@ import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
@@ -61,21 +65,31 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
+        try{
+	        Intent intent = getIntent();
+	        	
+	        // Main Toolbar
+	        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
+	        setSupportActionBar(mLlamadaToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        
+	        this.applyActions();
+	        
+	        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Llamada ){
+	        	llamadaDetalle = (Llamada) intent.getExtras().get(MODULE.getModuleName());
+	        	this.ponerValores(llamadaDetalle);
+	        }else{
+	        	idLlamada = intent.getStringExtra(MODULE.name());
+	        	// Tarea obtener llamada
+		        mTareaObtenerLlamada = new GetCallTask();
+		        mTareaObtenerLlamada.execute(String.valueOf(idLlamada));
+		      
+	        }
 
-        Intent intent = getIntent();
-        idLlamada = intent.getStringExtra(Info.ID.name());
-        Log.d(TAG, "Id llamada " + idLlamada);
-
-        // Main Toolbar
-        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
-        setSupportActionBar(mLlamadaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-        
-        this.applyActions();
-        // Tarea obtener llamada
-        mTareaObtenerLlamada = new GetCallTask();
-        mTareaObtenerLlamada.execute(String.valueOf(idLlamada));
+        }catch(Exception e){
+      	   Message.showShortExt(Utils.errorToString(e), this);
+         }
     }
 
     public void ponerValores(Llamada llamadaDetalle) {
@@ -102,6 +116,20 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
         valorCuenta.setText(llamadaDetalle.getParent_name());
         TextView valorCampana = (TextView) findViewById(R.id.valor_campana);
         valorCampana.setText(llamadaDetalle.getCampaign_name());
+    }
+    
+    @Override
+    public void onResume() {
+    	try{
+    		llamadaDetalle = (Llamada) ActivitiesMediator.getInstance().getBeanInfo();
+	    	if(llamadaDetalle != null){
+	    		this.ponerValores(llamadaDetalle);
+	    	}
+    	}catch(Exception e){
+    		
+    	}
+        super.onResume();
+
     }
 
     /**
@@ -198,5 +226,11 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	@Override
 	public Parcelable getBean() {
 		return llamadaDetalle;
+	}
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

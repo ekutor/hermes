@@ -15,6 +15,8 @@ public class Utils {
 	
 	private static final String DATETIME_FORMAT_BACKEND = "yyyy-MM-dd HH:mm:ss";
 	private static final String DATE_FORMAT_BACKEND = "yyyy-MM-dd";
+	
+	private static final int TIME_TO_DIFF_DB_BACKEND = 5;
 
 	public static String getCurrentTime() {
 		Calendar c = Calendar.getInstance();
@@ -40,31 +42,39 @@ public class Utils {
 		return (int) Math.floor(rnd);
 	}
 
-	public static String convertTimetoString(int year, int month, int day) {
+	public static String convertTimetoStringFrontEnd(int year, int month, int day) {
 		return new StringBuilder().append(day).append(" ").append(getMonth(month)).append(" ").append(year).toString();
 	}
 
-	public static String convertTimetoString(String date_closed) {
+	public static String transformTimeBakendToUI(String date_closed) {
 		String time = null;
-		String[] dts_large;
-		try {
-			if (date_closed != null && !date_closed.equals("")) {
-				if(date_closed.contains(":")){
-					dts_large = date_closed.split(" ");
-					date_closed = dts_large[0];
-					time = dts_large[1];
+		if (date_closed != null && !date_closed.equals("")) {
+			try {
+				SimpleDateFormat sdin = null;
+				SimpleDateFormat sdout  = null;
+				if (!date_closed.contains(":")) {
+					sdin = new SimpleDateFormat(DATE_FORMAT_BACKEND, new Locale("es", "ES"));
+					sdout = new SimpleDateFormat(DATE_FORMAT_FRONTEND);
+				} else {
+					sdin = new SimpleDateFormat(DATETIME_FORMAT_BACKEND, new Locale("es", "ES"));
+					sdout = new SimpleDateFormat(DATETIME_FORMAT_FRONTEND);
 				}
-				String[] date = date_closed.split("-");
-				time = date[2] + " " + getMonth(Integer.parseInt(date[1]) - 1) + " " + date[0]+" "+time;
-			
-			}
-		} catch (Exception e) {
 
+				
+
+				Date d = sdin.parse(date_closed);
+				Calendar dateCal = Calendar.getInstance();
+				dateCal.setTime(d);
+				dateCal.add(Calendar.HOUR, -TIME_TO_DIFF_DB_BACKEND);
+				time = sdout.format(dateCal.getTime());
+			} catch (Exception e) {
+
+			}
 		}
 		return time;
 	}
 
-	public static String transformTimetoBackend(String date) {
+	public static String transformTimeUItoBackend(String date) {
 		String time = null;
 		if (date != null && !date.equals("")) {
 			try {
@@ -81,7 +91,10 @@ public class Utils {
 				
 
 				Date d = sdin.parse(date);
-				time = sdout.format(d);
+				Calendar dateCal = Calendar.getInstance();
+				dateCal.setTime(d);
+				dateCal.add(Calendar.HOUR_OF_DAY, +TIME_TO_DIFF_DB_BACKEND);
+				time = sdout.format(dateCal.getTime());
 			} catch (Exception e) {
 
 			}
@@ -109,7 +122,7 @@ public class Utils {
 		return c;
 	}
 	
-	public static CharSequence convertTimetoString(Calendar c) {
+	public static CharSequence convertTimetoStringFrontEnd(Calendar c) {
 		SimpleDateFormat sdout = new SimpleDateFormat(DATETIME_FORMAT_FRONTEND);
 		return sdout.format(c.getTime());
 	}
@@ -190,6 +203,19 @@ public class Utils {
 			value = value.replace("*##*", "\t");
 		}
 		return value;
+	}
+
+	public static String getIDFromBackend(String value) {
+		String r = "";
+		try{
+			int pos =  value.indexOf("id");
+			if( pos != -1){
+				r = value.substring(pos+5, value.length()-2);
+			}
+		}catch(Exception e){
+			
+		}
+		return r;
 	}
 
 }

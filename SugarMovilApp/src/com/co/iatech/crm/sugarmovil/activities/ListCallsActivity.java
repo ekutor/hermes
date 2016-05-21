@@ -5,6 +5,22 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+import com.software.shell.fab.ActionButton;
+import com.squareup.picasso.Picasso;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,20 +40,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerCallsAdapter;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerContactsAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
-import com.squareup.picasso.Picasso;
 
 
 public class ListCallsActivity extends AppCompatActivity implements CallsModuleActions {
@@ -78,8 +80,8 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Intent intent = getIntent();
-        idCuentaActual = intent.getStringExtra(Info.ID.name());
-        Log.d(TAG, "Id cuenta " + idCuentaActual);
+        idCuentaActual = intent.getStringExtra(Modules.ACCOUNTS.name());
+
 
         // Main Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar_list_call);
@@ -133,7 +135,7 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -147,7 +149,7 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -159,7 +161,7 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para select
-                    ((RecyclerContactsAdapter) mRecyclerView.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -169,8 +171,7 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
         });
         
         this.applyActions();
-        mTareaObtenerLlamadas= new GetCallsxAccountTask();
-        mTareaObtenerLlamadas.execute(idCuentaActual);
+       
     }
     
     @Override
@@ -203,16 +204,29 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
 
    	@Override
    	public void applyActions() {
-   		actionButton = (ActionButton) findViewById(R.id.action_button); 
+   		actionButton = (ActionButton) findViewById(R.id.action_button);
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
-    @Override
-    public void onBackPressed() {
-    	ActivitiesMediator.getInstance().returnPrevID();
-    	super.onBackPressed();
-    }
+   	
+	@Override
+	protected void onResume() {
+		this.chargeListInfo();
+		super.onResume();
+	}
 
-    /**
+
+    private void chargeListInfo() {
+    	 mTareaObtenerLlamadas= new GetCallsxAccountTask();
+         mTareaObtenerLlamadas.execute(idCuentaActual);
+	}
+    
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return true;
+	}
+
+
+	/**
      * Representa una tarea asincrona de obtencion de llamadas por cuenta.
      */
     public class GetCallsxAccountTask extends AsyncTask<String, Void, Boolean> {
@@ -250,11 +264,10 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
                     JSONObject obj = jArr.getJSONObject(i);
                     LlamadasXAccount.add(new Llamada(obj));
                 }
-
+                
                 return true;
             } catch (Exception e) {
-                Log.d(TAG, "Buscar Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
+            	Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), ListCallsActivity.this, MODULE);
                 return false;
             }
         }
@@ -266,7 +279,8 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
 
             if (success) {
                 if (LlamadasXAccount.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerCallsAdapter(ListCallsActivity.this, LlamadasXAccount);
+                    mRecyclerViewAdapter = new RecyclerGenericAdapter(ListCallsActivity.this, 
+                    		AdapterSearchUtil.transform(LlamadasXAccount), MODULE);
                     mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 } else {
                 	progressDialog.setMessage("Esta cuenta no tiene llamadas asociadas.");

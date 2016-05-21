@@ -9,6 +9,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 
 public class ValidatorGeneric extends ValidatorActivities {
 	
@@ -29,6 +31,8 @@ public class ValidatorGeneric extends ValidatorActivities {
 			resp = validate((Spinner)view);
 		}else  if(view instanceof EditText){
 			resp = validate((EditText)view);
+		}else if(view instanceof TextView){
+			resp = validate((TextView)view);
 		}
 		if(!resp){
 			Message.showShort(message, c);

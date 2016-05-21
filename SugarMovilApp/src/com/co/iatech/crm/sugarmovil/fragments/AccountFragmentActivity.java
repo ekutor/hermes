@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
@@ -110,7 +111,7 @@ public class AccountFragmentActivity extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_general, container, false);
         
         Bundle args = getArguments();
-        CuentaDetalle cuenta = args.getParcelable(Info.OBJECT.name());
+        CuentaDetalle cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
   
         cargarComponentes(rootView);
         ponerValores(cuenta);
