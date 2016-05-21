@@ -81,6 +81,9 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     
     private String associatedAccount;
 
+
+	public String resultado;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,6 +253,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
         // Asignado
         asignadoA.setText(lc.convert(llamadaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
         
+        imgButtonGuardar.setVisibility(View.VISIBLE);
+        
 	    }
 
 		@Override
@@ -297,7 +302,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
 	            	llamadaSeleccionada.setDate_start(valorFechaInicio.getText().toString());
 	            }
-	            
+	            imgButtonGuardar.setVisibility(View.INVISIBLE);
 	            llamadaSeleccionada.setDescription(valorDescripcion.getText().toString());
 	            llamadaSeleccionada.setName(valorAsunto.getText().toString());
 	            llamadaSeleccionada.setDuration_hours(valorDuracionHrs.getText().toString());
@@ -339,25 +344,25 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	                Llamada obj = (Llamada)params[0];
 
 	                // Resultado
-	                String resultado = null;
+	                resultado = null;
 	                
 	                if(modoEdicion){
 	                	resultado  = ControlConnection.putInfo(TypeInfoServer.addCall, obj.getDataBean(),Modo.EDITAR, AddCallActivity.this );
 	                }else{
 	                   	resultado  = ControlConnection.putInfo(TypeInfoServer.addCall, obj.getDataBean(),Modo.AGREGAR, AddCallActivity.this );
 	                }
-	                Log.d(TAG, "Crear Llamada Resp: "+ resultado);
+	                
 	                if(resultado.contains("OK")){
-	 
+	                	obj.id = Utils.getIDFromBackend(resultado);
 	                	obj.accept(new DataVisitorsManager());
+	                	ActivitiesMediator.getInstance().addObjectInfo(obj);
 	                	 return true;
 	                }else{
 	                	 return false;
 	                }
 	               
 	            } catch (Exception e) {
-	                Log.d(TAG, "Crear Llamada Error: "
-	                        + e.getClass().getName() + ":" + e.getMessage());
+	            	 resultado += Utils.errorToString(e);
 	                return false;
 	            }
 	        }
@@ -373,13 +378,14 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            		 Message.showFinalMessage(getFragmentManager(),DialogType.CREATED, AddCallActivity.this, MODULE );
 	            		 
 	            	 }
-	            	 chargeValues();
+	            	
 	            } else {
 	            	if(modoEdicion){
 	           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddCallActivity.this, MODULE );
 	           		 
 	           	 }else{
-	           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddCallActivity.this, MODULE );
+	           		 Message.showFinalMessage(getFragmentManager(), resultado, AddCallActivity.this, MODULE );
+	           		// Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddCallActivity.this, MODULE );
 	           		 
 	           	 }
 	                Log.d(TAG, "Crear Llamda error");

@@ -9,7 +9,7 @@ public enum Modules {
 	CALLS("Calls","LLAMADAS", "LLAMADA"),
 	PRODUCTS("psg_Productos","PRODUCTOS", "PRODUCTO"),
 	TASKS("Tasks","TAREAS", "TAREA"),
-	ACTUAL_MODULE("ACTUAL_MODULE","ACTUAL_MODULE", "ACTUAL_MODULE")
+	PREVIOUS_UI("PREVIOUS_UI","PREVIOUS_UI", "PREVIOUS_UI")
 	;
 	
 	private String moduleName,visualName,sugarDBName;

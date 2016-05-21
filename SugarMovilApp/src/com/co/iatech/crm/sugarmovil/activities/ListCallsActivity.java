@@ -222,7 +222,7 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
     
 	@Override
 	public boolean chargeIdPreviousModule() {
-		return idCuentaActual != null;
+		return true;
 	}
 
 

@@ -334,8 +334,7 @@ public class ContactActivity extends AppCompatActivity implements
 
 	@Override
 	public boolean chargeIdPreviousModule() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

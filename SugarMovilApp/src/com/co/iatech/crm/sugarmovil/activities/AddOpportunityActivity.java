@@ -81,13 +81,15 @@ SearchDialogInterface, OpportunitiesModuleValidations {
      * UI References.
      */
     private Toolbar mCuentaToolbar;
-    private ImageButton mImageButtonGuardar;
+    private ImageButton imgButtonGuardar;
     private Button botonFechaCierre;
     private TextView mValorFechaCierre,asignadoA,valorCuenta;
     private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorFuente,valorPaso,valorDescripcion;
     private Spinner valorTipo,valorEtapa,valorMedio,valorEnergia,valorComunicaciones,valorIluminacion,valorMoneda;
     private Spinner valorCampana;
     private ListUsersConverter lc = new ListUsersConverter();
+
+	public String resultado;
     
 
     @Override
@@ -106,7 +108,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        setSupportActionBar(mCuentaToolbar);
 	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	        getSupportActionBar().setHomeButtonEnabled(false);
-	        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
+	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 	
 	        createWidgets();
 	        chargeLists();
@@ -256,7 +258,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
        
         // Eventos
         // Guardar Tarea
-        mImageButtonGuardar.setOnClickListener(this);
+        imgButtonGuardar.setOnClickListener(this);
  
     }
     
@@ -309,9 +311,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
         // Asignado
         asignadoA.setText(lc.convert(oportSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
-        Log.d(TAG, "VALOR CARGADO "+asignadoA.getText());
-        
-        Log.d(TAG, "id usuario asignado  "+oportSeleccionada.getAssigned_user_id());
+        imgButtonGuardar.setVisibility(View.VISIBLE);
      
     }
     
@@ -332,12 +332,12 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		}else if(v.getId() == valorCuenta.getId()){
 			Message.showAccountsDialog(getSupportFragmentManager());
-		}else if(v.getId() == mImageButtonGuardar.getId()){
+		}else if(v.getId() == imgButtonGuardar.getId()){
 	        //Realizar Validaciones
 			if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){
 				return;
 			}
-			mImageButtonGuardar.setEnabled(false);
+			imgButtonGuardar.setVisibility(View.INVISIBLE);
 	        // Nombre
 	        oportSeleccionada.setName(valorNombre.getText().toString());
 	        
@@ -435,25 +435,27 @@ SearchDialogInterface, OpportunitiesModuleValidations {
                 OportunidadDetalle op = (OportunidadDetalle)params[0];
 
                 // Resultado
-                String resultado = null;
+                resultado = null;
                 
                 if(modoEdicion){
                 	resultado  = ControlConnection.putInfo(TypeInfoServer.addOpportunity, op.getDataBean(),Modo.EDITAR, AddOpportunityActivity.this);
                 }else{
                    	resultado  = ControlConnection.putInfo(TypeInfoServer.addOpportunity, op.getDataBean(),Modo.AGREGAR, AddOpportunityActivity.this);
                 }
-                Log.d(TAG, "Crear Oportunidad RESPr: "+ resultado);
+
                 if(resultado.contains("OK")){
+                	op.id = Utils.getIDFromBackend(resultado);
                 	Oportunidad oportunidad = new Oportunidad( op );
+                	
                 	oportunidad.accept(new DataVisitorsManager());
+                	ActivitiesMediator.getInstance().addObjectInfo(oportunidad);
                 	 return true;
                 }else{
                 	 return false;
                 }
                
             } catch (Exception e) {
-                Log.d(TAG, "Crear Oportunidad Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
+            	 resultado += Utils.errorToString(e);
                 return false;
             }
         }
@@ -461,7 +463,6 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         @Override
         protected void onPostExecute(final Boolean success) {
             mTareaCrearOportunidad = null;
-        	mImageButtonGuardar.setEnabled(true);
             if (success) {
             	 if(modoEdicion){
             		 Message.showFinalMessage(getFragmentManager(),DialogType.EDITED, AddOpportunityActivity.this, MODULE );
@@ -470,16 +471,17 @@ SearchDialogInterface, OpportunitiesModuleValidations {
             		 Message.showFinalMessage(getFragmentManager(),DialogType.CREATED, AddOpportunityActivity.this, MODULE );
             		 
             	 }
-            	 chargeValues();
+            	 
             } else {
             	if(modoEdicion){
            		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddOpportunityActivity.this, MODULE );
            		 
            	 }else{
-           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddOpportunityActivity.this, MODULE );
+           		 Message.showFinalMessage(getFragmentManager(), resultado, AddOpportunityActivity.this, MODULE );
+           		// Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddOpportunityActivity.this, MODULE );
            		 
            	 }
-                Log.d(TAG, "Crear Oportunidad error");
+               
             }
             modoEdicion = false;
         }

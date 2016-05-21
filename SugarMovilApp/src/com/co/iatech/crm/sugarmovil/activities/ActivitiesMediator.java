@@ -3,7 +3,9 @@ package com.co.iatech.crm.sugarmovil.activities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +23,7 @@ public class ActivitiesMediator implements IMediator {
 	private Parcelable beanInfo;
 	private static ActivitiesMediator instance;
 	private Map<Modules,String> currentIDs;
+	private Modules moduleflag;
 	
 	private ActivitiesMediator(){
 		currentIDs = new HashMap<Modules,String>();
@@ -62,7 +65,8 @@ public class ActivitiesMediator implements IMediator {
 		default:
 			break;
 		}
-		start(context, intent, module);
+		addInfotoActivity(intent, module);
+    	context.startActivity(intent);
 		
 	}
 	@Override
@@ -87,7 +91,8 @@ public class ActivitiesMediator implements IMediator {
 			addInfotoActivity(intent, actualModule);
 		}
 		addBeanInfo(intent, module );
-        start(context, intent, module);
+		addInfotoActivity(intent, module);
+    	context.startActivity(intent);
 		
 	}
 	
@@ -98,14 +103,8 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 
-	private void start(Context context, Intent intent, Modules mod) {
-		 if(intent != null){
-	        	addInfotoActivity(intent, mod);
-	        	context.startActivity(intent);
-		 }
-	}
-
 	public void showList(Context context, Modules module, boolean chargeActualModule) {
+		try{
 		Intent intent = null;
 		switch( module){
 			case CONTACTS:
@@ -125,9 +124,18 @@ public class ActivitiesMediator implements IMediator {
 			
 		}
 		if(chargeActualModule){
+			//set current module id to activity
 			this.addInfotoActivity(intent, actualModule);
+			//set id from activity to new activity
+			this.addInfotoActivity(intent, moduleflag);
+			//set actual module from
+			intent.putExtra(Modules.PREVIOUS_UI.name(), moduleflag.getSugarDBName());
 		}
-		start(context, intent , module);
+	
+    	context.startActivity(intent);
+		}catch(Exception e){
+			Message.showShortExt(Utils.errorToString(e) , context);
+		}
 		
 	}
 	
@@ -169,6 +177,7 @@ public class ActivitiesMediator implements IMediator {
 		if(actualID != null){
 			this.previusID = currentIDs.get(module);
 			currentIDs.put(module, actualID);
+			moduleflag = module;
 		}
 	}
 

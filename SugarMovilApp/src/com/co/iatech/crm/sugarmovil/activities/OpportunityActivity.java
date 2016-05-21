@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.TaskActivity.GetTaskTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -11,6 +12,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActio
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -76,9 +78,17 @@ try{
         
         this.applyActions();
 		
-        // Tarea obtener cuenta
-        mTareaObtenerOportunidad = new GetOpportunityTask();
-        mTareaObtenerOportunidad.execute(String.valueOf(mIdOportunidad));
+        
+        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  OportunidadDetalle ){
+        	oportunidadDetalle = (OportunidadDetalle) intent.getExtras().get(MODULE.getModuleName());
+        	this.ponerValores( oportunidadDetalle );
+        }else{
+        	mIdOportunidad = intent.getStringExtra(MODULE.name());
+
+	        mTareaObtenerOportunidad = new GetOpportunityTask();
+	        mTareaObtenerOportunidad.execute(String.valueOf(mIdOportunidad));
+        }
+        
 }catch(Exception e){
 	   Message.showShortExt(Utils.errorToString(e), this);
  }
@@ -239,12 +249,25 @@ try{
 		
 		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
 	}
+	
+	 @Override
+	    public void onResume() {
+	    	try{
+	    		oportunidadDetalle = (OportunidadDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+		    	if(oportunidadDetalle != null){
+		    		this.ponerValores(oportunidadDetalle);
+		    	}
+	    	}catch(Exception e){
+	    		
+	    	}
+	        super.onResume();
+
+	    }
 
 
 	@Override
 	public boolean chargeIdPreviousModule() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

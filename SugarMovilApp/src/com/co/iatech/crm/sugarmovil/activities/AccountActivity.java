@@ -236,6 +236,6 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
 	@Override
 	public boolean chargeIdPreviousModule() {
-		return idAccount != null;
+		return true;
 	}
 }
