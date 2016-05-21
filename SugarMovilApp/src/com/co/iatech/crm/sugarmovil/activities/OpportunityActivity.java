@@ -3,6 +3,24 @@ package com.co.iatech.crm.sugarmovil.activities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.TaskActivity.GetTaskTask;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+import com.software.shell.fab.ActionButton;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,22 +32,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
-import com.co.iatech.crm.sugarmovil.util.Utils;
-import com.software.shell.fab.ActionButton;
 
 
 public class OpportunityActivity extends AppCompatActivity implements OpportunitiesModuleActions{
@@ -62,9 +64,9 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opportunity);
-
+try{
         Intent intent = getIntent();
-        mIdOportunidad = intent.getStringExtra(Info.ID.name());
+        mIdOportunidad = intent.getStringExtra(MODULE.name());
       
         Log.d(TAG, "Id oportunidad " + mIdOportunidad);
 
@@ -76,9 +78,20 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
         
         this.applyActions();
 		
-        // Tarea obtener cuenta
-        mTareaObtenerOportunidad = new GetOpportunityTask();
-        mTareaObtenerOportunidad.execute(String.valueOf(mIdOportunidad));
+        
+        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  OportunidadDetalle ){
+        	oportunidadDetalle = (OportunidadDetalle) intent.getExtras().get(MODULE.getModuleName());
+        	this.ponerValores( oportunidadDetalle );
+        }else{
+        	mIdOportunidad = intent.getStringExtra(MODULE.name());
+
+	        mTareaObtenerOportunidad = new GetOpportunityTask();
+	        mTareaObtenerOportunidad.execute(String.valueOf(mIdOportunidad));
+        }
+        
+}catch(Exception e){
+	   Message.showShortExt(Utils.errorToString(e), this);
+ }
     }
 
 
@@ -96,7 +109,7 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
         TextView valorUsuario = (TextView) findViewById(R.id.valor_usuario);
         valorUsuario.setText(oportunidadDetalle.getUsuario_final_c());
         TextView valorFecha = (TextView) findViewById(R.id.valor_fecha);
-        valorFecha.setText(Utils.convertTimetoString(oportunidadDetalle.getDate_closed()));
+        valorFecha.setText(Utils.transformTimeBakendToUI(oportunidadDetalle.getDate_closed()));
         TextView valorEstimado = (TextView) findViewById(R.id.valor_estimado);
         valorEstimado.setText(Utils.addSepMiles(oportunidadDetalle.getValoroportunidad_c()));
         TextView valorProbabilidad = (TextView) findViewById(R.id.valor_probabilidad);
@@ -227,13 +240,34 @@ public class OpportunityActivity extends AppCompatActivity implements Opportunit
 		imageButtonTasks.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS);
+				ActivitiesMediator.getInstance().setActualID( mIdOportunidad , MODULE);
+				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS, true);
 				
 			}
 
 		});
 		
 		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+	}
+	
+	 @Override
+	    public void onResume() {
+	    	try{
+	    		oportunidadDetalle = (OportunidadDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+		    	if(oportunidadDetalle != null){
+		    		this.ponerValores(oportunidadDetalle);
+		    	}
+	    	}catch(Exception e){
+	    		
+	    	}
+	        super.onResume();
+
+	    }
+
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return true;
 	}
 
 }

@@ -45,9 +45,9 @@ public class DatePickerFragment extends DialogFragment implements
 
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		if( actualActivity instanceof AddCallActivity){
-			textResponse.setText(Utils.convertTimetoString(c));
+			textResponse.setText(Utils.convertTimetoStringFrontEnd(c));
 		}else{
-			textResponse.setText(Utils.convertTimetoString(year, month, day));
+			textResponse.setText(Utils.convertTimetoStringFrontEnd(year, month, day));
 		}
 		
 	}

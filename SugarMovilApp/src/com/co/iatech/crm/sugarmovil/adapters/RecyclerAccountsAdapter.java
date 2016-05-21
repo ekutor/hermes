@@ -55,14 +55,13 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
         // Nombre cuenta
         holder.mTextViewNombre.setText(cuenta.getName());
         holder.textViewUen.setText(cuenta.getUen());
-        holder.textViewNit.setText(cuenta.getId());
+        holder.textViewNit.setText(cuenta.getNit());
         // Eventos
         holder.mItemAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Account Activity     
-            	ActivitiesMediator.getInstance().setActualID(cuenta.getId());
-                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS);
+                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS, cuenta.getId());
             }
         });
 
@@ -87,7 +86,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
         for (Cuenta item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);
-            if (item.getId().toLowerCase().contains(queryText))
+            if (item.getNit().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);
         }
         notifyDataSetChanged();

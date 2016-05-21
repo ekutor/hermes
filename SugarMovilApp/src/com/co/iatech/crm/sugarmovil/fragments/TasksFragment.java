@@ -26,7 +26,8 @@ import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerTasksAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
@@ -127,7 +128,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
                 imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerTasksAdapter) mRecyclerViewTasks.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error removiendo el filtro de busqueda");
                 }
@@ -141,7 +142,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     // Filtro para cuentas
-                    ((RecyclerTasksAdapter) mRecyclerViewTasks.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -153,7 +154,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
             public boolean onQueryTextChange(String newText) {
                 try {
                     // Filtro para cuentas
-                    ((RecyclerTasksAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -164,7 +165,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
 
         this.applyActions();
         
-        if(DataManager.getInstance().tasksInfo.size() <= 0){
+        if( !DataManager.getInstance().IsSynchronized(MODULE) ){
         	// Tarea para consultar llamadas
         	Log.d(TAG,"Cargando Contactos desde BACKEND");
         	 // Tarea para consultar llamadas
@@ -180,9 +181,14 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
     }
 
     private void showTasks() {
-       mRecyclerViewTasksAdapter = new RecyclerTasksAdapter(getActivity(), DataManager.getInstance().tasksInfo);
+       mRecyclerViewTasksAdapter = new RecyclerGenericAdapter(getActivity(), 
+    		   AdapterSearchUtil.transform(DataManager.getInstance().tasksInfo), MODULE);
  	   mRecyclerViewTasks.setAdapter(mRecyclerViewTasksAdapter);
 		
+	}
+    @Override
+	public boolean chargeIdPreviousModule() {
+		return false;
 	}
 
 	@Override
@@ -275,7 +281,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
                     String name = obj.getString("name");
                     DataManager.getInstance().tasksInfo.add(new TareaDetalle(id, name));
                 }
-
+                DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Buscar Tareas Error: "

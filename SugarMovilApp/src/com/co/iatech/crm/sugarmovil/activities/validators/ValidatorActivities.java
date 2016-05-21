@@ -6,10 +6,12 @@ import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public abstract class ValidatorActivities implements Validator {
 
 	protected Map<View, CharSequence> data;
+	public  static final String SELECT_MESSAGE = "Seleccione Cuenta ..."; 
 
 	@Override
 	public boolean validate(Spinner listSpin) {
@@ -22,6 +24,14 @@ public abstract class ValidatorActivities implements Validator {
 	@Override
 	public boolean validate(EditText edit) {
 		 if (edit.getText() == null || edit.getText().toString().equals("")){
+			 return false;
+		 }
+		return true;
+	}
+	@Override
+	public boolean validate(TextView edit) {
+		 if (edit.getText() == null || edit.getText().toString().equals("")
+				|| SELECT_MESSAGE.equals(edit.getText().toString()) ){
 			 return false;
 		 }
 		return true;

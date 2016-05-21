@@ -12,4 +12,5 @@ public interface IMovilModuleActions extends MovilModule{
 	Modules getModule();
 	String getAssignedUser();
 	Parcelable getBean();
+	boolean chargeIdPreviousModule();
 }

@@ -25,6 +25,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
+import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleValidations;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -34,6 +35,8 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
@@ -42,6 +45,7 @@ import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToG
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
@@ -58,69 +62,82 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     /**
      * Member Variables.
      */
-
-    private String idCuentaAsociada;
-    private static boolean modoEdicion;
     private Llamada llamadaSeleccionada;
+    private static boolean modoEdicion;
+    
     private ListUsersConverter lc = new ListUsersConverter();
-    private static final Modules MODULE = Modules.CALLS;
+    private ListAccountConverter lac = new ListAccountConverter();
     private TypeActions tipoPermiso;
+    
     /**
      * UI References.
      */
     private Toolbar mLlamadaToolbar;
     private Button botonFechaInicio, botonHoraInicio;
     private ImageButton imgButtonGuardar;
-    private TextView asignadoA,valorFechaInicio;
+    private TextView asignadoA,valorFechaInicio, valorCuenta;
     private EditText valorAsunto,valorDescripcion,valorDuracionHrs;
-    private Spinner valorCuenta, valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
+    private Spinner valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
+    
+    private String associatedAccount;
+
+
+	public String resultado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_call);
-        
-        getInfoFromMediator();
-      
-        // Main Toolbar
-        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
-        setSupportActionBar(mLlamadaToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
-
-        
-        chargeLists();
-        createWidgets();
-        defineValidations();
-        asignadoA.setOnClickListener(this);
-        
-        if(modoEdicion){
-        	chargeValues();
-        }
+        try{
+	        getInfoFromMediator();
+	      
+	        // Main Toolbar
+	        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
+	        setSupportActionBar(mLlamadaToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
+	
+	        createWidgets();
+	        chargeLists();
+	        defineValidations();
+	        asignadoA.setOnClickListener(this);
+	        
+	        if(modoEdicion){
+	        	TextView title = (TextView) findViewById(R.id.text_call_toolbar);
+	        	title.setText("EDITAR LLAMADA");
+	        	chargeValues();
+	        }
+        }catch(Exception e){
+       	   Message.showShortExt(Utils.errorToString(e), this);
+          }
     }
     
     private void getInfoFromMediator() {
     
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
-    	 Intent intent = getIntent();
- 
-         idCuentaAsociada = intent.getStringExtra(Info.ID.name());
-         Log.d(TAG, "idCuentaAsociada " + idCuentaAsociada);
-         llamadaSeleccionada = intent.getParcelableExtra(Info.OBJECT.name());
+    	Intent intent = getIntent();
+    	
+    	llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          
          if(llamadaSeleccionada != null){
          	modoEdicion = true;
-         	Log.d(TAG, "Modo Edicion" + llamadaSeleccionada.getId());
          }else{
          	llamadaSeleccionada = new Llamada();
+         	associatedAccount = intent.getStringExtra(Modules.ACCOUNTS.name());
          }
          
 	}
+	
 	@Override
-	public void onFinishSearchDialog(User selectedUser) {
-		asignadoA.setText(selectedUser.getUser_name());
-		Log.d(TAG, "Recibido por Pattern Listener: "+ selectedUser.getUser_name());
+	public void onFinishSearchDialog(GenericBean selectedBean) {
+		if(selectedBean instanceof User){
+			User su = (User) selectedBean;
+			asignadoA.setText(su.getUser_name());
+		}else if(selectedBean instanceof Cuenta){
+			Cuenta ac = (Cuenta) selectedBean;
+			valorCuenta.setText(ac.getName());
+		}
 	}
 	
 	
@@ -162,19 +179,6 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
                 android.R.layout.simple_spinner_item,  lcc.getListInfo());
         valorCampana.setAdapter(campAdapter);
         valorCampana.setSelection(0);
-       
-        
-      //Carga Cuentas
-        valorCuenta = (Spinner) findViewById(R.id.valor_cuenta);
-        ListAccountConverter lac = new ListAccountConverter();
-        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(AddCallActivity.this,
-                android.R.layout.simple_spinner_item,  lac.getListInfo());
-        valorCuenta.setAdapter(cuentaAdapter);
-        valorCuenta.setSelection(0);
-        if(idCuentaAsociada != null){
-        	String nombreCuenta = lac.convert(idCuentaAsociada, DataToGet.VALUE);
-        	valorCuenta.setSelection(lac.getListInfo().indexOf(nombreCuenta));
-        }
         
         GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
@@ -186,6 +190,12 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	        llamadaSeleccionada.setAssigned_user_id(u.getId());
 		}
         
+		
+		 //Carga Cuentas
+        if(associatedAccount != null){
+        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
+        	valorCuenta.setText(lac.convert(associatedAccount, DataToGet.VALUE ));
+        }
     }
 	
 	 public void createWidgets() {
@@ -203,6 +213,11 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
         botonHoraInicio.setOnClickListener(this);
         
         imgButtonGuardar.setOnClickListener(this);
+        
+        //Cuentas
+        valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
+        valorCuenta.setOnClickListener(this);
+        valorCuenta.setText(ValidatorActivities.SELECT_MESSAGE);
 	 
 	  }
 	 
@@ -225,10 +240,10 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 		
 		valorDuracionHrs.setText(llamadaSeleccionada.getDuration_hours());
   
-	     // Cuenta
-        ListAccountConverter lac = new ListAccountConverter();
-        pos = Integer.parseInt(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.POS ));
-        valorCuenta.setSelection(pos);
+        // Cuenta
+		if(llamadaSeleccionada.getParent_id() != null && llamadaSeleccionada.getParent_id().length() > 1){
+			valorCuenta.setText(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.VALUE));
+		}
         
         //Campaña
         ListCampaignsConverter lcc = new ListCampaignsConverter();
@@ -237,6 +252,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
         
         // Asignado
         asignadoA.setText(lc.convert(llamadaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
+        
+        imgButtonGuardar.setVisibility(View.VISIBLE);
         
 	    }
 
@@ -270,6 +287,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 			}else if(v.getId() == botonHoraInicio.getId()){
 				DialogFragment newFragment = new TimePickerFragment(this,valorFechaInicio,modoEdicion);
 				newFragment.show(getFragmentManager(), "hourCierrePicker");
+			}else if(v.getId() == valorCuenta.getId()){
+				Message.showAccountsDialog(getSupportFragmentManager());
 			}else if(v.getId() == botonFechaInicio.getId()){
 				DialogFragment newFragment = new DatePickerFragment(this,valorFechaInicio,modoEdicion);
 				newFragment.show(getFragmentManager(), "dateCierrePicker");
@@ -283,7 +302,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
 	            	llamadaSeleccionada.setDate_start(valorFechaInicio.getText().toString());
 	            }
-	            
+	            imgButtonGuardar.setVisibility(View.INVISIBLE);
 	            llamadaSeleccionada.setDescription(valorDescripcion.getText().toString());
 	            llamadaSeleccionada.setName(valorAsunto.getText().toString());
 	            llamadaSeleccionada.setDuration_hours(valorDuracionHrs.getText().toString());
@@ -292,8 +311,10 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            llamadaSeleccionada.setDuration_minutes(ListsConversor.convert(ConversorsType.CALLS_MINS_DURATION, valorDuracionMin.getSelectedItem().toString(), DataToGet.CODE));
 	            llamadaSeleccionada.setResultadodelallamada_c(ListsConversor.convert(ConversorsType.CALLS_RESULT, valorResultado.getSelectedItem().toString(), DataToGet.CODE));
 	            
-		        ListAccountConverter lac = new ListAccountConverter();
-		        llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getSelectedItem().toString(), DataToGet.CODE));
+	            // Cuenta
+	            if(valorCuenta.getText() != null && valorCuenta.getText().length() > 0 ){
+	            	llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
+	            }
 		        
 		        llamadaSeleccionada.setParent_type("Accounts");
 		        
@@ -323,25 +344,25 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	                Llamada obj = (Llamada)params[0];
 
 	                // Resultado
-	                String resultado = null;
+	                resultado = null;
 	                
 	                if(modoEdicion){
 	                	resultado  = ControlConnection.putInfo(TypeInfoServer.addCall, obj.getDataBean(),Modo.EDITAR, AddCallActivity.this );
 	                }else{
 	                   	resultado  = ControlConnection.putInfo(TypeInfoServer.addCall, obj.getDataBean(),Modo.AGREGAR, AddCallActivity.this );
 	                }
-	                Log.d(TAG, "Crear Llamada Resp: "+ resultado);
+	                
 	                if(resultado.contains("OK")){
-	 
+	                	obj.id = Utils.getIDFromBackend(resultado);
 	                	obj.accept(new DataVisitorsManager());
+	                	ActivitiesMediator.getInstance().addObjectInfo(obj);
 	                	 return true;
 	                }else{
 	                	 return false;
 	                }
 	               
 	            } catch (Exception e) {
-	                Log.d(TAG, "Crear Llamada Error: "
-	                        + e.getClass().getName() + ":" + e.getMessage());
+	            	 resultado += Utils.errorToString(e);
 	                return false;
 	            }
 	        }
@@ -357,13 +378,14 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            		 Message.showFinalMessage(getFragmentManager(),DialogType.CREATED, AddCallActivity.this, MODULE );
 	            		 
 	            	 }
-	            	 chargeValues();
+	            	
 	            } else {
 	            	if(modoEdicion){
 	           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddCallActivity.this, MODULE );
 	           		 
 	           	 }else{
-	           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddCallActivity.this, MODULE );
+	           		 Message.showFinalMessage(getFragmentManager(), resultado, AddCallActivity.this, MODULE );
+	           		// Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED, AddCallActivity.this, MODULE );
 	           		 
 	           	 }
 	                Log.d(TAG, "Crear Llamda error");

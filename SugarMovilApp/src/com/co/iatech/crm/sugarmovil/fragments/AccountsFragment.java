@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerAccountsAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
@@ -168,8 +170,7 @@ public class AccountsFragment extends Fragment {
 
          // Tarea para consultar cuentas
   
-         Log.d(TAG, "tamaño  "+DataManager.getInstance().accountsInfo.size());
-         if(DataManager.getInstance().accountsInfo.size() <= 0){
+         if(!DataManager.getInstance().IsSynchronized(Modules.ACCOUNTS)){
         
         	 mTareaObtenerCuentas = new GetAccountsTask();
         	 mTareaObtenerCuentas.execute();
@@ -184,7 +185,7 @@ public class AccountsFragment extends Fragment {
      
      public void showAccounts() {
  		mRecyclerViewAccountsAdapter = new RecyclerAccountsAdapter(this.getActivity(),DataManager.getInstance().accountsInfo);
-         mRecyclerViewAccounts.setAdapter(mRecyclerViewAccountsAdapter);
+        mRecyclerViewAccounts.setAdapter(mRecyclerViewAccountsAdapter);
  		
  	}
      
@@ -224,6 +225,7 @@ public class AccountsFragment extends Fragment {
                      DataManager.getInstance().accountsInfo.add(new Cuenta(obj));
                  }
                  ListsHolder.saveList(ListsHolderType.ACCOUNTS, DataManager.getInstance().accountsInfo);
+                 DataManager.getInstance().defSynchronize(Modules.ACCOUNTS);
                  return true;
              } catch (Exception e) {
                  Log.d(TAG, "Buscar Cuentas Error: "

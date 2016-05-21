@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
@@ -82,13 +83,11 @@ public class AccountStrategyFragmentActivity extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_strategy, container, false);
     	 
         Bundle args = getArguments();
-        CuentaDetalle cuenta = args.getParcelable(Info.OBJECT.name());
+        CuentaDetalle cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
   
         cargarComponentes(rootView);
         ponerValores(cuenta);
         Log.d(TAG, "Id cuenta " + cuenta.getId());
-        	
-        
        
         return rootView;
     }
@@ -102,7 +101,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	chargeCheck(cbDkc, cuentaDetalle.getDkc_c());
     	chargeCheck(cbDkc2, cuentaDetalle.getDkc2_c());
 		chargeCheck(cbLeviton, cuentaDetalle.getLeviton_c());
-//		chargeCheck(cbBarras, cuentaDetalle.getBarras);
+		chargeCheck(cbBarras, cuentaDetalle.getWvcai_c());
 		chargeCheck(cbWohner, cuentaDetalle.getWohner_c());
 		chargeCheck(cbLP, cuentaDetalle.getComunicaciones_c());
 		chargeCheck(cbEaton, cuentaDetalle.getManiobraeaton_c());

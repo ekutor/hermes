@@ -29,7 +29,6 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
             return new OportunidadDetalle[size];
         }
     };
-    private String id;
     private String name;
     private String date_entered;
     private String date_modified;

@@ -30,6 +30,7 @@ import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
@@ -68,8 +69,7 @@ public class ContactActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_contact);
 
 		Intent intent = getIntent();
-		mIdContacto = intent.getStringExtra(Info.ID.name());
-		Log.d(TAG, "Id contacto " + mIdContacto);
+		mIdContacto = intent.getStringExtra(MODULE.name());
 
 		// Main Toolbar
 		mContactoToolbar = (Toolbar) findViewById(R.id.toolbar_contact);
@@ -237,13 +237,16 @@ public class ContactActivity extends AppCompatActivity implements
 		TextView valorUsuario = (TextView) findViewById(R.id.valor_responsable);
 		valorUsuario.setText(contactoDetalle.getAssigned_user_name());
 	}
-
+	
+	@Override
+    public void onBackPressed() {
+    	String prevID = ActivitiesMediator.getInstance().getPreviusID();
+    	//ActivitiesMediator.getInstance().returnPrevID();
+    }
+	
 	@Override
 	public void onClick(View v) {
-		if (contactoDetalle.getIdAccount() != null) {
-			ActivitiesMediator.getInstance().setActualID(
-					contactoDetalle.getIdAccount());
-		} else {
+		if (contactoDetalle.getIdAccount() == null) {
 			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas",
 					this);
 			return;
@@ -252,8 +255,7 @@ public class ContactActivity extends AppCompatActivity implements
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
 			Log.d(TAG, "Cuenta de Contacto ");
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this,
-					Modules.ACCOUNTS);
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, contactoDetalle.getIdAccount());
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;
@@ -262,7 +264,7 @@ public class ContactActivity extends AppCompatActivity implements
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
 		}
-		ActivitiesMediator.getInstance().showList(ContactActivity.this, module);
+		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, true);
 
 	}
 
@@ -328,6 +330,11 @@ public class ContactActivity extends AppCompatActivity implements
 			mTareaObtenerContacto = null;
 			Log.d(TAG, "Cancelado ");
 		}
+	}
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		return true;
 	}
 
 }

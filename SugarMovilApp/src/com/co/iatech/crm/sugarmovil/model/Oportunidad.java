@@ -27,7 +27,7 @@ public class Oportunidad extends GenericBean implements Parcelable, Visitable {
         }
     };
 
-    private String id, name;
+    private String name;
 
     public Oportunidad(JSONObject obj ) throws JSONException {
         setId(validate(obj.getString("id")));

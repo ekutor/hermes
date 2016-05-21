@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activities.ListOpportunityActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
+
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activities.ListOpportunityActivity;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerOpportunitiesAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 /**
  * Representa una tarea asincrona para obtener oportunidades.
@@ -49,8 +51,8 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 	        protected Boolean doInBackground(String... params) {
 	            try {
 	            	
-	            	String  key = ActivitiesMediator.getInstance().getActualKey();
-	            	String id = ActivitiesMediator.getInstance().getActualID();
+	            	String  key = "idAccount";
+	            	String id = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
 	                // Resultado
 	                String resultado = null;
 
@@ -82,7 +84,7 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 		if (success) {
 			// ListsHolder.saveList(ListsHolderType.CAMPAIGNS, campsArray);
 			if (oportunitiesXAccount.size() > 0) {
-				recyclerViewAdapter = new RecyclerOpportunitiesAdapter( activity, oportunitiesXAccount);
+				recyclerViewAdapter = new RecyclerGenericAdapter( activity, AdapterSearchUtil.transform(oportunitiesXAccount) , Modules.OPPORTUNITIES);
 				recyclerView.setAdapter(recyclerViewAdapter);
 			} else {
 				progressDialog
