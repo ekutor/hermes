@@ -88,8 +88,6 @@ public class AccountStrategyFragmentActivity extends Fragment {
         cargarComponentes(rootView);
         ponerValores(cuenta);
         Log.d(TAG, "Id cuenta " + cuenta.getId());
-        	
-        
        
         return rootView;
     }

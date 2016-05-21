@@ -77,7 +77,7 @@ public class TaskActivity extends AppCompatActivity implements TasksModuleAction
 	        	this.ponerValores(objTareaDetalle);
 	        }else{
 		        mIdTarea = intent.getStringExtra(MODULE.name());
-		        Log.d(TAG, "Id tarea " + mIdTarea);
+		        
 		        mTareaObtenerTarea = new GetTaskTask();
 	  	        mTareaObtenerTarea.execute(String.valueOf(mIdTarea));
 		      

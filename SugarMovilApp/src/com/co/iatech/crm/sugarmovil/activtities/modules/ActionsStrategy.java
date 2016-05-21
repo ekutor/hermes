@@ -27,10 +27,10 @@ public class ActionsStrategy {
 		if (actionModule.getEditButton() != null) {
 			if (AccessControl.validateEdit(actionModule.getModule(), global)) {
 				actionModule.getEditButton().setVisibility(View.VISIBLE);
-				 Log.d("ActionsStrategy", " EDIIT module "+actionModule.getModule().name()+" visible");
+				
 			} else {
 				actionModule.getEditButton().setVisibility(View.INVISIBLE);
-				 Log.d("ActionsStrategy", "EDIT module "+actionModule.getModule().name()+" invisible");
+				
 			}
 
 			// Eventos
@@ -42,7 +42,6 @@ public class ActionsStrategy {
 						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule());
 
 					} else {
-					
 						Message.showShortExt(
 								"No Autorizado para realizar Editar esta "
 										+ actionModule.getModule().getVisualName().toLowerCase(),
@@ -52,20 +51,18 @@ public class ActionsStrategy {
 			});
 		}
 		if (actionModule.getActionButton() != null) {	
-			if (true) {
-				
+			if (AccessControl.validateEdit(actionModule.getModule(), global)) {
 				actionModule.getActionButton().setVisibility(View.VISIBLE);
 				
-				Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" Visible");
 				actionModule.getActionButton().setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
-						Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" CLICK !");
+
 						ActivitiesMediator.getInstance().deleteSelectedBean();
 						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule());
 					}
 				});
 			} else {
-				 Log.d("ActionsStrategy", " actION module "+actionModule.getModule().name()+" invisible");
+				 
 				actionModule.getActionButton().setVisibility(View.INVISIBLE);
 			}
 		}	

@@ -108,8 +108,8 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        getSupportActionBar().setHomeButtonEnabled(false);
 	        mImageButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 	
-	        chargeLists();
 	        createWidgets();
+	        chargeLists();
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
 	        
@@ -216,6 +216,13 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         valorCampana.setAdapter(campAdapter);
         valorCampana.setSelection(0);
         
+        
+	      //Carga Cuentas
+	        if(idCuentaAsociada != null){
+	        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
+	    		valorCuenta.setText(lac.convert(idCuentaAsociada, DataToGet.VALUE ));
+	        }
+        
     }
 
     public void createWidgets() {
@@ -292,8 +299,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         valorMoneda.setSelection(pos);
         
         // Cuenta
-        valorCuenta.setText(lac.convert(oportSeleccionada.getIdAccount(), DataToGet.VALUE));
-        
+        if(oportSeleccionada.getIdAccount() != null){
+        	valorCuenta.setText(lac.convert(oportSeleccionada.getIdAccount(), DataToGet.VALUE));
+        }
         //Campaña
         ListCampaignsConverter lcc = new ListCampaignsConverter();
         pos = Integer.parseInt(lcc.convert(oportSeleccionada.getCampaign_id(), DataToGet.POS ));
@@ -339,7 +347,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	
 	        // Cuenta
 	        oportSeleccionada.setIdAccount(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
-
+	      
 	        try{
 	        	// Fecha Cierre
 	            if(mValorFechaCierre.getText().toString() != null && mValorFechaCierre.getText().toString().length() > 1){

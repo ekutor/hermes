@@ -30,6 +30,7 @@ import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
@@ -69,7 +70,6 @@ public class ContactActivity extends AppCompatActivity implements
 
 		Intent intent = getIntent();
 		mIdContacto = intent.getStringExtra(MODULE.name());
-		Log.d(TAG, "Id contacto " + mIdContacto);
 
 		// Main Toolbar
 		mContactoToolbar = (Toolbar) findViewById(R.id.toolbar_contact);
@@ -246,9 +246,7 @@ public class ContactActivity extends AppCompatActivity implements
 	
 	@Override
 	public void onClick(View v) {
-		if (contactoDetalle.getIdAccount() != null) {
-			ActivitiesMediator.getInstance().setActualID(contactoDetalle.getIdAccount(), MODULE);
-		} else {
+		if (contactoDetalle.getIdAccount() == null) {
 			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas",
 					this);
 			return;
@@ -257,7 +255,7 @@ public class ContactActivity extends AppCompatActivity implements
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
 			Log.d(TAG, "Cuenta de Contacto ");
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS,null);
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, contactoDetalle.getIdAccount());
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;

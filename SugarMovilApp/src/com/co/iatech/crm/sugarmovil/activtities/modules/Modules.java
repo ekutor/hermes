@@ -8,7 +8,8 @@ public enum Modules {
 	OPPORTUNITIES("Opportunities","OPORTUNIDADES", "OPORTUNIDAD"),
 	CALLS("Calls","LLAMADAS", "LLAMADA"),
 	PRODUCTS("psg_Productos","PRODUCTOS", "PRODUCTO"),
-	TASKS("Tasks","TAREAS", "TAREA")
+	TASKS("Tasks","TAREAS", "TAREA"),
+	ACTUAL_MODULE("ACTUAL_MODULE","ACTUAL_MODULE", "ACTUAL_MODULE")
 	;
 	
 	private String moduleName,visualName,sugarDBName;

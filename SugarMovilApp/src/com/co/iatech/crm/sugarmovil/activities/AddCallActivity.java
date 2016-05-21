@@ -62,13 +62,13 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     /**
      * Member Variables.
      */
-
-    private String idCuentaAsociada;
-    private static boolean modoEdicion;
     private Llamada llamadaSeleccionada;
+    private static boolean modoEdicion;
+    
     private ListUsersConverter lc = new ListUsersConverter();
     private ListAccountConverter lac = new ListAccountConverter();
     private TypeActions tipoPermiso;
+    
     /**
      * UI References.
      */
@@ -78,6 +78,8 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     private TextView asignadoA,valorFechaInicio, valorCuenta;
     private EditText valorAsunto,valorDescripcion,valorDuracionHrs;
     private Spinner valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
+    
+    private String associatedAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	        
 	        if(modoEdicion){
 	        	TextView title = (TextView) findViewById(R.id.text_call_toolbar);
-	        	title.setText("EDITAR TAREA");
+	        	title.setText("EDITAR LLAMADA");
 	        	chargeValues();
 	        }
         }catch(Exception e){
@@ -111,16 +113,15 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     private void getInfoFromMediator() {
     
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
-    	 Intent intent = getIntent();
- 
-         idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
-
-         llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
+    	Intent intent = getIntent();
+    	
+    	llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          
          if(llamadaSeleccionada != null){
          	modoEdicion = true;
          }else{
          	llamadaSeleccionada = new Llamada();
+         	associatedAccount = intent.getStringExtra(Modules.ACCOUNTS.name());
          }
          
 	}
@@ -186,6 +187,12 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	        llamadaSeleccionada.setAssigned_user_id(u.getId());
 		}
         
+		
+		 //Carga Cuentas
+        if(associatedAccount != null){
+        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
+        	valorCuenta.setText(lac.convert(associatedAccount, DataToGet.VALUE ));
+        }
     }
 	
 	 public void createWidgets() {
@@ -231,7 +238,9 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 		valorDuracionHrs.setText(llamadaSeleccionada.getDuration_hours());
   
         // Cuenta
-        valorCuenta.setText(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.VALUE));
+		if(llamadaSeleccionada.getParent_id() != null && llamadaSeleccionada.getParent_id().length() > 1){
+			valorCuenta.setText(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.VALUE));
+		}
         
         //Campaña
         ListCampaignsConverter lcc = new ListCampaignsConverter();
@@ -298,7 +307,9 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            llamadaSeleccionada.setResultadodelallamada_c(ListsConversor.convert(ConversorsType.CALLS_RESULT, valorResultado.getSelectedItem().toString(), DataToGet.CODE));
 	            
 	            // Cuenta
-		        llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
+	            if(valorCuenta.getText() != null && valorCuenta.getText().length() > 0 ){
+	            	llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
+	            }
 		        
 		        llamadaSeleccionada.setParent_type("Accounts");
 		        

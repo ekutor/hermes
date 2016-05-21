@@ -24,19 +24,21 @@ public class Cuenta extends GenericBean implements Parcelable {
         }
     };
 
-    private String name, uen;
+    private String name, uen, nit;
     
     public Cuenta() {}
     
     public Cuenta(JSONObject obj) throws JSONException {
         setId(obj.getString("id"));
         setName(validate(obj.getString("name")));
+        setNit(validate(obj.getString("nit_c")));
         setUen(validate(obj.getString("uen")));
     }
 
     public Cuenta(Parcel in) {
         setId(in.readString());
         setName(in.readString());
+        setNit(in.readString());
         setUen(in.readString());
     }
 
@@ -49,6 +51,8 @@ public class Cuenta extends GenericBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(getId());
         dest.writeString(getName());
+        dest.writeString(getNit());
+        dest.writeString(getUen());
     }
 
     public String getId() {
@@ -73,6 +77,14 @@ public class Cuenta extends GenericBean implements Parcelable {
 
 	public void setUen(String uen) {
 		this.uen = uen;
+	}
+
+	public String getNit() {
+		return nit;
+	}
+
+	public void setNit(String nit) {
+		this.nit = nit;
 	}
 
 	@Override

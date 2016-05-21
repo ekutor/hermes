@@ -55,7 +55,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
         // Nombre cuenta
         holder.mTextViewNombre.setText(cuenta.getName());
         holder.textViewUen.setText(cuenta.getUen());
-        holder.textViewNit.setText(cuenta.getId());
+        holder.textViewNit.setText(cuenta.getNit());
         // Eventos
         holder.mItemAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
         for (Cuenta item : mDataset) {
             if (item.getName().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);
-            if (item.getId().toLowerCase().contains(queryText))
+            if (item.getNit().toLowerCase().contains(queryText))
                 mVisibleDataset.add(item);
         }
         notifyDataSetChanged();

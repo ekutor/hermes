@@ -117,6 +117,20 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
         TextView valorCampana = (TextView) findViewById(R.id.valor_campana);
         valorCampana.setText(llamadaDetalle.getCampaign_name());
     }
+    
+    @Override
+    public void onResume() {
+    	try{
+    		llamadaDetalle = (Llamada) ActivitiesMediator.getInstance().getBeanInfo();
+	    	if(llamadaDetalle != null){
+	    		this.ponerValores(llamadaDetalle);
+	    	}
+    	}catch(Exception e){
+    		
+    	}
+        super.onResume();
+
+    }
 
     /**
      * Representa una tarea asincrona de obtencion de llamada.
