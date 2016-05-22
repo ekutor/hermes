@@ -139,17 +139,9 @@ public class TaskActivity extends TasksModuleActions {
         ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
    	}
 
-
-	@Override
-	public boolean chargeIdPreviousModule() {
-		return false;
-	}
-
-
 	@Override
 	public void addInfo(String serverResponse) {
 		try {
-
 			JSONObject jObj = new JSONObject(serverResponse);
 			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
 			
