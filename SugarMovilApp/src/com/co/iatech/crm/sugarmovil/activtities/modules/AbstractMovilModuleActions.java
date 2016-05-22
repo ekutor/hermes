@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
+import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.software.shell.fab.ActionButton;
 
 import android.os.Parcelable;
@@ -8,9 +10,11 @@ import android.widget.ImageButton;
 
 public abstract class AbstractMovilModuleActions extends AppCompatActivity implements IMovilModuleActions{
 	
+	protected ImageButton imgButtonEdit;
+	protected static final String RESPONSE_TEXT_CORECT_ID = "results";
+	
 	public abstract void applyActions();
 	
-	protected static final String RESPONSE_TEXT_CORECT_ID = "results";
 	@Override
 	public boolean chargeIdPreviousModule() {
 		return true;
@@ -23,20 +27,19 @@ public abstract class AbstractMovilModuleActions extends AppCompatActivity imple
 
 	@Override
 	public ImageButton getEditButton() {
-		// TODO Auto-generated method stub
-		return null;
+		return imgButtonEdit;
 	}
-
-	@Override
-	public String getAssignedUser() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	/**
+	 * Metodo para ejecutar tareas genericas asincronas
+	 */
+	public void executeTask(String[] params, TypeInfoServer typeInfo){
+		this.executeTask(params, typeInfo, null);
 	}
-
-	@Override
-	public Parcelable getBean() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void executeTask(String[] params, TypeInfoServer typeInfo, String userMessage){
+		GenericTask task = new GenericTask(this, typeInfo, userMessage);
+  		task.execute(params);
 	}
 
 }

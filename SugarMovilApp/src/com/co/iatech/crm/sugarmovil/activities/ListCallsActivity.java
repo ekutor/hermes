@@ -312,4 +312,10 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void chargeViewInfo() {
+		// TODO Auto-generated method stub
+		
+	}
 }

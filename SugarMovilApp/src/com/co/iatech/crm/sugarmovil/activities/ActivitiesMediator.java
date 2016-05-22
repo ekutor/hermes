@@ -93,6 +93,7 @@ public class ActivitiesMediator implements IMediator {
 		}
 		addBeanInfo(intent, module );
 		addInfotoActivity(intent, module);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	context.startActivity(intent);
 		
 	}
@@ -132,7 +133,7 @@ public class ActivitiesMediator implements IMediator {
 			//set actual module from
 			intent.putExtra(Modules.PREVIOUS_UI.name(), moduleflag.getSugarDBName());
 		}
-	
+		
     	context.startActivity(intent);
 		}catch(Exception e){
 			Message.showShortExt(Utils.errorToString(e) , context);

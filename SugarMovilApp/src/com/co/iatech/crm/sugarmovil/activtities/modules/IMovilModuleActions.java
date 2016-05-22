@@ -14,5 +14,10 @@ public interface IMovilModuleActions extends MovilModule{
 	String getAssignedUser();
 	Parcelable getBean();
 	boolean chargeIdPreviousModule();
+	/**
+	 * metodo para recibir la respuesta de las tareas asincronas
+	 * @param serverResp
+	 */
 	void addInfo(String serverResp);
+	void chargeViewInfo();
 }

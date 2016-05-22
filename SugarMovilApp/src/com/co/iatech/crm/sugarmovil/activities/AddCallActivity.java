@@ -113,7 +113,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
           }
     }
     
-    private void getInfoFromMediator() {
+    public void getInfoFromMediator() {
     
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
     	Intent intent = getIntent();
@@ -141,7 +141,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	}
 	
 	
-	private void chargeLists() {
+	public void chargeLists() {
 		asignadoA = (TextView) findViewById(R.id.txt_valor_asignado_a);
 		 
 		 // Direccion Llamada        

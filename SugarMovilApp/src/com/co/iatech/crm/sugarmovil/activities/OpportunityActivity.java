@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.TaskActivity.GetTaskTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -274,6 +273,13 @@ try{
 
 	@Override
 	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void chargeViewInfo() {
 		// TODO Auto-generated method stub
 		
 	}

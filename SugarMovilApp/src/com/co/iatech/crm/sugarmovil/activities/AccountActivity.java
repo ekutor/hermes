@@ -12,6 +12,7 @@ import com.co.iatech.crm.sugarmovil.adapters.ViewPagerAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -49,6 +50,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private ViewPagerAdapter viewAdapter;
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
+    private CuentaDetalle selectedBean;
   
 
     /**
@@ -82,7 +84,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
     	slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.abc_search_url_text));   
     	//mSlidingTabLayout.setDistributeEvenly(true);
-    	
+    	DataManager.getInstance().contactsxAccountsInfo.clear();
               
        this.applyActions();
 
@@ -127,7 +129,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     */
    public class GetAccountTask extends AsyncTask<String, Void, Boolean> {
        private ProgressDialog progressDialog;
-       private CuentaDetalle cuentaActual;
+       
        @Override
        protected void onPreExecute() {
            super.onPreExecute();
@@ -155,7 +157,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                for (int i = 0; i < jArr.length(); i++) {
                    JSONObject obj = jArr.getJSONObject(i);
                   
-                   cuentaActual = new CuentaDetalle(obj);
+                   selectedBean = new CuentaDetalle(obj);
                    
                }
 
@@ -171,11 +173,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
        protected void onPostExecute(final Boolean success) {
     	   
            progressDialog.dismiss();
-
            if (success) {
-        	   viewAdapter.setActualAccount(cuentaActual);
-        	   viewPager.setAdapter(viewAdapter);
-        	   slidingTabLayout.setViewPager(viewPager);
+        	   chargeViewInfo();
            }
        }
 
@@ -246,5 +245,15 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public void chargeViewInfo() {
+		viewAdapter.setActualAccount(selectedBean);
+  	   viewPager.setAdapter(viewAdapter);
+  	   slidingTabLayout.setViewPager(viewPager);
+		
+	}
+
 
 }

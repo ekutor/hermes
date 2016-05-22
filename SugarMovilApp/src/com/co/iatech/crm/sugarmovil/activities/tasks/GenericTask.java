@@ -21,19 +21,23 @@ public class GenericTask extends AsyncTask<String, Void, Boolean> {
     private TypeInfoServer typeRequest;
     private IMovilModuleActions movilModule;
     private String response;
+    private String message;
     
-    public GenericTask(Activity view, TypeInfoServer typeRequest){
+    public GenericTask(Activity view, TypeInfoServer typeRequest,String userMessage){
     	this.view = view;
     	this.typeRequest = typeRequest;
     	movilModule = (IMovilModuleActions)view;
-
+    	message = userMessage;
+    	if(userMessage == null ){
+    		message = "Cargando "+movilModule.getModule().getModuleName().toLowerCase()+" ...";
+    	}
     }
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         try{
 	        progressDialog = new ProgressDialog(view, ProgressDialog.THEME_HOLO_DARK);
-	        progressDialog.setMessage("Cargando "+movilModule.getModule().getModuleName().toLowerCase()+" ...");
+	        progressDialog.setMessage(message);
 	        progressDialog.setIndeterminate(true);
 	        progressDialog.show();
         }catch(Exception e){

@@ -21,6 +21,7 @@ public class DataManager  {
 	public List<Cuenta> accountsInfo;
     public List<Llamada> callsInfo;
     public List<Contacto> contactsInfo;
+    public List<Contacto> contactsxAccountsInfo;
     public List<TareaDetalle> tasksInfo;
     private Map<Modules,Boolean> synchronizedModules;
     
@@ -30,6 +31,7 @@ public class DataManager  {
 		accountsInfo  = new ArrayList<Cuenta>();
 		callsInfo = new ArrayList<Llamada>();
 		contactsInfo = new ArrayList<Contacto>();
+		contactsxAccountsInfo = new ArrayList<Contacto>();
 		tasksInfo = new ArrayList<TareaDetalle>();
 		synchronizedModules = new HashMap<Modules,Boolean>();
 		

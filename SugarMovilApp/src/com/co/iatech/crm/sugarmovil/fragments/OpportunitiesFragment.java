@@ -16,6 +16,8 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 import com.software.shell.fab.ActionButton;
 
 import android.app.Fragment;
@@ -172,7 +174,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         
         }else{
         	Log.d(TAG,"Cargando Oportunidades desde MEMORIA");
-        	showOpprotunities();
+        	chargeViewInfo();
         }
         return mRootView;
     }
@@ -186,7 +188,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showOpprotunities();
+        chargeViewInfo();
     }
 
     @Override
@@ -267,6 +269,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().opportunitiesInfo.add(new Oportunidad(obj));
                 }
+               // ListsHolder.saveList(ListsHolderType.OPPORTUNITIES, DataManager.getInstance().opportunitiesInfo);
                 DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
@@ -283,7 +286,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
 
             if (success) {
                 if (DataManager.getInstance().opportunitiesInfo.size() > 0) {
-                	showOpprotunities();
+                	chargeViewInfo();
                 } else {
                     Log.d(TAG,
                             "No hay Oportunidades: "
@@ -299,7 +302,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         }
     }
 
-	public void showOpprotunities() {
+	public void chargeViewInfo() {
 	    mRecyclerViewOpportunitiesAdapter = new RecyclerGenericAdapter(getActivity(), 
 	    		AdapterSearchUtil.transform(DataManager.getInstance().opportunitiesInfo), MODULE);
         mRecyclerViewOpportunities.setAdapter(mRecyclerViewOpportunitiesAdapter);

@@ -3,37 +3,32 @@ package com.co.iatech.crm.sugarmovil.activities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.TaskActivity.GetTaskTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class CallActivity extends AppCompatActivity implements CallsModuleActions{
@@ -80,7 +75,7 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	        
 	        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Llamada ){
 	        	llamadaDetalle = (Llamada) intent.getExtras().get(MODULE.getModuleName());
-	        	this.ponerValores(llamadaDetalle);
+	        	this.showValues(llamadaDetalle);
 	        }else{
 	        	idLlamada = intent.getStringExtra(MODULE.name());
 	        	// Tarea obtener llamada
@@ -94,7 +89,7 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
          }
     }
 
-    public void ponerValores(Llamada llamadaDetalle) {
+    public void showValues(Llamada llamadaDetalle) {
         TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
         valorAsunto.setText(llamadaDetalle.getName());
         TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
@@ -125,7 +120,7 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
     	try{
     		llamadaDetalle = (Llamada) ActivitiesMediator.getInstance().getBeanInfo();
 	    	if(llamadaDetalle != null){
-	    		this.ponerValores(llamadaDetalle);
+	    		this.showValues(llamadaDetalle);
 	    	}
     	}catch(Exception e){
     		
@@ -185,7 +180,7 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
             progressDialog.dismiss();
 
             if (success) {
-                ponerValores(llamadaDetalle);
+                showValues(llamadaDetalle);
             }
         }
 
@@ -237,6 +232,12 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	}
 	@Override
 	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void chargeViewInfo() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -126,7 +126,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
     }
 
-    private void getInfoFromMediator() {
+    public void getInfoFromMediator() {
     	
 		 tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
     	 Intent intent = getIntent();
@@ -144,7 +144,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 		
 	}
 
-	private void chargeLists() {
+    public void chargeLists() {
     	//Tipo Oportunidad
         valorTipo = (Spinner) findViewById(R.id.valor_tipo);
         

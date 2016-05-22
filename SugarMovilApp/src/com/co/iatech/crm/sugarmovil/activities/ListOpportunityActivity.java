@@ -232,5 +232,11 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void chargeViewInfo() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

@@ -173,14 +173,14 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
             
         }else{
         	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
-        	showCalls();
+        	chargeViewInfo();
         }
         
         return mRootView;
     }
 
     
-    private void showCalls() {
+    public void chargeViewInfo() {
     	mRecyclerViewCallsAdapter = new RecyclerGenericAdapter(getActivity(), AdapterSearchUtil.transform(DataManager.getInstance().callsInfo), MODULE);
         mRecyclerViewCalls.setAdapter(mRecyclerViewCallsAdapter);
 	}
@@ -194,7 +194,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showCalls();
+        chargeViewInfo();
     }
 
     @Override
@@ -292,7 +292,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 
             if (success) {
                 if (DataManager.getInstance().callsInfo.size() > 0) {
-                    showCalls();
+                	chargeViewInfo();
                 } else {
                     Log.d(TAG,
                             "No hay Llamadas: "
@@ -314,5 +314,6 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

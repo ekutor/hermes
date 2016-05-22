@@ -14,7 +14,9 @@ import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
 import com.co.iatech.crm.sugarmovil.util.Utils;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
@@ -41,12 +43,6 @@ public class ListContactActivity extends ContactsModuleActions {
 	 * Debug.
 	 */
 	private static final String TAG = "ListContactActivity";
-
-	/**
-	 * Tasks.
-	 */
-	private GenericTask mTareaObtenerContactos = null;
-
 	/**
 	 * Member Variables.
 	 */
@@ -171,45 +167,35 @@ public class ListContactActivity extends ContactsModuleActions {
 
 	}
 
-	public void seleccionarContacto(Contacto contact) {
-		mContacto = contact;
-		Intent returnIntent = new Intent();
-		returnIntent.putExtra("result", mContacto);
-		setResult(RESULT_OK, returnIntent);
-		finish();
-	}
-
 	@Override
 	protected void onResume() {
-		this.chargeListInfo();
+		this.chargeViewInfo();
 		super.onResume();
 	}
-
-	private void chargeListInfo() {
-		mTareaObtenerContactos = new GenericTask(this, TypeInfoServer.getContactsxAccount);
+	
+	@Override
+	public void chargeViewInfo() {
 		String[] params = { "idAccount", idCuentaActual };
-		mTareaObtenerContactos.execute(params);
-
+		this.executeTask(params, TypeInfoServer.getContactsxAccount);
 	}
 
 	@Override
 	public void addInfo(String serverResponse) {
-		Message.showShortExt("Ingreso Array " + serverResponse, getApplicationContext());
-
+		
 		DataManager manager = DataManager.getInstance();
 		try {
 
 			JSONObject jObj = new JSONObject(serverResponse);
 			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
-			manager.contactsInfo.clear();
+			manager.contactsxAccountsInfo.clear();
 			for (int i = 0; i < jArr.length(); i++) {
 				JSONObject obj = jArr.getJSONObject(i);
-				manager.contactsInfo.add(new Contacto(obj));
+				manager.contactsxAccountsInfo.add(new Contacto(obj));
 			}
-			if (manager.contactsInfo.size() > 0) {
-
+			if (manager.contactsxAccountsInfo.size() > 0) {
+				ListsHolder.saveList(ListsHolderType.CONTACTS_ACCOUNTS, DataManager.getInstance().contactsxAccountsInfo);
 				RecyclerView.Adapter rv = new RecyclerGenericAdapter(this.getApplicationContext(),
-						AdapterSearchUtil.transform(manager.contactsInfo), Modules.CONTACTS);
+						AdapterSearchUtil.transform(manager.contactsxAccountsInfo), MODULE);
 				this.mRecyclerView.setAdapter(rv);
 			} else {
 				Message.showShortExt("Esta cuenta no tiene contactos asociados", getApplicationContext());

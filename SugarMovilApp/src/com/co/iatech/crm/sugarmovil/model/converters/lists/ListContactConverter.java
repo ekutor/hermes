@@ -8,15 +8,11 @@ import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 
 public class ListContactConverter extends ListModelConverter{
 	
-	public ListContactConverter (){
-		this.typelist = ListsHolderType.CONTACTS;
+	public ListContactConverter (ListsHolderType typeList){
+		this.typelist = typeList;
 	
 	}
 	
-	public ListContactConverter (List<Contacto> data){
-		this();
-		ListsHolder.saveList(typelist, data);
-	}
 	
 	@Override
 	public String convert(String value, DataToGet dataType) {
@@ -72,7 +68,7 @@ public class ListContactConverter extends ListModelConverter{
 
 	@Override
 	public List<String> getListInfo() {
-		if(data.size()<= 0){
+		if(data.size()<= 0 && this.hasItems()){
 			data.add("SELECCIONAR");
 			List<Contacto> listaTemp = (List<Contacto>) ListsHolder.getList(typelist);
 			for(Contacto c : listaTemp){

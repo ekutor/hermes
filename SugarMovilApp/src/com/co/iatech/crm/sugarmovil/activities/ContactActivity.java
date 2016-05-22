@@ -20,14 +20,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
+import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -45,21 +50,16 @@ public class ContactActivity extends ContactsModuleActions implements
 	private static final String TAG = "ContactActivity";
 
 	/**
-	 * Tasks.
-	 */
-	private GetContactTask mTareaObtenerContacto = null;
-
-	/**
 	 * Member Variables.
 	 */
-	private String mIdContacto;
-	private ContactoDetalle contactoDetalle;
+	private String contactId;
+	
 
 	/**
 	 * UI References.
 	 */
 	private Toolbar mContactoToolbar;
-	private ImageButton imageButtonEdit, imageButtonAccounts;
+	private ImageButton imageButtonAccounts;
 
 	private ImageButton imageButtonOpps;
 	private ImageButton imageButtonTasks;
@@ -69,10 +69,7 @@ public class ContactActivity extends ContactsModuleActions implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_contact);
-
-		Intent intent = getIntent();
-		mIdContacto = intent.getStringExtra(MODULE.name());
-
+		
 		// Main Toolbar
 		mContactoToolbar = (Toolbar) findViewById(R.id.toolbar_contact);
 		setSupportActionBar(mContactoToolbar);
@@ -81,36 +78,15 @@ public class ContactActivity extends ContactsModuleActions implements
 		
 		this.applyActions();
 
-		// Tarea obtener contacto
-		mTareaObtenerContacto = new GetContactTask();
-		mTareaObtenerContacto.execute(String.valueOf(mIdContacto));
+		chargeViewInfo();
+
 	}
 
-	@Override
-	public ActionButton getActionButton() {
-		return null;
-	}
-
-	@Override
-	public ImageButton getEditButton() {
-		return null;
-	}
-
-
-	@Override
-	public String getAssignedUser() {
-		return contactoDetalle.getAssigned_user_id();
-	}
-
-	@Override
-	public Parcelable getBean() {
-		return contactoDetalle;
-	}
-
+	
 	@Override
 	public void applyActions() {
-		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
-		imageButtonEdit.setVisibility(View.INVISIBLE);
+		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
+		imgButtonEdit.setVisibility(View.INVISIBLE);
 
 		// ToolBar Opciones
 		imageButtonAccounts = (ImageButton) findViewById(R.id.image_accounts);
@@ -128,7 +104,7 @@ public class ContactActivity extends ContactsModuleActions implements
 		ActionsStrategy.definePermittedActions(this,  getApplicationContext(), (GlobalClass) getApplicationContext());
 	}
 
-	public void ponerValores(ContactoDetalle contactoDetalle) {
+	public void showValues(ContactoDetalle contactoDetalle) {
 		TextView valorContacto = (TextView) findViewById(R.id.valor_contacto);
 		valorContacto.setText(contactoDetalle.getFirst_name());
 		TextView valorIdentificacion = (TextView) findViewById(R.id.valor_identificacion);
@@ -238,13 +214,13 @@ public class ContactActivity extends ContactsModuleActions implements
 	
 	@Override
     public void onBackPressed() {
-    	String prevID = ActivitiesMediator.getInstance().getPreviusID();
+    	//String prevID = ActivitiesMediator.getInstance().getPreviusID();
     	//ActivitiesMediator.getInstance().returnPrevID();
     }
 	
 	@Override
 	public void onClick(View v) {
-		if (contactoDetalle.getIdAccount() == null) {
+		if (selectedBean.getIdAccount() == null) {
 			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas",
 					this);
 			return;
@@ -253,7 +229,7 @@ public class ContactActivity extends ContactsModuleActions implements
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
 			Log.d(TAG, "Cuenta de Contacto ");
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, contactoDetalle.getIdAccount());
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, selectedBean.getIdAccount());
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;
@@ -266,76 +242,36 @@ public class ContactActivity extends ContactsModuleActions implements
 
 	}
 
-	/**
-	 * Representa una tarea asincrona de obtencion de contacto.
-	 */
-	public class GetContactTask extends AsyncTask<String, Void, Boolean> {
-		private ProgressDialog progressDialog;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			progressDialog = new ProgressDialog(ContactActivity.this,
-					ProgressDialog.THEME_HOLO_DARK);
-			progressDialog.setMessage("Cargando información contacto...");
-			progressDialog.setIndeterminate(true);
-			progressDialog.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			try {
-				// Parametros
-				String idContact = params[0];
-
-				// Respuesta
-				String contact = null;
-
-				// Intento de obtener cuenta
-				ControlConnection.addHeader("idContact", idContact);
-				contact = ControlConnection.getInfo(TypeInfoServer.getContact,
-						ContactActivity.this);
-				JSONObject jObj = new JSONObject(contact);
-
-				JSONArray jArr = jObj.getJSONArray("results");
-				if (jArr.length() > 0) {
-					JSONObject obj = jArr.getJSONObject(0);
-					contactoDetalle = new ContactoDetalle(obj);
-					return true;
-				} else {
-					return false;
-				}
-
-			} catch (Exception e) {
-				Log.d(TAG, "Buscar Contacto Error: " + e.getClass().getName()
-						+ ":" + e.getMessage());
-				return false;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mTareaObtenerContacto = null;
-			progressDialog.dismiss();
-
-			if (success) {
-				ponerValores(contactoDetalle);
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mTareaObtenerContacto = null;
-			Log.d(TAG, "Cancelado ");
-		}
-	}
-
-
 
 	@Override
 	public void addInfo(String serverResponse) {
-		// TODO Auto-generated method stub
+		try {
+
+			JSONObject jObj = new JSONObject(serverResponse);
+			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
+			
+			if (jArr.length() > 0) {
+				JSONObject obj = jArr.getJSONObject(0);
+				selectedBean = new ContactoDetalle(obj);
+				showValues(selectedBean);
+			}
+			
+		} catch (Exception e) {
+			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
+		}
+
 		
+	}
+
+
+	@Override
+	public void chargeViewInfo() {
+		Intent intent = getIntent();
+		contactId = intent.getStringExtra(MODULE.name());
+		String[] params = { "idContact", contactId };
+		
+		this.executeTask(params, TypeInfoServer.getContact);
+
 	}
 
 }
