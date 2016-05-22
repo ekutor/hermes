@@ -126,7 +126,7 @@ public class Contacto extends GenericBean implements Parcelable {
 	
 	@Override
 	public String getName() {
-		return title + " "+ first_name;
+		return first_name;
 	}
 }
 

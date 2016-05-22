@@ -308,4 +308,11 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
         }
     }
 
+
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

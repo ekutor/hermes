@@ -3,12 +3,14 @@ package com.co.iatech.crm.sugarmovil.activities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -232,5 +234,10 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	public boolean chargeIdPreviousModule() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
 	}
 }

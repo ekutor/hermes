@@ -1,9 +1,10 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
+import com.software.shell.fab.ActionButton;
+
+import android.app.Activity;
 import android.os.Parcelable;
 import android.widget.ImageButton;
-
-import com.software.shell.fab.ActionButton;
 
 
 public interface IMovilModuleActions extends MovilModule{
@@ -13,4 +14,5 @@ public interface IMovilModuleActions extends MovilModule{
 	String getAssignedUser();
 	Parcelable getBean();
 	boolean chargeIdPreviousModule();
+	void addInfo(String serverResp);
 }

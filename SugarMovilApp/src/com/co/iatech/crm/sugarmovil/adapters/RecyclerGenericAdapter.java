@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.search.IAdapterItems;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +47,7 @@ public class RecyclerGenericAdapter extends RecyclerView.Adapter<RecyclerGeneric
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final IAdapterItems searchAdapter = visibleData.get(position);
-
+try{
         // Nombre tarea
         holder.txtItem.setText(searchAdapter.getSearchName());
 
@@ -53,11 +55,18 @@ public class RecyclerGenericAdapter extends RecyclerView.Adapter<RecyclerGeneric
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            	try{
             	ActivitiesMediator.getInstance().showActivity(context, recyclerModule, searchAdapter.getSearchId());
+            	} catch (Exception e) {
+            		Message.showShortExt(Utils.errorToString(e), context);
+            	}
             }
         });
 
         holder.itemView.setTag(searchAdapter);
+} catch (Exception e) {
+	Message.showShortExt(Utils.errorToString(e), context);
+}
     }
 
     // Return the size of your dataset (invoked by the layout manager)

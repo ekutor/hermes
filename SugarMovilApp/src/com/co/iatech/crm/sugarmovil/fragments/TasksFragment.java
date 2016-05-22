@@ -313,4 +313,10 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
         }
     }
 
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

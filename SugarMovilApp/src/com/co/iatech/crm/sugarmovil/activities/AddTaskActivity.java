@@ -25,6 +25,7 @@ import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListContactConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -69,6 +70,7 @@ SearchDialogInterface, TasksModuleValidations{
  
     private ListUsersConverter lc = new ListUsersConverter();
     private ListAccountConverter lac = new ListAccountConverter();
+    private ListContactConverter listContacts = new ListContactConverter();
     private TypeActions tipoPermiso;
 
 
@@ -78,7 +80,7 @@ SearchDialogInterface, TasksModuleValidations{
     private Toolbar mTareaToolbar;
     private ImageButton imgButtonGuardar;
     private TextView valorTrabajoEstimado,valorAsunto,valorDescripcion,valorNombre,txtNombre;
-    private Spinner valorEstado,valorTipo,valorPrioridad;
+    private Spinner valorEstado,valorTipo,valorPrioridad,valorContacto;
     private Button botonFechaInicio,botonFechaVen, botonHoraInicio, botonHoraVen;
     private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
@@ -142,6 +144,20 @@ SearchDialogInterface, TasksModuleValidations{
     
     private void chargeLists() {
 		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
+		
+		// Contacto
+        valorContacto = (Spinner) findViewById(R.id.valor_contacto);
+        ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, listContacts.getListInfo());
+        contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valorContacto.setAdapter(contactAdapter);
+        
+        if(modoEdicion && !"".equals(tareaSeleccionada.getContact_id()) ){
+	       // String contact = listContacts.convert(tareaSeleccionada.getContact_id(), DataToGet.VALUE);
+        	String contact = tareaSeleccionada.getContact_name();
+        	valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));   
+        }
+
         
         // Estado
         valorEstado = (Spinner) findViewById(R.id.valor_estado);
@@ -215,8 +231,6 @@ SearchDialogInterface, TasksModuleValidations{
 	    txtNombre = (TextView) findViewById(R.id.text_nombre);
 	    valorNombre = (TextView) findViewById(R.id.valor_nombre);
 	    valorNombre.setOnClickListener(this);
-	    
-	    //TODO mejorar la pantalla de cuenta y poner eventos a tipo para que muestre o no un tipo
 	    	    
 	    valorTrabajoEstimado = (EditText) findViewById(R.id.valor_estimado);
 	    

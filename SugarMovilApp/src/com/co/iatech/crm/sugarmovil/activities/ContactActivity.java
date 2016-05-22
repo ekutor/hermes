@@ -3,6 +3,7 @@ package com.co.iatech.crm.sugarmovil.activities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -11,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -34,8 +36,8 @@ import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
-public class ContactActivity extends AppCompatActivity implements
-		View.OnClickListener, ContactsModuleActions {
+public class ContactActivity extends ContactsModuleActions implements
+		View.OnClickListener {
 
 	/**
 	 * Debug.
@@ -94,10 +96,6 @@ public class ContactActivity extends AppCompatActivity implements
 		return null;
 	}
 
-	@Override
-	public Modules getModule() {
-		return MODULE;
-	}
 
 	@Override
 	public String getAssignedUser() {
@@ -332,9 +330,12 @@ public class ContactActivity extends AppCompatActivity implements
 		}
 	}
 
+
+
 	@Override
-	public boolean chargeIdPreviousModule() {
-		return true;
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

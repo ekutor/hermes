@@ -21,6 +21,7 @@ import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -304,4 +305,11 @@ public class ListCallsActivity extends AppCompatActivity implements CallsModuleA
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
 }

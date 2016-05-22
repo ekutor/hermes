@@ -1,5 +1,8 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
-public interface ContactsModuleActions extends ContactsModule, IMovilModuleActions{
-	void applyActions();
+public abstract class ContactsModuleActions extends AbstractMovilModuleActions implements ContactsModule, IMovilModuleActions{
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
 }

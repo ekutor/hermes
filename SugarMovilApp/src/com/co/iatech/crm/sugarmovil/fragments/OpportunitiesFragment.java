@@ -305,6 +305,12 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         mRecyclerViewOpportunities.setAdapter(mRecyclerViewOpportunitiesAdapter);
 		
 	}
+	
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

@@ -21,12 +21,14 @@ import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -268,6 +270,12 @@ try{
 	@Override
 	public boolean chargeIdPreviousModule() {
 		return true;
+	}
+
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

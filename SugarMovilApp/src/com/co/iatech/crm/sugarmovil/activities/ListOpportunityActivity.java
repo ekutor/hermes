@@ -1,5 +1,7 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import org.json.JSONArray;
+
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GetOpportunitiesTask;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
@@ -10,6 +12,7 @@ import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -223,6 +226,11 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
 	@Override
 	public boolean chargeIdPreviousModule() {
 		return true;
+	}
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
 	}
     
 }

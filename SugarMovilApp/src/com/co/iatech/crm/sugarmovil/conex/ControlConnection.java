@@ -38,7 +38,8 @@ public class ControlConnection {
 	public static String getInfo( TypeInfoServer type, Activity activity){
 		return getInfo(type, data, (GlobalClass) activity.getApplicationContext());
 	}
-	public static String getInfo( TypeInfoServer type, Map<String,String> data, GlobalClass context){
+
+	public static String getInfo( TypeInfoServer type, Map<String,String> data, GlobalClass globalClass){
 		String resp = "";
 		HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(URL + type.name());
@@ -50,7 +51,7 @@ public class ControlConnection {
 	        }
 		}
       
-        chargeID(httpGet, context);
+        chargeID(httpGet, globalClass);
         
        
         try {
@@ -63,7 +64,7 @@ public class ControlConnection {
         }catch(java.net.UnknownHostException he){
         	if(!URL.equals(URL2)){
         		URL = URL2;
-        		resp = getInfo(  type, data, context);
+        		resp = getInfo(  type, data, globalClass);
         	}
         	
         }catch (IOException e) {
