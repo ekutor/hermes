@@ -85,8 +85,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
 	public String resultado;
-	private String associatedAccount;
+
 	private boolean selectedTypeTaskAccount;
+	private Modules[] nameVisibleOnPermitedModules = {Modules.ACCOUNTS, Modules.OPPORTUNITIES};
 
 	private AddTask editarTarea;
 
@@ -111,9 +112,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 			createWidgets();
 			defineValidations();
-			if (!listContacts.hasItems()) {
-				associatedAccount = tareaSeleccionada.getParent_id();
-				String[] params = { "idAccount", associatedAccount };
+			//carga los contactos de la cuenta actual - aplica solo cuando venga del modulo de cuentas
+			if (!listContacts.hasItems() && actualInfo.getActualModuleId() != null) {
+				String[] params = { "idAccount", actualInfo.getActualModuleId() };
 				this.executeTask(params, TypeInfoServer.getContactsxAccount);
 
 			} else {
@@ -134,18 +135,16 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 	@Override
 	public void getInfoFromMediator() {
-
+		super.getInfoFromMediator();
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
 		Intent intent = getIntent();
 		tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
-
+		//idCuentas solo cuando el actual module sea cuentas
+		actualInfo.setActualModuleId(intent.getStringExtra(Modules.ACCOUNTS.name()));
 		if (tareaSeleccionada != null) {
-			modoEdicion = true;
-			if (Modules.ACCOUNTS.getSugarDBName().equals(tareaSeleccionada.getParent_type())) {
-				associatedAccount = tareaSeleccionada.getParent_id();
-			}
+			modoEdicion = true;			
 		} else {
-			associatedAccount = intent.getStringExtra(Modules.ACCOUNTS.name());
+			
 			tareaSeleccionada = new TareaDetalle();
 		}
 
@@ -158,13 +157,13 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				listContacts.getListInfo());
 		contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorContacto.setAdapter(contactAdapter);
-
-		if (modoEdicion && !"".equals(tareaSeleccionada.getContact_id())) {
-			// String contact =
-			// listContacts.convert(tareaSeleccionada.getContact_id(),
-			// DataToGet.VALUE);
+		
+		if(!"".equals(tareaSeleccionada.getContact_id()) ){
 			String contact = tareaSeleccionada.getContact_name();
 			valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));
+		}else if(actualInfo.getActualParentId() != null){
+			int pos = Integer.parseInt(listContacts.convert(actualInfo.getActualParentId(), DataToGet.POS));
+			valorContacto.setSelection(pos);
 		}
 
 		// Estado
@@ -182,19 +181,23 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				int visibility;
-				if (Modules.ACCOUNTS.getVisualName().equalsIgnoreCase(valorTipo.getSelectedItem().toString())) {
-					visibility = View.VISIBLE;
-					selectedTypeTaskAccount = true;
-				} else {
-					visibility = View.INVISIBLE;
-					selectedTypeTaskAccount = false;
+				visibility = View.INVISIBLE;
+				selectedTypeTaskAccount = false;
+				Modules selectedModuleType = null;
+				for(Modules mod : nameVisibleOnPermitedModules){
+					if (valorTipo.getSelectedItem().toString().toLowerCase().contains(mod.getVisualName().toLowerCase())) {
+						visibility = View.VISIBLE;
+						selectedTypeTaskAccount = true;
+						selectedModuleType = mod;
+						break;
+					}
 				}
-
+				
 				valorNombre.setVisibility(visibility);
-				if (associatedAccount == null && !modoEdicion) {
-					valorNombre.setText(ValidatorActivities.SELECT_MESSAGE);
+				if ( actualInfo.getActualParentId() == null && selectedModuleType!= null) {
+					valorNombre.setText(ValidatorActivities.SELECT_MESSAGE + selectedModuleType.getVisualName().toLowerCase());
 				}
-				txtNombre.setVisibility(visibility);
+				//txtNombre.setVisibility(visibility);
 			}
 
 			@Override
@@ -206,6 +209,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		
 		if (tareaSeleccionada.getParent_id() != null && tareaSeleccionada.getParent_id().length() > 1) {
 			valorNombre.setText(tareaSeleccionada.getParent_name());
+		}
+		if (actualInfo.getActualParentId()!= null ) {
+			valorNombre.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
 		}
 		
 		// Carga Tipos
@@ -322,7 +328,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				return;
 			}
 			if (selectedTypeTaskAccount && !ValidatorGeneric.getInstance().execute(valorNombre,
-					"Seleccionó un tipo Cuenta, debe seleccionar la cuenta relacionada", getApplicationContext())) {
+					"Seleccionó un tipo, debe seleccionar la informacion relacionada", getApplicationContext())) {
 				return;
 			}
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
@@ -348,8 +354,13 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 			tareaSeleccionada.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE,
 					valorTipo.getSelectedItem().toString(), DataToGet.CODE));
-			if (valorNombre.getText() != null && valorNombre.getText().length() > 0) {
+			if (Modules.ACCOUNTS.getSugarDBName().equals(tareaSeleccionada.getParent_type())) {
 				tareaSeleccionada.setParent_id(lac.convert(valorNombre.getText().toString(), DataToGet.CODE));
+			}else if (Modules.OPPORTUNITIES.getSugarDBName().equals(tareaSeleccionada.getParent_type())){
+				if(valorNombre.getText() != null && !valorNombre.getText().equals(tareaSeleccionada.getParent_name())){
+					tareaSeleccionada.setParent_id(listContacts.convert(valorNombre.getText().toString(), DataToGet.CODE));
+				}
+				
 			}
 
 			String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(), DataToGet.CODE);
@@ -407,6 +418,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
 		}
 		chargeLists();
+		if (modoEdicion) {
+			chargeViewInfo();
+		}
 	}
 
 	/**

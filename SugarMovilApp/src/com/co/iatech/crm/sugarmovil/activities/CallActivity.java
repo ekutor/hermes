@@ -11,6 +11,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -31,40 +32,25 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-public class CallActivity extends AppCompatActivity implements CallsModuleActions{
-
-
-    /**
-     * Debug.
-     */
-    private static final String TAG = "CallActivity";
-
-    /**
-     * Tasks.
-     */
-    private GetCallTask mTareaObtenerLlamada = null;
+public class CallActivity extends CallsModuleActions{
 
     /**
      * Member Variables.
      */
 
-    private String idLlamada;
-    private Llamada llamadaDetalle;
+    private String callId;
     private ListUsersConverter lc = new ListUsersConverter();
     
     /**
      * UI References.
      */
     private Toolbar mLlamadaToolbar;
-    private ImageButton imageButtonEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
-        try{
-	        Intent intent = getIntent();
-	        	
+        try{	        	
 	        // Main Toolbar
 	        mLlamadaToolbar = (Toolbar) findViewById(R.id.toolbar_call);
 	        setSupportActionBar(mLlamadaToolbar);
@@ -73,17 +59,7 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
 	        
 	        this.applyActions();
 	        
-	        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Llamada ){
-	        	llamadaDetalle = (Llamada) intent.getExtras().get(MODULE.getModuleName());
-	        	this.showValues(llamadaDetalle);
-	        }else{
-	        	idLlamada = intent.getStringExtra(MODULE.name());
-	        	// Tarea obtener llamada
-		        mTareaObtenerLlamada = new GetCallTask();
-		        mTareaObtenerLlamada.execute(String.valueOf(idLlamada));
-		      
-	        }
-
+	        this.chargeViewInfo();
         }catch(Exception e){
       	   Message.showShortExt(Utils.errorToString(e), this);
          }
@@ -118,9 +94,9 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
     @Override
     public void onResume() {
     	try{
-    		llamadaDetalle = (Llamada) ActivitiesMediator.getInstance().getBeanInfo();
-	    	if(llamadaDetalle != null){
-	    		this.showValues(llamadaDetalle);
+    		selectedBean = (Llamada) ActivitiesMediator.getInstance().getBeanInfo();
+	    	if(selectedBean != null){
+	    		this.showValues(selectedBean);
 	    	}
     	}catch(Exception e){
     		
@@ -128,117 +104,42 @@ public class CallActivity extends AppCompatActivity implements CallsModuleAction
         super.onResume();
 
     }
-
-    /**
-     * Representa una tarea asincrona de obtencion de llamada.
-     */
-    public class GetCallTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(CallActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando informacion llamada...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                // Parametros
-                String idLlamada = params[0];
-
-                // Respuesta
-                String call = null;
-
-                // Intento de obtener cuenta
-                ControlConnection.addHeader("idCall", idLlamada);
-                call  = ControlConnection.getInfo(TypeInfoServer.getCall, CallActivity.this);
-
-                JSONObject jObj = new JSONObject(call);
-
-                JSONArray jArr = jObj.getJSONArray("results");
-                if(jArr.length() > 0) {
-                    JSONObject obj = jArr.getJSONObject(0);
-
-                    llamadaDetalle = new Llamada(obj);
-                    }
-
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, "Buscar Llamada Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mTareaObtenerLlamada = null;
-            progressDialog.dismiss();
-
-            if (success) {
-                showValues(llamadaDetalle);
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mTareaObtenerLlamada = null;
-            Log.d(TAG, "Cancelado ");
-        }
-    }
     
     @Override
 	public void applyActions() {
-		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
+		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
         ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
 
 	}
-    
     @Override
-	public ActionButton getActionButton() {
-		return null;
+	public void chargeViewInfo() {
+        Intent intent = getIntent();
+
+        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Llamada ){
+        	selectedBean = (Llamada) intent.getExtras().get(MODULE.getModuleName());
+        	this.showValues(selectedBean);
+        }else{
+        	callId = intent.getStringExtra(MODULE.name());
+			String[] params = { "idCall", callId };
+			this.executeTask(params, TypeInfoServer.getCall);
+        }
+
 	}
 
-	@Override
-	public ImageButton getEditButton() {
-		return imageButtonEdit;
-	}
-
-	@Override
-	public Modules getModule() {
-		return MODULE;
-	}
-
-
-	@Override
-	public String getAssignedUser() {
-		return llamadaDetalle.getAssigned_user_id();
-	}
-
-
-	@Override
-	public Parcelable getBean() {
-		return llamadaDetalle;
-	}
-
-	@Override
-	public boolean chargeIdPreviousModule() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	@Override
 	public void addInfo(String serverResponse) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void chargeViewInfo() {
-		// TODO Auto-generated method stub
-		
+          try {
+  			JSONObject jObj = new JSONObject(serverResponse);
+  			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
+  			
+  			if (jArr.length() > 0) {
+  				JSONObject obj = jArr.getJSONObject(0);
+  				selectedBean = new Llamada(obj);
+  				showValues(selectedBean);
+  			}
+  			
+  		} catch (Exception e) {
+  			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
+  		}
 	}
 }

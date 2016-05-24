@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.SlidingTabLayout;
 import com.co.iatech.crm.sugarmovil.activtities.modules.AccountsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
@@ -11,32 +12,26 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.ViewPagerAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 
-public class AccountActivity extends AppCompatActivity implements View.OnClickListener, AccountsModuleActions{
+public class AccountActivity extends AccountsModuleActions implements View.OnClickListener{
 
     /**
      * Debug.
@@ -50,14 +45,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private ViewPagerAdapter viewAdapter;
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
-    private CuentaDetalle selectedBean;
-  
 
     /**
      * UI References.
      */
     private Toolbar mCuentaToolbar;
-    private ImageButton imageButtonEdit;
  
     private ImageButton imageButtonContacts;
     private ImageButton imageButtonOpps;
@@ -84,13 +76,12 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
     	slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.abc_search_url_text));   
     	//mSlidingTabLayout.setDistributeEvenly(true);
-    	DataManager.getInstance().contactsxAccountsInfo.clear();
-              
-       this.applyActions();
-
-        GetAccountTask mTareaObtenerCuenta = new GetAccountTask();
-        mTareaObtenerCuenta.execute(idAccount);
-
+  
+    	this.applyActions();
+    	
+		String[] params = { "idAccount", idAccount };
+		this.executeTask(params, TypeInfoServer.getAccount);
+   
     }
     
 
@@ -112,78 +103,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 			module = Modules.CALLS;
 		}
 		ActivitiesMediator.getInstance().setActualID(idAccount, MODULE);
-		ActivitiesMediator.getInstance().showList(AccountActivity.this, module, true);
+		ActivitiesMediator.getInstance().showList(AccountActivity.this, module, MODULE, true);
 	}
-
-
-	@Override
-	protected void onResume() {
-		ActivitiesMediator.getInstance().setActualID(idAccount, MODULE);
-		super.onResume();
-	}
-
-
-
-	/**
-    * Representa una tarea asincrona de obtencion de cuenta.
-    */
-   public class GetAccountTask extends AsyncTask<String, Void, Boolean> {
-       private ProgressDialog progressDialog;
-       
-       @Override
-       protected void onPreExecute() {
-           super.onPreExecute();
-           progressDialog = new ProgressDialog(AccountActivity.this, ProgressDialog.THEME_HOLO_DARK);
-           progressDialog.setMessage("Cargando informacion de cuenta...");
-           progressDialog.setIndeterminate(true);
-           progressDialog.show();
-       }
-
-       @Override
-       protected Boolean doInBackground(String... params) {
-           try {
-               // Parametros
-               String idAccount = params[0];
-
-               // Respuesta
-               String account = null;
-
-               // Intento de obtener cuenta
-               ControlConnection.addHeader("idAccount", idAccount);
-               account  = ControlConnection.getInfo(TypeInfoServer.getAccount, AccountActivity.this);
-               JSONObject jObj = new JSONObject(account);
-
-               JSONArray jArr = jObj.getJSONArray("results");
-               for (int i = 0; i < jArr.length(); i++) {
-                   JSONObject obj = jArr.getJSONObject(i);
-                  
-                   selectedBean = new CuentaDetalle(obj);
-                   
-               }
-
-               return true;
-           } catch (Exception e) {
-               Log.d(TAG, "Buscar Cuenta Error: "
-                       + e.getClass().getName() + ":" + e.getMessage());
-               return false;
-           }
-       }
-
-       @Override
-       protected void onPostExecute(final Boolean success) {
-    	   
-           progressDialog.dismiss();
-           if (success) {
-        	   chargeViewInfo();
-           }
-       }
-
-       @Override
-       protected void onCancelled() {
-          // mTareaObtenerCuenta = null;
-           Log.d(TAG, "Cancelado ");
-       }
-   }
 
    @Override
 	public ActionButton getActionButton() {
@@ -194,27 +115,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 	public ImageButton getEditButton() {
 		return null;
 	}
-
+	
 	@Override
-	public Modules getModule() {
-		return MODULE;
-	}
-
-	@Override
-	public String getAssignedUser() {
-		return null;
-	}
-
-
-	@Override
-	public Parcelable getBean() {
-		return null;
-	}
-
-	@Override
-	public void applyActions() {
-		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit); 
-		imageButtonEdit.setVisibility(View.INVISIBLE);
+	public void applyActions() {	
+		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);       
+		imgButtonEdit.setVisibility(View.INVISIBLE);
     	
       //ToolBar Opciones
 		imageButtonContacts = (ImageButton) findViewById(R.id.image_contacts);
@@ -235,23 +140,31 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 	}
 
 
-	@Override
-	public boolean chargeIdPreviousModule() {
-		return true;
-	}
-
-	@Override
-	public void addInfo(String serverResponse) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public void chargeViewInfo() {
-		viewAdapter.setActualAccount(selectedBean);
+	   viewAdapter.setActualAccount(selectedBean);
   	   viewPager.setAdapter(viewAdapter);
   	   slidingTabLayout.setViewPager(viewPager);
+		
+	}
+	
+	   
+	@Override
+	public void addInfo(String serverResponse) {
+		try {
+			JSONObject jObj = new JSONObject(serverResponse);
+			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
+			
+			if (jArr.length() > 0) {
+				JSONObject obj = jArr.getJSONObject(0);
+				selectedBean = new CuentaDetalle(obj);
+				chargeViewInfo();
+			}
+			
+		} catch (Exception e) {
+			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
+		}
 		
 	}
 

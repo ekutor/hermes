@@ -42,7 +42,7 @@ TimePickerDialog.OnTimeSetListener {
 	}
 
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		c.set(Calendar.HOUR, hourOfDay);
+		c.set(Calendar.HOUR_OF_DAY, hourOfDay);
 		c.set(Calendar.MINUTE, minute);
 		c.set(Calendar.SECOND, 0);
 		textResponse.setText(Utils.convertTimetoStringFrontEnd(c));

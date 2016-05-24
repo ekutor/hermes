@@ -36,12 +36,6 @@ import android.widget.TextView;
 
 public class TaskActivity extends TasksModuleActions {
 
-
-    /**
-     * Debug.
-     */
-    private static final String TAG = "TaskActivity";
-
     /**
      * Member Variables.
      */
@@ -58,7 +52,6 @@ public class TaskActivity extends TasksModuleActions {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         try{
-	        Intent intent = getIntent();
 	        selectedBean = null;
 	        
 	        // Main Toolbar
@@ -169,7 +162,6 @@ public class TaskActivity extends TasksModuleActions {
 			taskId = intent.getStringExtra(MODULE.name());
 			String[] params = { "idTask", taskId };
 			this.executeTask(params, TypeInfoServer.getTask);
-
 		}
 	}
 }

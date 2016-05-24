@@ -11,7 +11,7 @@ import android.widget.TextView;
 public abstract class ValidatorActivities implements Validator {
 
 	protected Map<View, CharSequence> data;
-	public  static final String SELECT_MESSAGE = "Seleccione Cuenta ..."; 
+	public  static final String SELECT_MESSAGE = "Seleccione"; 
 
 	@Override
 	public boolean validate(Spinner listSpin) {
@@ -31,7 +31,7 @@ public abstract class ValidatorActivities implements Validator {
 	@Override
 	public boolean validate(TextView edit) {
 		 if (edit.getText() == null || edit.getText().toString().equals("")
-				|| SELECT_MESSAGE.equals(edit.getText().toString()) ){
+				|| edit.getText().toString().contains(SELECT_MESSAGE) ){
 			 return false;
 		 }
 		return true;

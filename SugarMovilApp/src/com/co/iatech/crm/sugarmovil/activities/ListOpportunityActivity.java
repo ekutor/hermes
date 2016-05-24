@@ -1,28 +1,22 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
-import org.json.JSONArray;
-
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GetOpportunitiesTask;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -32,12 +26,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
-public class ListOpportunityActivity extends AppCompatActivity implements OpportunitiesModuleActions  {
-    /**
-     * Debug.
-     */
-    private static final String TAG = "ListOpportunityActivity";
-
+public class ListOpportunityActivity extends OpportunitiesModuleActions  {
     /**
      * Tasks.
      */
@@ -58,10 +47,10 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_opportunity);
-
+        try{
         // SoftKey
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
+        getInfoFromMediator();
         // Main Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar_list_opportunity);
         setSupportActionBar(mToolbar);
@@ -117,7 +106,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
                 try {
                     ((RecyclerGenericAdapter) recyclerView.getAdapter()).flushFilter();
                 } catch (Exception e) {
-                    Log.d(TAG, "Error removiendo el filtro de busqueda");
+                   
                 }
 
                 return false;
@@ -131,7 +120,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
                     // Filtro para select
                     ((RecyclerGenericAdapter) recyclerView.getAdapter()).setFilter(query);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error añadiendo el filtro de busqueda");
+                   
                 }
 
                 return false;
@@ -143,7 +132,7 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
                     // Filtro para select
                     ((RecyclerGenericAdapter) recyclerView.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error anhadiendo el filtro de busqueda");
+                   
                 }
 
                 return false;
@@ -151,92 +140,45 @@ public class ListOpportunityActivity extends AppCompatActivity implements Opport
         });
         
         this.applyActions();
+        }catch(Exception e){
+        	Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
+        }
     }
     
-    private void chargeListInfo() {
-    	 //Cargar Oportunidades
+    @Override
+	public void chargeViewInfo() {
+        
         obtenerOportunidades = new GetOpportunitiesTask(this, recyclerView);
         obtenerOportunidades.execute();
-		
 	}
-
-	@Override
-	public ActionButton getActionButton() {
-		return actionButton;
-	}
-
-	@Override
-	public ImageButton getEditButton() {
-		return null;
-	}
-
-	@Override
-	public Modules getModule() {
-		return MODULE;
-	}
-
-
-	@Override
-	public String getAssignedUser() {
-		return "";
-	}
-
-
-	@Override
-	public Parcelable getBean() {
-		return null;
-	}
-
-
-	@Override
-	public void applyActions() {
-		actionButton = (ActionButton) findViewById(R.id.action_button); 
-		ActionsStrategy.definePermittedActions(this,(GlobalClass) getApplicationContext());
-	}
-	
+    
     @Override
-    public void onBackPressed() {
-    	//String prevID = ActivitiesMediator.getInstance().getPreviusID();
-    	//Message.showShortExt("PrevID "+prevID+" "+ActivitiesMediator.getInstance().getActualID(), this);
-    	super.onBackPressed();
-    }
+   	public ActionButton getActionButton() {
+   		return actionButton;
+   	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
+   	@Override
+   	public ImageButton getEditButton() {
+   		return null;
+   	}
 
-	@Override
+
+   	@Override
+   	public void applyActions() {
+   		actionButton = (ActionButton) findViewById(R.id.action_button);
+   		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+   	}
+   	
+   	@Override
 	protected void onResume() {
-		//Message.showShort("Resume", getApplicationContext());
-		this.chargeListInfo();
+		this.chargeViewInfo();
 		super.onResume();
 	}
 
 	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
-	}
-
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-	}
-	
-	@Override
-	public boolean chargeIdPreviousModule() {
-		return true;
-	}
-	@Override
-	public void addInfo(String serverResponse) {
-		// TODO Auto-generated method stub
+	public void addInfo(String serverResp) {
 		
 	}
+   
 
-	@Override
-	public void chargeViewInfo() {
-		// TODO Auto-generated method stub
-		
-	}
-    
 }

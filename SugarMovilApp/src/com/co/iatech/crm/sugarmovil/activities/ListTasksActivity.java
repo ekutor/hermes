@@ -47,7 +47,7 @@ public class ListTasksActivity extends TasksModuleActions {
     /**
      * Member Variables.
      */
-    private String actualParentId;
+ 
   
     private List<TareaDetalle> tasksXParent;
 
@@ -62,7 +62,7 @@ public class ListTasksActivity extends TasksModuleActions {
     private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
     
     private ActionButton actionButton;
-	private Modules actualParentModule;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,23 +169,14 @@ public class ListTasksActivity extends TasksModuleActions {
         }
     }
     
-    private void getInfoFromMediator() {
-    	Intent intent = getIntent();
-    	Modules fromModule = Modules.getModulefromDBName(intent.getStringExtra(Modules.PREVIOUS_UI.name()));
-    	
-    	if(fromModule != null){
-    		actualParentModule = fromModule;
-    		actualParentId = intent.getStringExtra( fromModule.name() );
-    	}
-		
-	}
+   
     @Override
 	public void chargeViewInfo() {
        
         TypeInfoServer infoServer = null;
         String message = "",keyID= "";
-        
-        switch(actualParentModule){
+
+        switch(actualInfo.getActualParentModule()){
 			case ACCOUNTS:
 				infoServer = TypeInfoServer.getTaskxAccount;
 				keyID = "idAccount";
@@ -199,7 +190,7 @@ public class ListTasksActivity extends TasksModuleActions {
 			default:
 					break;
 		}
-        String[] params = { keyID, actualParentId };
+        String[] params = { keyID, actualInfo.getActualParentId() };
         this.executeTask(params, infoServer, message);
 	}
 

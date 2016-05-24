@@ -7,7 +7,9 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModule;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
@@ -35,7 +37,7 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class CallsFragment extends Fragment implements CallsModuleActions {
+public class CallsFragment extends Fragment implements IMovilModuleActions,CallsModule {
     /**
      * Debug.
      */
@@ -229,8 +231,6 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 		return null;
 	}
 
-
-	@Override
 	public void applyActions() {
 		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
 		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
@@ -311,6 +311,12 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 
 	@Override
 	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getInfoFromMediator() {
 		// TODO Auto-generated method stub
 		
 	}

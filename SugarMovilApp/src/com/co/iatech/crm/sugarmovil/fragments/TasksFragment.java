@@ -320,5 +320,11 @@ public class TasksFragment extends Fragment implements IMovilModuleActions,Tasks
 		
 	}
 
+	@Override
+	public void getInfoFromMediator() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
