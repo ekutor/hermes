@@ -184,8 +184,10 @@ public class ListCallsActivity extends CallsModuleActions {
 			default:
 					break;
 		}
-        String[] params = { keyID, actualInfo.getActualParentId() };
-        this.executeTask(params, infoServer, message);
+        if(infoServer != null){
+	        String[] params = { keyID, actualInfo.getActualParentId() };
+	        this.executeTask(params, infoServer, message);
+        }
 	}
 
 	@Override

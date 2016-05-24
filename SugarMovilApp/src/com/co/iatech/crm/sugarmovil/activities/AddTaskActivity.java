@@ -346,7 +346,11 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			}
 
 			// contacto
-
+			
+			if(valorContacto.getSelectedItemPosition() > 0){
+				tareaSeleccionada.setContact_id(listContacts.convert(valorContacto.getSelectedItem().toString(), DataToGet.CODE));
+			}
+			
 			tareaSeleccionada.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
 			tareaSeleccionada.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
 					valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
@@ -358,6 +362,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				tareaSeleccionada.setParent_id(lac.convert(valorNombre.getText().toString(), DataToGet.CODE));
 			}else if (Modules.OPPORTUNITIES.getSugarDBName().equals(tareaSeleccionada.getParent_type())){
 				if(valorNombre.getText() != null && !valorNombre.getText().equals(tareaSeleccionada.getParent_name())){
+					//esto se debe cambiar por una lista de oportunidades 
 					tareaSeleccionada.setParent_id(listContacts.convert(valorNombre.getText().toString(), DataToGet.CODE));
 				}
 				
