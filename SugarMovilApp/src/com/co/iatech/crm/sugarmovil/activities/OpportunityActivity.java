@@ -8,6 +8,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
+import com.co.iatech.crm.sugarmovil.adapters.search.GenericAdapterSearch;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
@@ -47,7 +48,7 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
 			getSupportActionBar().setHomeButtonEnabled(false);
 
 			this.applyActions();
-
+			this.chargeViewInfo();
 		} catch (Exception e) {
 			Message.showShortExt(Utils.errorToString(e), this);
 		}
@@ -165,5 +166,6 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
 			String[] params = { "idOpportunity", oppId };
 			this.executeTask(params, TypeInfoServer.getOpportunity);
 		}
+		
 	}
 }

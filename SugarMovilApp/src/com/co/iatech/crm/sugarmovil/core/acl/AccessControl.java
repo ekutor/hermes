@@ -25,7 +25,7 @@ public class AccessControl {
 
 	public static boolean validateEdit(Modules module, GlobalClass global) {
 		User u = getActualUser(global);
-		Log.d("AccesControl", " modulo consultado " + module.name());
+	
 		ActionsInfo actions = u.getAccess().get(module);
 		if (actions == null) {
 			Log.d("AccesControl", " actions es null ");

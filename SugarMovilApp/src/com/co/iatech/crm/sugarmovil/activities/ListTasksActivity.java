@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
@@ -21,7 +21,6 @@ import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -225,9 +224,13 @@ public class ListTasksActivity extends TasksModuleActions {
 			JSONObject jObj = new JSONObject(serverResponse);
 			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
 			tasksXParent.clear();
-			for (int i = 0; i < jArr.length(); i++) {
-				JSONObject obj = jArr.getJSONObject(i);
-				tasksXParent.add(new TareaDetalle(obj));
+			try{
+				for (int i = 0; i < jArr.length(); i++) {
+					JSONObject obj = jArr.getJSONObject(i);
+					tasksXParent.add(new TareaDetalle(obj));
+				}
+			}catch(JSONException je){
+				
 			}
 			if (tasksXParent.size() > 0) {
 

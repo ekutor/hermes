@@ -38,8 +38,7 @@ public class ActionsStrategy {
 				public void onClick(View v) {
 					if (AccessControl.validateEditType(actionModule.getModule(),
 							actionModule.getAssignedUser(),global)) {
-						ActivitiesMediator.getInstance().addObjectInfo( actionModule.getBean() );
-						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule());
+						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule(),true);
 
 					} else {
 						Message.showShortExt(
@@ -57,8 +56,7 @@ public class ActionsStrategy {
 				actionModule.getActionButton().setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 
-						ActivitiesMediator.getInstance().deleteSelectedBean();
-						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule());
+						ActivitiesMediator.getInstance().showEditActivity(context, actionModule.getModule(), actionModule.chargeIdPreviousModule(),false);
 					}
 				});
 			} else {

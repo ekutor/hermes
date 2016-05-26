@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.search.GenericAdapterSearch;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
@@ -24,6 +25,8 @@ public class ActivitiesMediator implements IMediator {
 	private static ActivitiesMediator instance;
 	private Map<Modules,String> currentIDs;
 	private Modules lastModuleFrom;
+	private GenericAdapterSearch actualBeanInfo;
+	public static final String EDIT_MODE = "MODE";
 
 	private ActivitiesMediator(){
 		currentIDs = new HashMap<Modules,String>();
@@ -72,6 +75,7 @@ public class ActivitiesMediator implements IMediator {
 		this.addInfotoActivity(intent, moduleToStart);
 		chargeLastModuleCaller(intent);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//Message.showShortExt(" Show "+actualModule + newActualID + moduleToStart.name() + " last "+lastModuleFrom, context);
     	context.startActivity(intent);
 		
 	}
@@ -85,7 +89,7 @@ public class ActivitiesMediator implements IMediator {
 	}
 
 	@Override
-	public void showEditActivity(Context context, Modules targetView, boolean addActualModule) {
+	public void showEditActivity(Context context, Modules targetView, boolean addActualModule, boolean editMode) {
 		//aqui se debe poner logica para saber que viene de otra vista igual que en la de show view
 		Intent intent = null;     
 		switch( targetView){
@@ -106,10 +110,13 @@ public class ActivitiesMediator implements IMediator {
 		if(addActualModule){
 			addInfotoActivity(intent, actualModule);
 		}
+		intent.putExtra(EDIT_MODE, editMode);
 		chargeLastModuleCaller(intent);
 		addBeanInfo(intent, targetView );
 		addInfotoActivity(intent, targetView);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//Message.showShortExt("Edit "+actualModule + addActualModule + targetView.name() + " last "+lastModuleFrom , context);
+	    
     	context.startActivity(intent);
 		
 	}
@@ -147,7 +154,7 @@ public class ActivitiesMediator implements IMediator {
 			this.addInfotoActivity(intent, actualModule);
 			chargeLastModuleCaller(intent);
 		}
-		
+		//Message.showShortExt("actual Module "+actualModule + chargeActualModule + viewCaller.name() + viewtoStart.name()+ " last "+lastModuleFrom, context);
     	context.startActivity(intent);
 		}catch(Exception e){
 			Message.showShortExt(Utils.errorToString(e) , context);
@@ -209,7 +216,6 @@ public class ActivitiesMediator implements IMediator {
 	@Override
 	public String getActualID(Modules module) {
 		return currentIDs.get(module);
-	}	
-	
+	}
 
 }

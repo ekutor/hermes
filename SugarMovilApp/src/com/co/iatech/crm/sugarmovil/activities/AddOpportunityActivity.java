@@ -48,6 +48,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 
 
@@ -76,6 +78,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     private String idCuentaAsociada;
     private TypeActions tipoPermiso;
     private ListAccountConverter lac = new ListAccountConverter();
+    private final String VALUE_SELECTED = "PORTALES WEB";
     
     /**
      * UI References.
@@ -84,9 +87,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     private ImageButton imgButtonGuardar;
     private Button botonFechaCierre;
     private TextView mValorFechaCierre,asignadoA,valorCuenta;
-    private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorFuente,valorPaso,valorDescripcion;
+    private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorPaso,valorDescripcion;
     private Spinner valorTipo,valorEtapa,valorMedio,valorEnergia,valorComunicaciones,valorIluminacion,valorMoneda;
-    private Spinner valorCampana;
+    private Spinner valorCampana, valorFuente;
     private ListUsersConverter lc = new ListUsersConverter();
 
 	public String resultado;
@@ -160,13 +163,35 @@ SearchDialogInterface, OpportunitiesModuleValidations {
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_STAGE));
         etapaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEtapa.setAdapter(etapaAdapter);
-      
+       
+        valorFuente = (Spinner) findViewById(R.id.valor_fuente);
+        final ArrayAdapter<String> fuenteAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_SOURCE));
+        fuenteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Medio Oportunidad
         valorMedio = (Spinner) findViewById(R.id.valor_medio);
         ArrayAdapter<String> medioAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_MEDIUM));
         medioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorMedio.setAdapter(medioAdapter);
+        valorMedio.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {   
+				if(valorMedio.getSelectedItem().toString().contains(VALUE_SELECTED)){
+					valorFuente.setAdapter(fuenteAdapter);
+					valorFuente.setSelection(0,true);
+				}else{
+					valorFuente.setAdapter(null);
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+	
+				
+			}});
         
         //Energia
         valorEnergia = (Spinner) findViewById(R.id.valor_energia);       
@@ -247,9 +272,6 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 
         valorProbabilidad = (EditText) findViewById(R.id.valor_probabilidad);
 
-        // Fuente no tiene datos en el crm
-       // TextView valorFuente = (TextView) findViewById(R.id.valor_fuente);
-
         // Paso
         valorPaso = (EditText) findViewById(R.id.valor_paso);
         // Descripcion
@@ -275,7 +297,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         valorPaso.setText(oportSeleccionada.getNext_step());
         // Descripcion
         valorDescripcion.setText(oportSeleccionada.getDescription());
-     
+       
        // valorEstimado.setText(oportSeleccionada.getValoroportunidad_c());
   
         
@@ -287,6 +309,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_MEDIUM, oportSeleccionada.getMedio_c());
         valorMedio.setSelection(pos);
+        
+        pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_SOURCE, oportSeleccionada.getFuente_c());
+        valorFuente.setSelection(pos);
         
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_ENERGY, oportSeleccionada.getEnergia_c());
         valorEnergia.setSelection(pos);
@@ -317,6 +342,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     
 	@Override
 	public void onClick(View v) {
+	try{
 		if(v.getId() == asignadoA.getId()){
 			switch(tipoPermiso){
 			case OWNER:
@@ -362,7 +388,10 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        oportSeleccionada.setCampaign_id(lcc.convert(valorCampana.getSelectedItem().toString(), DataToGet.CODE));
 
 	        oportSeleccionada.setMedio_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM, valorMedio.getSelectedItem().toString(), DataToGet.CODE));
-	
+	        
+	        if(valorFuente.getSelectedItem() != null){
+	        	oportSeleccionada.setFuente_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_SOURCE, valorFuente.getSelectedItem().toString(), DataToGet.CODE));
+	        }
 	        // Asignado
 	        String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(),DataToGet.CODE);
 	        oportSeleccionada.setAssigned_user_id(idUsuarioAsignado);
@@ -392,6 +421,10 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        // Crear oportunidad
 	        mTareaCrearOportunidad.execute(oportSeleccionada);
 		}
+		
+	 }catch(Exception e){
+      	  Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddOpportunityActivity.this, MODULE );
+       }
     }
 	
 	@Override

@@ -157,10 +157,11 @@ public class ListOpportunityActivity extends OpportunitiesModuleActions  {
    		return actionButton;
    	}
 
-   	@Override
-   	public ImageButton getEditButton() {
-   		return null;
-   	}
+
+	@Override
+	public ImageButton getEditButton() {
+		return null;
+	}
 
 
    	@Override
