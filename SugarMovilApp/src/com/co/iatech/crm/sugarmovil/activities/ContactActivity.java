@@ -238,7 +238,7 @@ public class ContactActivity extends ContactsModuleActions implements
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
 		}
-		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE, true);
+		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
 
 	}
 

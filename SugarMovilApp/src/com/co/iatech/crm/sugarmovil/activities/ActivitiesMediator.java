@@ -44,7 +44,10 @@ public class ActivitiesMediator implements IMediator {
 	public void defineActualModule(Modules module) {
 		this.actualModule = module;
 	}
-
+	
+	public Modules getActualModule() {
+		return this.actualModule;
+	}
 	/**
 	 * carga el actual ID del modulo a desplegar 
 	 */
@@ -80,6 +83,7 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 	private void chargeLastModuleCaller(Intent intent) {
+		this.addInfotoActivity(intent, actualModule);
 		if(lastModuleFrom != null){
 			//set actual module from
 			intent.putExtra(Modules.PREVIOUS_UI.name(), lastModuleFrom.getSugarDBName());
@@ -89,7 +93,7 @@ public class ActivitiesMediator implements IMediator {
 	}
 
 	@Override
-	public void showEditActivity(Context context, Modules targetView, boolean addActualModule, boolean editMode) {
+	public void showEditActivity(Context context, Modules targetView,boolean editMode) {
 		//aqui se debe poner logica para saber que viene de otra vista igual que en la de show view
 		Intent intent = null;     
 		switch( targetView){
@@ -107,9 +111,7 @@ public class ActivitiesMediator implements IMediator {
 		default:
 			break;
 		}
-		if(addActualModule){
-			addInfotoActivity(intent, actualModule);
-		}
+
 		intent.putExtra(EDIT_MODE, editMode);
 		chargeLastModuleCaller(intent);
 		addBeanInfo(intent, targetView );
@@ -128,7 +130,7 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 
-	public void showList(Context context, Modules viewtoStart, Modules viewCaller ,boolean chargeActualModule) {
+	public void showList(Context context, Modules viewtoStart, Modules viewCaller) {
 		try{
 		Intent intent = null;
 		lastModuleFrom = viewCaller;
@@ -149,11 +151,8 @@ public class ActivitiesMediator implements IMediator {
 			break;
 			
 		}
-		if(chargeActualModule){
-			//set current module id to activity
-			this.addInfotoActivity(intent, actualModule);
-			chargeLastModuleCaller(intent);
-		}
+
+		chargeLastModuleCaller(intent);
 		//Message.showShortExt("actual Module "+actualModule + chargeActualModule + viewCaller.name() + viewtoStart.name()+ " last "+lastModuleFrom, context);
     	context.startActivity(intent);
 		}catch(Exception e){

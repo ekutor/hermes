@@ -10,7 +10,7 @@ public interface IMediator {
 	public void defineActualModule(Modules module);
 	public void returnView();
 	public void addInfotoActivity(Intent intent, Modules mod);
-	public void showEditActivity(Context context, Modules module,  boolean addActualModule,  boolean editMode);
+	public void showEditActivity(Context context, Modules module,  boolean editMode);
 	public String getActualID(Modules module);
 	public void setActualID(String actualID, Modules mod);
 	public String getPreviusID();

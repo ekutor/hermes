@@ -127,8 +127,9 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
 		imgButtonTasks.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ActivitiesMediator.getInstance().addObjectInfo(selectedBean);
 				ActivitiesMediator.getInstance().setActualID(oppId, MODULE);
-				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS, MODULE, true);
+				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS, MODULE);
 
 			}
 

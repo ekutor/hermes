@@ -3,10 +3,13 @@ package com.co.iatech.crm.sugarmovil.activtities.modules;
 public class ActualInfo{
 	private Modules actualParentModule;
 	private String actualParentId;
-	private String actualModuleId;
+	private Modules actualPrincipalModule;
+	private String actualPrincipalId;
+	
 	
 	public ActualInfo(){
 		actualParentModule = Modules.PREVIOUS_UI;
+		actualPrincipalModule = Modules.PREVIOUS_UI;
 	}
 	
 	public ActualInfo(Modules actualParentModule,String actualParentId ){
@@ -30,12 +33,20 @@ public class ActualInfo{
 		this.actualParentId = actualParentId;
 	}
 
-	public String getActualModuleId() {
-		return actualModuleId;
+	public Modules getActualPrincipalModule() {
+		return actualPrincipalModule;
 	}
 
-	public void setActualModuleId(String actualModuleId) {
-		this.actualModuleId = actualModuleId;
+	public void setActualPrincipalModule(Modules actualPrincipalModule) {
+		this.actualPrincipalModule = actualPrincipalModule;
+	}
+
+	public String getActualPrincipalId() {
+		return actualPrincipalId;
+	}
+
+	public void setActualPrincipalId(String actualPrincipalId) {
+		this.actualPrincipalId = actualPrincipalId;
 	}
 	
 	

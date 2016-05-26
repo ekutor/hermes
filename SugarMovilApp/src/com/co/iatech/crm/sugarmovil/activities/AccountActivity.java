@@ -103,7 +103,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
 			module = Modules.CALLS;
 		}
 		ActivitiesMediator.getInstance().setActualID(idAccount, MODULE);
-		ActivitiesMediator.getInstance().showList(AccountActivity.this, module, MODULE, true);
+		ActivitiesMediator.getInstance().showList(AccountActivity.this, module, MODULE);
 	}
 
    @Override

@@ -14,10 +14,8 @@ import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogT
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActualInfo;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleEditableActions;
-import com.co.iatech.crm.sugarmovil.adapters.search.GenericAdapterSearch;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
@@ -33,6 +31,7 @@ import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListContactConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListModelConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -81,7 +80,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	 */
 	private Toolbar mTareaToolbar;
 	private ImageButton imgButtonGuardar;
-	private TextView valorTrabajoEstimado, valorAsunto, valorDescripcion, valorNombre, txtNombre;
+	private TextView valorTrabajoEstimado, valorAsunto, valorDescripcion, valorNombre;
 	private Spinner valorEstado, valorTipo, valorPrioridad, valorContacto;
 	private Button botonFechaInicio, botonFechaVen, botonHoraInicio, botonHoraVen;
 	private TextView valorFechaInicio, asignadoA, valorFechaVen;
@@ -109,12 +108,19 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			setSupportActionBar(mTareaToolbar);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
-
 			
 			defineValidations();
 			//carga los contactos de la cuenta actual - aplica solo cuando venga del modulo de cuentas
-			if (!listContacts.hasItems() && actualInfo.getActualModuleId() != null) {
-				String[] params = { "idAccount", actualInfo.getActualModuleId() };
+			ListModelConverter listConverter = null;
+			switch(actualInfo.getActualPrincipalModule()){
+				case ACCOUNTS:
+					listConverter = listContacts;
+					break;
+				default:
+					break;
+			}
+			if (listConverter != null && !listConverter.hasItems()) {
+				String[] params = { "idAccount", actualInfo.getActualPrincipalId() };
 				this.executeTask(params, TypeInfoServer.getContactsxAccount);
 
 			} else {
@@ -136,42 +142,40 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	@Override
 	public void getInfoFromMediator() {
 		super.getInfoFromMediator();
-		
-//    	Message.showShortExt("fromModule"+fromModule + " " + id, getApplicationContext());
+
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
 		Intent intent = getIntent();
-		tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
-		//idCuentas solo cuando el actual module sea cuentas
-		actualInfo.setActualModuleId(intent.getStringExtra(Modules.ACCOUNTS.name()));
-		if (!isEditMode) {
+		
+		if (isEditMode) {
+			tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
+		}else{
 			tareaSeleccionada = new TareaDetalle();
 		}
 		int pos = 0;
-		if (actualInfo.getActualParentModule() != null ) {
-			
-			switch(actualInfo.getActualParentModule()){
-				case ACCOUNTS:
-					valorNombre.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
-					pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Cuenta");
-					break;
-				case OPPORTUNITIES:
-					OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getBeanInfo();
-					if(bean != null){
-						valorNombre.setText(bean.getName());
-					}
-					pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Oportunidad de Negocio");
-					break;
-				default:
-					pos = 0;
-					break;
-			}
-			
-			valorTipo.setSelection(pos);
-			
+		
+		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, actualInfo.getActualParentModule().getSugarDBName());
+		switch(actualInfo.getActualParentModule()){
+			case ACCOUNTS:
+				valorNombre.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
+				
+				break;
+			case OPPORTUNITIES:
+				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+				if(bean != null){
+					valorNombre.setText(bean.getName());
+				}
+				break;
+			default:
+				pos = 0;
+				break;
 		}
-		//Message.showFinalMessage(getFragmentManager(),"parent "+actualInfo.getActualParentModule().name()+" "+
-		//pos+ valorNombre.getText() + actualInfo.getActualParentId(), AddTaskActivity.this, MODULE);
-
+		
+		valorTipo.setSelection(pos);
+		valorTipo.setEnabled(false);
+		
+		/*Message.showFinalMessage(getFragmentManager(),"parent "+actualInfo.getActualParentModule().name()+" "+
+		pos+ valorNombre.getText() + actualInfo.getActualParentId() + "pos "+pos + (bean != null), AddTaskActivity.this, MODULE);*/
+		
 	}
 
 	@Override
@@ -234,7 +238,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
 		valorFechaInicio = (TextView) findViewById(R.id.valor_fecha_inicio);
 		valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
-		txtNombre = (TextView) findViewById(R.id.text_nombre);
 		valorNombre = (TextView) findViewById(R.id.valor_nombre);
 		valorNombre.setOnClickListener(this);
 
@@ -347,7 +350,13 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaVen, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		} else if (v.getId() == valorNombre.getId()) {
-			Message.showAccountsDialog(getSupportFragmentManager());
+			switch(actualInfo.getActualParentModule()){
+				case ACCOUNTS:
+					Message.showAccountsDialog(getSupportFragmentManager());
+					break;
+				default:
+					break;
+			}
 		} else if (v.getId() == imgButtonGuardar.getId()) {
 			// Realizar Validaciones
 			if (!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())) {
@@ -382,17 +391,14 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			tareaSeleccionada.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
 					valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
 			tareaSeleccionada.setDescription(valorDescripcion.getText().toString());
-
+			
+			
+			//tipo Tarea
+			String selectedType = valorTipo.getSelectedItem().toString();
 			tareaSeleccionada.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE,
-					valorTipo.getSelectedItem().toString(), DataToGet.CODE));
-			if (Modules.ACCOUNTS.getSugarDBName().equals(tareaSeleccionada.getParent_type())) {
-				tareaSeleccionada.setParent_id(lac.convert(valorNombre.getText().toString(), DataToGet.CODE));
-			}else if (Modules.OPPORTUNITIES.getSugarDBName().equals(tareaSeleccionada.getParent_type())){
-				if(valorNombre.getText() != null && !valorNombre.getText().equals(tareaSeleccionada.getParent_name())){
-					//esto se debe cambiar por una lista de oportunidades 
-					tareaSeleccionada.setParent_id(listContacts.convert(valorNombre.getText().toString(), DataToGet.CODE));
-				}
-				
+					selectedType, DataToGet.CODE));
+			if (actualInfo.getActualParentModule() != null && tareaSeleccionada.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
+				tareaSeleccionada.setParent_id(actualInfo.getActualParentId());
 			}
 
 			String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(), DataToGet.CODE);

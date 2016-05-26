@@ -49,13 +49,19 @@ public abstract class AbstractMovilModuleActions extends AppCompatActivity imple
 	 public void getInfoFromMediator() {
 		Intent intent = getIntent();
     	Modules fromModule = Modules.getModulefromDBName(intent.getStringExtra(Modules.PREVIOUS_UI.name()));
-    	String id = "iddd";
+    	String id = "";
+    	actualInfo= new ActualInfo();
     	isEditMode = intent.getBooleanExtra(ActivitiesMediator.EDIT_MODE, false);
     	if(fromModule != null){
     		id = intent.getStringExtra( fromModule.name() );
     		actualInfo = new ActualInfo(fromModule, id);
     	}
-			
+    	Modules principalModule = ActivitiesMediator.getInstance().getActualModule();
+    	id = intent.getStringExtra(principalModule.name());
+    	actualInfo.setActualPrincipalModule(principalModule);
+    	actualInfo.setActualPrincipalId(id);
+    	
+    	
 	 }
 	
 }
