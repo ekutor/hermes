@@ -113,12 +113,11 @@ public class AddCallActivity extends CallsModuleEditableActions {
     public void getInfoFromMediator() {
     	super.getInfoFromMediator();
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
-    	Intent intent = getIntent();
-    	
-    	llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
-         
-         if(!isEditMode){
-         	llamadaSeleccionada = new Llamada();
+         if(isEditMode){
+        	 Intent intent = getIntent();
+        	 llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
+         }else{
+        	 llamadaSeleccionada = new Llamada();
          }
          
 	}

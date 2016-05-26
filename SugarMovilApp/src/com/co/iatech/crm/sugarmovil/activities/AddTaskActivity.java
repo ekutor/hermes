@@ -160,7 +160,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				
 				break;
 			case OPPORTUNITIES:
-				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
 				if(bean != null){
 					valorNombre.setText(bean.getName());
 				}

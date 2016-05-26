@@ -6,6 +6,7 @@ import java.util.Map;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.search.GenericAdapterSearch;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
@@ -25,7 +26,7 @@ public class ActivitiesMediator implements IMediator {
 	private static ActivitiesMediator instance;
 	private Map<Modules,String> currentIDs;
 	private Modules lastModuleFrom;
-	private GenericAdapterSearch actualBeanInfo;
+	private GenericBean parentBean;
 	public static final String EDIT_MODE = "MODE";
 
 	private ActivitiesMediator(){
@@ -215,6 +216,14 @@ public class ActivitiesMediator implements IMediator {
 	@Override
 	public String getActualID(Modules module) {
 		return currentIDs.get(module);
+	}
+	
+	public GenericBean getParentBean() {
+		return parentBean;
+	}
+
+	public void setParentBean(GenericBean parentBean) {
+		this.parentBean = parentBean;
 	}
 
 }

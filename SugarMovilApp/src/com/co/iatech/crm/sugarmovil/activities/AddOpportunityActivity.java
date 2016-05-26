@@ -128,12 +128,10 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
     public void getInfoFromMediator() {
     	super.getInfoFromMediator();
 		 tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
-    	 Intent intent = getIntent();
-         
-         
-         oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
-
-         if(!isEditMode){
+		 Intent intent = getIntent();
+         if(isEditMode){
+        	 oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
+         }else{
          	oportSeleccionada = new OportunidadDetalle();
          	idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
          }
