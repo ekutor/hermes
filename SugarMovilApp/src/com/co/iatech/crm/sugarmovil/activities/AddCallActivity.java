@@ -27,6 +27,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogT
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleValidations;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
@@ -49,8 +50,7 @@ import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
-public class AddCallActivity extends AppCompatActivity 
-implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
+public class AddCallActivity extends CallsModuleEditableActions {
 
 
     /**
@@ -63,7 +63,6 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
      * Member Variables.
      */
     private Llamada llamadaSeleccionada;
-    private static boolean modoEdicion;
     
     private ListUsersConverter lc = new ListUsersConverter();
     private ListAccountConverter lac = new ListAccountConverter();
@@ -78,8 +77,6 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     private TextView asignadoA,valorFechaInicio, valorCuenta;
     private EditText valorAsunto,valorDescripcion,valorDuracionHrs;
     private Spinner valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
-    
-    private String associatedAccount;
 
 
 	public String resultado;
@@ -103,7 +100,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
 	        
-	        if(modoEdicion){
+	        if(isEditMode){
 	        	TextView title = (TextView) findViewById(R.id.text_call_toolbar);
 	        	title.setText("EDITAR LLAMADA");
 	        	chargeValues();
@@ -114,17 +111,14 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
     }
     
     public void getInfoFromMediator() {
-    
+    	super.getInfoFromMediator();
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
     	Intent intent = getIntent();
     	
     	llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          
-         if(llamadaSeleccionada != null){
-         	modoEdicion = true;
-         }else{
+         if(!isEditMode){
          	llamadaSeleccionada = new Llamada();
-         	associatedAccount = intent.getStringExtra(Modules.ACCOUNTS.name());
          }
          
 	}
@@ -183,18 +177,15 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
         GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
 		llamadaSeleccionada.setCreated_by(u.getId());
-		if(!modoEdicion){
-			Log.d(TAG, "NOOO ES MODO EDICION");
-			
+		if(!isEditMode){
 	        asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
 	        llamadaSeleccionada.setAssigned_user_id(u.getId());
 		}
         
 		
 		 //Carga Cuentas
-        if(associatedAccount != null){
-        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
-        	valorCuenta.setText(lac.convert(associatedAccount, DataToGet.VALUE ));
+        if(actualInfo.getActualParentModule().equals(Modules.ACCOUNTS)){
+        	valorCuenta.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE ));
         }
     }
 	
@@ -285,12 +276,12 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 					break;
 			}
 			}else if(v.getId() == botonHoraInicio.getId()){
-				DialogFragment newFragment = new TimePickerFragment(this,valorFechaInicio,modoEdicion);
+				DialogFragment newFragment = new TimePickerFragment(this,valorFechaInicio,isEditMode);
 				newFragment.show(getFragmentManager(), "hourCierrePicker");
 			}else if(v.getId() == valorCuenta.getId()){
 				Message.showAccountsDialog(getSupportFragmentManager());
 			}else if(v.getId() == botonFechaInicio.getId()){
-				DialogFragment newFragment = new DatePickerFragment(this,valorFechaInicio,modoEdicion);
+				DialogFragment newFragment = new DatePickerFragment(this,valorFechaInicio,isEditMode);
 				newFragment.show(getFragmentManager(), "dateCierrePicker");
 			}else if(v.getId() == imgButtonGuardar.getId()){
 				 //Realizar Validaciones
@@ -346,7 +337,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	                // Resultado
 	                resultado = null;
 	                
-	                if(modoEdicion){
+	                if(isEditMode){
 	                	resultado  = ControlConnection.putInfo(TypeInfoServer.addCall, obj.getDataBean(),Modo.EDITAR, AddCallActivity.this );
 	                }else{
 	                   	resultado  = ControlConnection.putInfo(TypeInfoServer.addCall, obj.getDataBean(),Modo.AGREGAR, AddCallActivity.this );
@@ -371,7 +362,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	        protected void onPostExecute(final Boolean success) {
 	         
 	            if (success) {
-	            	 if(modoEdicion){
+	            	 if(isEditMode){
 	            		 Message.showFinalMessage(getFragmentManager(),DialogType.EDITED, AddCallActivity.this, MODULE );
 	            		 
 	            	 }else{
@@ -380,7 +371,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            	 }
 	            	
 	            } else {
-	            	if(modoEdicion){
+	            	if(isEditMode){
 	           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddCallActivity.this, MODULE );
 	           		 
 	           	 }else{
@@ -390,7 +381,7 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	           	 }
 	                Log.d(TAG, "Crear Llamda error");
 	            }
-	            modoEdicion = false;
+
 	        }
 
 	        @Override
@@ -399,5 +390,17 @@ implements View.OnClickListener, SearchDialogInterface, CallsModuleValidations {
 	            Log.d(TAG, "Cancelado ");
 	        }
 	    }
+
+		@Override
+		public void addInfo(String serverResp) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void chargeViewInfo() {
+			// TODO Auto-generated method stub
+			
+		}
 
 }
