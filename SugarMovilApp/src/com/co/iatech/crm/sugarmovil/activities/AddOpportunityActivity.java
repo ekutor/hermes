@@ -472,7 +472,8 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
                 	Oportunidad oportunidad = new Oportunidad( op );
                 	
                 	oportunidad.accept(new DataVisitorsManager());
-                	ActivitiesMediator.getInstance().addObjectInfo(oportunidad);
+                	ActivitiesMediator.getInstance().addObjectInfo(op);
+                	
                 	 return true;
                 }else{
                 	 return false;

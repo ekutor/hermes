@@ -238,7 +238,8 @@ public class ContactActivity extends ContactsModuleActions implements
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
 		}
-	
+		ActivitiesMediator.getInstance().setActualID(selectedBean.getIdAccount(), Modules.ACCOUNTS);
+		ActivitiesMediator.getInstance().setActualID(contactId, MODULE);
 		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
 
 	}

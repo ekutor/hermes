@@ -4,9 +4,16 @@ require 'conexion.php';
 
 function getCall($idCall)
 {
+	$sql = "SELECT * FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c WHERE deleted = '0' AND id = '$idCall' ORDER BY name ASC";
+	
+	return getGenericCall($sql);
+}
+
+function getGenericCall($sql)
+{
+	
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	$sql = "SELECT * FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c WHERE deleted = '0' AND id = '$idCall' ORDER BY name ASC";
 	$res = $mysqli->query($sql);
 	
 	$rows = array();
@@ -40,6 +47,27 @@ function getCall($idCall)
 		$temp = json_encode(utf8ize($rows));
 		return '{"results" :'.$temp.'}';
 	}
+}
+
+function getAccountCalls($idAccount)
+{
+	$sql = "SELECT * FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
+	WHERE a.parent_id='$idAccount' AND deleted = '0' ORDER BY name ASC";
+		
+	return getGenericCall($sql);
+}
+
+
+function getContactCalls($idContact)
+{
+	$sql = "SELECT * FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
+	LEFT JOIN calls_contacts ON a.id = calls_contacts.call_id 
+	WHERE calls_contacts.deleted = '0' 
+	AND a.deleted = '0' 
+	AND calls_contacts.contact_id = '$idContact' 
+	ORDER BY name ASC";
+		
+	return getGenericCall($sql);
 }
 
 

@@ -43,6 +43,7 @@ public class ActivitiesMediator implements IMediator {
 
 	@Override
 	public void defineActualModule(Modules module) {
+		currentIDs.clear();
 		this.actualModule = module;
 	}
 	
@@ -205,13 +206,6 @@ public class ActivitiesMediator implements IMediator {
 			currentIDs.put(module, actualID);
 		}
 	}
-	public void setActualViewCaller(String actualIDViewCaller, Modules module) {
-		if(actualIDViewCaller != null){
-			currentIDs.put(module, actualIDViewCaller);
-			this.lastModuleFrom = module;
-		}
-	}
-
 
 	@Override
 	public String getActualID(Modules module) {

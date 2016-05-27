@@ -95,7 +95,7 @@ $description = getTabs($description);
 	
 	if ($date_closed != '' && $date_closed != 'null') 
 	{
-		$sql = $sql.",date_closed = '$date_closed' ";
+		$sql = $sql.",date_closed = STR_TO_DATE('$date_closed','%Y-%m-%d %H:%i:%s') ";
 	}
 	
 	if (ctype_digit((string)$probability)) 

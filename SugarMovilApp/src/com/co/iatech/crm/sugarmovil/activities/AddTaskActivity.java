@@ -91,7 +91,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	private Modules[] nameVisibleOnPermitedModules = {Modules.ACCOUNTS, Modules.OPPORTUNITIES};
 
 	private AddTask editarTarea;
-
+	
+	private String accountId;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,16 +113,8 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			
 			defineValidations();
 			//carga los contactos de la cuenta actual - aplica solo cuando venga del modulo de cuentas
-			ListModelConverter listConverter = null;
-			switch(actualInfo.getActualPrincipalModule()){
-				case ACCOUNTS:
-					listConverter = listContacts;
-					break;
-				default:
-					break;
-			}
-			if (listConverter != null && !listConverter.hasItems()) {
-				String[] params = { "idAccount", actualInfo.getActualPrincipalId() };
+			if (!listContacts.hasItems() && accountId != null) {
+				String[] params = { "idAccount", accountId};
 				this.executeTask(params, TypeInfoServer.getContactsxAccount);
 
 			} else {
@@ -157,19 +151,23 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		switch(actualInfo.getActualParentModule()){
 			case ACCOUNTS:
 				valorNombre.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
-				
+				accountId = actualInfo.getActualParentId();
 				break;
 			case OPPORTUNITIES:
 				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
 				if(bean != null){
 					valorNombre.setText(bean.getName());
 				}
+				accountId = intent.getStringExtra(Modules.ACCOUNTS.name());
+				break;
+			case CONTACTS:
+				accountId = intent.getStringExtra(Modules.ACCOUNTS.name());
 				break;
 			default:
 				pos = 0;
 				break;
 		}
-		
+		Message.showShortExt("account id "+accountId, getApplicationContext());
 		valorTipo.setSelection(pos);
 		valorTipo.setEnabled(false);
 		
@@ -185,14 +183,23 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				listContacts.getListInfo());
 		contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorContacto.setAdapter(contactAdapter);
-		
-		if(!"".equals(tareaSeleccionada.getContact_id()) ){
+		int contactPosition = 0;
+		if(isEditMode){
 			String contact = tareaSeleccionada.getContact_name();
 			valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));
-		}else if(actualInfo.getActualParentId() != null){
-			int pos = Integer.parseInt(listContacts.convert(actualInfo.getActualParentId(), DataToGet.POS));
-			valorContacto.setSelection(pos);
+		}else if(actualInfo.getActualParentModule().equals(Modules.CONTACTS) ||
+				actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)){
+			if (actualInfo.getActualParentModule().equals(Modules.CONTACTS) ){
+				contactPosition = Integer.parseInt(listContacts.convert(actualInfo.getActualParentId(), DataToGet.POS));	
+			}else if(actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)){
+				contactPosition = Integer.parseInt(listContacts.convert(actualInfo.getActualPrincipalId(), DataToGet.POS));
+			}
+				valorContacto.setSelection(contactPosition);
 		}
+valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual "
+		+actualInfo.getActualPrincipalModule() + " "
+		+ actualInfo.getActualParentId() + " " +actualInfo.getActualPrincipalId() 
+		+ " pos " +contactPosition+ " id account "+accountId);
 
 		// Estado
 

@@ -186,6 +186,11 @@ public class ListTasksActivity extends TasksModuleActions {
 				keyID = "idOpportunity";
 				message = "Cargando Tareas x Oportunidad...";
 				break;
+			case CONTACTS:
+				infoServer = TypeInfoServer.getTaskxContact;
+				keyID = "idContact";
+				message = "Cargando Tareas x Contacto...";
+				break;
 			default:
 					break;
 		}

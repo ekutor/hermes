@@ -9,6 +9,7 @@ function getContactOpportunities($idContact)
 	$sql = "SELECT opportunities.id,opportunities.name FROM opportunities 
 	LEFT JOIN opportunities_contacts ON opportunities.id = opportunities_contacts.opportunity_id 
 	WHERE opportunities.deleted = '0' 
+	AND opportunities_contacts.deleted = '0' 
 	AND opportunities_contacts.contact_id = '$idContact' 
 	ORDER BY name ASC";
 	$res = $mysqli->query($sql);

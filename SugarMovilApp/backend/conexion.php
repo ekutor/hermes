@@ -2,8 +2,8 @@
 
 
 function makeSqlConnection()
-{	
-	$con = new mysqli('localhost', 'root', '2nnIco5FXeVVz1B', 'crmpruebas_laumayer_produccion');	
+{	//crmpruebas_laumayer_produccion
+	$con = new mysqli('localhost', 'root', '2nnIco5FXeVVz1B', 'db_app_crm');	
 
 	return $con;
 }

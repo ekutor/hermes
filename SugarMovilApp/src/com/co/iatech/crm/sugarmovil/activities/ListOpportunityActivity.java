@@ -147,7 +147,6 @@ public class ListOpportunityActivity extends OpportunitiesModuleActions  {
     
     @Override
 	public void chargeViewInfo() {
-        
         obtenerOportunidades = new GetOpportunitiesTask(this, recyclerView);
         obtenerOportunidades.execute();
 	}

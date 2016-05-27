@@ -48,7 +48,6 @@ public class ListContactActivity extends ContactsModuleActions {
 	 */
 
 	private String idCuentaActual;
-	private Contacto mContacto;
 
 	/**
 	 * UI References.
@@ -70,8 +69,7 @@ public class ListContactActivity extends ContactsModuleActions {
 
 			Intent intent = getIntent();
 			idCuentaActual = intent.getStringExtra(Modules.ACCOUNTS.name());
-			Log.d(TAG, "Id cuenta " + idCuentaActual);
-
+			
 			// Main Toolbar
 			mToolbar = (Toolbar) findViewById(R.id.toolbar_list_contact);
 			setSupportActionBar(mToolbar);
