@@ -8,6 +8,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.SlidingTabLayout;
 import com.co.iatech.crm.sugarmovil.activtities.modules.AccountsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.ViewPagerAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
@@ -57,7 +58,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
     private ImageButton imageButtonOpps;
     private ImageButton imageButtonTasks;
     private ImageButton imageButtonCalls;
-    private String idAccount;
+   
     
 
     @Override
@@ -66,7 +67,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
         setContentView(R.layout.tabs_activity_account);
 
         Intent intent = getIntent();
-        idAccount= intent.getStringExtra(MODULE.name());       
+        beanCommunicator= intent.getParcelableExtra(MODULE.name());       
                 
         mCuentaToolbar = (Toolbar) findViewById(R.id.toolbar_account);
      	setSupportActionBar(mCuentaToolbar);
@@ -81,7 +82,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
   
     	this.applyActions();
     	
-		String[] params = { "idAccount", idAccount };
+		String[] params = { "idAccount", beanCommunicator.id };
 		this.executeTask(params, TypeInfoServer.getAccount);
    
     }
@@ -104,7 +105,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
 			Log.d(TAG, "Llamadas X Cuenta ");
 			module = Modules.CALLS;
 		}
-		ActivitiesMediator.getInstance().setActualID(idAccount, MODULE);
+		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
 		ActivitiesMediator.getInstance().showList(AccountActivity.this, module, MODULE);
 	}
 

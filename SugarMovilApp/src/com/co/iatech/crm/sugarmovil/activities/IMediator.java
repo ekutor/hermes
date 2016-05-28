@@ -1,9 +1,10 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+
 import android.content.Context;
 import android.content.Intent;
-
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 
 public interface IMediator {
 
@@ -11,9 +12,9 @@ public interface IMediator {
 	public void returnView();
 	public void addInfotoActivity(Intent intent, Modules mod);
 	public void showEditActivity(Context context, Modules module,  boolean editMode);
-	public String getActualID(Modules module);
-	public void setActualID(String actualID, Modules mod);
-	public String getPreviusID();
-	void showActivity(Context context, Modules module, String newActualID);
+	public ActivityBeanCommunicator getActualID(Modules module);
+	public void setActualID(ActivityBeanCommunicator actualID, Modules mod);
+	public ActivityBeanCommunicator getPreviusID();
+	void showActivity(Context context, Modules module, ActivityBeanCommunicator newActualID);
 	
 }

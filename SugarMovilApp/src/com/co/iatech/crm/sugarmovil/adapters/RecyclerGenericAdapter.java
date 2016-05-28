@@ -6,6 +6,7 @@ import java.util.List;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.search.IAdapterItems;
 import com.co.iatech.crm.sugarmovil.util.Utils;
@@ -56,7 +57,8 @@ try{
             @Override
             public void onClick(View v) {
             	try{
-            	ActivitiesMediator.getInstance().showActivity(context, recyclerModule, searchAdapter.getSearchId());
+            	ActivitiesMediator.getInstance().showActivity(context, recyclerModule,
+            			new ActivityBeanCommunicator(searchAdapter.getSearchId(), searchAdapter.getSearchName()) );
             	} catch (Exception e) {
             		Message.showShortExt(Utils.errorToString(e), context);
             	}

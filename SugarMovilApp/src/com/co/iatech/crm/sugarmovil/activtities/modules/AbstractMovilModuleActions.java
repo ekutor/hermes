@@ -17,6 +17,7 @@ public abstract class AbstractMovilModuleActions extends AppCompatActivity imple
 	protected static final String RESPONSE_TEXT_CORECT_ID = "results";
 	protected ActualInfo  actualInfo;
 	protected boolean isEditMode;
+	protected ActivityBeanCommunicator beanCommunicator;
 	
 	public abstract void applyActions();
 	
@@ -51,17 +52,18 @@ public abstract class AbstractMovilModuleActions extends AppCompatActivity imple
 		try{
 			Intent intent = getIntent();
 	    	Modules fromModule = Modules.getModulefromDBName(intent.getStringExtra(Modules.PREVIOUS_UI.name()));
-	    	String id = "";
+	    	
 	    	actualInfo= new ActualInfo();
 	    	isEditMode = intent.getBooleanExtra(ActivitiesMediator.EDIT_MODE, false);
+	    	ActivityBeanCommunicator info = null;
 	    	if(fromModule != null){
-	    		id = intent.getStringExtra( fromModule.name() );
-	    		actualInfo = new ActualInfo(fromModule, id);
+	    		info = intent.getParcelableExtra( fromModule.name() );
+	    		actualInfo = new ActualInfo(fromModule, info);
 	    	}
 	    	Modules principalModule = ActivitiesMediator.getInstance().getActualModule();
-	    	id = intent.getStringExtra(principalModule.name());
+	    	info = intent.getParcelableExtra(principalModule.name());
 	    	actualInfo.setActualPrincipalModule(principalModule);
-	    	actualInfo.setActualPrincipalId(id);
+	    	actualInfo.setActualPrincipalInfo(info);
 		}catch(Exception e){
 			Message.showShortExt(Utils.errorToString(e), this);
 		}

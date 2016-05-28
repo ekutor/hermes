@@ -38,7 +38,6 @@ public class CallActivity extends CallsModuleActions{
      * Member Variables.
      */
 
-    private String callId;
     private ListUsersConverter lc = new ListUsersConverter();
     
     /**
@@ -129,8 +128,8 @@ public class CallActivity extends CallsModuleActions{
         	selectedBean = (Call) intent.getExtras().get(MODULE.getModuleName());
         	this.showValues(selectedBean);
         }else{
-        	callId = intent.getStringExtra(MODULE.name());
-			String[] params = { "idCall", callId };
+        	beanCommunicator = intent.getParcelableExtra(MODULE.name());
+			String[] params = { "idCall", beanCommunicator.id };
 			this.executeTask(params, TypeInfoServer.getCall);
         }
      

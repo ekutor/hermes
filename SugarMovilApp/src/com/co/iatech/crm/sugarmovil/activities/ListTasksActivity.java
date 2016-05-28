@@ -194,7 +194,7 @@ public class ListTasksActivity extends TasksModuleActions {
 			default:
 					break;
 		}
-        String[] params = { keyID, actualInfo.getActualParentId() };
+        String[] params = { keyID, actualInfo.getActualParentInfo().id };
         this.executeTask(params, infoServer, message);
 	}
 

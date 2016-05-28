@@ -23,6 +23,7 @@ import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
@@ -35,6 +36,7 @@ import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListGenderConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 import com.co.iatech.crm.sugarmovil.util.Utils;
@@ -43,18 +45,6 @@ import com.software.shell.fab.ActionButton;
 
 public class ContactActivity extends ContactsModuleActions implements
 		View.OnClickListener {
-
-	/**
-	 * Debug.
-	 */
-	private static final String TAG = "ContactActivity";
-
-	/**
-	 * Member Variables.
-	 */
-	private String contactId;
-	
-
 	/**
 	 * UI References.
 	 */
@@ -113,7 +103,7 @@ public class ContactActivity extends ContactsModuleActions implements
 		TextView valorCumpleanos = (TextView) findViewById(R.id.valor_cumpleanos);
 		valorCumpleanos.setText(contactoDetalle.getBirthdate());
 		TextView valorGenero = (TextView) findViewById(R.id.valor_genero);
-		valorGenero.setText(contactoDetalle.getGenero_c());
+		valorGenero.setText(ListGenderConverter.getInstance().convert(contactoDetalle.getGenero_c(), DataToGet.VALUE));
 		TextView valorCargo = (TextView) findViewById(R.id.valor_cargo);
 		valorCargo.setText(contactoDetalle.getTitle());
 		TextView valorCertificaciones = (TextView) findViewById(R.id.valor_certificaciones);
@@ -229,8 +219,7 @@ public class ContactActivity extends ContactsModuleActions implements
 
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
-			Log.d(TAG, "Cuenta de Contacto ");
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, selectedBean.getIdAccount());
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""));
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;
@@ -239,8 +228,8 @@ public class ContactActivity extends ContactsModuleActions implements
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
 		}
-		ActivitiesMediator.getInstance().setActualID(selectedBean.getIdAccount(), Modules.ACCOUNTS);
-		ActivitiesMediator.getInstance().setActualID(contactId, MODULE);
+		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""), Modules.ACCOUNTS);
+		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getFirst_name()), MODULE);
 		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
 
 	}
@@ -270,8 +259,8 @@ public class ContactActivity extends ContactsModuleActions implements
 	@Override
 	public void chargeViewInfo() {
 		Intent intent = getIntent();
-		contactId = intent.getStringExtra(MODULE.name());
-		String[] params = { "idContact", contactId };
+		beanCommunicator = intent.getParcelableExtra(MODULE.name());
+		String[] params = { "idContact", beanCommunicator.id };
 		
 		this.executeTask(params, TypeInfoServer.getContact);
 

@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
@@ -27,11 +29,6 @@ public class ProductActivity extends AppCompatActivity {
 
 
     /**
-     * Debug.
-     */
-    private static final String TAG = "ProductActivity";
-
-    /**
      * Tasks.
      */
     private GetProductTask mTareaObtenerProducto = null;
@@ -39,7 +36,6 @@ public class ProductActivity extends AppCompatActivity {
     /**
      * Member Variables.
      */
-    private String mIdProducto;
     private String cantidadStock;
     private ProductoDetalle mProductoDetalle;
 
@@ -47,6 +43,8 @@ public class ProductActivity extends AppCompatActivity {
      * UI References.
      */
     private Toolbar mProductoToolbar;
+
+	private ActivityBeanCommunicator beanCommunicator;
     
 
     @Override
@@ -54,9 +52,9 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         Intent intent = getIntent();
-        mIdProducto = intent.getStringExtra(Modules.OPPORTUNITIES.name());
+        beanCommunicator = intent.getParcelableExtra(Modules.OPPORTUNITIES.name());
         cantidadStock = intent.getStringExtra("cantidad");
-        Log.d(TAG, "Id producto " + mIdProducto);
+ 
 
         // Main Toolbar
         mProductoToolbar = (Toolbar) findViewById(R.id.toolbar_product);
@@ -66,7 +64,7 @@ public class ProductActivity extends AppCompatActivity {
 
         // Tarea obtener producto
         mTareaObtenerProducto = new GetProductTask();
-        mTareaObtenerProducto.execute(String.valueOf(mIdProducto));
+        mTareaObtenerProducto.execute(beanCommunicator.id);
     }
 
     public void ponerValores(ProductoDetalle productoDetalle) {
@@ -126,8 +124,6 @@ public class ProductActivity extends AppCompatActivity {
 
                 return true;
             } catch (Exception e) {
-                Log.d(TAG, "Buscar Producto Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
                 return false;
             }
         }
@@ -145,7 +141,7 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         protected void onCancelled() {
             mTareaObtenerProducto = null;
-            Log.d(TAG, "Cancelado ");
+
         }
     }
 }

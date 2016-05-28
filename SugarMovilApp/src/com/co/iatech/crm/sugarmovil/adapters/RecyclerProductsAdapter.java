@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Producto;
 
@@ -61,7 +62,8 @@ public class RecyclerProductsAdapter extends RecyclerView.Adapter<RecyclerProduc
             public void onClick(View v) {
                 // Account Activity
         
-                ActivitiesMediator.getInstance().showActivity(context,Modules.PRODUCTS, producto.getId());
+                ActivitiesMediator.getInstance().showActivity(context,Modules.PRODUCTS, 
+                		new ActivityBeanCommunicator(producto.getId(),producto.getName()));
                
                 //intentProducto.putExtra(Info.PRODUCTO_CANTIDAD.name(), producto.getSaldo());
             }

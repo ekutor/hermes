@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.search.GenericAdapterSearch;
@@ -33,7 +34,6 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
 	private Toolbar mCuentaToolbar;
 	private ImageButton imgButtonTasks;
 	private ListUsersConverter lc = new ListUsersConverter();
-	private String oppId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
 			@Override
 			public void onClick(View v) {
 				ActivitiesMediator.getInstance().setParentBean(selectedBean);
-				ActivitiesMediator.getInstance().setActualID(oppId, MODULE);
+				ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
 				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS, MODULE);
 
 			}
@@ -163,8 +163,8 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
 			selectedBean = (OportunidadDetalle) intent.getExtras().get(MODULE.getModuleName());
 			this.showValues(selectedBean);
 		} else {
-			oppId = intent.getStringExtra(MODULE.name());
-			String[] params = { "idOpportunity", oppId };
+			beanCommunicator = intent.getParcelableExtra(MODULE.name());
+			String[] params = { "idOpportunity", beanCommunicator.id };
 			this.executeTask(params, TypeInfoServer.getOpportunity);
 		}
 		

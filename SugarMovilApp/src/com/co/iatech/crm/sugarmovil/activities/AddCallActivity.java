@@ -132,14 +132,15 @@ public class AddCallActivity extends CallsModuleEditableActions {
 			
 			boolean enabled = false;
 			
-			 /* Message.showFinalMessage(getFragmentManager(),"parent "
+			/*  Message.showShortExt("parent "
 			  +actualInfo.getActualParentModule().name()+
-			  "id "+ actualInfo.getActualParentId() + " principal : "+actualInfo.getActualPrincipalModule()
-			  +actualInfo.getActualPrincipalId(), AddTaskActivity.this, MODULE);*/
+			  "id "+ actualInfo.getActualParentInfo().id+ " principal : "+actualInfo.getActualPrincipalModule()
+			  +actualInfo.getActualPrincipalInfo().id+actualInfo.getActualParentInfo().name, 
+			  AddCallActivity.this);*/
 			 
 			switch (actualInfo.getActualParentModule()) {
 			case ACCOUNTS:
-				txtParentName.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
+				txtParentName.setText(lac.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
 				break;
 			case OPPORTUNITIES:
 				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
@@ -148,7 +149,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				}
 				break;
 			case CONTACTS:
-				txtParentName.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
+				txtParentName.setText(actualInfo.getActualParentInfo().name);
 				break;
 			default:
 				pos = 0;
@@ -278,11 +279,10 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				}
 
 				txtParentName.setVisibility(visibility);
-				if (actualInfo.getActualParentId() == null && selectedModuleType != null) {
+				if (actualInfo.getActualParentInfo() == null && selectedModuleType != null) {
 					txtParentName.setText(
 							ValidatorActivities.SELECT_MESSAGE + " " +selectedModuleType.getVisualName().toLowerCase());
 				}
-				// txtNombre.setVisibility(visibility);
 			}
 
 			@Override
@@ -396,7 +396,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 							.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
 		
 					if (selectedCall.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
-						selectedCall.setParent_id(actualInfo.getActualParentId());
+						selectedCall.setParent_id(actualInfo.getActualParentInfo().id);
 					}
 				}
 		        

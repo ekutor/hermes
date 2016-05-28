@@ -14,6 +14,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogT
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
@@ -91,7 +92,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 	private AddTask editTask;
 
-	private String accountId;
+	private ActivityBeanCommunicator accountId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			// carga los contactos de la cuenta actual - aplica solo cuando
 			// venga del modulo de cuentas
 			if (!listContacts.hasItems() && accountId != null) {
-				String[] params = { "idAccount", accountId };
+				String[] params = { "idAccount", accountId.id };
 				this.executeTask(params, TypeInfoServer.getContactsxAccount);
 
 			} else {
@@ -158,21 +159,19 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			 
 			switch (actualInfo.getActualParentModule()) {
 			case ACCOUNTS:
-				valorNombre.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
-				accountId = actualInfo.getActualParentId();
+				valorNombre.setText(lac.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
+				accountId = actualInfo.getActualParentInfo();
 				break;
 			case OPPORTUNITIES:
 				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
 				if (bean != null) {
 					valorNombre.setText(bean.getName());
 				}
-				accountId = intent.getStringExtra(Modules.ACCOUNTS.name());
+				accountId = intent.getParcelableExtra(Modules.ACCOUNTS.name());
 				break;
 			case CONTACTS:
 				accountId = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
-				pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
-						Modules.ACCOUNTS.getSugarDBName());
-				valorNombre.setText(lac.convert(accountId, DataToGet.VALUE));
+				valorNombre.setText(accountId.name);
 				break;
 			default:
 				pos = 0;
@@ -241,10 +240,10 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 					|| actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)) {
 				if (actualInfo.getActualParentModule().equals(Modules.CONTACTS)) {
 					contactPosition = Integer
-							.parseInt(listContacts.convert(actualInfo.getActualParentId(), DataToGet.POS));
+							.parseInt(listContacts.convert(actualInfo.getActualParentInfo().id, DataToGet.POS));
 				} else if (actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)) {
 					contactPosition = Integer
-							.parseInt(listContacts.convert(actualInfo.getActualPrincipalId(), DataToGet.POS));
+							.parseInt(listContacts.convert(actualInfo.getActualPrincipalInfo().id, DataToGet.POS));
 				}
 				valorContacto.setSelection(contactPosition);
 			}
@@ -322,11 +321,10 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				}
 
 				valorNombre.setVisibility(visibility);
-				if (actualInfo.getActualParentId() == null && selectedModuleType != null) {
+				if (actualInfo.getActualParentInfo() == null && selectedModuleType != null) {
 					valorNombre.setText(
 							ValidatorActivities.SELECT_MESSAGE + " " +selectedModuleType.getVisualName().toLowerCase());
 				}
-				// txtNombre.setVisibility(visibility);
 			}
 
 			@Override
@@ -436,9 +434,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 						.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
 	
 				if (selectedTask.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
-					selectedTask.setParent_id(actualInfo.getActualParentId());
+					selectedTask.setParent_id(actualInfo.getActualParentInfo().id);
 				}else if(accountId != null){//aplica para contacts
-					selectedTask.setParent_id(accountId);
+					selectedTask.setParent_id(accountId.id);
 				}
 			
 			}

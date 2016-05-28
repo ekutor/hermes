@@ -2,9 +2,9 @@ package com.co.iatech.crm.sugarmovil.activtities.modules;
 
 public class ActualInfo{
 	private Modules actualParentModule;
-	private String actualParentId;
+	private ActivityBeanCommunicator actualParentInfo;
 	private Modules actualPrincipalModule;
-	private String actualPrincipalId;
+	private ActivityBeanCommunicator actualPrincipalInfo;
 	
 	
 	public ActualInfo(){
@@ -12,9 +12,9 @@ public class ActualInfo{
 		actualPrincipalModule = Modules.PREVIOUS_UI;
 	}
 	
-	public ActualInfo(Modules actualParentModule,String actualParentId ){
+	public ActualInfo(Modules actualParentModule,ActivityBeanCommunicator actualParentInfo ){
 		this.actualParentModule = actualParentModule;
-		this.actualParentId  = actualParentId;
+		this.actualParentInfo  = actualParentInfo;
 	}
 
 	public Modules getActualParentModule() {
@@ -25,14 +25,6 @@ public class ActualInfo{
 		this.actualParentModule = actualParentModule;
 	}
 
-	public String getActualParentId() {
-		return actualParentId;
-	}
-
-	public void setActualParentId(String actualParentId) {
-		this.actualParentId = actualParentId;
-	}
-
 	public Modules getActualPrincipalModule() {
 		return actualPrincipalModule;
 	}
@@ -41,13 +33,22 @@ public class ActualInfo{
 		this.actualPrincipalModule = actualPrincipalModule;
 	}
 
-	public String getActualPrincipalId() {
-		return actualPrincipalId;
+	public ActivityBeanCommunicator getActualParentInfo() {
+		return actualParentInfo;
 	}
 
-	public void setActualPrincipalId(String actualPrincipalId) {
-		this.actualPrincipalId = actualPrincipalId;
+	public void setActualParentInfo(ActivityBeanCommunicator actualParentInfo) {
+		this.actualParentInfo = actualParentInfo;
 	}
+
+	public ActivityBeanCommunicator getActualPrincipalInfo() {
+		return actualPrincipalInfo;
+	}
+
+	public void setActualPrincipalInfo(ActivityBeanCommunicator actualPrincipalInfo) {
+		this.actualPrincipalInfo = actualPrincipalInfo;
+	}
+	
 	
 	
 }

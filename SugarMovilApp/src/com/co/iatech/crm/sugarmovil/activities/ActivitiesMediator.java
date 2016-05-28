@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.adapters.search.GenericAdapterSearch;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
@@ -21,16 +21,16 @@ import android.os.Parcelable;
 public class ActivitiesMediator implements IMediator {
 	
 	private Modules actualModule;
-	private String previusID;
+	private ActivityBeanCommunicator previusID;
 	private Parcelable beanInfo;
 	private static ActivitiesMediator instance;
-	private Map<Modules,String> currentIDs;
+	private Map<Modules,ActivityBeanCommunicator> currentIDs;
 	private Modules lastModuleFrom;
 	private GenericBean parentBean;
 	public static final String EDIT_MODE = "MODE";
 
 	private ActivitiesMediator(){
-		currentIDs = new HashMap<Modules,String>();
+		currentIDs = new HashMap<Modules,ActivityBeanCommunicator>();
 	}
 	
 	public static ActivitiesMediator getInstance(){
@@ -55,7 +55,7 @@ public class ActivitiesMediator implements IMediator {
 	 * carga el actual ID del modulo a desplegar 
 	 */
 	@Override
-	public void showActivity(Context context, Modules moduleToStart, String newActualID) {
+	public void showActivity(Context context, Modules moduleToStart, ActivityBeanCommunicator newActualID) {
 		setActualID(newActualID, moduleToStart);
 		Intent intent = null;
 		switch( moduleToStart){
@@ -190,7 +190,7 @@ public class ActivitiesMediator implements IMediator {
 	
 	
 	@Override
-	public String getPreviusID() {
+	public ActivityBeanCommunicator getPreviusID() {
 		return previusID;
 	}
 
@@ -208,7 +208,7 @@ public class ActivitiesMediator implements IMediator {
 	}
 
 	@Override
-	public void setActualID(String actualID, Modules module) {
+	public void setActualID(ActivityBeanCommunicator actualID, Modules module) {
 		if(actualID != null){
 			this.previusID = currentIDs.get(module);
 			currentIDs.put(module, actualID);
@@ -216,7 +216,7 @@ public class ActivitiesMediator implements IMediator {
 	}
 
 	@Override
-	public String getActualID(Modules module) {
+	public ActivityBeanCommunicator getActualID(Modules module) {
 		return currentIDs.get(module);
 	}
 	

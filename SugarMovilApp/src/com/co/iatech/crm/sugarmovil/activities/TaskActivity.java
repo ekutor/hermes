@@ -36,10 +36,6 @@ import android.widget.TextView;
 
 public class TaskActivity extends TasksModuleActions {
 
-    /**
-     * Member Variables.
-     */
-    private String taskId;
 
     /**
      * UI References.
@@ -160,8 +156,8 @@ public class TaskActivity extends TasksModuleActions {
 			selectedBean = (DetailTask) intent.getExtras().get(MODULE.getModuleName());
 			this.showValues(selectedBean);
 		} else {
-			taskId = intent.getStringExtra(MODULE.name());
-			String[] params = { "idTask", taskId };
+			beanCommunicator = intent.getParcelableExtra(MODULE.name());
+			String[] params = { "idTask", beanCommunicator.id };
 			this.executeTask(params, TypeInfoServer.getTask);
 		}
 	}

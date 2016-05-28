@@ -71,7 +71,6 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
  
     private OportunidadDetalle oportSeleccionada;
 
-    private String idCuentaAsociada;
     private TypeActions tipoPermiso;
     private ListAccountConverter lac = new ListAccountConverter();
     private final String VALUE_SELECTED = "PORTALES WEB";
@@ -133,7 +132,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         	 oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          }else{
          	oportSeleccionada = new OportunidadDetalle();
-         	idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
+         	beanCommunicator = intent.getParcelableExtra(Modules.ACCOUNTS.name());
          }
 		
 	}
@@ -236,9 +235,9 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         
         
 	      //Carga Cuentas
-	        if(idCuentaAsociada != null){
+	        if(beanCommunicator != null){
 	        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
-	    		valorCuenta.setText(lac.convert(idCuentaAsociada, DataToGet.VALUE ));
+	    		valorCuenta.setText(lac.convert(beanCommunicator.id, DataToGet.VALUE ));
 	        }
         
     }
