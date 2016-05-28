@@ -1,11 +1,11 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 
 import android.os.Parcelable;
 
 public abstract class TasksModuleActions extends AbstractMovilModuleActions implements TasksModule {
-	protected TareaDetalle selectedBean;
+	protected DetailTask selectedBean;
 
 	@Override
 	public Modules getModule() {

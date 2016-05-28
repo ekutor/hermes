@@ -10,8 +10,8 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.Call;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -65,36 +65,46 @@ public class CallActivity extends CallsModuleActions{
          }
     }
 
-    public void showValues(Llamada llamadaDetalle) {
-        TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
-        valorAsunto.setText(llamadaDetalle.getName());
-        TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
-             
-        valorEstado.setText(
-        		ListsConversor.convert(ConversorsType.CALLS_DIRECTION,llamadaDetalle.getDirection(), DataToGet.VALUE) + " -> "+
-        		ListsConversor.convert(ConversorsType.CALLS_STATUS,llamadaDetalle.getStatus(), DataToGet.VALUE));
-        
-        TextView valorInicio = (TextView) findViewById(R.id.valor_inicio);
-        valorInicio.setText(llamadaDetalle.getDate_start());
-        TextView valorDuracion = (TextView) findViewById(R.id.valor_duracion);
-        valorDuracion.setText(llamadaDetalle.getDuration_hours()+"h "+llamadaDetalle.getDuration_minutes()+"m");
-        TextView valorResultado = (TextView) findViewById(R.id.valor_resultado);
-        valorResultado.setText(llamadaDetalle.getResultadodelallamada_c());
-        TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
-        valorDescripcion.setText(llamadaDetalle.getDescription());
-        TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
-        valorAsignado.setText(lc.convert(llamadaDetalle.getAssigned_user_id(), DataToGet.VALUE ));
-        
-        TextView valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
-        valorCuenta.setText(llamadaDetalle.getParent_name());
-        TextView valorCampana = (TextView) findViewById(R.id.valor_campana);
-        valorCampana.setText(llamadaDetalle.getCampaign_name());
+    public void showValues(Call detailCallBean) {
+        try{
+	    	TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
+	        valorAsunto.setText(detailCallBean.getName());
+	        TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
+	             
+	        valorEstado.setText(
+	        		ListsConversor.convert(ConversorsType.CALLS_DIRECTION,detailCallBean.getDirection(), DataToGet.VALUE) + " -> "+
+	        		ListsConversor.convert(ConversorsType.CALLS_STATUS,detailCallBean.getStatus(), DataToGet.VALUE));
+	        
+	        TextView valorInicio = (TextView) findViewById(R.id.valor_inicio);
+	        valorInicio.setText(Utils.transformTimeBakendToUI(detailCallBean.getDate_start()));
+	        TextView valorDuracion = (TextView) findViewById(R.id.valor_duracion);
+	        valorDuracion.setText(detailCallBean.getDuration_hours()+"h "+detailCallBean.getDuration_minutes()+"m");
+	        TextView valorResultado = (TextView) findViewById(R.id.valor_resultado);
+	        valorResultado.setText(detailCallBean.getResultadodelallamada_c());
+	        TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
+	        valorDescripcion.setText(detailCallBean.getDescription());
+	        TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
+	        valorAsignado.setText(lc.convert(detailCallBean.getAssigned_user_id(), DataToGet.VALUE ));
+	        
+	        TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
+	    	valorTipo.setText(ListsConversor.convert(ConversorsType.TASKS_TYPE, detailCallBean.getParent_type(), DataToGet.VALUE));
+	
+	    	TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
+	        valorNombre.setText(detailCallBean.getParent_name());
+	        
+	        TextView valorCampana = (TextView) findViewById(R.id.valor_campana);
+	        valorCampana.setText(detailCallBean.getCampaign_name());
+	    }catch(Exception e){
+	        
+			 Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
+	     }
+  
     }
     
     @Override
     public void onResume() {
     	try{
-    		selectedBean = (Llamada) ActivitiesMediator.getInstance().getBeanInfo();
+    		selectedBean = (Call) ActivitiesMediator.getInstance().getBeanInfo();
 	    	if(selectedBean != null){
 	    		this.showValues(selectedBean);
 	    	}
@@ -115,12 +125,11 @@ public class CallActivity extends CallsModuleActions{
 	public void chargeViewInfo() {
         Intent intent = getIntent();
 
-        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Llamada ){
-        	selectedBean = (Llamada) intent.getExtras().get(MODULE.getModuleName());
+        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  Call ){
+        	selectedBean = (Call) intent.getExtras().get(MODULE.getModuleName());
         	this.showValues(selectedBean);
         }else{
         	callId = intent.getStringExtra(MODULE.name());
-        	   Message.showShortExt("Call id"+ callId, this);
 			String[] params = { "idCall", callId };
 			this.executeTask(params, TypeInfoServer.getCall);
         }
@@ -135,7 +144,7 @@ public class CallActivity extends CallsModuleActions{
   			
   			if (jArr.length() > 0) {
   				JSONObject obj = jArr.getJSONObject(0);
-  				selectedBean = new Llamada(obj);
+  				selectedBean = new Call(obj);
   				showValues(selectedBean);
   			}
   			

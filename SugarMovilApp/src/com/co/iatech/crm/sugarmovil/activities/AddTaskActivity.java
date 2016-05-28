@@ -26,7 +26,7 @@ import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListContactConverter;
@@ -68,7 +68,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	 * Member Variables.
 	 */
 
-	private TareaDetalle tareaSeleccionada;
+	private DetailTask selectedTask;
 
 	private ListUsersConverter lc = new ListUsersConverter();
 	private ListAccountConverter lac = new ListAccountConverter();
@@ -88,9 +88,8 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	public String resultado;
 
 	private boolean selectedTypeTaskAccount;
-	private Modules[] nameVisibleOnPermitedModules = { Modules.ACCOUNTS, Modules.OPPORTUNITIES };
 
-	private AddTask editarTarea;
+	private AddTask editTask;
 
 	private String accountId;
 
@@ -142,9 +141,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		Intent intent = getIntent();
 
 		if (isEditMode) {
-			tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
+			selectedTask = intent.getParcelableExtra(MODULE.getModuleName());
 		} else {
-			tareaSeleccionada = new TareaDetalle();
+			selectedTask = new DetailTask();
 			int pos = 0;
 			
 			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
@@ -212,7 +211,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 		if (isEditMode) {
 			// Contact
-			String contact = tareaSeleccionada.getContact_name();
+			String contact = selectedTask.getContact_name();
 			valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));
 			valorContacto.setVisibility(View.INVISIBLE);
 			TextView valorContactoOculto = (TextView) findViewById(R.id.text_contacto_hidden);
@@ -220,19 +219,19 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			valorContactoOculto.setVisibility(View.VISIBLE);
 			valorContactoOculto.setText(contact);
 			// Parent
-			if (tareaSeleccionada.getParent_id() != null && tareaSeleccionada.getParent_id().length() > 1) {
-				valorNombre.setText(tareaSeleccionada.getParent_name());
+			if (selectedTask.getParent_id() != null && selectedTask.getParent_id().length() > 1) {
+				valorNombre.setText(selectedTask.getParent_name());
 			}
 
 			// Carga Tipos
-			if (tareaSeleccionada.getParent_type() != null) {
+			if (selectedTask.getParent_type() != null) {
 				int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
-						tareaSeleccionada.getParent_type());
+						selectedTask.getParent_type());
 				valorTipo.setSelection(pos);
 			}
 
-			if (tareaSeleccionada.getPriority() != null) {
-				valorPrioridad.setSelection(ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority()));
+			if (selectedTask.getPriority() != null) {
+				valorPrioridad.setSelection(ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, selectedTask.getPriority()));
 			}
 
 		} else {
@@ -258,10 +257,10 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 		GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
-		tareaSeleccionada.setCreated_by(u.getId());
+		selectedTask.setCreated_by(u.getId());
 
 		asignadoA.setText(u.getFirst_name() + " " + u.getLast_name());
-		tareaSeleccionada.setAssigned_user_id(u.getId());
+		selectedTask.setAssigned_user_id(u.getId());
 		}
 
 	}
@@ -341,21 +340,21 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	@Override
 	public void chargeViewInfo() {
 
-		valorAsunto.setText(tareaSeleccionada.getName());
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, tareaSeleccionada.getStatus());
+		valorAsunto.setText(selectedTask.getName());
+		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedTask.getStatus());
 		valorEstado.setSelection(pos);
-		valorFechaInicio.setText(Utils.transformTimeBakendToUI(tareaSeleccionada.getDate_start()));
-		valorFechaVen.setText(Utils.transformTimeBakendToUI(tareaSeleccionada.getDate_due()));
+		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedTask.getDate_start()));
+		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedTask.getDate_due()));
 
 		// contacto
 
-		valorTrabajoEstimado.setText(tareaSeleccionada.getTrabajo_estimado_c());
-		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority());
+		valorTrabajoEstimado.setText(selectedTask.getTrabajo_estimado_c());
+		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, selectedTask.getPriority());
 		valorPrioridad.setSelection(pos);
-		valorDescripcion.setText(tareaSeleccionada.getDescription());
+		valorDescripcion.setText(selectedTask.getDescription());
 
 		// Asignado
-		asignadoA.setText(lc.convert(tareaSeleccionada.getAssigned_user_id(), DataToGet.VALUE));
+		asignadoA.setText(lc.convert(selectedTask.getAssigned_user_id(), DataToGet.VALUE));
 		imgButtonGuardar.setVisibility(View.VISIBLE);
 
 	}
@@ -404,51 +403,51 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			}
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
 
-			tareaSeleccionada.setName(valorAsunto.getText().toString());
-			tareaSeleccionada.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
+			selectedTask.setName(valorAsunto.getText().toString());
+			selectedTask.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
 					valorEstado.getSelectedItem().toString(), DataToGet.CODE));
 
 			if (valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1) {
-				tareaSeleccionada.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
+				selectedTask.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
 			}
 
 			if (valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1) {
-				tareaSeleccionada.setDate_due(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
+				selectedTask.setDate_due(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
 			}
 
 			// contacto
 
 			if (valorContacto.getSelectedItemPosition() > 0) {
-				tareaSeleccionada.setContact_name(valorContacto.getSelectedItem().toString());
-				tareaSeleccionada.setContact_id(
+				selectedTask.setContact_name(valorContacto.getSelectedItem().toString());
+				selectedTask.setContact_id(
 						listContacts.convert(valorContacto.getSelectedItem().toString(), DataToGet.CODE));
 			}
 
-			tareaSeleccionada.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
-			tareaSeleccionada.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
+			selectedTask.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
+			selectedTask.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
 					valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
-			tareaSeleccionada.setDescription(valorDescripcion.getText().toString());
+			selectedTask.setDescription(valorDescripcion.getText().toString());
 
 			// tipo Tarea
 			
 			if(!isEditMode){
 				String selectedType = valorTipo.getSelectedItem().toString();
-				tareaSeleccionada
+				selectedTask
 						.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
 	
-				if (tareaSeleccionada.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
-					tareaSeleccionada.setParent_id(actualInfo.getActualParentId());
+				if (selectedTask.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
+					selectedTask.setParent_id(actualInfo.getActualParentId());
 				}else if(accountId != null){//aplica para contacts
-					tareaSeleccionada.setParent_id(accountId);
+					selectedTask.setParent_id(accountId);
 				}
 			
 			}
 			String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(), DataToGet.CODE);
-			tareaSeleccionada.setAssigned_user_id(idUsuarioAsignado);
+			selectedTask.setAssigned_user_id(idUsuarioAsignado);
 
-			editarTarea = new AddTask();
+			editTask = new AddTask();
 
-			editarTarea.execute(tareaSeleccionada);
+			editTask.execute(selectedTask);
 		}
 
 	}
@@ -512,7 +511,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		protected Boolean doInBackground(Object... params) {
 			try {
 
-				TareaDetalle obj = (TareaDetalle) params[0];
+				DetailTask obj = (DetailTask) params[0];
 
 				// Resultado
 				resultado = null;

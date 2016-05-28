@@ -14,8 +14,8 @@ import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.Call;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
@@ -46,7 +46,7 @@ public class ListCallsActivity extends CallsModuleActions {
     /**
      * Member Variables.
      */
-    private ArrayList<Llamada> callsXParent;
+    private ArrayList<Call> callsXParent;
 
     /**
      * UI References.
@@ -67,7 +67,7 @@ public class ListCallsActivity extends CallsModuleActions {
         try{
         // SoftKey
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        callsXParent = new ArrayList<Llamada>();
+        callsXParent = new ArrayList<Call>();
         getInfoFromMediator();
         
         // Main Toolbar
@@ -230,7 +230,7 @@ public class ListCallsActivity extends CallsModuleActions {
 			callsXParent.clear();
 			for (int i = 0; i < jArr.length(); i++) {
 				JSONObject obj = jArr.getJSONObject(i);
-				callsXParent.add(new Llamada(obj));
+				callsXParent.add(new Call(obj));
 			}
 			if (callsXParent.size() > 0) {
 
@@ -238,7 +238,7 @@ public class ListCallsActivity extends CallsModuleActions {
 						AdapterSearchUtil.transform(callsXParent), MODULE);
 				this.mRecyclerView.setAdapter(rv);
 			} else {
-				Message.showShort("No tiene tareas asociadas", getApplicationContext());
+				Message.showShort("No tiene Llamadas asociadas", getApplicationContext());
 			}
 		} catch (Exception e) {
 			Message.showShortExt(Utils.errorToString(e), getApplicationContext());

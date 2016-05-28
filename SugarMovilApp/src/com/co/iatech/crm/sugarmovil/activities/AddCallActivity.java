@@ -11,12 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
@@ -37,8 +39,10 @@ import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
+import com.co.iatech.crm.sugarmovil.model.Call;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListCampaignsConverter;
@@ -62,7 +66,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
     /**
      * Member Variables.
      */
-    private Llamada llamadaSeleccionada;
+    private Call selectedCall;
     
     private ListUsersConverter lc = new ListUsersConverter();
     private ListAccountConverter lac = new ListAccountConverter();
@@ -74,9 +78,12 @@ public class AddCallActivity extends CallsModuleEditableActions {
     private Toolbar mLlamadaToolbar;
     private Button botonFechaInicio, botonHoraInicio;
     private ImageButton imgButtonGuardar;
-    private TextView asignadoA,valorFechaInicio, valorCuenta;
+    private TextView asignadoA,valorFechaInicio, txtParentName;
     private EditText valorAsunto,valorDescripcion,valorDuracionHrs;
-    private Spinner valorCampana, valorResultado,valorDireccion, valorEstado, valorDuracionMin;
+    private Spinner spinnerCampaing, spinnerResult,spinnerDirection, spinnerState;
+    private Spinner spinnerMinutes, spinnerType;
+
+	private boolean selectedTypeTaskAccount;
 
 
 	public String resultado;
@@ -103,7 +110,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	        if(isEditMode){
 	        	TextView title = (TextView) findViewById(R.id.text_call_toolbar);
 	        	title.setText("EDITAR LLAMADA");
-	        	chargeValues();
+	        	chargeViewInfo();
 	        }
         }catch(Exception e){
        	   Message.showShortExt(Utils.errorToString(e), this);
@@ -115,10 +122,43 @@ public class AddCallActivity extends CallsModuleEditableActions {
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
          if(isEditMode){
         	 Intent intent = getIntent();
-        	 llamadaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
+        	 selectedCall = intent.getParcelableExtra(MODULE.getModuleName());
          }else{
-        	 llamadaSeleccionada = new Llamada();
-         }
+        	 selectedCall = new Call();
+			int pos = 0;
+			
+			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+					actualInfo.getActualParentModule().getSugarDBName());
+			
+			boolean enabled = false;
+			
+			 /* Message.showFinalMessage(getFragmentManager(),"parent "
+			  +actualInfo.getActualParentModule().name()+
+			  "id "+ actualInfo.getActualParentId() + " principal : "+actualInfo.getActualPrincipalModule()
+			  +actualInfo.getActualPrincipalId(), AddTaskActivity.this, MODULE);*/
+			 
+			switch (actualInfo.getActualParentModule()) {
+			case ACCOUNTS:
+				txtParentName.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
+				break;
+			case OPPORTUNITIES:
+				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
+				if (bean != null) {
+					txtParentName.setText(bean.getName());
+				}
+				break;
+			case CONTACTS:
+				txtParentName.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
+				break;
+			default:
+				pos = 0;
+				enabled = true;
+				break;
+			}
+			
+			spinnerType.setSelection(pos);
+			spinnerType.setEnabled(enabled);
+		}
          
 	}
 	
@@ -129,7 +169,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 			asignadoA.setText(su.getUser_name());
 		}else if(selectedBean instanceof Cuenta){
 			Cuenta ac = (Cuenta) selectedBean;
-			valorCuenta.setText(ac.getName());
+			txtParentName.setText(ac.getName());
 		}
 	}
 	
@@ -138,54 +178,60 @@ public class AddCallActivity extends CallsModuleEditableActions {
 		asignadoA = (TextView) findViewById(R.id.txt_valor_asignado_a);
 		 
 		 // Direccion Llamada        
-        valorDireccion = (Spinner) findViewById(R.id.valor_direccion);
+        spinnerDirection = (Spinner) findViewById(R.id.valor_direccion);
         ArrayAdapter<String> dirAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_DIRECTION));
         dirAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorDireccion.setAdapter(dirAdapter);
+        spinnerDirection.setAdapter(dirAdapter);
         
         // Estado
-        valorEstado = (Spinner) findViewById(R.id.valor_estado);
+        spinnerState = (Spinner) findViewById(R.id.valor_estado);
         ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_STATUS));
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorEstado.setAdapter(estadoAdapter);
+        spinnerState.setAdapter(estadoAdapter);
         //Resultado
-        valorResultado = (Spinner) findViewById(R.id.valor_resultado);
+        spinnerResult = (Spinner) findViewById(R.id.valor_resultado);
         ArrayAdapter<String> resAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_RESULT));
         resAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorResultado.setAdapter(resAdapter);
+        spinnerResult.setAdapter(resAdapter);
         
         // Duracion
-        valorDuracionMin = (Spinner) findViewById(R.id.valor_duracion);
+        spinnerMinutes = (Spinner) findViewById(R.id.valor_duracion);
         ArrayAdapter<String> durAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.CALLS_MINS_DURATION));
         durAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorDuracionMin.setAdapter(durAdapter);
+        spinnerMinutes.setAdapter(durAdapter);
         
       
       //Carga Campañas
-        valorCampana = (Spinner) findViewById(R.id.valor_campana);
+        spinnerCampaing = (Spinner) findViewById(R.id.valor_campana);
         ListCampaignsConverter lcc = new ListCampaignsConverter();
         ArrayAdapter<String> campAdapter = new ArrayAdapter<String>(AddCallActivity.this,
                 android.R.layout.simple_spinner_item,  lcc.getListInfo());
-        valorCampana.setAdapter(campAdapter);
-        valorCampana.setSelection(0);
+        spinnerCampaing.setAdapter(campAdapter);
+        spinnerCampaing.setSelection(0);
         
         GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
-		llamadaSeleccionada.setCreated_by(u.getId());
-		if(!isEditMode){
-	        asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
-	        llamadaSeleccionada.setAssigned_user_id(u.getId());
-		}
-        
+		selectedCall.setCreated_by(u.getId());
+		asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
+	    selectedCall.setAssigned_user_id(u.getId());
 		
-		 //Carga Cuentas
-        if(actualInfo.getActualParentModule().equals(Modules.ACCOUNTS)){
-        	valorCuenta.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE ));
-        }
+	    if(isEditMode){
+			// Parent
+			if (selectedCall.getParent_id() != null && selectedCall.getParent_id().length() > 1) {
+				txtParentName.setText(selectedCall.getParent_name());
+			}
+			// Carga Tipos
+			if (selectedCall.getParent_type() != null) {
+				int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+						selectedCall.getParent_type());
+				spinnerType.setSelection(pos);
+			}
+
+		}
     }
 	
 	 public void createWidgets() {
@@ -206,43 +252,73 @@ public class AddCallActivity extends CallsModuleEditableActions {
         imgButtonGuardar.setOnClickListener(this);
         
         //Cuentas
-        valorCuenta = (TextView) findViewById(R.id.valor_cuenta);
-        valorCuenta.setOnClickListener(this);
-        valorCuenta.setText(ValidatorActivities.SELECT_MESSAGE);
+    	txtParentName = (TextView) findViewById(R.id.valor_nombre);
+    	txtParentName.setOnClickListener(this);
+        
+        spinnerType = (Spinner) findViewById(R.id.valor_tipo);
+		ArrayAdapter<String> tipoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+				ListsConversor.getValuesList(ConversorsType.TASKS_TYPE));
+		tipoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerType.setAdapter(tipoAdapter);
+		spinnerType.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				int visibility;
+				visibility = View.INVISIBLE;
+				selectedTypeTaskAccount = false;
+				Modules selectedModuleType = null;
+				for (Modules mod : nameVisibleOnPermitedModules) {
+					if (spinnerType.getSelectedItem().toString().toLowerCase()
+							.contains(mod.getVisualName().toLowerCase())) {
+						visibility = View.VISIBLE;
+						selectedTypeTaskAccount = true;
+						selectedModuleType = mod;
+						break;
+					}
+				}
+
+				txtParentName.setVisibility(visibility);
+				if (actualInfo.getActualParentId() == null && selectedModuleType != null) {
+					txtParentName.setText(
+							ValidatorActivities.SELECT_MESSAGE + " " +selectedModuleType.getVisualName().toLowerCase());
+				}
+				// txtNombre.setVisibility(visibility);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
 	 
 	  }
-	 
-	 public void chargeValues() {
-		valorAsunto.setText(llamadaSeleccionada.getName());
-	    valorDescripcion.setText(llamadaSeleccionada.getDescription());
-	    valorFechaInicio.setText(llamadaSeleccionada.getDate_start());
+	 @Override
+	 public void chargeViewInfo() {
+		valorAsunto.setText(selectedCall.getName());
+	    valorDescripcion.setText(selectedCall.getDescription());
+	    valorFechaInicio.setText(selectedCall.getDate_start());
 	
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_DIRECTION, llamadaSeleccionada.getDirection());
-		valorDireccion.setSelection(pos);
+		int pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_DIRECTION, selectedCall.getDirection());
+		spinnerDirection.setSelection(pos);
 		
-		pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_STATUS, llamadaSeleccionada.getStatus());
-		valorEstado.setSelection(pos);
+		pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_STATUS, selectedCall.getStatus());
+		spinnerState.setSelection(pos);
 		
-		pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_RESULT, llamadaSeleccionada.getResultadodelallamada_c());
-		valorResultado.setSelection(pos);
+		pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_RESULT, selectedCall.getResultadodelallamada_c());
+		spinnerResult.setSelection(pos);
 		
-		pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_MINS_DURATION, llamadaSeleccionada.getDuration_minutes());
-		valorDuracionMin.setSelection(pos);
+		pos = ListsConversor.getPosItemOnList(ConversorsType.CALLS_MINS_DURATION, selectedCall.getDuration_minutes());
+		spinnerMinutes.setSelection(pos);
 		
-		valorDuracionHrs.setText(llamadaSeleccionada.getDuration_hours());
-  
-        // Cuenta
-		if(llamadaSeleccionada.getParent_id() != null && llamadaSeleccionada.getParent_id().length() > 1){
-			valorCuenta.setText(lac.convert(llamadaSeleccionada.getParent_id(), DataToGet.VALUE));
-		}
-        
+		valorDuracionHrs.setText(selectedCall.getDuration_hours());
+          
         //Campaña
         ListCampaignsConverter lcc = new ListCampaignsConverter();
-        pos = Integer.parseInt(lcc.convert(llamadaSeleccionada.getCampaign_id(), DataToGet.POS ));
-        valorCampana.setSelection(pos);
+        pos = Integer.parseInt(lcc.convert(selectedCall.getCampaign_id(), DataToGet.POS ));
+        spinnerCampaing.setSelection(pos);
         
         // Asignado
-        asignadoA.setText(lc.convert(llamadaSeleccionada.getAssigned_user_id(), DataToGet.VALUE ));
+        asignadoA.setText(lc.convert(selectedCall.getAssigned_user_id(), DataToGet.VALUE ));
         
         imgButtonGuardar.setVisibility(View.VISIBLE);
         
@@ -254,9 +330,9 @@ public class AddCallActivity extends CallsModuleEditableActions {
 			data = new LinkedHashMap<View, CharSequence>();
 			
 			data.put(valorAsunto,"El campo Asunto no puede estar vacio");
-			data.put(valorResultado, "Debe seleccionar un Resultado de Llamada");
-			data.put(valorDireccion, "Debe seleccionar un Estado"); 
-			data.put(valorEstado,"Debe seleccionar un Estado ");
+			data.put(spinnerResult, "Debe seleccionar un Resultado de Llamada");
+			data.put(spinnerDirection, "Debe seleccionar un Estado"); 
+			data.put(spinnerState,"Debe seleccionar un Estado ");
 			
 	        
 			ValidatorGeneric.getInstance().define(data);
@@ -278,8 +354,14 @@ public class AddCallActivity extends CallsModuleEditableActions {
 			}else if(v.getId() == botonHoraInicio.getId()){
 				DialogFragment newFragment = new TimePickerFragment(this,valorFechaInicio,isEditMode);
 				newFragment.show(getFragmentManager(), "hourCierrePicker");
-			}else if(v.getId() == valorCuenta.getId()){
-				Message.showAccountsDialog(getSupportFragmentManager());
+			}else if (v.getId() == txtParentName.getId()) {
+					switch (actualInfo.getActualParentModule()) {
+					case ACCOUNTS:
+						Message.showAccountsDialog(getSupportFragmentManager());
+						break;
+					default:
+						break;
+					}
 			}else if(v.getId() == botonFechaInicio.getId()){
 				DialogFragment newFragment = new DatePickerFragment(this,valorFechaInicio,isEditMode);
 				newFragment.show(getFragmentManager(), "dateCierrePicker");
@@ -288,38 +370,47 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){
 					return;
 				}
-				
+				if (selectedTypeTaskAccount && !ValidatorGeneric.getInstance().execute(txtParentName,
+						"Seleccionó un tipo, debe seleccionar la informacion relacionada", getApplicationContext())) {
+					return;
+				}
 
 	            if(valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1){
-	            	llamadaSeleccionada.setDate_start(valorFechaInicio.getText().toString());
+	            	selectedCall.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
 	            }
+
 	            imgButtonGuardar.setVisibility(View.INVISIBLE);
-	            llamadaSeleccionada.setDescription(valorDescripcion.getText().toString());
-	            llamadaSeleccionada.setName(valorAsunto.getText().toString());
-	            llamadaSeleccionada.setDuration_hours(valorDuracionHrs.getText().toString());
-	            llamadaSeleccionada.setDirection(ListsConversor.convert(ConversorsType.CALLS_DIRECTION, valorDireccion.getSelectedItem().toString(), DataToGet.CODE));
-	            llamadaSeleccionada.setStatus(ListsConversor.convert(ConversorsType.CALLS_STATUS, valorEstado.getSelectedItem().toString(), DataToGet.CODE));
-	            llamadaSeleccionada.setDuration_minutes(ListsConversor.convert(ConversorsType.CALLS_MINS_DURATION, valorDuracionMin.getSelectedItem().toString(), DataToGet.CODE));
-	            llamadaSeleccionada.setResultadodelallamada_c(ListsConversor.convert(ConversorsType.CALLS_RESULT, valorResultado.getSelectedItem().toString(), DataToGet.CODE));
+	            selectedCall.setDescription(valorDescripcion.getText().toString());
+	            selectedCall.setName(valorAsunto.getText().toString());
+	            selectedCall.setDuration_hours(valorDuracionHrs.getText().toString());
+	            selectedCall.setDirection(ListsConversor.convert(ConversorsType.CALLS_DIRECTION, spinnerDirection.getSelectedItem().toString(), DataToGet.CODE));
+	            selectedCall.setStatus(ListsConversor.convert(ConversorsType.CALLS_STATUS, spinnerState.getSelectedItem().toString(), DataToGet.CODE));
+	            selectedCall.setDuration_minutes(ListsConversor.convert(ConversorsType.CALLS_MINS_DURATION, spinnerMinutes.getSelectedItem().toString(), DataToGet.CODE));
+	            selectedCall.setResultadodelallamada_c(ListsConversor.convert(ConversorsType.CALLS_RESULT, spinnerResult.getSelectedItem().toString(), DataToGet.CODE));
 	            
-	            // Cuenta
-	            if(valorCuenta.getText() != null && valorCuenta.getText().length() > 0 ){
-	            	llamadaSeleccionada.setParent_id(lac.convert(valorCuenta.getText().toString(), DataToGet.CODE));
-	            }
-		        
-		        llamadaSeleccionada.setParent_type("Accounts");
+	            // tipo Tarea
+				
+				if(!isEditMode){
+					String selectedType = spinnerType.getSelectedItem().toString();
+					selectedCall
+							.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
+		
+					if (selectedCall.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
+						selectedCall.setParent_id(actualInfo.getActualParentId());
+					}
+				}
 		        
 		        ListCampaignsConverter lcc = new ListCampaignsConverter();
-		        llamadaSeleccionada.setCampaign_id(lcc.convert(valorCampana.getSelectedItem().toString(), DataToGet.CODE));
+		        selectedCall.setCampaign_id(lcc.convert(spinnerCampaing.getSelectedItem().toString(), DataToGet.CODE));
 		        
 		        String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(),DataToGet.CODE);
-		        llamadaSeleccionada.setAssigned_user_id(idUsuarioAsignado);
+		        selectedCall.setAssigned_user_id(idUsuarioAsignado);
 		        
 		        
 		
 		        AddCallTask tareaEditarLlamada = new AddCallTask();
 		        
-		        tareaEditarLlamada.execute(llamadaSeleccionada);
+		        tareaEditarLlamada.execute(selectedCall);
 			}
 		}
 		
@@ -332,7 +423,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	        protected Boolean doInBackground(Object... params) {
 	            try {
 	                
-	                Llamada obj = (Llamada)params[0];
+	                Call obj = (Call)params[0];
 
 	                // Resultado
 	                resultado = null;
@@ -393,12 +484,6 @@ public class AddCallActivity extends CallsModuleEditableActions {
 
 		@Override
 		public void addInfo(String serverResp) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void chargeViewInfo() {
 			// TODO Auto-generated method stub
 			
 		}

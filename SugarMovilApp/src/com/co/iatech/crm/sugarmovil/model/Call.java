@@ -15,16 +15,16 @@ import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
 /**
  * Representa un objeto parcelable para el manejo de las llamadas.
  */
-public class Llamada extends GenericBean implements Parcelable, Visitable {
+public class Call extends GenericBean implements Parcelable, Visitable {
 
-    public static final Creator<Llamada> CREATOR
-            = new Creator<Llamada>() {
-        public Llamada createFromParcel(Parcel in) {
-            return new Llamada(in);
+    public static final Creator<Call> CREATOR
+            = new Creator<Call>() {
+        public Call createFromParcel(Parcel in) {
+            return new Call(in);
         }
 
-        public Llamada[] newArray(int size) {
-            return new Llamada[size];
+        public Call[] newArray(int size) {
+            return new Call[size];
         }
     };
 
@@ -63,7 +63,7 @@ public class Llamada extends GenericBean implements Parcelable, Visitable {
     private String campaign_name;
     private String campaign_id;
 
-    public Llamada(JSONObject obj) throws JSONException {
+    public Call(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
     	setName(validate(obj.getString("name")));
     	setDate_entered(validate(obj.getString("date_entered")));
@@ -101,7 +101,7 @@ public class Llamada extends GenericBean implements Parcelable, Visitable {
     	setCampaign_id(validate(obj.getString("campaign_id")));
     }
 
-    public Llamada(Parcel in) {
+    public Call(Parcel in) {
     	setId(validate(in.readString()));
     	setName(validate(in.readString()));
     	setDate_entered(validate(in.readString()));
@@ -139,7 +139,7 @@ public class Llamada extends GenericBean implements Parcelable, Visitable {
     	setCampaign_id(validate(in.readString()));
     }
 
-    public Llamada() {
+    public Call() {
 	}
 
 	@Override
@@ -264,7 +264,7 @@ public class Llamada extends GenericBean implements Parcelable, Visitable {
     }
 
     public void setDuration_hours(String duration_hours) {
-        this.duration_hours = duration_hours;
+        this.duration_hours = validateNull(duration_hours);
     }
 
     public String getDuration_minutes() {

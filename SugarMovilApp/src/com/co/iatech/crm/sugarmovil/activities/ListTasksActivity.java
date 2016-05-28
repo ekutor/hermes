@@ -14,7 +14,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
@@ -48,7 +48,7 @@ public class ListTasksActivity extends TasksModuleActions {
      */
  
   
-    private List<TareaDetalle> tasksXParent;
+    private List<DetailTask> tasksXParent;
 
     /**
      * UI References.
@@ -71,7 +71,7 @@ public class ListTasksActivity extends TasksModuleActions {
         // SoftKey
         	
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        tasksXParent = new ArrayList<TareaDetalle>();
+        tasksXParent = new ArrayList<DetailTask>();
         getInfoFromMediator();
        
 
@@ -232,7 +232,7 @@ public class ListTasksActivity extends TasksModuleActions {
 			try{
 				for (int i = 0; i < jArr.length(); i++) {
 					JSONObject obj = jArr.getJSONObject(i);
-					tasksXParent.add(new TareaDetalle(obj));
+					tasksXParent.add(new DetailTask(obj));
 				}
 			}catch(JSONException je){
 				

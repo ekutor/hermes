@@ -1,11 +1,11 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
-import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Call;
 
 import android.os.Parcelable;
 
 public abstract class CallsModuleActions extends AbstractMovilModuleActions implements CallsModule{
-	protected Llamada selectedBean;
+	protected Call selectedBean;
 
 	@Override
 	public Modules getModule() {

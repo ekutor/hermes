@@ -12,7 +12,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -69,7 +69,7 @@ public class TaskActivity extends TasksModuleActions {
     }
     
 
-    public void showValues(TareaDetalle tareaDetalle) {
+    public void showValues(DetailTask tareaDetalle) {
     	try{
   
     	TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
@@ -102,20 +102,21 @@ public class TaskActivity extends TasksModuleActions {
     	
         TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
         valorAsignado.setText(tareaDetalle.getAssigned_user_name());
-    	 }catch(Exception e){
-       
-    		 Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
-          }
-       
+    	 
     	TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
     	
         valorNombre.setText(tareaDetalle.getParent_name());
+    	}catch(Exception e){
+    	       
+   		 Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE );
+         }
+      
     }
 
     @Override
     public void onResume() {
     	try{
-    		selectedBean = (TareaDetalle) ActivitiesMediator.getInstance().getBeanInfo();
+    		selectedBean = (DetailTask) ActivitiesMediator.getInstance().getBeanInfo();
 	    	if(selectedBean != null){
 	    		this.showValues(selectedBean);
 	    	}
@@ -140,7 +141,7 @@ public class TaskActivity extends TasksModuleActions {
 			
 			if (jArr.length() > 0) {
 				JSONObject obj = jArr.getJSONObject(0);
-				selectedBean = new TareaDetalle(obj);
+				selectedBean = new DetailTask(obj);
 				showValues(selectedBean);
 			}
 			
@@ -155,8 +156,8 @@ public class TaskActivity extends TasksModuleActions {
 	public void chargeViewInfo() {
         Intent intent = getIntent();
         
-		if (intent.getExtras().get(MODULE.getModuleName()) instanceof TareaDetalle) {
-			selectedBean = (TareaDetalle) intent.getExtras().get(MODULE.getModuleName());
+		if (intent.getExtras().get(MODULE.getModuleName()) instanceof DetailTask) {
+			selectedBean = (DetailTask) intent.getExtras().get(MODULE.getModuleName());
 			this.showValues(selectedBean);
 		} else {
 			taskId = intent.getStringExtra(MODULE.name());

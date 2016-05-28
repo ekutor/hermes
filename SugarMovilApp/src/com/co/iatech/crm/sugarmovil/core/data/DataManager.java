@@ -8,9 +8,9 @@ import java.util.Map;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Call;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 
 
 public class DataManager  {
@@ -19,20 +19,20 @@ public class DataManager  {
 	
 	public List<Oportunidad> opportunitiesInfo;
 	public List<Cuenta> accountsInfo;
-    public List<Llamada> callsInfo;
+    public List<Call> callsInfo;
     public List<Contacto> contactsInfo;
     public List<Contacto> contactsxAccountsInfo;
-    public List<TareaDetalle> tasksInfo;
+    public List<DetailTask> tasksInfo;
     private Map<Modules,Boolean> synchronizedModules;
     
     
 	private DataManager(){
 		opportunitiesInfo = new ArrayList<Oportunidad>();
 		accountsInfo  = new ArrayList<Cuenta>();
-		callsInfo = new ArrayList<Llamada>();
+		callsInfo = new ArrayList<Call>();
 		contactsInfo = new ArrayList<Contacto>();
 		contactsxAccountsInfo = new ArrayList<Contacto>();
-		tasksInfo = new ArrayList<TareaDetalle>();
+		tasksInfo = new ArrayList<DetailTask>();
 		synchronizedModules = new HashMap<Modules,Boolean>();
 		
 		for(Modules module: Modules.values()){

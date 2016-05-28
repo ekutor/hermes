@@ -15,19 +15,19 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de una tarea.
  */
-public class TareaDetalle extends GenericBean implements Parcelable , Visitable{
+public class DetailTask extends GenericBean implements Parcelable , Visitable{
 
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<TareaDetalle> CREATOR = new Parcelable.Creator<TareaDetalle>() {
+    public static final Parcelable.Creator<DetailTask> CREATOR = new Parcelable.Creator<DetailTask>() {
         @Override
-        public TareaDetalle createFromParcel(Parcel in) {
-            return new TareaDetalle(in);
+        public DetailTask createFromParcel(Parcel in) {
+            return new DetailTask(in);
         }
 
         @Override
-        public TareaDetalle[] newArray(int size) {
-            return new TareaDetalle[size];
+        public DetailTask[] newArray(int size) {
+            return new DetailTask[size];
         }
     };
    
@@ -56,16 +56,16 @@ public class TareaDetalle extends GenericBean implements Parcelable , Visitable{
     private String contact_name;
     private String parent_name;
     
-    public TareaDetalle(){
+    public DetailTask(){
     	
     }
     
-    public TareaDetalle(String id,String name){
+    public DetailTask(String id,String name){
     	this.id = id;
     	this.name = name;
     }
     
-    public TareaDetalle(JSONObject obj) throws JSONException {
+    public DetailTask(JSONObject obj) throws JSONException {
 		setId(validate(obj.getString("id")));;
 	    setName(validate(obj.getString("name")));;
 	    setDate_entered(validate(obj.getString("date_entered")));;
@@ -93,7 +93,7 @@ public class TareaDetalle extends GenericBean implements Parcelable , Visitable{
 	    setParent_name(validate(obj.getString("parent_name")));;
     }
 
-    protected TareaDetalle(Parcel in) {
+    protected DetailTask(Parcel in) {
         id = in.readString();
         name = in.readString();
         date_entered = in.readString();

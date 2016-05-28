@@ -6,9 +6,9 @@ import java.util.List;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Call;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 
 public class DataVisitorsManager implements DataVisitor{
 	
@@ -41,18 +41,18 @@ public class DataVisitorsManager implements DataVisitor{
 	}
 	
 	@Override
-	public void add(TareaDetalle bean) {
+	public void add(DetailTask bean) {
 		this.addObject(DataManager.getInstance().tasksInfo, bean);
 		
 	}
 
 	@Override
-	public int size(TareaDetalle bean) {
+	public int size(DetailTask bean) {
 		return DataManager.getInstance().tasksInfo.size();
 	}
 	
 	@Override
-	public void clear(TareaDetalle bean) {
+	public void clear(DetailTask bean) {
 		DataManager.getInstance().tasksInfo.clear();
 	}
 
@@ -63,18 +63,18 @@ public class DataVisitorsManager implements DataVisitor{
 	}
 
 	@Override
-	public void add(Llamada bean) {
+	public void add(Call bean) {
 		DataManager.getInstance().callsInfo.add(bean);
 		
 	}
 
 	@Override
-	public int size(Llamada bean) {
+	public int size(Call bean) {
 		return DataManager.getInstance().callsInfo.size();
 	}
 
 	@Override
-	public void clear(Llamada bean) {
+	public void clear(Call bean) {
 		DataManager.getInstance().callsInfo.clear();
 		
 	}

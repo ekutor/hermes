@@ -16,7 +16,7 @@ import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Call;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
@@ -274,7 +274,7 @@ public class CallsFragment extends Fragment implements IMovilModuleActions,Calls
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    DataManager.getInstance().callsInfo.add(new Llamada(obj));
+                    DataManager.getInstance().callsInfo.add(new Call(obj));
                 }
                 DataManager.getInstance().defSynchronize(MODULE);
                 return true;
