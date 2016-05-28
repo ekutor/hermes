@@ -272,7 +272,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
     }
 
     public void setDuration_minutes(String duration_minutes) {
-        this.duration_minutes = duration_minutes;
+        this.duration_minutes = validateNull(duration_minutes);
     }
 
     public String getDate_start() {
