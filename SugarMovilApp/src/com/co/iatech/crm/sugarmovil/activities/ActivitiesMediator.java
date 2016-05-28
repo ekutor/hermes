@@ -44,6 +44,7 @@ public class ActivitiesMediator implements IMediator {
 	@Override
 	public void defineActualModule(Modules module) {
 		currentIDs.clear();
+		lastModuleFrom = module;
 		this.actualModule = module;
 	}
 	
@@ -113,7 +114,10 @@ public class ActivitiesMediator implements IMediator {
 		default:
 			break;
 		}
-
+		//si es nulo estoy en un fragment y voy a mostrar una nueva pantalla del mismo modulo
+		if(lastModuleFrom == null){
+			lastModuleFrom = targetView;
+		}
 		intent.putExtra(EDIT_MODE, editMode);
 		chargeLastModuleCaller(intent);
 		addBeanInfo(intent, targetView );
@@ -168,8 +172,12 @@ public class ActivitiesMediator implements IMediator {
 	 */
 	@Override
 	public void addInfotoActivity(Intent intent, Modules mod){
-		if(intent != null){
-			intent.putExtra(mod.name(), currentIDs.get(mod));
+		try{
+			if(intent != null){
+				intent.putExtra(mod.name(), currentIDs.get(mod));
+			}
+		}catch(Exception e){
+			
 		}
 	}
 	

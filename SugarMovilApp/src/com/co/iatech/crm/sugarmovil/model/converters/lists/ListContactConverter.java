@@ -1,5 +1,6 @@
 package com.co.iatech.crm.sugarmovil.model.converters.lists;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.model.Contacto;
@@ -68,7 +69,8 @@ public class ListContactConverter extends ListModelConverter{
 
 	@Override
 	public List<String> getListInfo() {
-		if(data.size()<= 0 && this.hasItems()){
+		if( hasItems()){
+			data = new ArrayList<String>();	
 			data.add("SELECCIONAR");
 			List<Contacto> listaTemp = (List<Contacto>) ListsHolder.getList(typelist);
 			for(Contacto c : listaTemp){

@@ -11,13 +11,13 @@ public class ListOppSourceConverter extends ListConverter{
 		dataMap = new LinkedHashMap<String,String>();
 		
 		dataMap.put(defaultListValue, defaultListValue);
-		dataMap.put("001", "BUSQUEDA EN GOOGLE");
-		dataMap.put("002", "EQUIPOS Y SOLUCIONES IT");
-		dataMap.put("003", "GUIA DE SOLUCIONES TIC");
+		dataMap.put("BUSQUEDA EN GOOGLE", "BUSQUEDA EN GOOGLE");
+		dataMap.put("EQUIPOS Y SOLUCIONES IT", "EQUIPOS Y SOLUCIONES IT");
+		dataMap.put("GUIA DE SOLUCIONES TIC", "GUIA DE SOLUCIONES TIC");
 
-		dataMap.put("006", "LANDING PAGE");
-		dataMap.put("007", "PAGINA WEB");
-		dataMap.put("008", "PUBLICAR");
+		dataMap.put("LANDING PAGE", "LANDING PAGE");
+		dataMap.put("PAGINA WEB", "PAGINA WEB");
+		dataMap.put("PUBLICAR", "PUBLICAR");
 	}
 
 	

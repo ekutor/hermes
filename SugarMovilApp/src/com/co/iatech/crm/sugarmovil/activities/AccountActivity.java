@@ -16,7 +16,9 @@ import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
 import com.co.iatech.crm.sugarmovil.util.Utils;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 import com.software.shell.fab.ActionButton;
 
 import android.app.ProgressDialog;
@@ -143,6 +145,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
 
 	@Override
 	public void chargeViewInfo() {
+	    ListsHolder.clear(ListsHolderType.CONTACTS_ACCOUNTS);
 	   viewAdapter.setActualAccount(selectedBean);
   	   viewPager.setAdapter(viewAdapter);
   	   slidingTabLayout.setViewPager(viewPager);

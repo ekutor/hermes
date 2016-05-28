@@ -120,10 +120,11 @@ public class CallActivity extends CallsModuleActions{
         	this.showValues(selectedBean);
         }else{
         	callId = intent.getStringExtra(MODULE.name());
+        	   Message.showShortExt("Call id"+ callId, this);
 			String[] params = { "idCall", callId };
 			this.executeTask(params, TypeInfoServer.getCall);
         }
-
+     
 	}
 
 	@Override

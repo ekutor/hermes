@@ -157,7 +157,7 @@ public class TasksFragment extends Fragment implements IMovilModuleActions,Tasks
                     // Filtro para cuentas
                     ((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error aÃ±adiendo el filtro de busqueda");
+                    Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
 
                 return false;

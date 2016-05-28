@@ -4,6 +4,7 @@ import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 
 import android.content.Intent;
@@ -47,20 +48,23 @@ public abstract class AbstractMovilModuleActions extends AppCompatActivity imple
 	}
 	
 	 public void getInfoFromMediator() {
-		Intent intent = getIntent();
-    	Modules fromModule = Modules.getModulefromDBName(intent.getStringExtra(Modules.PREVIOUS_UI.name()));
-    	String id = "";
-    	actualInfo= new ActualInfo();
-    	isEditMode = intent.getBooleanExtra(ActivitiesMediator.EDIT_MODE, false);
-    	if(fromModule != null){
-    		id = intent.getStringExtra( fromModule.name() );
-    		actualInfo = new ActualInfo(fromModule, id);
-    	}
-    	Modules principalModule = ActivitiesMediator.getInstance().getActualModule();
-    	id = intent.getStringExtra(principalModule.name());
-    	actualInfo.setActualPrincipalModule(principalModule);
-    	actualInfo.setActualPrincipalId(id);
-    	
+		try{
+			Intent intent = getIntent();
+	    	Modules fromModule = Modules.getModulefromDBName(intent.getStringExtra(Modules.PREVIOUS_UI.name()));
+	    	String id = "";
+	    	actualInfo= new ActualInfo();
+	    	isEditMode = intent.getBooleanExtra(ActivitiesMediator.EDIT_MODE, false);
+	    	if(fromModule != null){
+	    		id = intent.getStringExtra( fromModule.name() );
+	    		actualInfo = new ActualInfo(fromModule, id);
+	    	}
+	    	Modules principalModule = ActivitiesMediator.getInstance().getActualModule();
+	    	id = intent.getStringExtra(principalModule.name());
+	    	actualInfo.setActualPrincipalModule(principalModule);
+	    	actualInfo.setActualPrincipalId(id);
+		}catch(Exception e){
+			Message.showShortExt(Utils.errorToString(e), this);
+		}
     	
 	 }
 	

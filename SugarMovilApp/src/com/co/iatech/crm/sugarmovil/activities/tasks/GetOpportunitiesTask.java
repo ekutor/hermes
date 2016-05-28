@@ -92,12 +92,12 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 				Log.d(TAG, "No hay valores: " + oportunitiesXAccount.size());
 			}
 		}
-		try {
-			Thread.sleep(5000);
+//		try {
+//			Thread.sleep(500);
 			progressDialog.dismiss();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 
 	}
 

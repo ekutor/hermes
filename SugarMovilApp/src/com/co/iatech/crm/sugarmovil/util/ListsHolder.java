@@ -19,5 +19,8 @@ public class ListsHolder {
 		holder.put(type, value);
 	}
 	
+	public static void clear(ListsHolderType type){
+		holder.remove(type);
+	}
 
 }

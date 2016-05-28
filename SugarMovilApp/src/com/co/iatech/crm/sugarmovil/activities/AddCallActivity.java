@@ -86,6 +86,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_call);
         try{
+        	createWidgets();
 	        getInfoFromMediator();
 	      
 	        // Main Toolbar
@@ -93,9 +94,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	        setSupportActionBar(mLlamadaToolbar);
 	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 	        getSupportActionBar().setHomeButtonEnabled(false);
-	        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
-	
-	        createWidgets();
+	       	
+	        
 	        chargeLists();
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
@@ -202,6 +202,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
         botonHoraInicio = (Button) findViewById(R.id.boton_hora_inicio);
         botonHoraInicio.setOnClickListener(this);
         
+        imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
         imgButtonGuardar.setOnClickListener(this);
         
         //Cuentas

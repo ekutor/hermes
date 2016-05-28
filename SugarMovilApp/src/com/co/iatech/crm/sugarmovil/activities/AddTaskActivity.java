@@ -88,18 +88,18 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	public String resultado;
 
 	private boolean selectedTypeTaskAccount;
-	private Modules[] nameVisibleOnPermitedModules = {Modules.ACCOUNTS, Modules.OPPORTUNITIES};
+	private Modules[] nameVisibleOnPermitedModules = { Modules.ACCOUNTS, Modules.OPPORTUNITIES };
 
 	private AddTask editarTarea;
-	
+
 	private String accountId;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_task);
 		try {
-		
+
 			// SoftKey
 			this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			createWidgets();
@@ -110,11 +110,12 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			setSupportActionBar(mTareaToolbar);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
-			
+
 			defineValidations();
-			//carga los contactos de la cuenta actual - aplica solo cuando venga del modulo de cuentas
+			// carga los contactos de la cuenta actual - aplica solo cuando
+			// venga del modulo de cuentas
 			if (!listContacts.hasItems() && accountId != null) {
-				String[] params = { "idAccount", accountId};
+				String[] params = { "idAccount", accountId };
 				this.executeTask(params, TypeInfoServer.getContactsxAccount);
 
 			} else {
@@ -139,41 +140,53 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
 		Intent intent = getIntent();
-		
+
 		if (isEditMode) {
 			tareaSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
-		}else{
+		} else {
 			tareaSeleccionada = new TareaDetalle();
-		}
-		int pos = 0;
-		
-		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, actualInfo.getActualParentModule().getSugarDBName());
-		switch(actualInfo.getActualParentModule()){
+			int pos = 0;
+			
+			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+					actualInfo.getActualParentModule().getSugarDBName());
+			
+			boolean enabled = false;
+			
+			 /* Message.showFinalMessage(getFragmentManager(),"parent "
+			  +actualInfo.getActualParentModule().name()+
+			  "id "+ actualInfo.getActualParentId() + " principal : "+actualInfo.getActualPrincipalModule()
+			  +actualInfo.getActualPrincipalId(), AddTaskActivity.this, MODULE);*/
+			 
+			switch (actualInfo.getActualParentModule()) {
 			case ACCOUNTS:
 				valorNombre.setText(lac.convert(actualInfo.getActualParentId(), DataToGet.VALUE));
 				accountId = actualInfo.getActualParentId();
 				break;
 			case OPPORTUNITIES:
 				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
-				if(bean != null){
+				if (bean != null) {
 					valorNombre.setText(bean.getName());
 				}
 				accountId = intent.getStringExtra(Modules.ACCOUNTS.name());
 				break;
 			case CONTACTS:
-				accountId = intent.getStringExtra(Modules.ACCOUNTS.name());
+				accountId = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
+				pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+						Modules.ACCOUNTS.getSugarDBName());
+				valorNombre.setText(lac.convert(accountId, DataToGet.VALUE));
 				break;
 			default:
 				pos = 0;
+				enabled = true;
 				break;
+			}
+			
+			valorTipo.setSelection(pos);
+			valorTipo.setEnabled(enabled);
 		}
-		Message.showShortExt("account id "+accountId, getApplicationContext());
-		valorTipo.setSelection(pos);
-		valorTipo.setEnabled(false);
+
 		
-		/*Message.showFinalMessage(getFragmentManager(),"parent "+actualInfo.getActualParentModule().name()+" "+
-		pos+ valorNombre.getText() + actualInfo.getActualParentId() + "pos "+pos + (bean != null), AddTaskActivity.this, MODULE);*/
-		
+
 	}
 
 	@Override
@@ -183,24 +196,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				listContacts.getListInfo());
 		contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorContacto.setAdapter(contactAdapter);
-		int contactPosition = 0;
-		if(isEditMode){
-			String contact = tareaSeleccionada.getContact_name();
-			valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));
-		}else if(actualInfo.getActualParentModule().equals(Modules.CONTACTS) ||
-				actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)){
-			if (actualInfo.getActualParentModule().equals(Modules.CONTACTS) ){
-				contactPosition = Integer.parseInt(listContacts.convert(actualInfo.getActualParentId(), DataToGet.POS));	
-			}else if(actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)){
-				contactPosition = Integer.parseInt(listContacts.convert(actualInfo.getActualPrincipalId(), DataToGet.POS));
-			}
-				valorContacto.setSelection(contactPosition);
-		}
-valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual "
-		+actualInfo.getActualPrincipalModule() + " "
-		+ actualInfo.getActualParentId() + " " +actualInfo.getActualPrincipalId() 
-		+ " pos " +contactPosition+ " id account "+accountId);
-
 		// Estado
 
 		ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
@@ -208,33 +203,65 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 		estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorEstado.setAdapter(estadoAdapter);
 
-		
-		// Cuenta
-		
-		if (tareaSeleccionada.getParent_id() != null && tareaSeleccionada.getParent_id().length() > 1) {
-			valorNombre.setText(tareaSeleccionada.getParent_name());
-		}
-	
-		
-		// Carga Tipos
-		if (tareaSeleccionada.getParent_type() != null) {
-			int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, tareaSeleccionada.getParent_type());
-			valorTipo.setSelection(pos);
-		}
-
 		ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 				ListsConversor.getValuesList(ConversorsType.TASKS_PRIORITY));
 		prioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorPrioridad.setAdapter(prioridadAdapter);
+
+		int contactPosition = 0;
+
+		if (isEditMode) {
+			// Contact
+			String contact = tareaSeleccionada.getContact_name();
+			valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));
+			valorContacto.setVisibility(View.INVISIBLE);
+			TextView valorContactoOculto = (TextView) findViewById(R.id.text_contacto_hidden);
+			
+			valorContactoOculto.setVisibility(View.VISIBLE);
+			valorContactoOculto.setText(contact);
+			// Parent
+			if (tareaSeleccionada.getParent_id() != null && tareaSeleccionada.getParent_id().length() > 1) {
+				valorNombre.setText(tareaSeleccionada.getParent_name());
+			}
+
+			// Carga Tipos
+			if (tareaSeleccionada.getParent_type() != null) {
+				int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+						tareaSeleccionada.getParent_type());
+				valorTipo.setSelection(pos);
+			}
+
+			if (tareaSeleccionada.getPriority() != null) {
+				valorPrioridad.setSelection(ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority()));
+			}
+
+		} else {
+
+			// Contact
+			if (actualInfo.getActualParentModule().equals(Modules.CONTACTS)
+					|| actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)) {
+				if (actualInfo.getActualParentModule().equals(Modules.CONTACTS)) {
+					contactPosition = Integer
+							.parseInt(listContacts.convert(actualInfo.getActualParentId(), DataToGet.POS));
+				} else if (actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)) {
+					contactPosition = Integer
+							.parseInt(listContacts.convert(actualInfo.getActualPrincipalId(), DataToGet.POS));
+				}
+				valorContacto.setSelection(contactPosition);
+			}
+
+//		valorDescripcion.setText("Parent " + actualInfo.getActualParentModule() + " actual "
+//				+ actualInfo.getActualPrincipalModule() + " " + actualInfo.getActualParentId() + " "
+//				+ actualInfo.getActualPrincipalId() + " pos " + contactPosition + " id account " + accountId);
+
 		valorPrioridad.setSelection(1);
 
 		GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
 		tareaSeleccionada.setCreated_by(u.getId());
-		if (!isEditMode) {
 
-			asignadoA.setText(u.getFirst_name() + " " + u.getLast_name());
-			tareaSeleccionada.setAssigned_user_id(u.getId());
+		asignadoA.setText(u.getFirst_name() + " " + u.getLast_name());
+		tareaSeleccionada.setAssigned_user_id(u.getId());
 		}
 
 	}
@@ -262,7 +289,7 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 
 		botonHoraVen = (Button) findViewById(R.id.boton_hora_vence);
 		botonHoraVen.setOnClickListener(this);
-		
+
 		imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 		imgButtonGuardar.setOnClickListener(this);
 		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
@@ -270,9 +297,9 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 		// Contacto
 		valorContacto = (Spinner) findViewById(R.id.valor_contacto);
 		valorEstado = (Spinner) findViewById(R.id.valor_estado);
-		
+
 		valorPrioridad = (Spinner) findViewById(R.id.valor_prioridad);
-		
+
 		valorTipo = (Spinner) findViewById(R.id.valor_tipo);
 		ArrayAdapter<String> tipoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 				ListsConversor.getValuesList(ConversorsType.TASKS_TYPE));
@@ -285,20 +312,22 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 				visibility = View.INVISIBLE;
 				selectedTypeTaskAccount = false;
 				Modules selectedModuleType = null;
-				for(Modules mod : nameVisibleOnPermitedModules){
-					if (valorTipo.getSelectedItem().toString().toLowerCase().contains(mod.getVisualName().toLowerCase())) {
+				for (Modules mod : nameVisibleOnPermitedModules) {
+					if (valorTipo.getSelectedItem().toString().toLowerCase()
+							.contains(mod.getVisualName().toLowerCase())) {
 						visibility = View.VISIBLE;
 						selectedTypeTaskAccount = true;
 						selectedModuleType = mod;
 						break;
 					}
 				}
-				
+
 				valorNombre.setVisibility(visibility);
-				if ( actualInfo.getActualParentId() == null && selectedModuleType!= null) {
-					valorNombre.setText(ValidatorActivities.SELECT_MESSAGE + selectedModuleType.getVisualName().toLowerCase());
+				if (actualInfo.getActualParentId() == null && selectedModuleType != null) {
+					valorNombre.setText(
+							ValidatorActivities.SELECT_MESSAGE + " " +selectedModuleType.getVisualName().toLowerCase());
 				}
-				//txtNombre.setVisibility(visibility);
+				// txtNombre.setVisibility(visibility);
 			}
 
 			@Override
@@ -324,7 +353,7 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, tareaSeleccionada.getPriority());
 		valorPrioridad.setSelection(pos);
 		valorDescripcion.setText(tareaSeleccionada.getDescription());
-	
+
 		// Asignado
 		asignadoA.setText(lc.convert(tareaSeleccionada.getAssigned_user_id(), DataToGet.VALUE));
 		imgButtonGuardar.setVisibility(View.VISIBLE);
@@ -357,12 +386,12 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaVen, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		} else if (v.getId() == valorNombre.getId()) {
-			switch(actualInfo.getActualParentModule()){
-				case ACCOUNTS:
-					Message.showAccountsDialog(getSupportFragmentManager());
-					break;
-				default:
-					break;
+			switch (actualInfo.getActualParentModule()) {
+			case ACCOUNTS:
+				Message.showAccountsDialog(getSupportFragmentManager());
+				break;
+			default:
+				break;
 			}
 		} else if (v.getId() == imgButtonGuardar.getId()) {
 			// Realizar Validaciones
@@ -388,26 +417,32 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 			}
 
 			// contacto
-			
-			if(valorContacto.getSelectedItemPosition() > 0){
+
+			if (valorContacto.getSelectedItemPosition() > 0) {
 				tareaSeleccionada.setContact_name(valorContacto.getSelectedItem().toString());
-				tareaSeleccionada.setContact_id(listContacts.convert(valorContacto.getSelectedItem().toString(), DataToGet.CODE));
+				tareaSeleccionada.setContact_id(
+						listContacts.convert(valorContacto.getSelectedItem().toString(), DataToGet.CODE));
 			}
-			
+
 			tareaSeleccionada.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
 			tareaSeleccionada.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
 					valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
 			tareaSeleccionada.setDescription(valorDescripcion.getText().toString());
-			
-			
-			//tipo Tarea
-			String selectedType = valorTipo.getSelectedItem().toString();
-			tareaSeleccionada.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE,
-					selectedType, DataToGet.CODE));
-			if (actualInfo.getActualParentModule() != null && tareaSeleccionada.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
-				tareaSeleccionada.setParent_id(actualInfo.getActualParentId());
-			}
 
+			// tipo Tarea
+			
+			if(!isEditMode){
+				String selectedType = valorTipo.getSelectedItem().toString();
+				tareaSeleccionada
+						.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
+	
+				if (tareaSeleccionada.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
+					tareaSeleccionada.setParent_id(actualInfo.getActualParentId());
+				}else if(accountId != null){//aplica para contacts
+					tareaSeleccionada.setParent_id(accountId);
+				}
+			
+			}
 			String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(), DataToGet.CODE);
 			tareaSeleccionada.setAssigned_user_id(idUsuarioAsignado);
 
@@ -532,7 +567,7 @@ valorDescripcion.setText("Parent "+actualInfo.getActualParentModule()+ " actual 
 				}
 				Log.d(TAG, "Crear Tarea error");
 			}
-	
+
 		}
 
 		@Override

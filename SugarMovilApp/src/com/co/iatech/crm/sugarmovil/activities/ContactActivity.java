@@ -94,6 +94,7 @@ public class ContactActivity extends ContactsModuleActions implements
 
 		imageButtonOpps = (ImageButton) findViewById(R.id.image_opportunities);
 		imageButtonOpps.setOnClickListener(this);
+		//se debe hacer que las oportunidaders esten asociadas a la cuenta y al contacto
 
 		imageButtonTasks = (ImageButton) findViewById(R.id.image_tasks);
 		imageButtonTasks.setOnClickListener(this);

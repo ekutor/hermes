@@ -169,7 +169,7 @@ public class AccountsFragment extends Fragment {
 
 
          // Tarea para consultar cuentas
-  
+         ListsHolder.clear(ListsHolderType.CONTACTS_ACCOUNTS);
          if(!DataManager.getInstance().IsSynchronized(Modules.ACCOUNTS)){
         
         	 mTareaObtenerCuentas = new GetAccountsTask();
