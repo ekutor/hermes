@@ -11,19 +11,19 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de un producto.
  */
-public class ProductoDetalle extends GenericBean implements Parcelable {
+public class ProductDetail extends GenericBean implements Parcelable {
 
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ProductoDetalle> CREATOR = new Parcelable.Creator<ProductoDetalle>() {
+    public static final Parcelable.Creator<ProductDetail> CREATOR = new Parcelable.Creator<ProductDetail>() {
         @Override
-        public ProductoDetalle createFromParcel(Parcel in) {
-            return new ProductoDetalle(in);
+        public ProductDetail createFromParcel(Parcel in) {
+            return new ProductDetail(in);
         }
 
         @Override
-        public ProductoDetalle[] newArray(int size) {
-            return new ProductoDetalle[size];
+        public ProductDetail[] newArray(int size) {
+            return new ProductDetail[size];
         }
     };
     private String id;
@@ -44,7 +44,7 @@ public class ProductoDetalle extends GenericBean implements Parcelable {
     private String precio1_c;
     private String precio2_c;
 
-    public ProductoDetalle(JSONObject obj) throws JSONException {
+    public ProductDetail(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));;
         setName(validate(obj.getString("name")));;
         setDate_entered(validate(obj.getString("date_entered")));;
@@ -64,7 +64,7 @@ public class ProductoDetalle extends GenericBean implements Parcelable {
         setPrecio2_c(validate(obj.getString("precio2_c")));;
     }
 
-    protected ProductoDetalle(Parcel in) {
+    protected ProductDetail(Parcel in) {
         id = in.readString();
         name = in.readString();
         date_entered = in.readString();

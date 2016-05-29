@@ -1,16 +1,30 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ProductsModule;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
+import com.co.iatech.crm.sugarmovil.model.Product;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,18 +32,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.MainActivity;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerProductsAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.Producto;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-
-public class ProductsFragment extends Fragment {
+public class ProductsFragment extends Fragment implements IMovilModuleActions,ProductsModule{
     /**
      * Debug.
      */
@@ -38,13 +45,12 @@ public class ProductsFragment extends Fragment {
     /**
      * Tasks.
      */
-    private GetCallsTask mTareaObtenerLlamadas = null;
+    private GetProductsTask getProducts = null;
 
     /**
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private ArrayList<Producto> mProductsArray = new ArrayList<Producto>();
 
     /**
      * UI References.
@@ -120,7 +126,7 @@ public class ProductsFragment extends Fragment {
                 imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerProductsAdapter) mRecyclerViewProducts.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerViewProducts.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -133,7 +139,7 @@ public class ProductsFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 try {// Filtro para llamadas
-                    ((RecyclerProductsAdapter) mRecyclerViewProducts.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerViewProducts.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -144,7 +150,7 @@ public class ProductsFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {// Filtro para llamadas
-                    ((RecyclerProductsAdapter) mRecyclerViewProducts.getAdapter()).setFilter(newText);
+                    ((RecyclerGenericAdapter) mRecyclerViewProducts.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -152,10 +158,18 @@ public class ProductsFragment extends Fragment {
                 return false;
             }
         });
-
-        // Tarea para consultar productos
-        mTareaObtenerLlamadas = new GetCallsTask();
-        mTareaObtenerLlamadas.execute();
+        
+        if(!DataManager.getInstance().IsSynchronized(MODULE)){
+        	// Tarea para consultar productos
+            getProducts = new GetProductsTask();
+            getProducts.execute();
+            
+        }else{
+        	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
+        	chargeViewInfo();
+        }
+        
+        
 
         return mRootView;
     }
@@ -180,7 +194,7 @@ public class ProductsFragment extends Fragment {
     /**
      * Representa una tarea asincrona de obtencion de productos.
      */
-    public class GetCallsTask extends AsyncTask<Void, Void, Boolean> {
+    public class GetProductsTask extends AsyncTask<Void, Void, Boolean> {
         private ProgressDialog progressDialog;
 
         @Override
@@ -201,16 +215,16 @@ public class ProductsFragment extends Fragment {
                 // Intento de obtener productos
                 productos  = ControlConnection.getInfo(TypeInfoServer.getProductos, getActivity());
                 
-                mProductsArray.clear();
+                DataManager.getInstance().products.clear();
 
                 JSONObject jObj = new JSONObject(productos);
 
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    mProductsArray.add(new Producto(obj));
+                    DataManager.getInstance().products.add(new Product(obj));
                 }
-
+                DataManager.getInstance().IsSynchronized(MODULE);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, "Buscar Productos Error: "
@@ -221,25 +235,81 @@ public class ProductsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mTareaObtenerLlamadas = null;
+          
             progressDialog.dismiss();
 
             if (success) {
-                if (mProductsArray.size() > 0) {
-                    mRecyclerViewProductsAdapter = new RecyclerProductsAdapter(getActivity(), mProductsArray);
-                    mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);
+                if (DataManager.getInstance().products.size() > 0) {
+                	chargeViewInfo();
                 } else {
-                    Log.d(TAG,
-                            "No hay Productos: "
-                                    + mProductsArray.size());
+                   Message.showShortExt("No hay productos Asociados", ProductsFragment.this.getActivity());
                 }
             }
         }
 
         @Override
         protected void onCancelled() {
-            mTareaObtenerLlamadas = null;
+
             Log.d(TAG, "Cancelado ");
         }
     }
+
+	@Override
+	public ActionButton getActionButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ImageButton getEditButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Modules getModule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getAssignedUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Parcelable getBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean chargeIdPreviousModule() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void getInfoFromMediator() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addInfo(String serverResp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void chargeViewInfo() {
+	 /*   mRecyclerViewProductsAdapter = new RecyclerProductsAdapter(getActivity(), DataManager.getInstance().products);
+        mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);*/
+        
+        mRecyclerViewProductsAdapter = new RecyclerGenericAdapter(getActivity(), 
+        		AdapterSearchUtil.transform(DataManager.getInstance().products), MODULE);
+        mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);
+		
+	}
 }

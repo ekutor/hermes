@@ -17,27 +17,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ProductsModuleActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.ProductoDetalle;
+import com.co.iatech.crm.sugarmovil.model.Call;
+import com.co.iatech.crm.sugarmovil.model.ProductDetail;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
 
-public class ProductActivity extends AppCompatActivity {
-
-
-    /**
-     * Tasks.
-     */
-    private GetProductTask mTareaObtenerProducto = null;
+public class ProductActivity extends ProductsModuleActions {
 
     /**
      * Member Variables.
      */
     private String cantidadStock;
-    private ProductoDetalle mProductoDetalle;
 
     /**
      * UI References.
@@ -51,97 +48,86 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+        try{
+	        Intent intent = getIntent();
+	        beanCommunicator = intent.getParcelableExtra(Modules.PRODUCTS.name());
+	        //cantidadStock = intent.getStringExtra("cantidad");
+	 
+	
+	        // Main Toolbar
+	        mProductoToolbar = (Toolbar) findViewById(R.id.toolbar_product);
+	        setSupportActionBar(mProductoToolbar);
+	        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	        getSupportActionBar().setHomeButtonEnabled(false);
+	        
+	        applyActions();
+	        chargeViewInfo();
+	     
+        }catch(Exception e){
+       	   Message.showShortExt(Utils.errorToString(e), this);
+         }
+        
+    }
+
+    public void showValues(ProductDetail productoDetalle) {
+    	try{
+	        TextView valorCodigo = (TextView) findViewById(R.id.valor_codigo);
+	        valorCodigo.setText(productoDetalle.getCodigo_c());
+	        TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
+	        valorNombre.setText(productoDetalle.getName());
+	        TextView valorReferencia = (TextView) findViewById(R.id.valor_referencia);
+	        valorReferencia.setText(productoDetalle.getReferencia_c());
+	        TextView valorMarca = (TextView) findViewById(R.id.valor_marca);
+	        valorMarca.setText(productoDetalle.getMarca_c());
+	        TextView valorEnInventario = (TextView) findViewById(R.id.valor_en_inventario);
+	        valorEnInventario.setText(cantidadStock);
+	        TextView valorPrecioPesos = (TextView) findViewById(R.id.valor_precio_pesos);
+	        valorPrecioPesos.setText(productoDetalle.getPrecio1_c());
+	        TextView valorPrecioDolares = (TextView) findViewById(R.id.valor_precio_dolares);
+	        valorPrecioDolares.setText(productoDetalle.getPrecio2_c());
+	        TextView valorGrupo = (TextView) findViewById(R.id.valor_grupo);
+	        valorGrupo.setText(productoDetalle.getGrupo_c());
+    	 }catch(Exception e){
+        	   Message.showShortExt(Utils.errorToString(e), this);
+          }
+    }
+
+    
+	@Override
+	public void addInfo(String serverResponse) {
+		try {
+  			JSONObject jObj = new JSONObject(serverResponse);
+  			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
+  			
+  			if (jArr.length() > 0) {
+  				JSONObject obj = jArr.getJSONObject(0);
+  				selectedBean = new ProductDetail(obj);
+  				showValues(selectedBean);
+  			}
+  			
+  		} catch (Exception e) {
+  			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
+  		}
+	}
+
+	@Override
+	public void chargeViewInfo() {
+
         Intent intent = getIntent();
-        beanCommunicator = intent.getParcelableExtra(Modules.OPPORTUNITIES.name());
-        cantidadStock = intent.getStringExtra("cantidad");
- 
-
-        // Main Toolbar
-        mProductoToolbar = (Toolbar) findViewById(R.id.toolbar_product);
-        setSupportActionBar(mProductoToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
-
-        // Tarea obtener producto
-        mTareaObtenerProducto = new GetProductTask();
-        mTareaObtenerProducto.execute(beanCommunicator.id);
-    }
-
-    public void ponerValores(ProductoDetalle productoDetalle) {
-        TextView valorCodigo = (TextView) findViewById(R.id.valor_codigo);
-        valorCodigo.setText(productoDetalle.getCodigo_c());
-        TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-        valorNombre.setText(productoDetalle.getName());
-        TextView valorReferencia = (TextView) findViewById(R.id.valor_referencia);
-        valorReferencia.setText(productoDetalle.getReferencia_c());
-        TextView valorMarca = (TextView) findViewById(R.id.valor_marca);
-        valorMarca.setText(productoDetalle.getMarca_c());
-        TextView valorEnInventario = (TextView) findViewById(R.id.valor_en_inventario);
-        valorEnInventario.setText(cantidadStock);
-        TextView valorPrecioPesos = (TextView) findViewById(R.id.valor_precio_pesos);
-        valorPrecioPesos.setText(productoDetalle.getPrecio1_c());
-        TextView valorPrecioDolares = (TextView) findViewById(R.id.valor_precio_dolares);
-        valorPrecioDolares.setText(productoDetalle.getPrecio2_c());
-        TextView valorGrupo = (TextView) findViewById(R.id.valor_grupo);
-        valorGrupo.setText(productoDetalle.getGrupo_c());
-    }
-
-    /**
-     * Representa una tarea asincrona de obtencion de producto.
-     */
-    public class GetProductTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(ProductActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando información de producto...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
+        if(intent.getExtras().get(MODULE.getModuleName()) instanceof  ProductDetail ){
+        	selectedBean = (ProductDetail) intent.getExtras().get(MODULE.getModuleName());
+        	this.showValues(selectedBean);
+        }else{
+        	beanCommunicator = intent.getParcelableExtra(MODULE.name());
+			String[] params = { "idProducto", beanCommunicator.id };
+			this.executeTask(params, TypeInfoServer.getProducto);
         }
 
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                // Parametros
-                String idProducto = params[0];
+	}
 
-                // Respuesta
-                String resultado = null;
-
-                // Intento de obtener producto
-                ControlConnection.addHeader("idProducto", idProducto);
-                resultado  = ControlConnection.getInfo(TypeInfoServer.getProducto, ProductActivity.this);
-
-                JSONObject jObj = new JSONObject(resultado);
-
-                JSONArray jArr = jObj.getJSONArray("results");
-                if(jArr.length() > 0) {
-                    JSONObject obj = jArr.getJSONObject(0);
-                     mProductoDetalle = new ProductoDetalle(obj);
-                }
-
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mTareaObtenerProducto = null;
-            progressDialog.dismiss();
-
-            if (success) {
-                ponerValores(mProductoDetalle);
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mTareaObtenerProducto = null;
-
-        }
-    }
+	@Override
+	public void applyActions() {
+		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
+		imgButtonEdit.setVisibility(View.INVISIBLE);
+	}
 }

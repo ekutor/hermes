@@ -74,6 +74,9 @@ public class ActivitiesMediator implements IMediator {
 			case CONTACTS:
 				intent = new Intent(context, ContactActivity.class);
 				break;
+			case PRODUCTS:
+				intent = new Intent(context, ProductActivity.class);
+				break;
 		default:
 			break;
 		}
