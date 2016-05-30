@@ -177,9 +177,9 @@ public class ListCallsActivity extends CallsModuleActions {
 				message = "Cargando Llamadas x Cuenta...";
 				break;
 			case OPPORTUNITIES:
-				infoServer = TypeInfoServer.getAccountCalls;
+				infoServer = TypeInfoServer.getOpprtunityCalls;
 				keyID = "idOpportunity";
-				message = "Cargando Tareas x Oportunidad...";
+				message = "Cargando Llamadas x Oportunidad...";
 				break;
 			case CONTACTS:
 				infoServer = TypeInfoServer.getContactCalls;

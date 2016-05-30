@@ -44,7 +44,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:padding="5dp"
-                    android:text="@string/title_activity_edit_call"
+                    android:text="@string/title_activity_create_call"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"

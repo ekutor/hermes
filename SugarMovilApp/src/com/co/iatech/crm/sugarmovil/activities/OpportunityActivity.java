@@ -23,16 +23,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class OpportunityActivity extends OpportunitiesModuleActions {
+public class OpportunityActivity extends OpportunitiesModuleActions implements OnClickListener {
 
 	/**
 	 * UI References.
 	 */
 	private Toolbar mCuentaToolbar;
 	private ImageButton imgButtonTasks;
+	private ImageButton imgButtonCalls;
 	private ListUsersConverter lc = new ListUsersConverter();
 
 	@Override
@@ -124,17 +126,29 @@ public class OpportunityActivity extends OpportunitiesModuleActions {
         ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
         
         imgButtonTasks = (ImageButton) findViewById(R.id.image_tasks);
-		imgButtonTasks.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ActivitiesMediator.getInstance().setParentBean(selectedBean);
-				ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
-				ActivitiesMediator.getInstance().showList(OpportunityActivity.this, Modules.TASKS, MODULE);
+		imgButtonTasks.setOnClickListener(this);
 
-			}
+		imgButtonCalls = (ImageButton) findViewById(R.id.image_calls);
+		imgButtonCalls.setOnClickListener(this);
 
-		});
    	}
+    
+    @Override
+	public void onClick(View v) {
+
+		Modules moduletoStart = null;
+		
+		if (v.getId() == imgButtonTasks.getId()){
+			moduletoStart = Modules.TASKS;
+		}else if (v.getId() == imgButtonCalls.getId()){
+			moduletoStart = Modules.CALLS;
+		}
+		
+		ActivitiesMediator.getInstance().setParentBean(selectedBean);
+		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
+		ActivitiesMediator.getInstance().showList(OpportunityActivity.this, moduletoStart, MODULE);
+
+	}
 
 	@Override
 	public void addInfo(String serverResponse) {
