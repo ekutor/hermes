@@ -58,8 +58,10 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
     private RecyclerView.Adapter mRecyclerViewProductsAdapter;
     private RecyclerView.LayoutManager mRecyclerViewProductsLayoutManager;
 
-
 	private ITaskPublisher taskPublisher;
+
+
+	private boolean dataNotFound;
 
     public ProductsFragment() {
         // Required empty public constructor
@@ -197,15 +199,12 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
 	
 	@Override
 	public void chargeViewInfo() {
-
-        if(!DataManager.getInstance().products.isEmpty()){
-	        mRecyclerViewProductsAdapter = new RecyclerGenericAdapter(getActivity(), 
-	        		AdapterSearchUtil.transform(DataManager.getInstance().products), MODULE,SearchType.REMOTE);
-	        mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);
-        }else{
-        	Message.showShortExt("Ningun producto coincide con los parametros de busqueda.", this.getActivity());
-        }
-		
+		if(dataNotFound){
+	        	Message.showShortExt("Ningun producto coincide con los parametros de busqueda.", this.getActivity());
+	    }
+        mRecyclerViewProductsAdapter = new RecyclerGenericAdapter(getActivity(), 
+        		AdapterSearchUtil.transform(DataManager.getInstance().products), MODULE,SearchType.REMOTE);
+        mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);
 	}
 
 	@Override
@@ -220,10 +219,14 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
 			if(response.getModule() != MODULE){
 			 return;
 			}
-			//Message.showShortExt(response.getModule()+" "+response.name, this.getActivity());
-			DataManager.getInstance().products.clear();
-	
-	        JSONObject jObj = new JSONObject(response.name);
+			if(response.getAdditionalInfo().length() <= 15){
+				DataManager.getInstance().products.clear();
+				dataNotFound = true;
+			}else{
+				dataNotFound = false;
+			}
+			
+	        JSONObject jObj = new JSONObject(response.getAdditionalInfo());
 	
 	        JSONArray jArr = jObj.getJSONArray("results");
 	        for (int i = 0; i < jArr.length(); i++) {

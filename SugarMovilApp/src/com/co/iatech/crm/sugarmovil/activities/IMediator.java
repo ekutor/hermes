@@ -16,5 +16,6 @@ public interface IMediator {
 	public void setActualID(ActivityBeanCommunicator actualID, Modules mod);
 	public ActivityBeanCommunicator getPreviusID();
 	void showActivity(Context context, Modules module, ActivityBeanCommunicator newActualID);
+	void removeActualID(Modules module);
 	
 }

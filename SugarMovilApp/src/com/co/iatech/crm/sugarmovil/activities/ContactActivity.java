@@ -233,7 +233,7 @@ public class ContactActivity extends ContactsModuleActions implements View.OnCli
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
 		} else if (v.getId() == btnMakeCall.getId()) {
-			module = Modules.CALLS;
+
 			continueModule = false;
 
 			ActivityBeanCommunicator communicator = new ActivityBeanCommunicator(selectedBean.getId(),
@@ -241,7 +241,7 @@ public class ContactActivity extends ContactsModuleActions implements View.OnCli
 			communicator.setAction(ActionActivity.MAKE_CALL);
 			communicator.setAdditionalInfo(this.getPhoneNumer());
 			ActivitiesMediator.getInstance().setActualID(communicator, MODULE);
-			ActivitiesMediator.getInstance().showEditActivity(this, module, false);
+			ActivitiesMediator.getInstance().showEditActivity(this, Modules.CALLS, false);
 
 		}
 		if (continueModule) {
@@ -254,16 +254,20 @@ public class ContactActivity extends ContactsModuleActions implements View.OnCli
 	}
 
 	private String getPhoneNumer() {
-		String phoneNumber = "3004109841";
-		/*
-		 * String[] values =
-		 * {selectedBean.getPhone_mobile(),selectedBean.getPhone_work(),
-		 * selectedBean.getPhone_home(),selectedBean.getPhone_other(),
-		 * selectedBean.getPhone_fax(),selectedBean.getAssistant_phone()};
-		 * for(String betterPhone : values){ if(betterPhone != null &&
-		 * !betterPhone.equals("") && !betterPhone.equalsIgnoreCase("null")){
-		 * phoneNumber = betterPhone; break; } }
-		 */
+		String phoneNumber = "";
+		String[] values = { selectedBean.getPhone_mobile(), selectedBean.getPhone_work(), selectedBean.getPhone_home(),
+				selectedBean.getPhone_other(), selectedBean.getPhone_fax(), selectedBean.getAssistant_phone() };
+		for (String betterPhone : values) {
+			if (betterPhone != null && !betterPhone.equals("") && !betterPhone.equalsIgnoreCase("null")) {
+				if(betterPhone.length() == 7){
+					betterPhone = ListsConversor.convert(ConversorsType.DPTO_PHONE, selectedBean.getDepartamento_c(), DataToGet.VALUE) 
+							+ betterPhone;
+				}
+				phoneNumber = betterPhone;
+				break;
+			}
+		}
+
 		return phoneNumber;
 	}
 

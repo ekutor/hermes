@@ -223,6 +223,12 @@ public class ActivitiesMediator implements IMediator {
 		return currentIDs.get(module);
 	}
 	
+	@Override
+	public void removeActualID(Modules module) {
+		currentIDs.remove(module);
+	}
+	
+	
 	public GenericBean getParentBean() {
 		return parentBean;
 	}

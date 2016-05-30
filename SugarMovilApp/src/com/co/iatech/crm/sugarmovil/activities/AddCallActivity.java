@@ -30,6 +30,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogT
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator.ActionActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleValidations;
@@ -90,9 +91,6 @@ public class AddCallActivity extends CallsModuleEditableActions {
 
 	public String resultado;
 
-
-	private ActionActivity action;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +115,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	        	title.setText("EDITAR LLAMADA");
 	        	chargeViewInfo();
 	        }else{
-	        	if(ActionActivity.MAKE_CALL.equals(action)){
+	        	if(ActionActivity.MAKE_CALL.equals(actualInfo.getActualParentInfo().getAction())){
 	        		try{
 	        			spinnerDirection.setSelection(2);
 	        			spinnerState.setSelection(2);
@@ -156,10 +154,16 @@ public class AddCallActivity extends CallsModuleEditableActions {
 			  "id "+ actualInfo.getActualParentInfo().id+ " principal : "+actualInfo.getActualPrincipalModule()
 			  +actualInfo.getActualPrincipalInfo().id+actualInfo.getActualParentInfo().name, 
 			  AddCallActivity.this);*/
-			 
+
 			switch (actualInfo.getActualParentModule()) {
 			case ACCOUNTS:
 				txtParentName.setText(lac.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
+
+				ActivityBeanCommunicator info = ActivitiesMediator.getInstance().getActualID(Modules.CONTACTS);
+				if(info!= null && !ActionActivity.NONE.equals(info.getAction())){
+					actualInfo.getActualParentInfo().setAction(info.getAction());
+					actualInfo.getActualParentInfo().setAdditionalInfo(info.getAdditionalInfo());
+				}
 				break;
 			case OPPORTUNITIES:
 				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
@@ -169,7 +173,6 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				break;
 			case CONTACTS:
 				txtParentName.setText(actualInfo.getActualParentInfo().name);
-				this.action = actualInfo.getActualParentInfo().getAction();
 				break;
 			default:
 				pos = 0;

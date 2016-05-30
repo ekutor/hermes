@@ -76,7 +76,8 @@ public class GenericTaskPublisher extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(final Boolean success) {
     	try{
-    	ActivityBeanCommunicator bean = new ActivityBeanCommunicator("",response);
+    	ActivityBeanCommunicator bean = new ActivityBeanCommunicator("","");
+    	bean.setAdditionalInfo(response);
     	bean.setModule(actualModule);
     	progressDialog.dismiss();  
     	GatewayPublisher.getInstance().postMessage(bean);

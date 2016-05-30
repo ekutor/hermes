@@ -81,7 +81,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
     	//mSlidingTabLayout.setDistributeEvenly(true);
   
     	this.applyActions();
-    	
+    	ActivitiesMediator.getInstance().removeActualID(Modules.CONTACTS);
 		String[] params = { "idAccount", beanCommunicator.id };
 		this.executeTask(params, TypeInfoServer.getAccount);
    
