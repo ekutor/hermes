@@ -43,11 +43,7 @@ public class ListContactActivity extends ContactsModuleActions {
 	 * Debug.
 	 */
 	private static final String TAG = "ListContactActivity";
-	/**
-	 * Member Variables.
-	 */
 
-	private String idCuentaActual;
 
 	/**
 	 * UI References.
@@ -66,10 +62,8 @@ public class ListContactActivity extends ContactsModuleActions {
 		try {
 			// SoftKey
 			this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+			getInfoFromMediator();
 
-			Intent intent = getIntent();
-			idCuentaActual = intent.getStringExtra(Modules.ACCOUNTS.name());
-			
 			// Main Toolbar
 			mToolbar = (Toolbar) findViewById(R.id.toolbar_list_contact);
 			setSupportActionBar(mToolbar);
@@ -172,9 +166,24 @@ public class ListContactActivity extends ContactsModuleActions {
 	}
 	
 	@Override
-	public void chargeViewInfo() {
-		String[] params = { "idAccount", idCuentaActual };
-		this.executeTask(params, TypeInfoServer.getContactsxAccount);
+	public void chargeViewInfo() {	
+		 TypeInfoServer infoServer = null;
+	        String message = "",keyID= "";
+
+	        switch(actualInfo.getActualParentModule()){
+				case ACCOUNTS:
+					infoServer = TypeInfoServer.getContactsxAccount;
+					keyID = "idAccount";
+					message = "Buscando Contactos x Cuenta...";
+					break;
+				default:
+						break;
+			}
+
+	        if(infoServer != null){
+		        String[] params = { keyID, actualInfo.getActualParentInfo().id };
+		        this.executeTask(params, infoServer, message);
+	        }
 	}
 
 	@Override
