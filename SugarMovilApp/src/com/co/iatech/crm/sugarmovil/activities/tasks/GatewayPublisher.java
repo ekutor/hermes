@@ -1,7 +1,7 @@
 package com.co.iatech.crm.sugarmovil.activities.tasks;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 
@@ -10,11 +10,11 @@ public class GatewayPublisher implements ITaskPublisher{
 	private static GatewayPublisher INSTANCE;
 	private final Object MUTEX=  new Object();
 	
-	private List<IObserverTask> observers;
+	private Set<IObserverTask> observers;
 	private ActivityBeanCommunicator message;
 	
 	private GatewayPublisher(){
-		observers = new ArrayList<IObserverTask>();
+		observers = new HashSet<IObserverTask>();
 	}
 	
 	public static GatewayPublisher getInstance(){

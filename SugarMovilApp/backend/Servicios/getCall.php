@@ -60,7 +60,10 @@ function getAccountCalls($idAccount)
 
 function getContactCalls($idContact)
 {
-	$sql = "SELECT * FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
+	$sql = "SELECT a.id,a.name,a.date_entered,a.date_modified,a.modified_user_id,a.created_by,a.description,a.deleted,a.assigned_user_id,a.duration_hours,a.duration_minutes,a.date_start,
+a.date_end,a.parent_type,a.status,a.direction,a.parent_id,a.reminder_time,a.email_reminder_time,a.email_reminder_sent,a.outlook_id,a.repeat_type,
+a.repeat_interval,a.repeat_dow,a.repeat_until,a.repeat_count,a.repeat_parent_id,a.recurring_source,ac.id_c,
+ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
 	LEFT JOIN calls_contacts ON a.id = calls_contacts.call_id 
 	WHERE calls_contacts.deleted = '0' 
 	AND a.deleted = '0' 

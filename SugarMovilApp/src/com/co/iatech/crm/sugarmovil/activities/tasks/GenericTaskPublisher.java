@@ -16,22 +16,23 @@ import android.os.AsyncTask;
 /**
  * Representa una tarea asincrona de obtencion de informacion.
  */
-public class GenericTask extends AsyncTask<String, Void, Boolean> {
+public class GenericTaskPublisher extends AsyncTask<String, Void, Boolean> {
     private ProgressDialog progressDialog;
 
     private Activity view;
     private TypeInfoServer typeRequest;
-    private IMovilModuleActions movilModule;
     private String response;
     private String message;
+    private Modules actualModule;
     
-    public GenericTask(Activity view, TypeInfoServer typeRequest,String userMessage){
+   
+    public GenericTaskPublisher(Activity view, Modules movilModule , TypeInfoServer typeRequest,String userMessage){
     	this.view = view;
     	this.typeRequest = typeRequest;
-    	this.movilModule =  (IMovilModuleActions)view;
+    	this.actualModule = movilModule;
     	message = userMessage;
     	if(userMessage == null ){
-    		message = "Cargando "+movilModule.getModule().name().toLowerCase()+" ...";
+    		message = "Cargando "+actualModule.getModuleName().toLowerCase()+" ...";
     	}
     }
     
@@ -67,14 +68,29 @@ public class GenericTask extends AsyncTask<String, Void, Boolean> {
          
             return true;
         } catch (Exception e) {
+        	Message.showShortExt(Utils.errorToString(e), view);
             return false;
         }
     }
 
     @Override
     protected void onPostExecute(final Boolean success) {
-    	movilModule.addInfo(response);
-    	progressDialog.dismiss();        
+    	try{
+    	ActivityBeanCommunicator bean = new ActivityBeanCommunicator("",response);
+    	bean.setModule(actualModule);
+    	progressDialog.dismiss();  
+    	GatewayPublisher.getInstance().postMessage(bean);
+    	
+    	}catch(Exception e){
+    		Message.showShortExt(Utils.errorToString(e), view);
+    		
+    	}
     }
+
+	public void setModule(Modules recyclerModule) {
+		this.actualModule = recyclerModule;
+		
+	}
+
  
 }

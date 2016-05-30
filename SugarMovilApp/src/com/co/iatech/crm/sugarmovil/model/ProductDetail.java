@@ -59,7 +59,7 @@ public class ProductDetail extends GenericBean implements Parcelable {
         setReferencia_c(validate(obj.getString("referencia_c")));;
         setMarca_c(validate(obj.getString("marca_c")));;
         setGrupo_c(validate(obj.getString("grupo_c")));;
-        setEn_inventario_c(validate(obj.getString("en_inventario_c")));;
+        setEn_inventario_c(validate(obj.getString("saldo")));;
         setPrecio1_c(validate(obj.getString("precio1_c")));;
         setPrecio2_c(validate(obj.getString("precio2_c")));;
     }

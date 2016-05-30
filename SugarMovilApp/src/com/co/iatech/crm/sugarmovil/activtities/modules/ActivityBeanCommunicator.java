@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class ActivityBeanCommunicator implements Parcelable{
 	public String id;
 	public String name;
+	public Modules module;
 	
 
     public static final Creator<ActivityBeanCommunicator> CREATOR
@@ -27,6 +28,7 @@ public class ActivityBeanCommunicator implements Parcelable{
 	public ActivityBeanCommunicator(String id, String name) {
 		this.id = id;
 		this.name = name;
+		module  = Modules.ACTUAL_INFO;
 	}
 
 	public ActivityBeanCommunicator(Parcel p) {
@@ -34,6 +36,15 @@ public class ActivityBeanCommunicator implements Parcelable{
 		name = p.readString();
 	}
 	
+	
+	public Modules getModule() {
+		return module;
+	}
+
+	public void setModule(Modules module) {
+		this.module = module;
+	}
+
 	@Override
 	public int describeContents() {
 		return 0;

@@ -24,18 +24,16 @@ public class Product extends GenericBean implements Parcelable {
         }
     };
 
-    private String name, saldo;
+    private String name;
 
     public Product(JSONObject obj) throws JSONException {
         setId(validate(obj.getString("id")));
         setName( validate (obj.getString("name")));
-        setSaldo( validate (obj.getString("saldo")));
     }
 
     public Product(Parcel in) {
         setId(in.readString());
         setName(in.readString());
-        setSaldo( in.readString());
     }
 
     @Override
@@ -47,7 +45,6 @@ public class Product extends GenericBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(getId());
         dest.writeString(getName());
-        dest.writeString(getSaldo());
     }
 
     public String getId() {
@@ -65,14 +62,6 @@ public class Product extends GenericBean implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
-
-	public String getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldo(String saldo) {
-		this.saldo = saldo;
-	}
 
 	@Override
 	public Map<String, String> getDataBean() {

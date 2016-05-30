@@ -69,24 +69,24 @@ public class ProductActivity extends ProductsModuleActions {
         
     }
 
-    public void showValues(ProductDetail productoDetalle) {
+    public void showValues(ProductDetail detail) {
     	try{
 	        TextView valorCodigo = (TextView) findViewById(R.id.valor_codigo);
-	        valorCodigo.setText(productoDetalle.getCodigo_c());
+	        valorCodigo.setText(detail.getCodigo_c());
 	        TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-	        valorNombre.setText(productoDetalle.getName());
+	        valorNombre.setText(detail.getName());
 	        TextView valorReferencia = (TextView) findViewById(R.id.valor_referencia);
-	        valorReferencia.setText(productoDetalle.getReferencia_c());
+	        valorReferencia.setText(detail.getReferencia_c());
 	        TextView valorMarca = (TextView) findViewById(R.id.valor_marca);
-	        valorMarca.setText(productoDetalle.getMarca_c());
+	        valorMarca.setText(detail.getMarca_c());
 	        TextView valorEnInventario = (TextView) findViewById(R.id.valor_en_inventario);
-	        valorEnInventario.setText(cantidadStock);
+	        valorEnInventario.setText(detail.getEn_inventario_c());
 	        TextView valorPrecioPesos = (TextView) findViewById(R.id.valor_precio_pesos);
-	        valorPrecioPesos.setText(productoDetalle.getPrecio1_c());
+	        valorPrecioPesos.setText(detail.getPrecio1_c());
 	        TextView valorPrecioDolares = (TextView) findViewById(R.id.valor_precio_dolares);
-	        valorPrecioDolares.setText(productoDetalle.getPrecio2_c());
+	        valorPrecioDolares.setText(detail.getPrecio2_c());
 	        TextView valorGrupo = (TextView) findViewById(R.id.valor_grupo);
-	        valorGrupo.setText(productoDetalle.getGrupo_c());
+	        valorGrupo.setText(detail.getGrupo_c());
     	 }catch(Exception e){
         	   Message.showShortExt(Utils.errorToString(e), this);
           }
