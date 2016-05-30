@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,6 +25,7 @@ import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator.ActionActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
@@ -43,8 +45,7 @@ import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
-public class ContactActivity extends ContactsModuleActions implements
-		View.OnClickListener {
+public class ContactActivity extends ContactsModuleActions implements View.OnClickListener {
 	/**
 	 * UI References.
 	 */
@@ -54,25 +55,25 @@ public class ContactActivity extends ContactsModuleActions implements
 	private ImageButton imageButtonOpps;
 	private ImageButton imageButtonTasks;
 	private ImageButton imageButtonCalls;
+	private ImageButton btnMakeCall;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_contact);
-		
+
 		// Main Toolbar
 		mContactoToolbar = (Toolbar) findViewById(R.id.toolbar_contact);
 		setSupportActionBar(mContactoToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
 		this.applyActions();
 
 		chargeViewInfo();
 
 	}
 
-	
 	@Override
 	public void applyActions() {
 		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
@@ -80,11 +81,12 @@ public class ContactActivity extends ContactsModuleActions implements
 
 		// ToolBar Opciones
 		imageButtonAccounts = (ImageButton) findViewById(R.id.image_accounts);
-	    imageButtonAccounts.setOnClickListener(this);   
+		imageButtonAccounts.setOnClickListener(this);
 
 		imageButtonOpps = (ImageButton) findViewById(R.id.image_opportunities);
 		imageButtonOpps.setOnClickListener(this);
-		//se debe hacer que las oportunidaders esten asociadas a la cuenta y al contacto
+		// se debe hacer que las oportunidaders esten asociadas a la cuenta y al
+		// contacto
 
 		imageButtonTasks = (ImageButton) findViewById(R.id.image_tasks);
 		imageButtonTasks.setOnClickListener(this);
@@ -92,7 +94,9 @@ public class ContactActivity extends ContactsModuleActions implements
 		imageButtonCalls = (ImageButton) findViewById(R.id.image_calls);
 		imageButtonCalls.setOnClickListener(this);
 
-		ActionsStrategy.definePermittedActions(this,  getApplicationContext(), (GlobalClass) getApplicationContext());
+		btnMakeCall = (ImageButton) findViewById(R.id.image_make_call);
+		btnMakeCall.setOnClickListener(this);
+		ActionsStrategy.definePermittedActions(this, getApplicationContext(), (GlobalClass) getApplicationContext());
 	}
 
 	public void showValues(ContactoDetalle contactoDetalle) {
@@ -130,8 +134,8 @@ public class ContactActivity extends ContactsModuleActions implements
 		valorCuenta.setText(contactoDetalle.getNameAccount());
 
 		TextView valorDepartamento = (TextView) findViewById(R.id.valor_departamento);
-		valorDepartamento.setText(ListsConversor.convert(ConversorsType.DPTO,
-				contactoDetalle.getDepartamento_c(), DataToGet.VALUE));
+		valorDepartamento.setText(
+				ListsConversor.convert(ConversorsType.DPTO, contactoDetalle.getDepartamento_c(), DataToGet.VALUE));
 
 		TextView valorMunicipio = (TextView) findViewById(R.id.valor_municipio);
 		valorMunicipio.setText(contactoDetalle.getMunicipio_c());
@@ -145,12 +149,11 @@ public class ContactActivity extends ContactsModuleActions implements
 		valorUen.setText(contactoDetalle.getUen_c());
 
 		TextView valorZona = (TextView) findViewById(R.id.valor_zona);
-		valorZona.setText(ListsConversor.convert(ConversorsType.ZONE,
-				contactoDetalle.getZona_c(), DataToGet.VALUE));
+		valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, contactoDetalle.getZona_c(), DataToGet.VALUE));
 
 		TextView valorCanal = (TextView) findViewById(R.id.valor_canal);
-		valorCanal.setText(ListsConversor.convert(ConversorsType.CHANNEL,
-				contactoDetalle.getCanal_c(), DataToGet.VALUE));
+		valorCanal
+				.setText(ListsConversor.convert(ConversorsType.CHANNEL, contactoDetalle.getCanal_c(), DataToGet.VALUE));
 
 		TextView valorSector = (TextView) findViewById(R.id.valor_sector);
 		valorSector.setText(contactoDetalle.getSector_c());
@@ -202,24 +205,26 @@ public class ContactActivity extends ContactsModuleActions implements
 		TextView valorUsuario = (TextView) findViewById(R.id.valor_responsable);
 		valorUsuario.setText(contactoDetalle.getAssigned_user_name());
 	}
-	
+
 	@Override
-    public void onBackPressed() {
-    	//String prevID = ActivitiesMediator.getInstance().getPreviusID();
-    	//ActivitiesMediator.getInstance().returnPrevID();
-    }
-	
+	public void onBackPressed() {
+		// String prevID = ActivitiesMediator.getInstance().getPreviusID();
+		// ActivitiesMediator.getInstance().returnPrevID();
+	}
+
 	@Override
 	public void onClick(View v) {
+		boolean continueModule = true;
+
 		if (selectedBean.getIdAccount() == null) {
-			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas",
-					this);
+			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas", this);
 			return;
 		}
 
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""));
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS,
+					new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""));
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;
@@ -227,13 +232,40 @@ public class ContactActivity extends ContactsModuleActions implements
 			module = Modules.TASKS;
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
-		}
-		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""), Modules.ACCOUNTS);
-		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getFirst_name()), MODULE);
-		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
+		} else if (v.getId() == btnMakeCall.getId()) {
+			module = Modules.CALLS;
+			continueModule = false;
 
+			ActivityBeanCommunicator communicator = new ActivityBeanCommunicator(selectedBean.getId(),
+					selectedBean.getFirst_name());
+			communicator.setAction(ActionActivity.MAKE_CALL);
+			communicator.setAdditionalInfo(this.getPhoneNumer());
+			ActivitiesMediator.getInstance().setActualID(communicator, MODULE);
+			ActivitiesMediator.getInstance().showEditActivity(this, module, false);
+
+		}
+		if (continueModule) {
+			ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""),
+					Modules.ACCOUNTS);
+			ActivitiesMediator.getInstance().setActualID(
+					new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getFirst_name()), MODULE);
+			ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
+		}
 	}
 
+	private String getPhoneNumer() {
+		String phoneNumber = "3004109841";
+		/*
+		 * String[] values =
+		 * {selectedBean.getPhone_mobile(),selectedBean.getPhone_work(),
+		 * selectedBean.getPhone_home(),selectedBean.getPhone_other(),
+		 * selectedBean.getPhone_fax(),selectedBean.getAssistant_phone()};
+		 * for(String betterPhone : values){ if(betterPhone != null &&
+		 * !betterPhone.equals("") && !betterPhone.equalsIgnoreCase("null")){
+		 * phoneNumber = betterPhone; break; } }
+		 */
+		return phoneNumber;
+	}
 
 	@Override
 	public void addInfo(String serverResponse) {
@@ -241,30 +273,27 @@ public class ContactActivity extends ContactsModuleActions implements
 
 			JSONObject jObj = new JSONObject(serverResponse);
 			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
-			
+
 			if (jArr.length() > 0) {
 				JSONObject obj = jArr.getJSONObject(0);
 				selectedBean = new ContactoDetalle(obj);
 				showValues(selectedBean);
 			}
-			
+
 		} catch (Exception e) {
 			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
 		}
 
-		
 	}
-
 
 	@Override
 	public void chargeViewInfo() {
 		Intent intent = getIntent();
 		beanCommunicator = intent.getParcelableExtra(MODULE.name());
 		String[] params = { "idContact", beanCommunicator.id };
-		
+
 		this.executeTask(params, TypeInfoServer.getContact);
 
 	}
-
 
 }

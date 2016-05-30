@@ -123,6 +123,9 @@ public class Utils {
 	}
 	
 	public static CharSequence convertTimetoStringFrontEnd(Calendar c) {
+		if(c == null){
+			c = Calendar.getInstance();
+		}
 		SimpleDateFormat sdout = new SimpleDateFormat(DATETIME_FORMAT_FRONTEND);
 		return sdout.format(c.getTime());
 	}

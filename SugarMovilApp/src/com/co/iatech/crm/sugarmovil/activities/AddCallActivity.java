@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogT
 import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator.ActionActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleValidations;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -88,6 +90,9 @@ public class AddCallActivity extends CallsModuleEditableActions {
 
 	public String resultado;
 
+
+	private ActionActivity action;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +116,20 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	        	TextView title = (TextView) findViewById(R.id.text_call_toolbar);
 	        	title.setText("EDITAR LLAMADA");
 	        	chargeViewInfo();
+	        }else{
+	        	if(ActionActivity.MAKE_CALL.equals(action)){
+	        		try{
+	        			spinnerDirection.setSelection(2);
+	        			spinnerState.setSelection(2);
+	        			valorFechaInicio.setText(Utils.convertTimetoStringFrontEnd(null));
+	        			Intent my_callIntent = new Intent(Intent.ACTION_CALL);
+					    my_callIntent.setData(Uri.parse("tel:"+ actualInfo.getActualParentInfo().getAdditionalInfo()));
+					    startActivity(my_callIntent);
+	        		} catch (Exception e) {
+	    			    Message.showShortExt("Fallo al realizar la llamada "+e.getMessage(), this);
+	    			}
+	        	}
+	        	 
 	        }
         }catch(Exception e){
        	   Message.showShortExt(Utils.errorToString(e), this);
@@ -124,7 +143,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
         	 Intent intent = getIntent();
         	 selectedCall = intent.getParcelableExtra(MODULE.getModuleName());
          }else{
-        	 selectedCall = new Call();
+        	selectedCall = new Call();
 			int pos = 0;
 			
 			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
@@ -150,6 +169,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				break;
 			case CONTACTS:
 				txtParentName.setText(actualInfo.getActualParentInfo().name);
+				this.action = actualInfo.getActualParentInfo().getAction();
 				break;
 			default:
 				pos = 0;
