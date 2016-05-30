@@ -10,6 +10,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -23,8 +24,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.co.iatech.crm.sugarmovil.BuildConfig;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.tasks.CampaignsTask;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
@@ -88,7 +91,13 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
         mVistaEstadoIngreso = findViewById(R.id.login_status);
         mVistaEstadoIngreso.setVisibility(View.GONE);
 
-
+		try {
+			String version = this.getPackageManager()
+			.getPackageInfo(this.getPackageName(), 0).versionName;
+			TextView txtVersion = (TextView) findViewById(R.id.text_version);
+			txtVersion.setText("Version "+version+"\n © Derechos Reservados.");
+		} catch (NameNotFoundException e) {
+		}
         textUser = (EditText) findViewById(R.id.text_user);
         textUser.setOnFocusChangeListener(this);
         textPass = (EditText) findViewById(R.id.text_password);

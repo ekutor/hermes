@@ -114,6 +114,17 @@
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
                     tools:ignore="MissingPrefix" />
+                
+                <TextView
+                    android:id="@+id/text_version"
+                    fontPath="fonts/DaxlinePro-Regular.ttf"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:textSize="8sp"
+                    tools:ignore="MissingPrefix" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
