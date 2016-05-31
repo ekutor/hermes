@@ -57,6 +57,7 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 	}
 
 	public void showValues(OportunidadDetalle oportunidadDetalle) {
+		try{
 		TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
 		valorNombre.setText(oportunidadDetalle.getName());
 
@@ -103,6 +104,9 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 		TextView valorMoneda = (TextView) findViewById(R.id.valor_moneda);
 		valorMoneda.setText(ListsConversor.convert(ConversorsType.OPPORTUNITY_CURRENCY,
 				oportunidadDetalle.getAmount_usdollar(), DataToGet.VALUE));
+		} catch (Exception e) {
+			Message.showShortExt(Utils.errorToString(e), this);
+		}
 
 	}
 
@@ -135,7 +139,7 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
     
     @Override
 	public void onClick(View v) {
-
+  try{
 		Modules moduletoStart = null;
 		
 		if (v.getId() == imgButtonTasks.getId()){
@@ -143,12 +147,14 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 		}else if (v.getId() == imgButtonCalls.getId()){
 			moduletoStart = Modules.CALLS;
 		}
-		if(selectedBean.getId() != null){
+		if(selectedBean != null){
 			ActivitiesMediator.getInstance().setParentBean(selectedBean);
 			ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
 		}
 		ActivitiesMediator.getInstance().showList(OpportunityActivity.this, moduletoStart, MODULE);
-
+  } catch (Exception e) {
+		Message.showShortExt(Utils.errorToString(e), this);
+	}
 	}
 
 	@Override
@@ -177,6 +183,7 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 		if (intent.getExtras().get(MODULE.getModuleName()) instanceof OportunidadDetalle) {
 			selectedBean = (OportunidadDetalle) intent.getExtras().get(MODULE.getModuleName());
 			this.showValues(selectedBean);
+			
 		} else {
 			beanCommunicator = intent.getParcelableExtra(MODULE.name());
 			String[] params = { "idOpportunity", beanCommunicator.id };
