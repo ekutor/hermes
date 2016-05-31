@@ -143,9 +143,10 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 		}else if (v.getId() == imgButtonCalls.getId()){
 			moduletoStart = Modules.CALLS;
 		}
-		
-		ActivitiesMediator.getInstance().setParentBean(selectedBean);
-		ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
+		if(selectedBean.getId() != null){
+			ActivitiesMediator.getInstance().setParentBean(selectedBean);
+			ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
+		}
 		ActivitiesMediator.getInstance().showList(OpportunityActivity.this, moduletoStart, MODULE);
 
 	}
