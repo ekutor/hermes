@@ -8,7 +8,7 @@ import com.co.iatech.crm.sugarmovil.model.GenericBean;
 
 
 public class ListsHolder {
-    public enum ListsHolderType { USERS,ACCOUNTS,CAMPAIGNS }
+    public enum ListsHolderType { USERS,ACCOUNTS,CAMPAIGNS, OPPORTUNITIES, CONTACTS , CONTACTS_ACCOUNTS }
     private final static Map<ListsHolderType, List< ? extends GenericBean> > holder = new HashMap<ListsHolderType, List< ? extends GenericBean>>();
     
     public static List< ? extends GenericBean> getList(ListsHolderType type){
@@ -19,5 +19,8 @@ public class ListsHolder {
 		holder.put(type, value);
 	}
 	
+	public static void clear(ListsHolderType type){
+		holder.remove(type);
+	}
 
 }

@@ -9,6 +9,7 @@ function getContactCalls($idContact)
 	$sql = "SELECT calls.id,calls.name FROM calls 
 	LEFT JOIN calls_contacts ON calls.id = calls_contacts.call_id 
 	WHERE calls.deleted = '0' 
+	AND calls_contacts.deleted = '0' 
 	AND calls_contacts.contact_id = '$idContact' 
 	ORDER BY name ASC";
 	$res = $mysqli->query($sql);

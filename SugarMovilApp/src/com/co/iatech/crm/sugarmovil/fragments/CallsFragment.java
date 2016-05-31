@@ -7,14 +7,16 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModule;
 import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Llamada;
+import com.co.iatech.crm.sugarmovil.model.Call;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
@@ -35,7 +37,7 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class CallsFragment extends Fragment implements CallsModuleActions {
+public class CallsFragment extends Fragment implements IMovilModuleActions,CallsModule {
     /**
      * Debug.
      */
@@ -173,14 +175,14 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
             
         }else{
         	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
-        	showCalls();
+        	chargeViewInfo();
         }
         
         return mRootView;
     }
 
     
-    private void showCalls() {
+    public void chargeViewInfo() {
     	mRecyclerViewCallsAdapter = new RecyclerGenericAdapter(getActivity(), AdapterSearchUtil.transform(DataManager.getInstance().callsInfo), MODULE);
         mRecyclerViewCalls.setAdapter(mRecyclerViewCallsAdapter);
 	}
@@ -194,7 +196,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showCalls();
+        chargeViewInfo();
     }
 
     @Override
@@ -229,8 +231,6 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 		return null;
 	}
 
-
-	@Override
 	public void applyActions() {
 		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
 		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
@@ -274,7 +274,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
                 JSONArray jArr = jObj.getJSONArray("results");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject obj = jArr.getJSONObject(i);
-                    DataManager.getInstance().callsInfo.add(new Llamada(obj));
+                    DataManager.getInstance().callsInfo.add(new Call(obj));
                 }
                 DataManager.getInstance().defSynchronize(MODULE);
                 return true;
@@ -292,7 +292,7 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
 
             if (success) {
                 if (DataManager.getInstance().callsInfo.size() > 0) {
-                    showCalls();
+                	chargeViewInfo();
                 } else {
                     Log.d(TAG,
                             "No hay Llamadas: "
@@ -307,5 +307,19 @@ public class CallsFragment extends Fragment implements CallsModuleActions {
             Log.d(TAG, "Cancelado ");
         }
     }
+
+
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getInfoFromMediator() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

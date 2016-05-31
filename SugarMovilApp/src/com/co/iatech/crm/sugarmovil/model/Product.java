@@ -11,31 +11,29 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de los productos.
  */
-public class Producto extends GenericBean implements Parcelable {
+public class Product extends GenericBean implements Parcelable {
 
-    public static final Creator<Producto> CREATOR
-            = new Creator<Producto>() {
-        public Producto createFromParcel(Parcel in) {
-            return new Producto(in);
+    public static final Creator<Product> CREATOR
+            = new Creator<Product>() {
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
         }
 
-        public Producto[] newArray(int size) {
-            return new Producto[size];
+        public Product[] newArray(int size) {
+            return new Product[size];
         }
     };
 
-    private String id, name, saldo;
+    private String name;
 
-    public Producto(JSONObject obj) throws JSONException {
+    public Product(JSONObject obj) throws JSONException {
         setId(validate(obj.getString("id")));
         setName( validate (obj.getString("name")));
-        setSaldo( validate (obj.getString("saldo")));
     }
 
-    public Producto(Parcel in) {
+    public Product(Parcel in) {
         setId(in.readString());
         setName(in.readString());
-        setSaldo( in.readString());
     }
 
     @Override
@@ -47,7 +45,6 @@ public class Producto extends GenericBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(getId());
         dest.writeString(getName());
-        dest.writeString(getSaldo());
     }
 
     public String getId() {
@@ -65,14 +62,6 @@ public class Producto extends GenericBean implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
-
-	public String getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldo(String saldo) {
-		this.saldo = saldo;
-	}
 
 	@Override
 	public Map<String, String> getDataBean() {

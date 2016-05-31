@@ -4,6 +4,21 @@ package com.co.iatech.crm.sugarmovil.fragments;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModule;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.software.shell.fab.ActionButton;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,21 +36,7 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.MainActivity;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
-import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.software.shell.fab.ActionButton;
-
-public class TasksFragment extends Fragment implements TasksModuleActions {
+public class TasksFragment extends Fragment implements IMovilModuleActions,TasksModule {
 
     /**
      * Debug.
@@ -156,7 +157,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
                     // Filtro para cuentas
                     ((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
-                    Log.d(TAG, "Error aÃ±adiendo el filtro de busqueda");
+                    Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
 
                 return false;
@@ -175,12 +176,13 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
             
         }else{
         	Log.d(TAG,"Cargando Contactos desde MEMORIA");
-        	showTasks();
+        	chargeViewInfo();
         }
         return mRootView;
     }
 
-    private void showTasks() {
+    @Override
+    public void chargeViewInfo() {
        mRecyclerViewTasksAdapter = new RecyclerGenericAdapter(getActivity(), 
     		   AdapterSearchUtil.transform(DataManager.getInstance().tasksInfo), MODULE);
  	   mRecyclerViewTasks.setAdapter(mRecyclerViewTasksAdapter);
@@ -202,7 +204,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
             e.printStackTrace();
         }
 
-        showTasks();
+        chargeViewInfo();
     }
 
     @Override
@@ -238,7 +240,6 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
 	}
 
 
-	@Override
 	public void applyActions() {
 		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
 		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
@@ -279,7 +280,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
                     JSONObject obj = jArr.getJSONObject(i);
                     String id = obj.getString("id");
                     String name = obj.getString("name");
-                    DataManager.getInstance().tasksInfo.add(new TareaDetalle(id, name));
+                    DataManager.getInstance().tasksInfo.add(new DetailTask(id, name));
                 }
                 DataManager.getInstance().defSynchronize(MODULE);
                 return true;
@@ -297,7 +298,7 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
 
             if (success) {
                 if (DataManager.getInstance().tasksInfo.size() > 0) {
-                    showTasks();
+                	chargeViewInfo();
                 } else {
                     Log.d(TAG,
                             "No hay Tareas: "
@@ -312,5 +313,18 @@ public class TasksFragment extends Fragment implements TasksModuleActions {
             Log.d(TAG, "Cancelado ");
         }
     }
+
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getInfoFromMediator() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

@@ -7,10 +7,10 @@ import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToG
 
 
 public class ListsConversor {
-    public enum ConversorsType { ZONE,DPTO,CHANNEL,OPPORTUNITY_MEDIUM, OPPORTUNITY_PROYECT,
+    public enum ConversorsType { ZONE,DPTO,CHANNEL,OPPORTUNITY_MEDIUM, OPPORTUNITY_PROYECT,OPPORTUNITY_SOURCE,
     	OPPORTUNITY_STAGE,OPPORTUNITY_COMUNICATIONS, OPPORTUNITY_ENERGY,OPPORTUNITY_ILUM,
     	OPPORTUNITY_CURRENCY,CALLS_STATUS,CALLS_DIRECTION,CALLS_MINS_DURATION,CALLS_RESULT,
-    	TASKS_STATUS, TASKS_TYPE, TASKS_PRIORITY }
+    	TASKS_STATUS, TASKS_TYPE, TASKS_PRIORITY,DPTO_PHONE }
     
     private static ListConverter create(ConversorsType type){
     	ListConverter converter = null;
@@ -26,6 +26,9 @@ public class ListsConversor {
 				break;
 			case  OPPORTUNITY_MEDIUM: 
 				converter = ListOppMediumConverter.getInstance();
+				break;
+			case  OPPORTUNITY_SOURCE: 
+				converter = ListOppSourceConverter.getInstance();
 				break;
 			case  OPPORTUNITY_PROYECT: 
 				converter = ListOppProyTypeConverter.getInstance();
@@ -57,6 +60,9 @@ public class ListsConversor {
 			case CALLS_RESULT:
 				converter = ListCallResultConverter.getInstance();
 			break;
+			case  DPTO_PHONE: 
+				converter = ListDptoTelConverter.getInstance();
+				break;
 			case TASKS_STATUS:
 				converter = ListTasksStatusConverter.getInstance();
 			break;

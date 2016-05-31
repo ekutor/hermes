@@ -1,9 +1,12 @@
 <?php
 
 require 'conexion.php';
+require 'consultaInventario.php';
 
 function getProducto($idProducto)
 {
+
+  
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
 	$sql = "SELECT * FROM psg_productos a LEFT JOIN psg_productos_cstm ac ON a.id = ac.id_c WHERE id = '$idProducto'";
@@ -14,6 +17,9 @@ function getProducto($idProducto)
 	while($r = mysqli_fetch_assoc($res))
 	{
 		$obj = (object) $r;
+		
+		$cantProducts = searchInfo($r['codigo_c']);
+		$obj->saldo = $cantProducts;
 		
 		$a =  (array) $obj;
 		
@@ -32,7 +38,45 @@ function getProducto($idProducto)
 	}
 }
 
+function getProductos($queryText = null)
+{
 
+
+	//Realiza el query en la base de datos
+	$mysqli = makeSqlConnection();
+	//$sql = "SELECT * FROM psg_productos a LEFT JOIN psg_productos_cstm ac ON a.id = ac.id_c";
+	$sql = "SELECT id,name FROM psg_productos where deleted ='0' ";
+	
+	if($queryText != null && !empty($queryText)){
+		$sql .= " AND name like ('$queryText%') ";
+	}else{
+		$sql .= " limit 50" ;
+	}
+	$res = $mysqli->query($sql);
+	
+	$rows = array();
+	
+	while($r = mysqli_fetch_assoc($res))
+	{
+		
+		$obj = (object) $r;
+		
+		$a =  (array) $obj;
+	
+		$rows[] = $a;
+	}
+	
+	if( empty( $rows ) )
+	{
+		return '{"results" :[]}';
+	}
+	else
+	{
+		//Convierte el arreglo en json y lo retorna
+		$temp = json_encode(utf8ize($rows));
+		return '{"results" :'.$temp.'}';
+	}
+}
 
 function utf8ize($d)
 {

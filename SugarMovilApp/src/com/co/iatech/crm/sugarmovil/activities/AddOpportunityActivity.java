@@ -5,18 +5,16 @@ import java.util.Map;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
-import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
 import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleValidations;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
@@ -37,11 +35,12 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,8 +51,7 @@ import android.widget.TextView;
 
 
 
-public class AddOpportunityActivity extends AppCompatActivity implements View.OnClickListener, 
-SearchDialogInterface, OpportunitiesModuleValidations {
+public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 
  
     /**
@@ -72,10 +70,10 @@ SearchDialogInterface, OpportunitiesModuleValidations {
      */
  
     private OportunidadDetalle oportSeleccionada;
-    private static boolean modoEdicion;
-    private String idCuentaAsociada;
+
     private TypeActions tipoPermiso;
     private ListAccountConverter lac = new ListAccountConverter();
+    private final String VALUE_SELECTED = "PORTALES WEB";
     
     /**
      * UI References.
@@ -84,9 +82,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     private ImageButton imgButtonGuardar;
     private Button botonFechaCierre;
     private TextView mValorFechaCierre,asignadoA,valorCuenta;
-    private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorFuente,valorPaso,valorDescripcion;
+    private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorPaso,valorDescripcion;
     private Spinner valorTipo,valorEtapa,valorMedio,valorEnergia,valorComunicaciones,valorIluminacion,valorMoneda;
-    private Spinner valorCampana;
+    private Spinner valorCampana, valorFuente;
     private ListUsersConverter lc = new ListUsersConverter();
 
 	public String resultado;
@@ -97,7 +95,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_opportunity);
         try{
-	        modoEdicion = false;
+	      
 	        // SoftKey
 	        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	        
@@ -115,7 +113,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        defineValidations();
 	        asignadoA.setOnClickListener(this);
 	        
-	        if(modoEdicion){
+	        if(isEditMode){
 	        	TextView title = (TextView) findViewById(R.id.text_opportunity_toolbar);
 	        	title.setText("EDITAR OPORTUNIDAD");
 	        	chargeValues();
@@ -126,25 +124,20 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
     }
 
-    private void getInfoFromMediator() {
-    	
+    public void getInfoFromMediator() {
+    	super.getInfoFromMediator();
 		 tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
-    	 Intent intent = getIntent();
-         
-         
-         oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
-
-         if(oportSeleccionada != null){
-         	modoEdicion = true;
-
+		 Intent intent = getIntent();
+         if(isEditMode){
+        	 oportSeleccionada = intent.getParcelableExtra(MODULE.getModuleName());
          }else{
          	oportSeleccionada = new OportunidadDetalle();
-         	idCuentaAsociada = intent.getStringExtra(Modules.ACCOUNTS.name());
+         	beanCommunicator = intent.getParcelableExtra(Modules.ACCOUNTS.name());
          }
 		
 	}
 
-	private void chargeLists() {
+    public void chargeLists() {
     	//Tipo Oportunidad
         valorTipo = (Spinner) findViewById(R.id.valor_tipo);
         
@@ -160,13 +153,35 @@ SearchDialogInterface, OpportunitiesModuleValidations {
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_STAGE));
         etapaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEtapa.setAdapter(etapaAdapter);
-      
+       
+        valorFuente = (Spinner) findViewById(R.id.valor_fuente);
+        final ArrayAdapter<String> fuenteAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_SOURCE));
+        fuenteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Medio Oportunidad
         valorMedio = (Spinner) findViewById(R.id.valor_medio);
         ArrayAdapter<String> medioAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_MEDIUM));
         medioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorMedio.setAdapter(medioAdapter);
+        valorMedio.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {   
+				if(valorMedio.getSelectedItem().toString().contains(VALUE_SELECTED)){
+					valorFuente.setAdapter(fuenteAdapter);
+					valorFuente.setSelection(0,true);
+				}else{
+					valorFuente.setAdapter(null);
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+	
+				
+			}});
         
         //Energia
         valorEnergia = (Spinner) findViewById(R.id.valor_energia);       
@@ -204,7 +219,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 		User u = global.getUsuarioAutenticado();
 		
 		oportSeleccionada.setCreated_by(u.getId());
-		if(!modoEdicion){
+		if(!isEditMode){
 			
 	        asignadoA.setText(u.getFirst_name()+" "+u.getLast_name());
 	        oportSeleccionada.setAssigned_user_id(u.getId());
@@ -220,9 +235,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
         
 	      //Carga Cuentas
-	        if(idCuentaAsociada != null){
+	        if(beanCommunicator != null){
 	        	int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE, "Accounts");
-	    		valorCuenta.setText(lac.convert(idCuentaAsociada, DataToGet.VALUE ));
+	    		valorCuenta.setText(lac.convert(beanCommunicator.id, DataToGet.VALUE ));
 	        }
         
     }
@@ -246,9 +261,6 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         valorEstimado = (EditText) findViewById(R.id.valor_estimado);
 
         valorProbabilidad = (EditText) findViewById(R.id.valor_probabilidad);
-
-        // Fuente no tiene datos en el crm
-       // TextView valorFuente = (TextView) findViewById(R.id.valor_fuente);
 
         // Paso
         valorPaso = (EditText) findViewById(R.id.valor_paso);
@@ -275,7 +287,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         valorPaso.setText(oportSeleccionada.getNext_step());
         // Descripcion
         valorDescripcion.setText(oportSeleccionada.getDescription());
-     
+       
        // valorEstimado.setText(oportSeleccionada.getValoroportunidad_c());
   
         
@@ -287,6 +299,9 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_MEDIUM, oportSeleccionada.getMedio_c());
         valorMedio.setSelection(pos);
+        
+        pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_SOURCE, oportSeleccionada.getFuente_c());
+        valorFuente.setSelection(pos);
         
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_ENERGY, oportSeleccionada.getEnergia_c());
         valorEnergia.setSelection(pos);
@@ -317,6 +332,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
     
 	@Override
 	public void onClick(View v) {
+	try{
 		if(v.getId() == asignadoA.getId()){
 			switch(tipoPermiso){
 			case OWNER:
@@ -328,7 +344,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 				break;
 			}
 		}else if(v.getId() == botonFechaCierre.getId()){
-			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,modoEdicion);
+			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		}else if(v.getId() == valorCuenta.getId()){
 			Message.showAccountsDialog(getSupportFragmentManager());
@@ -362,7 +378,10 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        oportSeleccionada.setCampaign_id(lcc.convert(valorCampana.getSelectedItem().toString(), DataToGet.CODE));
 
 	        oportSeleccionada.setMedio_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM, valorMedio.getSelectedItem().toString(), DataToGet.CODE));
-	
+	        
+	        if(valorFuente.getSelectedItem() != null){
+	        	oportSeleccionada.setFuente_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_SOURCE, valorFuente.getSelectedItem().toString(), DataToGet.CODE));
+	        }
 	        // Asignado
 	        String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(),DataToGet.CODE);
 	        oportSeleccionada.setAssigned_user_id(idUsuarioAsignado);
@@ -392,6 +411,10 @@ SearchDialogInterface, OpportunitiesModuleValidations {
 	        // Crear oportunidad
 	        mTareaCrearOportunidad.execute(oportSeleccionada);
 		}
+		
+	 }catch(Exception e){
+      	  Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddOpportunityActivity.this, MODULE );
+       }
     }
 	
 	@Override
@@ -437,7 +460,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
                 // Resultado
                 resultado = null;
                 
-                if(modoEdicion){
+                if(isEditMode){
                 	resultado  = ControlConnection.putInfo(TypeInfoServer.addOpportunity, op.getDataBean(),Modo.EDITAR, AddOpportunityActivity.this);
                 }else{
                    	resultado  = ControlConnection.putInfo(TypeInfoServer.addOpportunity, op.getDataBean(),Modo.AGREGAR, AddOpportunityActivity.this);
@@ -448,7 +471,8 @@ SearchDialogInterface, OpportunitiesModuleValidations {
                 	Oportunidad oportunidad = new Oportunidad( op );
                 	
                 	oportunidad.accept(new DataVisitorsManager());
-                	ActivitiesMediator.getInstance().addObjectInfo(oportunidad);
+                	ActivitiesMediator.getInstance().addObjectInfo(op);
+                	
                 	 return true;
                 }else{
                 	 return false;
@@ -464,7 +488,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
         protected void onPostExecute(final Boolean success) {
             mTareaCrearOportunidad = null;
             if (success) {
-            	 if(modoEdicion){
+            	 if(isEditMode){
             		 Message.showFinalMessage(getFragmentManager(),DialogType.EDITED, AddOpportunityActivity.this, MODULE );
             		 
             	 }else{
@@ -473,7 +497,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
             	 }
             	 
             } else {
-            	if(modoEdicion){
+            	if(isEditMode){
            		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddOpportunityActivity.this, MODULE );
            		 
            	 }else{
@@ -483,7 +507,7 @@ SearchDialogInterface, OpportunitiesModuleValidations {
            	 }
                
             }
-            modoEdicion = false;
+          
         }
 
         @Override
@@ -492,5 +516,17 @@ SearchDialogInterface, OpportunitiesModuleValidations {
             Log.d(TAG, "Cancelado ");
         }
     }
+
+	@Override
+	public void addInfo(String serverResp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void chargeViewInfo() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

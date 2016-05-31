@@ -8,7 +8,7 @@ function loginUsuarios($usuario,$password)
 
 if($usuario == 'h'){
   $usuario= 'luz';
-  $password = 'Luces1037614153';
+  $password = "temporal2016&apos;";
 }
 	$auth = connectLdap($usuario,$password);
 	if($auth !=  "AUTHENTICATE"){

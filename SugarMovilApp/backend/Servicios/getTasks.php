@@ -6,7 +6,7 @@ function getTasks()
 {
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	$sql = "SELECT id,name FROM tasks WHERE deleted = '0' ORDER BY 
+	$sql = "SELECT id,name FROM tasks t WHERE t.status != 'Completed' AND t.deleted = '0' ORDER BY 
 name ASC";
 	$res = $mysqli->query($sql);
 	

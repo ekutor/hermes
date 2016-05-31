@@ -24,6 +24,9 @@ public class ListAccountConverter extends ListModelConverter{
 	
 	@Override
 	public String convert(String value, DataToGet dataType) {
+		if(value == null){
+			return "";
+		}
 		String resp= "";
 		boolean  finded = false;
 		List<Cuenta> lista = (List<Cuenta>) ListsHolder.getList(typelist);

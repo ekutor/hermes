@@ -7,8 +7,11 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModule;
 import com.co.iatech.crm.sugarmovil.activtities.modules.OpportunitiesModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModule;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
@@ -16,6 +19,8 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 import com.software.shell.fab.ActionButton;
 
 import android.app.Fragment;
@@ -35,7 +40,7 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class OpportunitiesFragment extends Fragment implements OpportunitiesModuleActions {
+public class OpportunitiesFragment extends Fragment implements IMovilModuleActions,OpportunitiesModule {
     /**
      * Debug.
      */
@@ -172,7 +177,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         
         }else{
         	Log.d(TAG,"Cargando Oportunidades desde MEMORIA");
-        	showOpprotunities();
+        	chargeViewInfo();
         }
         return mRootView;
     }
@@ -186,7 +191,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showOpprotunities();
+        chargeViewInfo();
     }
 
     @Override
@@ -222,7 +227,6 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
 	}
 
 
-	@Override
 	public void applyActions() {
 		actionButton = (ActionButton) mRootView.findViewById(R.id.action_button); 
 		GlobalClass gc =(GlobalClass) getActivity().getApplicationContext();
@@ -267,6 +271,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().opportunitiesInfo.add(new Oportunidad(obj));
                 }
+               // ListsHolder.saveList(ListsHolderType.OPPORTUNITIES, DataManager.getInstance().opportunitiesInfo);
                 DataManager.getInstance().defSynchronize(MODULE);
                 return true;
             } catch (Exception e) {
@@ -283,7 +288,7 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
 
             if (success) {
                 if (DataManager.getInstance().opportunitiesInfo.size() > 0) {
-                	showOpprotunities();
+                	chargeViewInfo();
                 } else {
                     Log.d(TAG,
                             "No hay Oportunidades: "
@@ -299,10 +304,22 @@ public class OpportunitiesFragment extends Fragment implements OpportunitiesModu
         }
     }
 
-	public void showOpprotunities() {
+	public void chargeViewInfo() {
 	    mRecyclerViewOpportunitiesAdapter = new RecyclerGenericAdapter(getActivity(), 
 	    		AdapterSearchUtil.transform(DataManager.getInstance().opportunitiesInfo), MODULE);
         mRecyclerViewOpportunities.setAdapter(mRecyclerViewOpportunitiesAdapter);
+		
+	}
+	
+	@Override
+	public void addInfo(String serverResponse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getInfoFromMediator() {
+		// TODO Auto-generated method stub
 		
 	}
 
