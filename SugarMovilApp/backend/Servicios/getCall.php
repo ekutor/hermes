@@ -60,7 +60,7 @@ function getAccountCalls($idAccount)
 
 function getContactCalls($idContact)
 {
-	$sql = "SELECT a.id,a.name,a.date_entered,a.date_modified,a.modified_user_id,a.created_by,a.description,a.deleted,a.assigned_user_id,a.duration_hours,a.duration_minutes,a.date_start,
+	/*$sql = "SELECT a.id,a.name,a.date_entered,a.date_modified,a.modified_user_id,a.created_by,a.description,a.deleted,a.assigned_user_id,a.duration_hours,a.duration_minutes,a.date_start,
 a.date_end,a.parent_type,a.status,a.direction,a.parent_id,a.reminder_time,a.email_reminder_time,a.email_reminder_sent,a.outlook_id,a.repeat_type,
 a.repeat_interval,a.repeat_dow,a.repeat_until,a.repeat_count,a.repeat_parent_id,a.recurring_source,ac.id_c,
 ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
@@ -68,11 +68,31 @@ ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c
 	WHERE calls_contacts.deleted = '0' 
 	AND a.deleted = '0' 
 	AND calls_contacts.contact_id = '$idContact' 
+	ORDER BY name ASC";*/
+	
+	$sql = "SELECT a.id,a.name,a.date_entered,a.date_modified,a.modified_user_id,a.created_by,a.description,a.deleted,a.assigned_user_id,a.duration_hours,a.duration_minutes,a.date_start,
+a.date_end,a.parent_type,a.status,a.direction,a.parent_id,a.reminder_time,a.email_reminder_time,a.email_reminder_sent,a.outlook_id,a.repeat_type,
+a.repeat_interval,a.repeat_dow,a.repeat_until,a.repeat_count,a.repeat_parent_id,a.recurring_source,ac.id_c,
+ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
+	WHERE a.deleted = '0' 
+	AND a.parent_id = '$idContact' 
 	ORDER BY name ASC";
 		
 	return getGenericCall($sql);
 }
 
+function getOpprtunityCalls($idOpp)
+{
+	$sql = "SELECT a.id,a.name,a.date_entered,a.date_modified,a.modified_user_id,a.created_by,a.description,a.deleted,a.assigned_user_id,a.duration_hours,a.duration_minutes,a.date_start,
+a.date_end,a.parent_type,a.status,a.direction,a.parent_id,a.reminder_time,a.email_reminder_time,a.email_reminder_sent,a.outlook_id,a.repeat_type,
+a.repeat_interval,a.repeat_dow,a.repeat_until,a.repeat_count,a.repeat_parent_id,a.recurring_source,ac.id_c,
+ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
+	WHERE a.deleted = '0' 
+	AND a.parent_id='$idOpp' 
+	ORDER BY name ASC";
+		
+	return getGenericCall($sql);
+}
 
 
 function getNombreUsuario($idUsuario)
@@ -98,6 +118,15 @@ function getParentName($id,$tipo)
 		while($r2 = mysqli_fetch_assoc($res2))
 		{
 			return $r2['name'];
+		}
+	}else if($tipo == 'Contacts')
+	{
+		$mysqli = makeSqlConnection();
+		$sql2 = "SELECT first_name FROM contacts WHERE id = '$id'";
+		$res2 = $mysqli->query($sql2);
+		while($r2 = mysqli_fetch_assoc($res2))
+		{
+			return $r2['first_name'];
 		}
 	}
 	else

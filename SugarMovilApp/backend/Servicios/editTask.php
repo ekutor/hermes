@@ -2,6 +2,8 @@
 
 require 'conexion.php';
 require_once('IOManager.php');
+require 'utils.php';
+
 
 function editTask($modo,$id,$asunto,$estimado,$descripcion,$estado,$fechaInicio,$fechaVence,$contacto,$prioridad,$asignado,$tipoRelacion,$idRelacion,$idUsuarioLogueado)
 {
@@ -11,7 +13,7 @@ function editTask($modo,$id,$asunto,$estimado,$descripcion,$estado,$fechaInicio,
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
 	
-	
+		$descripcion = getTabs($descripcion);
 	
 	//--Si es un task nuevo, lo crea------------------------------------------------------------
 	if($modo == 'agregar')

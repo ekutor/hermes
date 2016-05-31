@@ -1,6 +1,7 @@
 <?php
 
 require 'conexion.php';
+require 'utils.php';
 
 function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$fechaInicio,$duracion_horas,$duracion_min,$parent_id,$parent_type,$idCampana,$idUsuario,$idAsignado,$idContacto = null)
 {
@@ -8,8 +9,8 @@ function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$
 	$fecha = date("Y/m/d h:i:s");	
 		
 	$mysqli = makeSqlConnection();
-	
-	
+
+	$descripcion = getTabs($descripcion);
 	
 	
 	//--Si es un opportunity nuevo, lo crea------------------------------------------------------------

@@ -1,6 +1,7 @@
 <?php
 
 require 'conexion.php';
+require 'utils.php';
 
 function editOpportunity($modo,$id,$date_entered,$energia_c,$id_c,$assigned_user_id,$comunicaciones_c,$amount,$amount_usdollar,$nameAccount,$description,$name,$valoroportunidad_c,$date_closed,$probability,$fuente_c,$iluminacion_c,$created_by,$usuario_final_c,$currency_id,$tipo_c,$date_modified,$modified_user_id,$nameCampaign,$deleted,$campaign_id,$lead_source,$medio_c,$idAccount,$opportunity_type,$assigned_user_name,$sales_stage,$next_step)
 {
@@ -168,13 +169,6 @@ $description = getTabs($description);
 		$array = array("respuesta" => "FAIL", "error" => $mysqli->error,"SQL1"=>$sql,"SQL2"=>$sql2,"SQL5"=>$sql5,"SQL6"=>$sql6);
 		return json_encode($array);
 	}
-}
-
-function getTabs($value){
-
-  $text = str_replace("*.#.", "\n", $value);
-  $text = str_replace("*##*", "\t", $text);
- return $text;
 }
 
 ?>
