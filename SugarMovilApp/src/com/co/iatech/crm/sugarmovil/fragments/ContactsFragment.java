@@ -14,6 +14,8 @@ import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder;
+import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -53,7 +55,6 @@ public class ContactsFragment extends Fragment implements ContactsModule{
     private TextView mMainTextView;
     private SearchView mMainSearchView;
     private RecyclerView mRecyclerViewContacts;
-    private RecyclerView.Adapter mRecyclerViewContactsAdapter;
     private RecyclerView.LayoutManager mRecyclerViewContactsLayoutManager;
 
     public ContactsFragment() {
@@ -156,29 +157,26 @@ public class ContactsFragment extends Fragment implements ContactsModule{
                 return false;
             }
         });
-        
+       
 
-        
+        return mRootView;
+    }
+
+    private void showContacts() {
+    	
         if( !DataManager.getInstance().IsSynchronized(MODULE) ){
-        	// Tarea para consultar llamadas
-        	Log.d(TAG,"Cargando Contactos desde BACKEND");
         	 // Tarea para consultar llamadas
         	obtenerContactos = new GetContactsTask();
             obtenerContactos.execute();
             
         }else{
         	Log.d(TAG,"Cargando Contactos desde MEMORIA");
-        	showContacts();
+        	RecyclerView.Adapter mRecyclerViewContactsAdapter;
+          	mRecyclerViewContactsAdapter = new RecyclerGenericAdapter(getActivity(), 
+          			AdapterSearchUtil.transform(DataManager.getInstance().contactsInfo), MODULE);
+              mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
         }
       
-
-        return mRootView;
-    }
-
-    private void showContacts() {
-    	mRecyclerViewContactsAdapter = new RecyclerGenericAdapter(getActivity(), 
-    			AdapterSearchUtil.transform(DataManager.getInstance().contactsInfo), MODULE);
-        mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
 	}
 
 	@Override
@@ -233,6 +231,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
                     JSONObject obj = jArr.getJSONObject(i);
                     DataManager.getInstance().contactsInfo.add(new Contacto(obj));
                 }
+                ListsHolder.saveList(ListsHolderType.CONTACTS, DataManager.getInstance().contactsInfo);
                 DataManager.getInstance().defSynchronize(MODULE);
 
                 return true;

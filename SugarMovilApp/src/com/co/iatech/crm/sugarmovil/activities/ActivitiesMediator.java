@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
@@ -19,14 +21,16 @@ import android.os.Parcelable;
 public class ActivitiesMediator implements IMediator {
 	
 	private Modules actualModule;
-	private String previusID;
+	private ActivityBeanCommunicator previusID;
 	private Parcelable beanInfo;
 	private static ActivitiesMediator instance;
-	private Map<Modules,String> currentIDs;
-	private Modules moduleflag;
-	
+	private Map<Modules,ActivityBeanCommunicator> currentIDs;
+	private Modules lastModuleFrom;
+	private GenericBean parentBean;
+	public static final String EDIT_MODE = "MODE";
+
 	private ActivitiesMediator(){
-		currentIDs = new HashMap<Modules,String>();
+		currentIDs = new HashMap<Modules,ActivityBeanCommunicator>();
 	}
 	
 	public static ActivitiesMediator getInstance(){
@@ -39,14 +43,22 @@ public class ActivitiesMediator implements IMediator {
 
 	@Override
 	public void defineActualModule(Modules module) {
+		currentIDs.clear();
+		lastModuleFrom = module;
 		this.actualModule = module;
 	}
-
+	
+	public Modules getActualModule() {
+		return this.actualModule;
+	}
+	/**
+	 * carga el actual ID del modulo a desplegar 
+	 */
 	@Override
-	public void showActivity(Context context, Modules module, String newActualID) {
-		setActualID(newActualID, module);
+	public void showActivity(Context context, Modules moduleToStart, ActivityBeanCommunicator newActualID) {
+		setActualID(newActualID, moduleToStart);
 		Intent intent = null;
-		switch( module){
+		switch( moduleToStart){
 			case ACCOUNTS:
 				intent = new Intent(context, AccountActivity.class);
 				break;
@@ -62,17 +74,35 @@ public class ActivitiesMediator implements IMediator {
 			case CONTACTS:
 				intent = new Intent(context, ContactActivity.class);
 				break;
+			case PRODUCTS:
+				intent = new Intent(context, ProductActivity.class);
+				break;
 		default:
 			break;
 		}
-		addInfotoActivity(intent, module);
+		//set current module id to activity
+		this.addInfotoActivity(intent, moduleToStart);
+		chargeLastModuleCaller(intent);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//Message.showShortExt(" Show "+actualModule + newActualID + moduleToStart.name() + " last "+lastModuleFrom, context);
     	context.startActivity(intent);
 		
 	}
+	private void chargeLastModuleCaller(Intent intent) {
+		this.addInfotoActivity(intent, actualModule);
+		if(lastModuleFrom != null){
+			//set actual module from
+			intent.putExtra(Modules.PREVIOUS_UI.name(), lastModuleFrom.getSugarDBName());
+			this.addInfotoActivity(intent, lastModuleFrom);
+		}
+		
+	}
+
 	@Override
-	public void showEditActivity(Context context, Modules module, boolean addActualModule) {
+	public void showEditActivity(Context context, Modules targetView,boolean editMode) {
+		//aqui se debe poner logica para saber que viene de otra vista igual que en la de show view
 		Intent intent = null;     
-		switch( module){
+		switch( targetView){
 			case ACCOUNTS:
 				break;
 			case OPPORTUNITIES:
@@ -87,11 +117,17 @@ public class ActivitiesMediator implements IMediator {
 		default:
 			break;
 		}
-		if(addActualModule){
-			addInfotoActivity(intent, actualModule);
+		//si es nulo estoy en un fragment y voy a mostrar una nueva pantalla del mismo modulo
+		if(lastModuleFrom == null){
+			lastModuleFrom = targetView;
 		}
-		addBeanInfo(intent, module );
-		addInfotoActivity(intent, module);
+		intent.putExtra(EDIT_MODE, editMode);
+		chargeLastModuleCaller(intent);
+		addBeanInfo(intent, targetView );
+		addInfotoActivity(intent, targetView);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//Message.showShortExt("Edit "+actualModule + addActualModule + targetView.name() + " last "+lastModuleFrom , context);
+	    
     	context.startActivity(intent);
 		
 	}
@@ -103,10 +139,11 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 
-	public void showList(Context context, Modules module, boolean chargeActualModule) {
+	public void showList(Context context, Modules viewtoStart, Modules viewCaller) {
 		try{
 		Intent intent = null;
-		switch( module){
+		lastModuleFrom = viewCaller;
+		switch( viewtoStart){
 			case CONTACTS:
 				intent = new Intent(context, ListContactActivity.class);
 				break;
@@ -123,15 +160,9 @@ public class ActivitiesMediator implements IMediator {
 			break;
 			
 		}
-		if(chargeActualModule){
-			//set current module id to activity
-			this.addInfotoActivity(intent, actualModule);
-			//set id from activity to new activity
-			this.addInfotoActivity(intent, moduleflag);
-			//set actual module from
-			intent.putExtra(Modules.PREVIOUS_UI.name(), moduleflag.getSugarDBName());
-		}
-	
+
+		chargeLastModuleCaller(intent);
+		//Message.showShortExt("actual Module "+actualModule + chargeActualModule + viewCaller.name() + viewtoStart.name()+ " last "+lastModuleFrom, context);
     	context.startActivity(intent);
 		}catch(Exception e){
 			Message.showShortExt(Utils.errorToString(e) , context);
@@ -139,10 +170,17 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 	
+	/**
+	 * carga el actual ID del modulo pasado como parametro 
+	 */
 	@Override
 	public void addInfotoActivity(Intent intent, Modules mod){
-		if(intent != null){
-			intent.putExtra(mod.name(), currentIDs.get(mod));
+		try{
+			if(intent != null){
+				intent.putExtra(mod.name(), currentIDs.get(mod));
+			}
+		}catch(Exception e){
+			
 		}
 	}
 	
@@ -155,7 +193,7 @@ public class ActivitiesMediator implements IMediator {
 	
 	
 	@Override
-	public String getPreviusID() {
+	public ActivityBeanCommunicator getPreviusID() {
 		return previusID;
 	}
 
@@ -173,19 +211,30 @@ public class ActivitiesMediator implements IMediator {
 	}
 
 	@Override
-	public void setActualID(String actualID, Modules module) {
+	public void setActualID(ActivityBeanCommunicator actualID, Modules module) {
 		if(actualID != null){
 			this.previusID = currentIDs.get(module);
 			currentIDs.put(module, actualID);
-			moduleflag = module;
 		}
 	}
 
-
 	@Override
-	public String getActualID(Modules module) {
+	public ActivityBeanCommunicator getActualID(Modules module) {
 		return currentIDs.get(module);
-	}	
+	}
 	
+	@Override
+	public void removeActualID(Modules module) {
+		currentIDs.remove(module);
+	}
+	
+	
+	public GenericBean getParentBean() {
+		return parentBean;
+	}
+
+	public void setParentBean(GenericBean parentBean) {
+		this.parentBean = parentBean;
+	}
 
 }

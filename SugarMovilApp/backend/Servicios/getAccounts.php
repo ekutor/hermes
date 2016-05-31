@@ -6,7 +6,7 @@ function getAccounts()
 {
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	$sql = "SELECT a.id,a.name,ac.uen_c AS uen FROM accounts a ,accounts_cstm ac WHERE  a.id = ac.id_c AND  a.deleted = '0' ORDER BY name ASC";
+	$sql = "SELECT a.id,a.name,ac.nit_c,ac.uen_c AS uen FROM accounts a ,accounts_cstm ac WHERE  a.id = ac.id_c AND a.deleted = '0' ORDER BY name ASC";
 	$res = $mysqli->query($sql);
 	
 	$rows = array();

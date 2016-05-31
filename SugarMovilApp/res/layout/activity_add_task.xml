@@ -339,6 +339,21 @@
                         android:ellipsize="end"
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
+                      <TextView
+                        android:id="@+id/text_contacto_hidden"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:textStyle="bold"
+                        android:visibility="invisible"
+                        tools:ignore="MissingPrefix" />
                 </LinearLayout>
 
                 <LinearLayout

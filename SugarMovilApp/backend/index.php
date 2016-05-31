@@ -1,11 +1,13 @@
 <?php
 
 require 'Slim/Slim.php';
+require_once('./IOManager.php');
 
 \Slim\Slim::registerAutoloader();
 
 
 $app = new \Slim\Slim();
+$log = new IOManager();
 
 //le dice al cliente que esto retorna datos en formato json
 $app->response->headers->set('Content-Type', 'application/json');
@@ -349,10 +351,12 @@ $app->get('/getAccountOpportunities', function ()
 $app->get('/getAccountCalls', function ()
 {
 	//Importa el archivo que contiene el método
-	require_once 'Servicios/getAccountCalls.php';
+	require_once 'Servicios/getCall.php';
 	
 	$app = new \Slim\Slim();
 	require_once 'Servicios/Auth.php';
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
 	$deviceId =  $app->request->headers->get('deviceID');
 	$hash =  $app->request->headers->get('hash');
 	$respuesta = auth($deviceId, $hash);
@@ -373,7 +377,6 @@ $app->get('/getAccountCalls', function ()
 
 //--------------------------------------------------------------------------------------------------
 
-
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 // WEBSERVICES DE LA TABLA CONTACTS
@@ -386,6 +389,9 @@ $app->get('/getContact', function ()
 	
 	$app = new \Slim\Slim();
 	require_once 'Servicios/Auth.php';
+	
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
 	$deviceId =  $app->request->headers->get('deviceID');
 	$hash =  $app->request->headers->get('hash');
 	$respuesta = auth($deviceId, $hash);
@@ -442,6 +448,8 @@ $app->get('/getContactsxAccount', function ()
         require_once 'Servicios/Auth.php';
         $deviceId =  $app->request->headers->get('deviceID');
         $hash =  $app->request->headers->get('hash');
+		$log = new IOManager();
+		$log->logAll($app->request->headers);
         $respuesta = auth($deviceId, $hash);
         if( $respuesta != "Auth_OK"){
                 echo $respuesta;
@@ -693,7 +701,7 @@ $app->get('/getContactOpportunities', function ()
 $app->get('/getContactCalls', function ()
 {
 	//Importa el archivo que contiene el método
-	require_once 'Servicios/getContactCalls.php';
+	require_once 'Servicios/getCall.php';
 	
 	$app = new \Slim\Slim();
 	
@@ -1067,24 +1075,24 @@ $app->put('/addCall', function ()
 		return;
 	}
 	//Obtiene los parametros del header http
-	$id = $app->request->headers->get('idCall');
-	$asunto = $app->request->headers->get('asunto');
-	$resultado = $app->request->headers->get('resultado');
-	$descripcion = $app->request->headers->get('descripcion');
-	$direccion = $app->request->headers->get('direccion');
-	$estado = $app->request->headers->get('estado');
-	$fechaInicio = $app->request->headers->get('fechaInicio');
-	$duracion = $app->request->headers->get('duracion');
+	$id = $app->request->headers->get('id');
+	$asunto = $app->request->headers->get('name');
+	$resultado = $app->request->headers->get('resultadodelallamada_c');
+	$descripcion = $app->request->headers->get('description');
+	$direccion = $app->request->headers->get('direction');
+	$estado = $app->request->headers->get('status');
+	$fechaInicio = $app->request->headers->get('date_start');
+	$duracion_horas = $app->request->headers->get('duration_hours');
+	$duracion_min = $app->request->headers->get('duration_minutes');
 	$parent_id = $app->request->headers->get('parent_id');
 	$parent_type = $app->request->headers->get('parent_type');
-	$idCampana = $app->request->headers->get('idCampana');
-	$idUsuarioLogueado = $app->request->headers->get('idUsuarioLogueado');
-	$idContacto = $app->request->headers->get('idContacto');
-	
+	$idCampana = $app->request->headers->get('campaign_id');
+	$idUsuario = $app->request->headers->get('created_by');
+	$idAsignado = $app->request->headers->get('assigned_user_id');
 	$modo = $app->request->headers->get('modo');
 	
 	//LLama el método que lee de la base de datos y obtiene la respuesta
-	$respuesta = editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$fechaInicio,$duracion,$parent_id,$parent_type,$idCampana,$idUsuarioLogueado,$idContacto);
+	$respuesta = editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$fechaInicio,$duracion_horas,$duracion_min,$parent_id,$parent_type,$idCampana,$idUsuario,$idAsignado);
 	
 	//Muestra la respuesta al cliente
 	echo $respuesta;
@@ -1490,6 +1498,9 @@ $app->get('/getTaskxAccount', function ()
 	
 	$app = new \Slim\Slim();
 	require_once 'Servicios/Auth.php';
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
+	
 	$deviceId =  $app->request->headers->get('deviceID');
 	$hash =  $app->request->headers->get('hash');
 	$respuesta = auth($deviceId, $hash);
@@ -1508,6 +1519,65 @@ $app->get('/getTaskxAccount', function ()
 	
 });
 
+//--------------------------------------------------------------------------------------------------
+
+$app->get('/getTaskxOpportunity', function ()
+{
+	//Importa el archivo que contiene el método
+	require_once 'Servicios/getTask.php';
+	
+	$app = new \Slim\Slim();
+	require_once 'Servicios/Auth.php';
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
+	
+	$deviceId =  $app->request->headers->get('deviceID');
+	$hash =  $app->request->headers->get('hash');
+	$respuesta = auth($deviceId, $hash);
+	if( $respuesta != "Auth_OK"){
+		echo $respuesta;
+		return;
+	}	
+	//Obtiene los parametros del header http
+	$idOpportunity = $app->request->headers->get('idOpportunity');
+	
+	//LLama el método que lee de la base de datos y obtiene la respuesta
+	$respuesta = getTaskxOpportunity($idOpportunity);
+	
+	//Muestra la respuesta al cliente
+	echo $respuesta;
+	
+});
+
+//--------------------------------------------------------------------------------------------------
+
+$app->get('/getTaskxContact', function ()
+{
+	//Importa el archivo que contiene el método
+	require_once 'Servicios/getTask.php';
+	
+	$app = new \Slim\Slim();
+	require_once 'Servicios/Auth.php';
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
+	
+	$deviceId =  $app->request->headers->get('deviceID');
+	$hash =  $app->request->headers->get('hash');
+	$respuesta = auth($deviceId, $hash);
+	if( $respuesta != "Auth_OK"){
+		echo $respuesta;
+		return;
+	}	
+	//Obtiene los parametros del header http
+	$idOpportunity = $app->request->headers->get('idContact');
+	
+	//LLama el método que lee de la base de datos y obtiene la respuesta
+	$respuesta = getTaskxContact($idOpportunity);
+	
+	//Muestra la respuesta al cliente
+	echo $respuesta;
+	
+});
 
 //--------------------------------------------------------------------------------------------------
 
@@ -1518,6 +1588,8 @@ $app->get('/getTask', function ()
 	
 	$app = new \Slim\Slim();
 	require_once 'Servicios/Auth.php';
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
 	$deviceId =  $app->request->headers->get('deviceID');
 	$hash =  $app->request->headers->get('hash');
 	$respuesta = auth($deviceId, $hash);
@@ -1585,9 +1657,9 @@ $app->put('/addTask', function ()
 {
 	//Importa el archivo que contiene el método
 	require_once 'Servicios/editTask.php';
-	
 	$app = new \Slim\Slim();
 	require_once 'Servicios/Auth.php';
+	
 	$deviceId =  $app->request->headers->get('deviceID');
 	$hash =  $app->request->headers->get('hash');
 	$respuesta = auth($deviceId, $hash);
@@ -1595,25 +1667,28 @@ $app->put('/addTask', function ()
 		echo $respuesta;
 		return;
 	}
+	$log = new IOManager();
+	$log->logAll($app->request->headers);
 	//Obtiene los parametros del header http
-	$id = $app->request->headers->get('idTask');
-	$asunto = $app->request->headers->get('asunto');
-	$estimado = $app->request->headers->get('estimado');
-	$descripcion = $app->request->headers->get('descripcion');
-	$estado = $app->request->headers->get('estado');
-	$fechaInicio = $app->request->headers->get('fechaInicio');
-	$fechaVence = $app->request->headers->get('fechaVence');
-	$contacto = $app->request->headers->get('contacto');
-	$prioridad = $app->request->headers->get('prioridad');
-	$asignado = $app->request->headers->get('asignado');
-	$tipoRelacion = $app->request->headers->get('tipoRelacion');
-	$idRelacion = $app->request->headers->get('idRelacion');
-	$idUsuarioLogueado = $app->request->headers->get('idUsuarioLogueado');
+	$id = $app->request->headers->get('id');
+	$name = $app->request->headers->get('name');
+
+	$estimado = $app->request->headers->get('trabajo_estimado_c');
+	$descripcion = $app->request->headers->get('description');
+	$estado = $app->request->headers->get('status');
+	$fechaInicio = $app->request->headers->get('date_start');
+	$fechaVence = $app->request->headers->get('date_due');
+	$contacto = $app->request->headers->get('contact_id');
+	$prioridad = $app->request->headers->get('priority');
+	$asignado = $app->request->headers->get('assigned_user_id');
+	$tipoRelacion = $app->request->headers->get('parent_type');
+	$idRelacion = $app->request->headers->get('parent_id');
+	$idUsuarioLogueado = $app->request->headers->get('modified_user_id');
 	
-	$modo = 'agregar';
+	$modo = $app->request->headers->get('modo');
 	
 	//LLama el método que lee de la base de datos y obtiene la respuesta
-	$respuesta = editTask($modo,$id,$asunto,$estimado,$descripcion,$estado,$fechaInicio,$fechaVence,$contacto,$prioridad,$asignado,$tipoRelacion,$idRelacion,$idUsuarioLogueado);
+	$respuesta = editTask($modo,$id,$name,$estimado,$descripcion,$estado,$fechaInicio,$fechaVence,$contacto,$prioridad,$asignado,$tipoRelacion,$idRelacion,$idUsuarioLogueado);
 	
 	//Muestra la respuesta al cliente
 	echo $respuesta;

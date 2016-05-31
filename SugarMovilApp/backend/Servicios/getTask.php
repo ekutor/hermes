@@ -4,56 +4,70 @@ require 'conexion.php';
 
 function getTask($idTask)
 {
-	//Realiza el query en la base de datos
-	$mysqli = makeSqlConnection();
+
 	$sql = "SELECT t.id,t.name,t.date_entered,t.date_modified,t.modified_user_id,t.created_by,t.description,t.deleted,t.assigned_user_id,t.status,t.date_due_flag
 ,t.date_due,t.date_start_flag,t.date_start,t.parent_type,t.parent_id,t.contact_id,t.priority,tc.id_c,tc.aviso_c,tc.trabajo_estimado_c,tc.ejecuted_date_c,CONCAT_WS(' ',u.first_name,u.last_name) as assigned_user_name 
 FROM tasks t LEFT JOIN tasks_cstm tc 
 ON t.id = tc.id_c 
 JOIN users u ON t.assigned_user_id = u.id
 WHERE t.id = '$idTask' ";
-	$res = $mysqli->query($sql);
-	
-	$rows = array();
-	
-	while($r = mysqli_fetch_assoc($res))
-	{
-		$obj = (object) $r;
-			
-		//$obj->assigned_user_name = getUserName($obj->assigned_user_id);
-		$obj->contact_name = getContactName($obj->contact_id);
-		$obj->parent_name = getParentName($obj->parent_type,$obj->parent_id);
-		
-		$a =  (array) $obj;	
-		$rows[] = $a;
-	}
-		
-	if( empty( $rows ) )
-	{
-		return '{"results" :[]}';
-	}
-	else
-	{
-		//Convierte el arreglo en json y lo retorna
-		$temp = json_encode(utf8ize($rows));
-		return '{"results" :'.$temp.'}';
-	}
+
+	 return getInfoFromBD($sql);
 }
 
 function getTaskxAccount($idAccount)
 {
-        //Realiza el query en la base de datos
-        $mysqli = makeSqlConnection();
+        
         $sql = "SELECT t.id,t.name,t.date_entered,t.date_modified,t.modified_user_id,t.created_by,t.description,t.deleted,t.assigned_user_id,t.status,t.date_due_flag
 ,t.date_due,t.date_start_flag,t.date_start,t.parent_type,t.parent_id,t.contact_id,t.priority,tc.id_c,tc.aviso_c,tc.trabajo_estimado_c,tc.ejecuted_date_c,CONCAT_WS(' ',u.first_name,u.last_name) as assigned_user_name
 FROM tasks t LEFT JOIN tasks_cstm tc
 ON t.id = tc.id_c
 JOIN users u ON t.assigned_user_id = u.id
-WHERE t.parent_id = '$idAccount' AND t.parent_type='Accounts' ";
-        $res = $mysqli->query($sql);
+WHERE t.deleted= '0' AND t.parent_id = '$idAccount' 
+AND t.parent_type='Accounts' 
+AND t.status != 'Completed'";
+
+       return getInfoFromBD($sql);
+}
+
+function getTaskxOpportunity($idOpp)
+{
+        
+        $sql = "SELECT t.id,t.name,t.date_entered,t.date_modified,t.modified_user_id,t.created_by,t.description,t.deleted,t.assigned_user_id,t.status,t.date_due_flag
+,t.date_due,t.date_start_flag,t.date_start,t.parent_type,t.parent_id,t.contact_id,t.priority,tc.id_c,tc.aviso_c,tc.trabajo_estimado_c,tc.ejecuted_date_c,CONCAT_WS(' ',u.first_name,u.last_name) as assigned_user_name
+FROM tasks t LEFT JOIN tasks_cstm tc
+ON t.id = tc.id_c
+JOIN users u ON t.assigned_user_id = u.id
+WHERE t.deleted= '0' AND t.parent_id = '$idOpp' 
+AND t.parent_type='Opportunities' 
+AND t.status != 'Completed'";
+
+       return getInfoFromBD($sql);
+}
+
+function getTaskxContact($idContact)
+{
+        
+        $sql = "SELECT t.id,t.name,t.date_entered,t.date_modified,t.modified_user_id,t.created_by,t.description,t.deleted,t.assigned_user_id,t.status,t.date_due_flag
+,t.date_due,t.date_start_flag,t.date_start,t.parent_type,t.parent_id,t.contact_id,t.priority,tc.id_c,tc.aviso_c,tc.trabajo_estimado_c,tc.ejecuted_date_c,CONCAT_WS(' ',u.first_name,u.last_name) as assigned_user_name
+FROM tasks t LEFT JOIN tasks_cstm tc
+ON t.id = tc.id_c
+JOIN users u ON t.assigned_user_id = u.id
+WHERE t.deleted= '0' AND t.contact_id = '$idContact' 
+AND t.parent_type='Accounts' 
+AND t.status != 'Completed'";
+
+       return getInfoFromBD($sql);
+}
+		
+function getInfoFromBD($sql)
+{	
+		//Realiza el query en la base de datos
+        $mysqli = makeSqlConnection();
+		
+		$res = $mysqli->query($sql);
 
         $rows = array();
-
         while($r = mysqli_fetch_assoc($res))
         {
                 $obj = (object) $r;

@@ -1,15 +1,29 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Fragment;
-import android.app.ProgressDialog;
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activities.tasks.GatewayPublisher;
+import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTaskPublisher;
+import com.co.iatech.crm.sugarmovil.activities.tasks.IObserverTask;
+import com.co.iatech.crm.sugarmovil.activities.tasks.ITaskPublisher;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ProductsModule;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter.SearchType;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
+import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
+import com.co.iatech.crm.sugarmovil.model.Product;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,30 +35,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.MainActivity;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerProductsAdapter;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.Producto;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-
-public class ProductsFragment extends Fragment {
+public class ProductsFragment extends FragmentsModules implements ProductsModule, IObserverTask{
     /**
      * Debug.
      */
     private static final String TAG = "ProductsFragment";
 
-    /**
-     * Tasks.
-     */
-    private GetCallsTask mTareaObtenerLlamadas = null;
 
     /**
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private ArrayList<Producto> mProductsArray = new ArrayList<Producto>();
 
     /**
      * UI References.
@@ -55,6 +56,11 @@ public class ProductsFragment extends Fragment {
     private RecyclerView mRecyclerViewProducts;
     private RecyclerView.Adapter mRecyclerViewProductsAdapter;
     private RecyclerView.LayoutManager mRecyclerViewProductsLayoutManager;
+
+	private ITaskPublisher taskPublisher;
+
+
+	private boolean dataNotFound;
 
     public ProductsFragment() {
         // Required empty public constructor
@@ -82,7 +88,7 @@ public class ProductsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_products, container, false);
-
+        try{
         // Variable Global
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
@@ -120,7 +126,7 @@ public class ProductsFragment extends Fragment {
                 imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
 
                 try {
-                    ((RecyclerProductsAdapter) mRecyclerViewProducts.getAdapter()).flushFilter();
+                    ((RecyclerGenericAdapter) mRecyclerViewProducts.getAdapter()).flushFilter();
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -133,7 +139,7 @@ public class ProductsFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 try {// Filtro para llamadas
-                    ((RecyclerProductsAdapter) mRecyclerViewProducts.getAdapter()).setFilter(query);
+                    ((RecyclerGenericAdapter) mRecyclerViewProducts.getAdapter()).setFilter(query);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -144,7 +150,7 @@ public class ProductsFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {// Filtro para llamadas
-                    ((RecyclerProductsAdapter) mRecyclerViewProducts.getAdapter()).setFilter(newText);
+                   // ((RecyclerGenericAdapter) mRecyclerViewProducts.getAdapter()).setFilter(newText);
                 } catch (Exception e) {
                     Log.d(TAG, "Error añadiendo el filtro de busqueda");
                 }
@@ -152,10 +158,22 @@ public class ProductsFragment extends Fragment {
                 return false;
             }
         });
-
-        // Tarea para consultar productos
-        mTareaObtenerLlamadas = new GetCallsTask();
-        mTareaObtenerLlamadas.execute();
+        
+        GatewayPublisher.getInstance().register(this);
+      //  if(!DataManager.getInstance().IsSynchronized(MODULE)){
+        	// Tarea para consultar productos
+        	GenericTaskPublisher getProducts = new GenericTaskPublisher(getActivity(),MODULE, 
+        			TypeInfoServer.getProductos, "Buscando productos...");
+            getProducts.execute();
+            
+//        }else{
+//        	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
+//        	chargeViewInfo();
+//        }
+//        
+	} catch (Exception e) {
+		Message.showShortExt(Utils.errorToString(e), this.getActivity());
+	}
 
         return mRootView;
     }
@@ -177,69 +195,64 @@ public class ProductsFragment extends Fragment {
         super.onPause();
     }
 
-    /**
-     * Representa una tarea asincrona de obtencion de productos.
-     */
-    public class GetCallsTask extends AsyncTask<Void, Void, Boolean> {
-        private ProgressDialog progressDialog;
+	
+	@Override
+	public void chargeViewInfo() {
+		if(dataNotFound){
+	        	Message.showShortExt("Ningun producto coincide con los parametros de busqueda.", this.getActivity());
+	    }
+        mRecyclerViewProductsAdapter = new RecyclerGenericAdapter(getActivity(), 
+        		AdapterSearchUtil.transform(DataManager.getInstance().products), MODULE,SearchType.REMOTE);
+        mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);
+	}
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity(), ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage("Cargando productos...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
+	@Override
+	public Modules getModule() {
+		return MODULE;
+	}
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                // Parametros
-                String productos = null;
+	@Override
+	public void update() {
+		try{
+			ActivityBeanCommunicator response = taskPublisher.getInfo();
+			if(response.getModule() != MODULE){
+			 return;
+			}
+			if(response.getAdditionalInfo().length() > 15){
+				DataManager.getInstance().products.clear();
+				dataNotFound = false;
+			}else{
+				dataNotFound = true;
+			}
+			
+	        JSONObject jObj = new JSONObject(response.getAdditionalInfo());
+	
+	        JSONArray jArr = jObj.getJSONArray("results");
+	        for (int i = 0; i < jArr.length(); i++) {
+	            JSONObject obj = jArr.getJSONObject(i);
+	            DataManager.getInstance().products.add(new Product(obj));
+	        }
+	        //DataManager.getInstance().IsSynchronized(MODULE);
+	        chargeViewInfo();
+	        mMainSearchView.clearFocus();
+	        mMainSearchView.setIconified(true);
+	        mRecyclerViewProductsAdapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			//Message.showFinalMessage(this.getFragmentManager(), Utils.errorToString(e), this.getActivity(), MODULE);
+		}
+		
+	}
 
-                // Intento de obtener productos
-                productos  = ControlConnection.getInfo(TypeInfoServer.getProductos, getActivity());
-                
-                mProductsArray.clear();
+	@Override
+	public void defineTasktoListen(ITaskPublisher publisher) {
+		this.taskPublisher = publisher;
+		
+	}
 
-                JSONObject jObj = new JSONObject(productos);
-
-                JSONArray jArr = jObj.getJSONArray("results");
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                    mProductsArray.add(new Producto(obj));
-                }
-
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, "Buscar Productos Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mTareaObtenerLlamadas = null;
-            progressDialog.dismiss();
-
-            if (success) {
-                if (mProductsArray.size() > 0) {
-                    mRecyclerViewProductsAdapter = new RecyclerProductsAdapter(getActivity(), mProductsArray);
-                    mRecyclerViewProducts.setAdapter(mRecyclerViewProductsAdapter);
-                } else {
-                    Log.d(TAG,
-                            "No hay Productos: "
-                                    + mProductsArray.size());
-                }
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mTareaObtenerLlamadas = null;
-            Log.d(TAG, "Cancelado ");
-        }
-    }
+	@Override
+	public void addInfo(String serverResp) {
+		
+		
+	}
+	
 }

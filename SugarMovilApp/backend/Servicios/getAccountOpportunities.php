@@ -10,7 +10,8 @@ function getAccountOpportunities($idAccount)
 			LEFT JOIN accounts_opportunities 
 			ON accounts_opportunities.opportunity_id = opportunities.id 
 			WHERE accounts_opportunities.account_id = '$idAccount' 
-			AND opportunities.deleted = '0'";
+			AND opportunities.deleted = '0' 
+			AND accounts_opportunities.deleted = '0'";
 			
 	$res = $mysqli->query($sql);
 	

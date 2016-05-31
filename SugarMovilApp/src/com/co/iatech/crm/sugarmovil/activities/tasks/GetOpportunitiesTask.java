@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.ListOpportunityActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
@@ -52,12 +53,12 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 	            try {
 	            	
 	            	String  key = "idAccount";
-	            	String id = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
+	            	ActivityBeanCommunicator bean = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
 	                // Resultado
 	                String resultado = null;
 
 	                // Intento de obtener datos
-	                ControlConnection.addHeader(key, id);
+	                ControlConnection.addHeader(key, bean.id);
 	                resultado  = ControlConnection.getInfo(TypeInfoServer.getAccountOpportunities, activity);
 	                oportunitiesXAccount.clear();
 
@@ -92,12 +93,12 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 				Log.d(TAG, "No hay valores: " + oportunitiesXAccount.size());
 			}
 		}
-		try {
-			Thread.sleep(5000);
+//		try {
+//			Thread.sleep(500);
 			progressDialog.dismiss();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 
 	}
 

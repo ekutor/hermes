@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 
@@ -61,7 +62,7 @@ public class RecyclerAccountsAdapter extends RecyclerView.Adapter<RecyclerAccoun
             @Override
             public void onClick(View v) {
                 // Account Activity     
-                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS, cuenta.getId());
+                ActivitiesMediator.getInstance().showActivity(context,Modules.ACCOUNTS, new ActivityBeanCommunicator(cuenta.getId(), cuenta.getName()));
             }
         });
 

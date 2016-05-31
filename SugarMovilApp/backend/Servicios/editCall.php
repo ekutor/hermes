@@ -1,15 +1,16 @@
 <?php
 
 require 'conexion.php';
+require 'utils.php';
 
-function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$fechaInicio,$duracion,$parent_id,$parent_type,$idCampana,$idUsuarioLogueado,$idContacto)
+function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$fechaInicio,$duracion_horas,$duracion_min,$parent_id,$parent_type,$idCampana,$idUsuario,$idAsignado,$idContacto = null)
 {
 	date_default_timezone_set('America/Bogota');
 	$fecha = date("Y/m/d h:i:s");	
 		
 	$mysqli = makeSqlConnection();
-	
-	
+
+	$descripcion = getTabs($descripcion);
 	
 	
 	//--Si es un opportunity nuevo, lo crea------------------------------------------------------------
@@ -17,7 +18,7 @@ function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$
 	{			
 		$id = md5($asunto.$fecha);	
 		
-		$sql5 = "INSERT INTO calls (id,name,created_by,date_entered,assigned_user_id) VALUES ('$id','$asunto','$idUsuarioLogueado','$fecha','$idUsuarioLogueado')";
+		$sql5 = "INSERT INTO calls (id,name,created_by,date_entered,assigned_user_id) VALUES ('$id','$asunto','$idUsuario',now(),'$idAsignado')";
 		$res5 = $mysqli->query($sql5);
 		
 		if(!$res5)
@@ -66,8 +67,8 @@ function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$
 	//--Edita la tabla calls   -------------------------------------------------------------------
 	$sql = "UPDATE calls SET 
 	name = '$asunto',
-	date_modified = '$fecha',
-	modified_user_id = '$idUsuarioLogueado', 
+	date_modified = now(),
+	modified_user_id = '$idUsuario', 
 	description = '$descripcion', 
 	status = '$estado',
 	direction = '$direccion' ";
@@ -87,11 +88,15 @@ function editCall($modo,$id,$asunto,$resultado,$descripcion,$direccion,$estado,$
 		$sql = $sql.",parent_type = '$parent_type' ";
 	}
 	
-	if (ctype_digit((string)$duracion)) 
+	if (ctype_digit((string)$duracion_min)) 
 	{
-		$sql = $sql.",duration_minutes = '$duracion' ";
+		$sql = $sql.",duration_minutes = '$duracion_min' ";
 	}
-	
+
+	 if (ctype_digit((string)$duracion_horas))
+        {
+                $sql = $sql.",duration_hours = '$duracion_horas' ";
+        }
 	$sql = $sql."WHERE id = '$id'";
 	
 	$res = $mysqli->query($sql);

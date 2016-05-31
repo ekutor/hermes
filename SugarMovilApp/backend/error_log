@@ -1,0 +1,24 @@
+[02-Feb-2015 23:42:37] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home3/clickea/public_html/WannaWS/index.php on line 5
+[02-Feb-2015 23:42:37] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home3/clickea/public_html/WannaWS/index.php on line 5
+[02-Feb-2015 23:42:37] PHP Parse error:  syntax error, unexpected T_STRING in /home3/clickea/public_html/WannaWS/index.php on line 5
+[02-Feb-2015 23:42:45] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home3/clickea/public_html/WannaWS/index.php on line 5
+[02-Feb-2015 23:42:45] PHP Warning:  Unexpected character in input:  '\' (ASCII=92) state=1 in /home3/clickea/public_html/WannaWS/index.php on line 5
+[02-Feb-2015 23:42:45] PHP Parse error:  syntax error, unexpected T_STRING in /home3/clickea/public_html/WannaWS/index.php on line 5
+[02-Feb-2015 23:57:52 America/Chicago] PHP Warning:  Uncaught exception 'ErrorException' with message 'require(../conexion.php): failed to open stream: No such file or directory' in /home3/clickea/public_html/WannaWS/Servicios/verCategorias.php:3
+Stack trace:
+#0 /home3/clickea/public_html/WannaWS/Servicios/verCategorias.php(3): Slim\Slim::handleErrors(2, 'require(../cone...', '/home3/clickea/...', 3, Array)
+#1 /home3/clickea/public_html/WannaWS/Servicios/verCategorias.php(3): require()
+#2 /home3/clickea/public_html/WannaWS/index.php(289): require_once('/home3/clickea/...')
+#3 [internal function]: {closure}()
+#4 /home3/clickea/public_html/WannaWS/Slim/Route.php(468): call_user_func_array(Object(Closure), Array)
+#5 /home3/clickea/public_html/WannaWS/Slim/Slim.php(1338): Slim\Route->dispatch()
+#6 /home3/clickea/public_html/WannaWS/Slim/Middleware/Flash.php(85): Slim\Slim->call()
+#7 /home3/clickea/public_html/WannaWS/Slim/Middleware/MethodOverride.php(92): Slim\Middleware\Flash->call()
+#8 /home3/clickea/public_html/WannaWS/Slim/Middleware/PrettyExceptions.php(67):  in /home3/clickea/public_html/WannaWS/Servicios/verCategorias.php on line 3
+[02-Feb-2015 23:57:52 America/Chicago] PHP Fatal error:  main(): Failed opening required '../conexion.php' (include_path='.:/opt/php54/lib/php') in /home3/clickea/public_html/WannaWS/Servicios/verCategorias.php on line 3
+[23-Feb-2015 11:28:30 America/Chicago] PHP Fatal error:  Call to undefined function getAccounts() in /home3/clickea/public_html/CRMLaumayerWS/index.php on line 48
+[23-Feb-2015 12:01:45 America/Chicago] PHP Fatal error:  Call to undefined function getCall() in /home3/clickea/public_html/CRMLaumayerWS/index.php on line 84
+[15-Apr-2015 13:14:32 America/Chicago] PHP Fatal error:  Call to undefined function md() in /home3/clickea/public_html/CRMLaumayerWS/Servicios/getAccount.php on line 27
+[15-Apr-2015 16:31:06 America/Chicago] PHP Parse error:  syntax error, unexpected ',', expecting ')' in /home3/clickea/public_html/CRMLaumayerWS/Servicios/loginUsuarios.php on line 25
+[15-Apr-2015 16:35:31 America/Chicago] PHP Fatal error:  Call to undefined function hash_equals() in /home3/clickea/public_html/CRMLaumayerWS/Servicios/loginUsuarios.php on line 21
+[11-May-2015 07:45:01 America/Chicago] PHP Fatal error:  Call to undefined function getProductos() in /home3/clickea/public_html/CRMLaumayerWS/index.php on line 571

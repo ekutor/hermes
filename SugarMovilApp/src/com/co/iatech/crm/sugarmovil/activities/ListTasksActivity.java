@@ -1,33 +1,28 @@
 package com.co.iatech.crm.sugarmovil.activities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.TareaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 import com.squareup.picasso.Picasso;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -41,23 +36,19 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
-public class ListTasksActivity extends AppCompatActivity implements TasksModuleActions {
+public class ListTasksActivity extends TasksModuleActions {
     /**
      * Debug.
      */
     private static final String TAG = "ListTasksActivity";
 
-    /**
-     * Tasks.
-     */
-    private GetTasksxAccountTask mTareaObtenerTareas = null;
 
     /**
      * Member Variables.
      */
-    private String actualParentId;
+ 
   
-    private ArrayList<TareaDetalle> tareasXParent;
+    private List<DetailTask> tasksXParent;
 
     /**
      * UI References.
@@ -66,11 +57,11 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
     private TextView mToolbarTextView;
     private SearchView mSearchView;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mRecyclerViewAdapter;
+
     private RecyclerView.LayoutManager mRecyclerViewLayoutManager;
     
     private ActionButton actionButton;
-	private Modules actualParentModule;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +71,7 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         // SoftKey
         	
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        tareasXParent = new ArrayList<TareaDetalle>();
+        tasksXParent = new ArrayList<DetailTask>();
         getInfoFromMediator();
        
 
@@ -177,20 +168,34 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
         }
     }
     
-    private void getInfoFromMediator() {
-    	Intent intent = getIntent();
-    	Modules fromModule = Modules.getModulefromDBName(intent.getStringExtra(Modules.PREVIOUS_UI.name()));
-    	
-    	if(fromModule != null){
-    		actualParentModule = fromModule;
-    		actualParentId = intent.getStringExtra( fromModule.name() );
-    	}
-		
-	}
+   
+    @Override
+	public void chargeViewInfo() {
+       
+        TypeInfoServer infoServer = null;
+        String message = "",keyID= "";
 
-	private void chargeListInfo() {
-    	mTareaObtenerTareas= new GetTasksxAccountTask(actualParentModule);
-        mTareaObtenerTareas.execute(actualParentId);
+        switch(actualInfo.getActualParentModule()){
+			case ACCOUNTS:
+				infoServer = TypeInfoServer.getTaskxAccount;
+				keyID = "idAccount";
+				message = "Cargando Tareas x Cuenta...";
+				break;
+			case OPPORTUNITIES:
+				infoServer = TypeInfoServer.getTaskxOpportunity;
+				keyID = "idOpportunity";
+				message = "Cargando Tareas x Oportunidad...";
+				break;
+			case CONTACTS:
+				infoServer = TypeInfoServer.getTaskxContact;
+				keyID = "idContact";
+				message = "Cargando Tareas x Contacto...";
+				break;
+			default:
+					break;
+		}
+        String[] params = { keyID, actualInfo.getActualParentInfo().id };
+        this.executeTask(params, infoServer, message);
 	}
 
 	@Override
@@ -203,23 +208,6 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
    		return null;
    	}
 
-   	@Override
-   	public Modules getModule() {
-   		return MODULE;
-   	}
-
-
-   	@Override
-   	public String getAssignedUser() {
-   		return "";
-   	}
-
-
-   	@Override
-   	public Parcelable getBean() {
-   		return null;
-   	}
-
 
    	@Override
    	public void applyActions() {
@@ -229,114 +217,36 @@ public class ListTasksActivity extends AppCompatActivity implements TasksModuleA
    	
    	@Override
 	protected void onResume() {
-		this.chargeListInfo();
+		this.chargeViewInfo();
 		super.onResume();
 	}
 
-
-    /**
-     * Representa una tarea asincrona de obtencion de tareas por cuenta.
-     */
-    public class GetTasksxAccountTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog progressDialog;
-        
-        private String keyID;
-        private TypeInfoServer infoServer;
-        private String message;
-        
-        GetTasksxAccountTask(Modules actualModule){
-        	switch(actualModule){
-	    		case ACCOUNTS:
-	    			infoServer = TypeInfoServer.getTaskxAccount;
-	    			keyID = "idAccount";
-	    			message = "Cargando Tareas x Cuenta...";
-	    			break;
-	    		case OPPORTUNITIES:
-	    			infoServer = TypeInfoServer.getTaskxOpportunity;
-	    			keyID = "idOpportunity";
-	    			message = "Cargando Tareas x Oportunidad...";
-	    			break;
-	    		default:
-	    				break;
-			}
-        	
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(ListTasksActivity.this, ProgressDialog.THEME_HOLO_DARK);
-            progressDialog.setMessage(message);
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-            	
-            	//Params
-            	 String parentID = params[0];
-            	 
-                // Resultado
-                String resultado = null;
-
-                // Intento de obtener datos
-                ControlConnection.addHeader(keyID, parentID);
-                resultado  = ControlConnection.getInfo(infoServer, ListTasksActivity.this);
-                tareasXParent.clear();
-
-                JSONObject jObj = new JSONObject(resultado);
-
-                JSONArray jArr = jObj.getJSONArray("results");
-                for (int i = 0; i < jArr.length(); i++) {
-                    JSONObject obj = jArr.getJSONObject(i);
-                    tareasXParent.add(new TareaDetalle(obj));
-                }
-
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, "Buscar Error: "
-                        + e.getClass().getName() + ":" + e.getMessage());
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-        	mTareaObtenerTareas = null;
-           
-
-            if (success) {
-                if (tareasXParent.size() > 0) {
-                    mRecyclerViewAdapter = new RecyclerGenericAdapter(ListTasksActivity.this, 
-                    		AdapterSearchUtil.transform(tareasXParent), MODULE);
-                    mRecyclerView.setAdapter(mRecyclerViewAdapter);
-                } else {
-                	progressDialog.setMessage("Esta cuenta no tiene Tareas asociadas.");
-                    Log.d(TAG,
-                            "No hay valores: "
-                                    + tareasXParent.size());
-                }
-            }
-            try {
-				Thread.sleep(5000);
-				progressDialog.dismiss();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-            
-        }
-
-        @Override
-        protected void onCancelled() {
-        	mTareaObtenerTareas = null;
-            Log.d(TAG, "Cancelado ");
-        }
-    }
-
-
 	@Override
-	public boolean chargeIdPreviousModule() {
-		return true;
+	public void addInfo(String serverResponse) {
+
+		try {
+
+			JSONObject jObj = new JSONObject(serverResponse);
+			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
+			tasksXParent.clear();
+			try{
+				for (int i = 0; i < jArr.length(); i++) {
+					JSONObject obj = jArr.getJSONObject(i);
+					tasksXParent.add(new DetailTask(obj));
+				}
+			}catch(JSONException je){
+				
+			}
+			if (tasksXParent.size() > 0) {
+
+				RecyclerView.Adapter rv = new RecyclerGenericAdapter(this.getApplicationContext(),
+						AdapterSearchUtil.transform(tasksXParent), MODULE);
+				this.mRecyclerView.setAdapter(rv);
+			} else {
+				Message.showShort("No tiene tareas asociadas", getApplicationContext());
+			}
+		} catch (Exception e) {
+			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
+		}
 	}
 }

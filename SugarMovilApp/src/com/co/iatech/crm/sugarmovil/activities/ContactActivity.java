@@ -3,14 +3,17 @@ package com.co.iatech.crm.sugarmovil.activities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -18,108 +21,72 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator.ActionActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ContactsModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.Info;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
+import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.ContactoDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListGenderConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.software.shell.fab.ActionButton;
 
-public class ContactActivity extends AppCompatActivity implements
-		View.OnClickListener, ContactsModuleActions {
-
-	/**
-	 * Debug.
-	 */
-	private static final String TAG = "ContactActivity";
-
-	/**
-	 * Tasks.
-	 */
-	private GetContactTask mTareaObtenerContacto = null;
-
-	/**
-	 * Member Variables.
-	 */
-	private String mIdContacto;
-	private ContactoDetalle contactoDetalle;
-
+public class ContactActivity extends ContactsModuleActions implements View.OnClickListener {
 	/**
 	 * UI References.
 	 */
 	private Toolbar mContactoToolbar;
-	private ImageButton imageButtonEdit, imageButtonAccounts;
+	private ImageButton imageButtonAccounts;
 
 	private ImageButton imageButtonOpps;
 	private ImageButton imageButtonTasks;
 	private ImageButton imageButtonCalls;
+	private ImageButton btnMakeCall;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_contact);
 
-		Intent intent = getIntent();
-		mIdContacto = intent.getStringExtra(MODULE.name());
-
 		// Main Toolbar
 		mContactoToolbar = (Toolbar) findViewById(R.id.toolbar_contact);
 		setSupportActionBar(mContactoToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
 		this.applyActions();
 
-		// Tarea obtener contacto
-		mTareaObtenerContacto = new GetContactTask();
-		mTareaObtenerContacto.execute(String.valueOf(mIdContacto));
-	}
+		chargeViewInfo();
 
-	@Override
-	public ActionButton getActionButton() {
-		return null;
-	}
-
-	@Override
-	public ImageButton getEditButton() {
-		return null;
-	}
-
-	@Override
-	public Modules getModule() {
-		return MODULE;
-	}
-
-	@Override
-	public String getAssignedUser() {
-		return contactoDetalle.getAssigned_user_id();
-	}
-
-	@Override
-	public Parcelable getBean() {
-		return contactoDetalle;
 	}
 
 	@Override
 	public void applyActions() {
-		imageButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
-		imageButtonEdit.setVisibility(View.INVISIBLE);
+		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
+		imgButtonEdit.setVisibility(View.INVISIBLE);
 
 		// ToolBar Opciones
 		imageButtonAccounts = (ImageButton) findViewById(R.id.image_accounts);
-	    imageButtonAccounts.setOnClickListener(this);   
+		imageButtonAccounts.setOnClickListener(this);
 
 		imageButtonOpps = (ImageButton) findViewById(R.id.image_opportunities);
 		imageButtonOpps.setOnClickListener(this);
+		// se debe hacer que las oportunidaders esten asociadas a la cuenta y al
+		// contacto
 
 		imageButtonTasks = (ImageButton) findViewById(R.id.image_tasks);
 		imageButtonTasks.setOnClickListener(this);
@@ -127,10 +94,12 @@ public class ContactActivity extends AppCompatActivity implements
 		imageButtonCalls = (ImageButton) findViewById(R.id.image_calls);
 		imageButtonCalls.setOnClickListener(this);
 
-		ActionsStrategy.definePermittedActions(this,  getApplicationContext(), (GlobalClass) getApplicationContext());
+		btnMakeCall = (ImageButton) findViewById(R.id.image_make_call);
+		btnMakeCall.setOnClickListener(this);
+		ActionsStrategy.definePermittedActions(this, getApplicationContext(), (GlobalClass) getApplicationContext());
 	}
 
-	public void ponerValores(ContactoDetalle contactoDetalle) {
+	public void showValues(ContactoDetalle contactoDetalle) {
 		TextView valorContacto = (TextView) findViewById(R.id.valor_contacto);
 		valorContacto.setText(contactoDetalle.getFirst_name());
 		TextView valorIdentificacion = (TextView) findViewById(R.id.valor_identificacion);
@@ -138,7 +107,7 @@ public class ContactActivity extends AppCompatActivity implements
 		TextView valorCumpleanos = (TextView) findViewById(R.id.valor_cumpleanos);
 		valorCumpleanos.setText(contactoDetalle.getBirthdate());
 		TextView valorGenero = (TextView) findViewById(R.id.valor_genero);
-		valorGenero.setText(contactoDetalle.getGenero_c());
+		valorGenero.setText(ListGenderConverter.getInstance().convert(contactoDetalle.getGenero_c(), DataToGet.VALUE));
 		TextView valorCargo = (TextView) findViewById(R.id.valor_cargo);
 		valorCargo.setText(contactoDetalle.getTitle());
 		TextView valorCertificaciones = (TextView) findViewById(R.id.valor_certificaciones);
@@ -165,8 +134,8 @@ public class ContactActivity extends AppCompatActivity implements
 		valorCuenta.setText(contactoDetalle.getNameAccount());
 
 		TextView valorDepartamento = (TextView) findViewById(R.id.valor_departamento);
-		valorDepartamento.setText(ListsConversor.convert(ConversorsType.DPTO,
-				contactoDetalle.getDepartamento_c(), DataToGet.VALUE));
+		valorDepartamento.setText(
+				ListsConversor.convert(ConversorsType.DPTO, contactoDetalle.getDepartamento_c(), DataToGet.VALUE));
 
 		TextView valorMunicipio = (TextView) findViewById(R.id.valor_municipio);
 		valorMunicipio.setText(contactoDetalle.getMunicipio_c());
@@ -180,12 +149,11 @@ public class ContactActivity extends AppCompatActivity implements
 		valorUen.setText(contactoDetalle.getUen_c());
 
 		TextView valorZona = (TextView) findViewById(R.id.valor_zona);
-		valorZona.setText(ListsConversor.convert(ConversorsType.ZONE,
-				contactoDetalle.getZona_c(), DataToGet.VALUE));
+		valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, contactoDetalle.getZona_c(), DataToGet.VALUE));
 
 		TextView valorCanal = (TextView) findViewById(R.id.valor_canal);
-		valorCanal.setText(ListsConversor.convert(ConversorsType.CHANNEL,
-				contactoDetalle.getCanal_c(), DataToGet.VALUE));
+		valorCanal
+				.setText(ListsConversor.convert(ConversorsType.CHANNEL, contactoDetalle.getCanal_c(), DataToGet.VALUE));
 
 		TextView valorSector = (TextView) findViewById(R.id.valor_sector);
 		valorSector.setText(contactoDetalle.getSector_c());
@@ -237,25 +205,27 @@ public class ContactActivity extends AppCompatActivity implements
 		TextView valorUsuario = (TextView) findViewById(R.id.valor_responsable);
 		valorUsuario.setText(contactoDetalle.getAssigned_user_name());
 	}
-	
+
 	@Override
-    public void onBackPressed() {
-    	String prevID = ActivitiesMediator.getInstance().getPreviusID();
-    	//ActivitiesMediator.getInstance().returnPrevID();
-    }
-	
+	public void onBackPressed() {
+		// String prevID = ActivitiesMediator.getInstance().getPreviusID();
+		// ActivitiesMediator.getInstance().returnPrevID();
+	}
+
 	@Override
 	public void onClick(View v) {
-		if (contactoDetalle.getIdAccount() == null) {
-			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas",
-					this);
+		boolean continueModule = true;
+		ActivityBeanCommunicator communicator = new ActivityBeanCommunicator(selectedBean.getId(),
+				selectedBean.getFirst_name());
+		if (selectedBean.getIdAccount() == null) {
+			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas", this);
 			return;
 		}
 
 		Modules module = null;
 		if (v.getId() == imageButtonAccounts.getId()) {
-			Log.d(TAG, "Cuenta de Contacto ");
-			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS, contactoDetalle.getIdAccount());
+			ActivitiesMediator.getInstance().showActivity(ContactActivity.this, Modules.ACCOUNTS,
+					new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""));
 			return;
 		} else if (v.getId() == imageButtonOpps.getId()) {
 			module = Modules.OPPORTUNITIES;
@@ -263,78 +233,70 @@ public class ContactActivity extends AppCompatActivity implements
 			module = Modules.TASKS;
 		} else if (v.getId() == imageButtonCalls.getId()) {
 			module = Modules.CALLS;
-		}
-		ActivitiesMediator.getInstance().showList(ContactActivity.this, module, true);
+		} else if (v.getId() == btnMakeCall.getId()) {
 
+			continueModule = false;
+
+			
+			communicator.setAction(ActionActivity.MAKE_CALL);
+			communicator.setAdditionalInfo(this.getPhoneNumer());
+			ActivitiesMediator.getInstance().setActualID(communicator, MODULE);
+			ActivitiesMediator.getInstance().showEditActivity(this, Modules.CALLS, false);
+
+		}
+		if (continueModule) {
+			ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""),
+					Modules.ACCOUNTS);
+			ActivitiesMediator.getInstance().setActualID(communicator, MODULE);
+			ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
+		}
 	}
 
-	/**
-	 * Representa una tarea asincrona de obtencion de contacto.
-	 */
-	public class GetContactTask extends AsyncTask<String, Void, Boolean> {
-		private ProgressDialog progressDialog;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			progressDialog = new ProgressDialog(ContactActivity.this,
-					ProgressDialog.THEME_HOLO_DARK);
-			progressDialog.setMessage("Cargando información contacto...");
-			progressDialog.setIndeterminate(true);
-			progressDialog.show();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			try {
-				// Parametros
-				String idContact = params[0];
-
-				// Respuesta
-				String contact = null;
-
-				// Intento de obtener cuenta
-				ControlConnection.addHeader("idContact", idContact);
-				contact = ControlConnection.getInfo(TypeInfoServer.getContact,
-						ContactActivity.this);
-				JSONObject jObj = new JSONObject(contact);
-
-				JSONArray jArr = jObj.getJSONArray("results");
-				if (jArr.length() > 0) {
-					JSONObject obj = jArr.getJSONObject(0);
-					contactoDetalle = new ContactoDetalle(obj);
-					return true;
-				} else {
-					return false;
+	private String getPhoneNumer() {
+		String phoneNumber = "";
+		String[] values = { selectedBean.getPhone_mobile(), selectedBean.getPhone_work(), selectedBean.getPhone_home(),
+				selectedBean.getPhone_other(), selectedBean.getPhone_fax(), selectedBean.getAssistant_phone() };
+		for (String betterPhone : values) {
+			if (betterPhone != null && !betterPhone.equals("") && !betterPhone.equalsIgnoreCase("null")) {
+				if(betterPhone.length() == 7){
+					betterPhone = ListsConversor.convert(ConversorsType.DPTO_PHONE, selectedBean.getDepartamento_c(), DataToGet.VALUE) 
+							+ betterPhone;
 				}
-
-			} catch (Exception e) {
-				Log.d(TAG, "Buscar Contacto Error: " + e.getClass().getName()
-						+ ":" + e.getMessage());
-				return false;
+				phoneNumber = betterPhone;
+				break;
 			}
 		}
 
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mTareaObtenerContacto = null;
-			progressDialog.dismiss();
-
-			if (success) {
-				ponerValores(contactoDetalle);
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mTareaObtenerContacto = null;
-			Log.d(TAG, "Cancelado ");
-		}
+		return phoneNumber;
 	}
 
 	@Override
-	public boolean chargeIdPreviousModule() {
-		return true;
+	public void addInfo(String serverResponse) {
+		try {
+
+			JSONObject jObj = new JSONObject(serverResponse);
+			JSONArray jArr = jObj.getJSONArray(RESPONSE_TEXT_CORECT_ID);
+
+			if (jArr.length() > 0) {
+				JSONObject obj = jArr.getJSONObject(0);
+				selectedBean = new ContactoDetalle(obj);
+				showValues(selectedBean);
+			}
+
+		} catch (Exception e) {
+			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
+		}
+
+	}
+
+	@Override
+	public void chargeViewInfo() {
+		Intent intent = getIntent();
+		beanCommunicator = intent.getParcelableExtra(MODULE.name());
+		String[] params = { "idContact", beanCommunicator.id };
+
+		this.executeTask(params, TypeInfoServer.getContact);
+
 	}
 
 }
