@@ -11,6 +11,7 @@ import android.os.Parcelable;
 
 import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
 import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
 /**
  * Representa un objeto parcelable para el manejo de las llamadas.
@@ -481,7 +482,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
 		data.put("date_modified",date_modified);
 		data.put("modified_user_id",modified_user_id);
 		data.put("created_by",created_by);
-		data.put("description",description);
+		data.put("description",Utils.hideTabs(description));
 		data.put("deleted",deleted);
 		data.put("assigned_user_id",assigned_user_id);
 		data.put("duration_hours",duration_hours);

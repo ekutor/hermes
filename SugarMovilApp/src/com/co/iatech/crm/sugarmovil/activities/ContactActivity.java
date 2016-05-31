@@ -215,7 +215,8 @@ public class ContactActivity extends ContactsModuleActions implements View.OnCli
 	@Override
 	public void onClick(View v) {
 		boolean continueModule = true;
-
+		ActivityBeanCommunicator communicator = new ActivityBeanCommunicator(selectedBean.getId(),
+				selectedBean.getFirst_name());
 		if (selectedBean.getIdAccount() == null) {
 			Message.showShortExt("Este Contacto no Tiene Cuentas Asociadas", this);
 			return;
@@ -236,8 +237,7 @@ public class ContactActivity extends ContactsModuleActions implements View.OnCli
 
 			continueModule = false;
 
-			ActivityBeanCommunicator communicator = new ActivityBeanCommunicator(selectedBean.getId(),
-					selectedBean.getFirst_name());
+			
 			communicator.setAction(ActionActivity.MAKE_CALL);
 			communicator.setAdditionalInfo(this.getPhoneNumer());
 			ActivitiesMediator.getInstance().setActualID(communicator, MODULE);
@@ -247,8 +247,7 @@ public class ContactActivity extends ContactsModuleActions implements View.OnCli
 		if (continueModule) {
 			ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(selectedBean.getIdAccount(), ""),
 					Modules.ACCOUNTS);
-			ActivitiesMediator.getInstance().setActualID(
-					new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getFirst_name()), MODULE);
+			ActivitiesMediator.getInstance().setActualID(communicator, MODULE);
 			ActivitiesMediator.getInstance().showList(ContactActivity.this, module, MODULE);
 		}
 	}

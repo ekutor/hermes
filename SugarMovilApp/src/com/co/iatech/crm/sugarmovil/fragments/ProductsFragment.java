@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GatewayPublisher;
-import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTask;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTaskPublisher;
 import com.co.iatech.crm.sugarmovil.activities.tasks.IObserverTask;
 import com.co.iatech.crm.sugarmovil.activities.tasks.ITaskPublisher;
@@ -219,11 +218,11 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
 			if(response.getModule() != MODULE){
 			 return;
 			}
-			if(response.getAdditionalInfo().length() <= 15){
+			if(response.getAdditionalInfo().length() > 15){
 				DataManager.getInstance().products.clear();
-				dataNotFound = true;
-			}else{
 				dataNotFound = false;
+			}else{
+				dataNotFound = true;
 			}
 			
 	        JSONObject jObj = new JSONObject(response.getAdditionalInfo());

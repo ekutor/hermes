@@ -115,7 +115,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	        	title.setText("EDITAR LLAMADA");
 	        	chargeViewInfo();
 	        }else{
-	        	if(ActionActivity.MAKE_CALL.equals(actualInfo.getActualParentInfo().getAction())){
+	        	if(actualInfo.getActualParentInfo() != null &&
+	        			ActionActivity.MAKE_CALL.equals(actualInfo.getActualParentInfo().getAction())){
 	        		try{
 	        			spinnerDirection.setSelection(2);
 	        			spinnerState.setSelection(2);
@@ -163,6 +164,9 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				if(info!= null && !ActionActivity.NONE.equals(info.getAction())){
 					actualInfo.getActualParentInfo().setAction(info.getAction());
 					actualInfo.getActualParentInfo().setAdditionalInfo(info.getAdditionalInfo());
+					txtParentName.setText(info.name);
+					pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,Modules.CONTACTS.getSugarDBName());
+					selectedCall.setParent_id(info.id);
 				}
 				break;
 			case OPPORTUNITIES:
@@ -486,7 +490,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	            	
 	            } else {
 	            	if(isEditMode){
-	           		 Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddCallActivity.this, MODULE );
+	           		// Message.showFinalMessage(getFragmentManager(),DialogType.NO_EDITED, AddCallActivity.this, MODULE );
+	           		Message.showFinalMessage(getFragmentManager(), resultado, AddCallActivity.this, MODULE );
 	           		 
 	           	 }else{
 	           		 Message.showFinalMessage(getFragmentManager(), resultado, AddCallActivity.this, MODULE );
