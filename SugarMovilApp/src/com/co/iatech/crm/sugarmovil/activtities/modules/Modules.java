@@ -10,7 +10,8 @@ public enum Modules {
 	PRODUCTS("psg_Productos","PRODUCTOS", "PRODUCTO"),
 	TASKS("Tasks","TAREAS", "TAREA"),
 	PREVIOUS_UI("PREVIOUS_UI","PREVIOUS_UI", "PREVIOUS_UI"),
-	ACTUAL_INFO("ACTUAL_INFO","ACTUAL_INFO", "ACTUAL_INFO")
+	ACTUAL_INFO("ACTUAL_INFO","ACTUAL_INFO", "ACTUAL_INFO"), 
+	CALENDAR("Calendar","CALENDAR","CALENDARIO")
 	;
 	
 	private String moduleName,visualName,sugarDBName;

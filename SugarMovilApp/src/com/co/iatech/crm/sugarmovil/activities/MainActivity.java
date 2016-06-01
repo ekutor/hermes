@@ -23,6 +23,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.calendar.CalendarActivity;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
 import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         mDataList.add(new DrawerItem("Llamadas", R.drawable.ic_calls));
         mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
         mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
+        mDataList.add(new DrawerItem("Calendario", R.drawable.calendarimg));
         mDataList.add(new DrawerItem("Salir", R.drawable.ic_action_cancel));
 //        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
 
@@ -227,6 +230,10 @@ public class MainActivity extends AppCompatActivity {
                 fragment = TasksFragment.newInstance();
                 break;
             case 6:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.CALENDAR);
+            	ActivitiesMediator.getInstance().showActivity(getApplicationContext(), Modules.CALENDAR, new ActivityBeanCommunicator("",""));
+                break;
+            case 7:
                 System.exit(0);
                 break;
 //            case 6:
@@ -238,12 +245,12 @@ public class MainActivity extends AppCompatActivity {
             	fragment = AccountsFragment.newInstance();
                 break;
         }
-
-        fragment.setArguments(args);
-        FragmentManager frgManager = getFragmentManager();
-        frgManager.beginTransaction().replace(R.id.container, fragment)
-                .commit();
-        
+        if(fragment != null){
+	        fragment.setArguments(args);
+	        FragmentManager frgManager = getFragmentManager();
+	        frgManager.beginTransaction().replace(R.id.container, fragment)
+	                .commit();
+        }
         mDrawerList.setItemChecked(position, true);
         try{
         	setTitle(mDataList.get(position).getItemName());

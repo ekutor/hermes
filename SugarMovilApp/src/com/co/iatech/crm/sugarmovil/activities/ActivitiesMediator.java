@@ -3,6 +3,7 @@ package com.co.iatech.crm.sugarmovil.activities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.co.iatech.crm.sugarmovil.activities.calendar.CalendarActivity;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -76,6 +77,9 @@ public class ActivitiesMediator implements IMediator {
 				break;
 			case PRODUCTS:
 				intent = new Intent(context, ProductActivity.class);
+				break;
+			case CALENDAR:
+				intent = new Intent(context, CalendarActivity.class);
 				break;
 		default:
 			break;
