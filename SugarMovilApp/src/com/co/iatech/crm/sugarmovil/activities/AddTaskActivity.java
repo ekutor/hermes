@@ -74,6 +74,8 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	private ListUsersConverter lc = new ListUsersConverter();
 	private ListAccountConverter lac = new ListAccountConverter();
 	private ListContactConverter listContacts = new ListContactConverter(ListsHolderType.CONTACTS_ACCOUNTS);
+	private ListContactConverter allContacts = new ListContactConverter(ListsHolderType.CONTACTS);
+	
 	private TypeActions tipoPermiso;
 
 	/**
@@ -170,8 +172,18 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				accountId = intent.getParcelableExtra(Modules.ACCOUNTS.name());
 				break;
 			case CONTACTS:
-				accountId = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
-				valorNombre.setText(accountId.name);
+				if(Modules.ACCOUNTS.equals(actualInfo.getActualPrincipalModule())){
+					accountId = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
+					valorNombre.setText(lac.convert(accountId.id, DataToGet.VALUE));
+					
+					pos =  ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+							Modules.ACCOUNTS.getSugarDBName());
+				}else{
+					
+					valorNombre.setText(
+							allContacts.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
+					
+				}
 				break;
 			default:
 				pos = 0;
@@ -385,7 +397,12 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		} else if (v.getId() == valorNombre.getId()) {
 			switch (actualInfo.getActualParentModule()) {
 			case ACCOUNTS:
-				Message.showAccountsDialog(getSupportFragmentManager());
+				Message.showGenericDialog(getSupportFragmentManager(),
+						lac,actualInfo.getActualParentModule());
+				break;
+			case CONTACTS:
+				Message.showGenericDialog(getSupportFragmentManager(),
+						allContacts,actualInfo.getActualParentModule());
 				break;
 			default:
 				break;

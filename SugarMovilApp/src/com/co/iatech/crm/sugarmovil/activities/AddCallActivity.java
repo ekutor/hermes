@@ -384,7 +384,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 			}else if (v.getId() == txtParentName.getId()) {
 					switch (actualInfo.getActualParentModule()) {
 					case ACCOUNTS:
-						Message.showAccountsDialog(getSupportFragmentManager());
+						Message.showGenericDialog(getSupportFragmentManager(), 
+								lac, actualInfo.getActualParentModule());
 						break;
 					default:
 						break;

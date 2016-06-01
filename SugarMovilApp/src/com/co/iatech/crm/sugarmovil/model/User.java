@@ -214,4 +214,10 @@ public class User extends GenericBean implements Parcelable {
 	public String getName() {
 		return first_name + " "+last_name;
 	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -347,7 +347,9 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		}else if(v.getId() == valorCuenta.getId()){
-			Message.showAccountsDialog(getSupportFragmentManager());
+			Message.showGenericDialog(getSupportFragmentManager(), 
+					lac, Modules.ACCOUNTS);
+			
 		}else if(v.getId() == imgButtonGuardar.getId()){
 	        //Realizar Validaciones
 			if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){
