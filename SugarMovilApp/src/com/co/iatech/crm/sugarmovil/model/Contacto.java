@@ -26,7 +26,7 @@ public class Contacto extends GenericBean implements Parcelable {
     
     public Contacto(){}
     
-    private String first_name, title, phone_mobile, phone_work, phone_other, phone_fax;
+    private String first_name, title, phone_mobile, phone_work, phone_other, phone_fax, account_id;
     
     public Contacto(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
@@ -36,6 +36,8 @@ public class Contacto extends GenericBean implements Parcelable {
         setTelefonoTrabajo(validate(obj.getString("phone_work")));
         setTelefonoOtro(validate(obj.getString("phone_other")));
         setTelefonoFax(validate(obj.getString("phone_fax")));
+        setAccount_id(validate(obj.getString("account_id")));
+        
     }
 
     public Contacto(Parcel in) {
@@ -46,6 +48,7 @@ public class Contacto extends GenericBean implements Parcelable {
         setTelefonoTrabajo(validate(in.readString()));
         setTelefonoOtro(validate(in.readString()));
         setTelefonoFax(validate(in.readString()));
+        setAccount_id(validate(in.readString()));
     }
 
     @Override
@@ -62,6 +65,7 @@ public class Contacto extends GenericBean implements Parcelable {
         dest.writeString(getTelefonoTrabajo());
         dest.writeString(getTelefonoOtro());
         dest.writeString(getTelefonoFax());
+        dest.writeString(getAccount_id());
     }
 
     public String getId() {
@@ -112,6 +116,15 @@ public class Contacto extends GenericBean implements Parcelable {
     public void setTelefonoFax(String telefonoFax) {
         this.phone_fax = telefonoFax;
     }
+    
+
+	public String getAccount_id() {
+		return account_id;
+	}
+
+	public void setAccount_id(String account_id) {
+		this.account_id = account_id;
+	}
 
 	@Override
 	public Map<String, String> getDataBean() {
