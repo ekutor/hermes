@@ -63,6 +63,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
     private String parent_name;
     private String campaign_name;
     private String campaign_id;
+    private String contact_id;
 
     public Call(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
@@ -100,6 +101,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
     	setParent_name(validate(obj.getString("parent_name")));
     	setCampaign_name(validate(obj.getString("campaign_name")));
     	setCampaign_id(validate(obj.getString("campaign_id")));
+    	
     }
 
     public Call(Parcel in) {
@@ -138,6 +140,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
     	setParent_name(validate(in.readString()));
     	setCampaign_name(validate(in.readString()));
     	setCampaign_id(validate(in.readString()));
+    	setContact_id(validate(in.readString()));
     }
 
     public Call() {
@@ -185,6 +188,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
         dest.writeString(getParent_name());
         dest.writeString(getCampaign_name());
         dest.writeString(getCampaign_id());
+        dest.writeString(getContact_id());
     }
 
 
@@ -192,7 +196,15 @@ public class Call extends GenericBean implements Parcelable, Visitable {
         return id;
     }
 
-    public void setId(String id) {
+    public String getContact_id() {
+		return contact_id;
+	}
+
+	public void setContact_id(String contact_id) {
+		this.contact_id = contact_id;
+	}
+
+	public void setId(String id) {
         this.id = id;
     }
 
@@ -511,6 +523,7 @@ public class Call extends GenericBean implements Parcelable, Visitable {
 		data.put("parent_name",parent_name);
 		data.put("campaign_name",campaign_name);
 		data.put("campaign_id",campaign_id);
+		data.put("contact_id",contact_id);
 		return data;
 	}
 }

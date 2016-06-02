@@ -6,7 +6,11 @@ function getContacts()
 {
         //Realiza el query en la base de datos
         $mysqli = makeSqlConnection();
-        $sql = "SELECT id,first_name,title,phone_mobile,phone_work,phone_other,phone_fax FROM contacts WHERE deleted = '0' ORDER BY first_name ASC";
+        $sql = "SELECT c.id,c.first_name,title,phone_mobile,phone_work,phone_other,phone_fax,accounts_contacts.account_id 
+		FROM contacts c, accounts_contacts 
+		WHERE c.deleted = '0' 
+		AND c.id = accounts_contacts.contact_id 
+		ORDER BY first_name ASC";
         $res = $mysqli->query($sql);
 
         $rows = array();
@@ -32,7 +36,9 @@ function getContactsxAccount($idAccount)
 {
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	$sql = "SELECT contacts.id,contacts.first_name,contacts.title,contacts.phone_mobile,contacts.phone_work,contacts.phone_other,contacts.phone_fax FROM contacts, accounts_contacts
+	$sql = "SELECT contacts.id,contacts.first_name,contacts.title,contacts.phone_mobile,contacts.phone_work,contacts.phone_other,
+	contacts.phone_fax,accounts_contacts.account_id 
+	FROM contacts, accounts_contacts
 	WHERE contacts.deleted = '0' 
 	AND contacts.id = accounts_contacts.contact_id
 	AND accounts_contacts.account_id= '$idAccount'
