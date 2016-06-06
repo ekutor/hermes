@@ -378,7 +378,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 		data = new LinkedHashMap<View, CharSequence>();
 
 		data.put(valorAsunto, "El campo Asunto no puede estar vacio");
-		data.put(spinnerResult, "Debe seleccionar un Resultado de Llamada");
+		data.put(valorFechaInicio, "Debe definir una fecha de llamada");
+	//	data.put(spinnerResult, "Debe seleccionar un Resultado de Llamada");
 		data.put(spinnerDirection, "Debe seleccionar un Estado");
 		data.put(spinnerState, "Debe seleccionar un Estado ");
 

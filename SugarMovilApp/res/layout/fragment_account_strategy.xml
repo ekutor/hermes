@@ -760,7 +760,12 @@
                       tools:ignore="MissingPrefix" />
 
                   </LinearLayout>
-
+			   </LinearLayout>
+			   <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
                   <LinearLayout
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -795,6 +800,43 @@
                   </LinearLayout>
               </LinearLayout>
               <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_bon_anual"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_por_bon_anual"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_bon_anual"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12sp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
+              <LinearLayout
    			    android:layout_width="match_parent"
    			    android:layout_height="30dp"
    			    android:gravity="center_vertical|center_horizontal"
@@ -817,7 +859,12 @@
                       tools:ignore="MissingPrefix" />
 
                   </LinearLayout>
-
+				</LinearLayout>
+				<LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
                   <LinearLayout
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -852,6 +899,41 @@
                   </LinearLayout>
               </LinearLayout>
               <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_bon_tri"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_por_bon_tri"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_bon_tri"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12sp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
+              <LinearLayout
    			    android:layout_width="match_parent"
    			    android:layout_height="30dp"
    			    android:gravity="center_vertical|center_horizontal"
@@ -874,7 +956,12 @@
                       tools:ignore="MissingPrefix" />
 
                   </LinearLayout>
-
+				</LinearLayout>
+				<LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
                   <LinearLayout
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -908,6 +995,41 @@
                       tools:ignore="MissingPrefix" />
                   </LinearLayout>
               </LinearLayout>
+                              <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_bon_bi_eaton"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_por_bon_bi_eaton"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_bon_bi_eaton"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12sp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
               <LinearLayout
    			    android:layout_width="match_parent"
    			    android:layout_height="30dp"
@@ -931,7 +1053,12 @@
                       tools:ignore="MissingPrefix" />
 
                   </LinearLayout>
-
+			</LinearLayout>
+				<LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
                   <LinearLayout
                       android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -965,111 +1092,6 @@
                       tools:ignore="MissingPrefix" />
                   </LinearLayout>
               </LinearLayout>
-			  <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_bon_anual"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        android:text="@string/cuenta_por_bon_anual"
-                        android:textStyle="bold"
-                        tools:ignore="MissingPrefix" />
-
-                    <TextView
-                        android:id="@+id/valor_bon_anual"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_bon_tri"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        android:text="@string/cuenta_por_bon_tri"
-                        android:textStyle="bold"
-                        tools:ignore="MissingPrefix" />
-
-                    <TextView
-                        android:id="@+id/valor_bon_tri"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_bon_bi_eaton"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        android:text="@string/cuenta_por_bon_bi_eaton"
-                        android:textStyle="bold"
-                        tools:ignore="MissingPrefix" />
-
-                    <TextView
-                        android:id="@+id/valor_bon_bi_eaton"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
-                </LinearLayout>
                 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1085,11 +1107,12 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="3dp"
                         android:ellipsize="end"
                         android:singleLine="false"
                         android:text="@string/cuenta_por_bon_bi_leviton"
                         android:textStyle="bold"
+                        android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
@@ -1098,9 +1121,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        
+                        android:textSize="12sp"
                         android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="3dp"
                         android:ellipsize="end"
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />

@@ -132,7 +132,7 @@
     
     <string name="cuenta_bono_especial">Bonos Especiales</string>
     <string name="cuenta_meta_anual">Meta Anual:</string>
-    <string name="cuenta_meta_tri">Meta Trimsestral:</string>
+    <string name="cuenta_meta_tri">Meta Trimestral:</string>
     <string name="cuenta_meta_bi">Meta Bimestral:</string>
     <string name="cuenta_por_bon_anual">% Bonificacion Anual:</string>
     <string name="cuenta_por_bon_bi_eaton">% Bonificacion Bimestral Eaton:</string>

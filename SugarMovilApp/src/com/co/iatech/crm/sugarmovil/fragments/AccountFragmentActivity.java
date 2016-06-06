@@ -1,30 +1,21 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 public class AccountFragmentActivity extends Fragment {
@@ -34,12 +25,6 @@ public class AccountFragmentActivity extends Fragment {
      */
     private static final String TAG = "AccountActivity";
 
-
-    /**
-     * Member Variables.
-     */
-
-    private CuentaDetalle mCuentaDetalle;
 
     /**
      * UI References.
@@ -144,7 +129,7 @@ public class AccountFragmentActivity extends Fragment {
     	valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, cuentaDetalle.getZona_c(), DataToGet.VALUE));
     	valorUen.setText(cuentaDetalle.getUen_c());
     	valorEmail.setText(cuentaDetalle.getEmail_address());
-    	valorWeb.setText(cuentaDetalle.getWebsite());
+    	valorWeb.setText(Utils.getLinkFormat(cuentaDetalle.getWebsite()));
     	valorGrupo.setText(cuentaDetalle.getGrupo_objetivo_c());
     	valorSegmento.setText(cuentaDetalle.getSegmento_c());
     	valorEstado.setText(cuentaDetalle.getEstado_c());
@@ -208,6 +193,7 @@ public class AccountFragmentActivity extends Fragment {
     	valorUen = (TextView) view.findViewById(R.id.valor_uen);
     	valorEmail = (TextView) view.findViewById(R.id.valor_email);
     	valorWeb = (TextView) view.findViewById(R.id.valor_web);
+    	valorWeb.setMovementMethod(LinkMovementMethod.getInstance());
     	valorGrupo = (TextView) view.findViewById(R.id.valor_grupo);
     	valorSegmento = (TextView) view.findViewById(R.id.valor_segmento);
     	valorEstado = (TextView) view.findViewById(R.id.valor_estado);

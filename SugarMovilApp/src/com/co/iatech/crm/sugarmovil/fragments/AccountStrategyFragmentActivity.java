@@ -1,25 +1,20 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 
 
 public class AccountStrategyFragmentActivity extends Fragment {
@@ -29,12 +24,6 @@ public class AccountStrategyFragmentActivity extends Fragment {
      */
     private static final String TAG = "AccountStrategyFragmentActivity";
 
-
-    /**
-     * Member Variables.
-     */
-
-    private CuentaDetalle mCuentaDetalle;
 
     /**
      * UI References.
@@ -105,7 +94,6 @@ public class AccountStrategyFragmentActivity extends Fragment {
 		chargeCheck(cbWohner, cuentaDetalle.getWohner_c());
 		chargeCheck(cbLP, cuentaDetalle.getComunicaciones_c());
 		chargeCheck(cbEaton, cuentaDetalle.getManiobraeaton_c());
-		//chargeCheck(cbxenergy, cuentaDetalle.getx);
 		chargeCheck(cbMinEaton, cuentaDetalle.getPreciosmineaton_c());
 		chargeCheck(cbBonEspecial, cuentaDetalle.getBonosespeciales_c());
 		chargeCheck(cbBonCompra, cuentaDetalle.getBonificacioncompra_c());
@@ -141,20 +129,24 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	txtEstrategia4.setText(cuentaDetalle.getEstrategia4_c());
     	
     	txtExhibidor.setText(cuentaDetalle.getExhibidor_c());
+    	
     	txtEntExhibidor1.setText(cuentaDetalle.getEntregaexhibidor1_c());
-    	txtActaEntrega1.setText(cuentaDetalle.getActa1_c());
-    	txtImagen1.setText(cuentaDetalle.getImagen1_c());
+    	txtActaEntrega1.setText(Utils.getLinkFormat(cuentaDetalle.getActa1_c()));
+    	txtImagen1.setText(Utils.getLinkFormat(cuentaDetalle.getImagen1_c()));
+    	
     	txtEntExhibidor2.setText(cuentaDetalle.getEntregaexhibidor2_c());
-    	txtActaEntrega2.setText(cuentaDetalle.getActa1_c());
-    	txtImagen2.setText(cuentaDetalle.getImagen2_c());
+    	txtActaEntrega2.setText(Utils.getLinkFormat(cuentaDetalle.getActa1_c()));
+    	txtImagen2.setText(Utils.getLinkFormat(cuentaDetalle.getImagen2_c()));
+    	
     	txtEntExhibidor3.setText(cuentaDetalle.getEntregaexhibidor3_c());
-    	txtActaEntrega3.setText(cuentaDetalle.getActa3_c());
-    	txtImagen3.setText(cuentaDetalle.getImagen3_c());
+    	txtActaEntrega3.setText(Utils.getLinkFormat(cuentaDetalle.getActa3_c()));
+    	txtImagen3.setText(Utils.getLinkFormat(cuentaDetalle.getImagen3_c()));
+    	
     	txtLaumayer.setText(cuentaDetalle.getLaumayer2_c());
     	//txtEntrega1.setText(cuentaDetalle.gete);
-    	txtPieza1.setText(cuentaDetalle.getPieza_c());
+    	txtPieza1.setText(Utils.getLinkFormat(cuentaDetalle.getPieza_c()));
     	//txtEntrega2.setText(cuentaDetalle);
-    	txtPieza2.setText(cuentaDetalle.getPieza2_c());
+    	txtPieza2.setText(Utils.getLinkFormat(cuentaDetalle.getPieza2_c()));
     	txtDiaMarca.setText(cuentaDetalle.getDiamarca_c());
     	txtFechaMarca.setText(cuentaDetalle.getFechamarca_c());
     	txtPlaca.setText(cuentaDetalle.getPlacaaniversario_c());
@@ -224,19 +216,34 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	
     	txtExhibidor = (TextView) view.findViewById(R.id.valor_exhibidor);
     	txtEntExhibidor1 = (TextView) view.findViewById(R.id.valor_EntExh1);
+    	
     	txtActaEntrega1 = (TextView) view.findViewById(R.id.valor_ActEnt1);
+    	txtActaEntrega1.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtImagen1 = (TextView) view.findViewById(R.id.valor_ActImg1);
+    	txtImagen1.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtEntExhibidor2 = (TextView) view.findViewById(R.id.valor_EntExh2);
     	txtActaEntrega2 = (TextView) view.findViewById(R.id.valor_ActEnt2);
+    	txtActaEntrega2.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtImagen2 = (TextView) view.findViewById(R.id.valor_ActImg2);
+    	txtImagen2.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtEntExhibidor3 = (TextView) view.findViewById(R.id.valor_EntExh3);
     	txtActaEntrega3 = (TextView) view.findViewById(R.id.valor_ActEnt3);
+    	txtActaEntrega3.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtImagen3 = (TextView) view.findViewById(R.id.valor_ActImg3);
+    	txtImagen3.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtLaumayer = (TextView) view.findViewById(R.id.valor_laumayer);
     	txtEntrega1 = (TextView) view.findViewById(R.id.valor_Ent1);
     	txtPieza1 = (TextView) view.findViewById(R.id.valor_Pieza1);
+    	txtPieza1.setMovementMethod(LinkMovementMethod.getInstance());
     	txtEntrega2 = (TextView) view.findViewById(R.id.valor_Ent2);
     	txtPieza2 = (TextView) view.findViewById(R.id.valor_Pieza2);
+    	txtPieza2.setMovementMethod(LinkMovementMethod.getInstance());
     	txtDiaMarca = (TextView) view.findViewById(R.id.valor_DiaMarca);
     	txtFechaMarca = (TextView) view.findViewById(R.id.valor_FechaMarca);
     	txtPlaca = (TextView) view.findViewById(R.id.valor_PlacaMarca);
