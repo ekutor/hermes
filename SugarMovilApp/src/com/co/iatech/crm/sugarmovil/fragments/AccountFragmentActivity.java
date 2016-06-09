@@ -1,6 +1,7 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.DetailAccount;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
@@ -180,8 +181,8 @@ public class AccountFragmentActivity extends Fragment {
     	valorActAnterior.setText(detailAccount.getActivos_anterior_c());
     	valorPasActual.setText(detailAccount.getPasivos_actual_c());
     	valorPasAnterior.setText(detailAccount.getPasivos_anterior_c());
-    	}catch(java.lang.NullPointerException ne){
-    		
+    	}catch(Exception ne){
+    		Message.showShortExt(Utils.errorToString(ne), this.getActivity());
     	}
     }
     
@@ -192,6 +193,7 @@ public class AccountFragmentActivity extends Fragment {
     	valorCanal = (TextView) view.findViewById(R.id.valor_canal);
     	valorSector = (TextView) view.findViewById(R.id.valor_sector);
     	
+    	valorClase = (TextView) view.findViewById(R.id.valor_clase);
     	valorTel1 = (TextView) view.findViewById(R.id.valor_tel1);
     	valorExt1 = (TextView) view.findViewById(R.id.valor_ext1);
     	valorTel2 = (TextView) view.findViewById(R.id.valor_tel2);
