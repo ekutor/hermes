@@ -11,16 +11,16 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountFragmentActivity;
 import com.co.iatech.crm.sugarmovil.fragments.AccountStrategyFragmentActivity;
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailAccount;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private CuentaDetalle cuentaActual;
+    private DetailAccount cuentaActual;
 
 	public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
-    public void setActualAccount(CuentaDetalle cuentaActual){
+    public void setActualAccount(DetailAccount cuentaActual){
     	this.cuentaActual = cuentaActual;
     }
 

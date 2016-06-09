@@ -14,7 +14,7 @@ import com.co.iatech.crm.sugarmovil.adapters.ViewPagerAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailAccount;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder;
@@ -146,7 +146,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
 
 	@Override
 	public void chargeViewInfo() {
-	    ListsHolder.clear(ListsHolderType.CONTACTS_ACCOUNTS);
+	   ListsHolder.clear(ListsHolderType.CONTACTS_ACCOUNTS);
 	   viewAdapter.setActualAccount(selectedBean);
   	   viewPager.setAdapter(viewAdapter);
   	   slidingTabLayout.setViewPager(viewPager);
@@ -162,7 +162,7 @@ public class AccountActivity extends AccountsModuleActions implements View.OnCli
 			
 			if (jArr.length() > 0) {
 				JSONObject obj = jArr.getJSONObject(0);
-				selectedBean = new CuentaDetalle(obj);
+				selectedBean = new DetailAccount(obj);
 				chargeViewInfo();
 			}
 			

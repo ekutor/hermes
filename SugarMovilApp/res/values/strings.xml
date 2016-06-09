@@ -49,6 +49,7 @@
     <string name="cuenta_codigo">Código alterno:</string>
     <string name="cuenta_canal">Canal:</string>
     <string name="cuenta_sector">Sector:</string>
+    <string name="cuenta_clase">Clase:</string>
     <string name="cuenta_tel1">Teléfono 1:</string>
     <string name="cuenta_ext1">Extensión 1:</string>
     <string name="cuenta_tel2">Teléfono 2:</string>
@@ -74,8 +75,12 @@
     <string name="cuenta_usuario">Usuario:</string>
     <string name="cuenta_titulo_segmentacion">SEGMENTACIÓN CLIENTES</string>
     <string name="cuenta_constitucion">Constitución:</string>
-    <string name="cuenta_actual">Ventas actual:</string>
-    <string name="cuenta_anterior">Ventas anterior:</string>
+    <string name="cuenta_actual">Ventas año actual:</string>
+    <string name="cuenta_anterior">Ventas año anterior:</string>
+    <string name="cuenta_pasivo_actual">Pasivos año actual:</string>
+    <string name="cuenta_pasivo_anterior">Pasivos año anterior:</string>
+    <string name="cuenta_activo_actual">Activos Año actual:</string>
+    <string name="cuenta_activo_anterior">Activos Año anterior:</string>
     <string name="cuenta_numero_alianzas"># Alianzas:</string>
     <string name="cuenta_alianzas">Alianzas:</string>
     <string name="cuenta_origen">Origen:</string>

@@ -2,7 +2,7 @@ package com.co.iatech.crm.sugarmovil.fragments;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailAccount;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.os.Bundle;
@@ -72,7 +72,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_strategy, container, false);
     	 
         Bundle args = getArguments();
-        CuentaDetalle cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
+        DetailAccount cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
   
         cargarComponentes(rootView);
         ponerValores(cuenta);
@@ -82,7 +82,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
     }
     
     
-    public void ponerValores(CuentaDetalle cuentaDetalle) {
+    public void ponerValores(DetailAccount cuentaDetalle) {
     	try{
     	chargeCheck(moeller, cuentaDetalle.getAutomatizacionmoeller_c());
     	chargeCheck(delta, cuentaDetalle.getDelta_c());

@@ -444,15 +444,17 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				// tipo Tarea
 	
 				if (!isEditMode) {
+					
 					String selectedType = spinnerType.getSelectedItem().toString();
 					selectedCall.setParent_type(
 							ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
 	
 					if (selectedCall.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
 						selectedCall.setParent_id(actualInfo.getActualParentInfo().id);
-					}else if(selectedCall.getParent_type().equals(Modules.CONTACTS)){
+					}else if(selectedCall.getParent_type().equals(Modules.ACCOUNTS.getSugarDBName())){
 						selectedCall.setParent_id(lac.convert(txtParentName.getText().toString(), DataToGet.CODE));
 					}
+					
 				}
 	
 				ListCampaignsConverter lcc = new ListCampaignsConverter();
