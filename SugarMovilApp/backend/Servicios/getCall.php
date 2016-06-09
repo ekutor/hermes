@@ -130,6 +130,15 @@ function getParentName($id,$tipo)
 		{
 			return $r2['first_name'];
 		}
+	}else if($tipo == 'Opportunities')
+	{
+		$mysqli = makeSqlConnection();
+		$sql2 = "SELECT name FROM opportunities WHERE id = '$id'";
+		$res2 = $mysqli->query($sql2);
+		while($r2 = mysqli_fetch_assoc($res2))
+		{
+			return $r2['name'];
+		}
 	}
 	else
 	{
