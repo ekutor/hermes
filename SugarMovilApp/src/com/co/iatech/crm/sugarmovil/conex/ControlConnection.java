@@ -130,8 +130,8 @@ public class ControlConnection {
         }
 	}
 	
-	public static void addHeader(String header, String value){
-		if(data == null){
+	public static void addHeader(String header, String value, boolean cleanData){
+		if(data == null || cleanData){
 			data = new HashMap<String,String> ();
 		}
 		data.put(header, value);

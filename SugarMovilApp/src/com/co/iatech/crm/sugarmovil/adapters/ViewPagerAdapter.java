@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.core.Info;
 import com.co.iatech.crm.sugarmovil.fragments.AccountFragmentActivity;
@@ -58,9 +59,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         Locale l = Locale.getDefault();
         switch (position) {
             case 0:
-                return "Informacion General";
+                return "INFORMACIÓN GENERAL";
             case 1:
-                return "Informacion Estrategica";
+                return "INFORMACIÓN ESTRATEGIAS";
         }
         return null;
     }

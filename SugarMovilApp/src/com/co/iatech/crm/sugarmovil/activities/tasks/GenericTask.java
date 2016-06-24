@@ -56,7 +56,7 @@ public class GenericTask extends AsyncTask<String, Void, Boolean> {
         	 if(params != null && params.length > 1){
         		 String key = params[0];
             	 String id = params[1];
-        		 ControlConnection.addHeader(key, id);
+        		 ControlConnection.addHeader(key, id, true);
         	}
             // Resultado
             response= "";
