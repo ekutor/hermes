@@ -142,6 +142,10 @@ public class ControlConnection {
 		ControlConnection.userId = u.getId();
 		ControlConnection.hash = u.getUser_hash();
 	}
+
+	public static void addCurrentUser(Activity activity) {
+		ControlConnection.addHeader("currentUser", ControlConnection.userId, false);
+	}
 	
 
 }
