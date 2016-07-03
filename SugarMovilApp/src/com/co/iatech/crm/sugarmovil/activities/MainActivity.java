@@ -89,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(R.drawable.ic_search).resize(70, 70).into(searchIcon);
         int closeSearchImgId = getResources().getIdentifier("android:id/search_close_btn", null, null);
         ImageView closeSearchIcon = (ImageView) mMainSearchView.findViewById(closeSearchImgId);
-        closeSearchIcon.getLayoutParams().height = 60;
-        closeSearchIcon.getLayoutParams().width = 60;
+        closeSearchIcon.getLayoutParams().height = 70;
+        closeSearchIcon.getLayoutParams().width = 70;
         closeSearchIcon.requestLayout();
-        Picasso.with(getApplicationContext()).load(R.drawable.ic_close_search).resize(60,60).into(closeSearchIcon);
+        Picasso.with(getApplicationContext()).load(R.drawable.ic_close_search).resize(70,70).into(closeSearchIcon);
         int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView searchText = (TextView) searchPlate.findViewById(searchTextId);
         searchText.setTextColor(Color.WHITE);
