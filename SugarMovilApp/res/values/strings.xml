@@ -131,8 +131,11 @@
     <string name="cuenta_wohner">Wohner</string>
     <string name="cuenta_lp">Comun. LP Dolares</string>
     <string name="cuenta_eaton">Maniobra EATON</string>
+    <string name="cuenta_minieaton">Minibreaker EATON</string>
+    <string name="cuenta_mandoeaton">Señal. y Mando EATON</string>
     <string name="cuenta_xenergy">OEM Xenergy</string>
     <string name="cuenta_min_eaton">Precios Minimos EATON</string>
+    <string name="cuenta_netos">Precios Netos Lovato</string>
     <string name="cuenta_desc_ad">Desc. Adicional:</string>
     
     <string name="cuenta_bono_especial">Bonos Especiales</string>

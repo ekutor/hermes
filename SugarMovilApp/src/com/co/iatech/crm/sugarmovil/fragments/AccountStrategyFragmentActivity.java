@@ -30,7 +30,8 @@ public class AccountStrategyFragmentActivity extends Fragment {
      */
         
     private TextView descAdicional1,descAdicional2,descAdicional3,descAdicional4,descAdicional5,
-    				descAdicional6,descAdicional7,descAdicional8,descAdicional9,descAdicional10,descAdicional11;
+    				descAdicional6,descAdicional7,descAdicional8,descAdicional9,descAdicional10,descAdicional11,
+    				descAdicional12,descAdicional13;
     private TextView txtMetaAnual;
     private TextView txtMetaTri;
     private TextView txtMetaEaton;
@@ -63,6 +64,9 @@ public class AccountStrategyFragmentActivity extends Fragment {
     private CheckBox cbBonLeviton;
     private CheckBox cbBonDespRem;
     private CheckBox cbBonCobroAnticipo;
+	private CheckBox cbMiniEaton;
+	private CheckBox cbSenaEATON;
+	private CheckBox cbNetosLovato;
     
     
     @Override
@@ -101,6 +105,11 @@ public class AccountStrategyFragmentActivity extends Fragment {
 		chargeCheck(cbBonLeviton, cuentaDetalle.getBonificacionleviton_c());
 		chargeCheck(cbBonDespRem, cuentaDetalle.getDespachoremsion_c());
 		chargeCheck(cbBonCobroAnticipo, cuentaDetalle.getNocobro_c());
+		chargeCheck(cbxenergy, cuentaDetalle.getOemxenergy_c());
+		
+		chargeCheck(cbMiniEaton, cuentaDetalle.getMini_c());
+		chargeCheck(cbSenaEATON, cuentaDetalle.getSenalizacion_c());
+		chargeCheck(cbNetosLovato, cuentaDetalle.getPrecios_netos_c());
 		
 		
     	descAdicional1.setText(cuentaDetalle.getDescuento1_c());
@@ -114,6 +123,9 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	descAdicional9.setText(cuentaDetalle.getDescuento9_c());
     	descAdicional10.setText(cuentaDetalle.getDescuento10_c());
     	descAdicional11.setText(cuentaDetalle.getDescuento11_c());
+    	
+    	descAdicional12.setText(cuentaDetalle.getDescuento12_c());
+    	descAdicional13.setText(cuentaDetalle.getDescuento13_c());
     	
     	txtMetaAnual.setText(cuentaDetalle.getMeta1_c());
     	txtMetaTri.setText(cuentaDetalle.getMeta2_c());
@@ -188,6 +200,9 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	cbBonDespRem = (CheckBox) view.findViewById(R.id.checkbox_desp_rem);
     	cbBonCobroAnticipo = (CheckBox) view.findViewById(R.id.checkbox_cobro_anticipo);
     	
+    	cbMiniEaton = (CheckBox) view.findViewById(R.id.checkbox_minieaton);
+    	cbSenaEATON = (CheckBox) view.findViewById(R.id.checkbox_mandoeaton);
+    	cbNetosLovato = (CheckBox) view.findViewById(R.id.checkbox_netos);
     	
     	descAdicional1 = (TextView) view.findViewById(R.id.valor_desc_ad_1);
     	descAdicional2 = (TextView) view.findViewById(R.id.valor_desc_ad_2);
@@ -200,6 +215,8 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	descAdicional9 = (TextView) view.findViewById(R.id.valor_desc_ad_9);
     	descAdicional10 = (TextView) view.findViewById(R.id.valor_desc_ad_10);
     	descAdicional11 = (TextView) view.findViewById(R.id.valor_desc_ad_11);
+    	descAdicional12 = (TextView) view.findViewById(R.id.valor_desc_ad_12);
+    	descAdicional13 = (TextView) view.findViewById(R.id.valor_desc_ad_13);
     	
     	txtMetaAnual = (TextView) view.findViewById(R.id.valor_meta_anual);
     	txtMetaTri = (TextView) view.findViewById(R.id.valor_meta_tri);

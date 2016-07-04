@@ -621,6 +621,120 @@
                       tools:ignore="MissingPrefix" />
                   </LinearLayout>
               </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_minieaton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_minieaton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_desc_ad"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_12"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_mandoeaton"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_mandoeaton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      android:text="@string/cuenta_desc_ad"
+                      android:textSize="12sp"
+                      android:textStyle="bold"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+				  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  <TextView
+                      android:id="@+id/valor_desc_ad_13"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:ellipsize="end"
+                      android:singleLine="false"
+                      tools:ignore="MissingPrefix" />
+                  </LinearLayout>
+              </LinearLayout>
               
                <LinearLayout
    			    android:layout_width="match_parent"
@@ -699,6 +813,40 @@
                       fontPath="fonts/DaxlinePro-Regular.ttf"
                       android:clickable="false"
                       android:text="@string/cuenta_min_eaton"
+                      android:textColorLink="@color/hint_foreground_material_light"
+                      tools:ignore="MissingPrefix" />
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:gravity="center_vertical|center_horizontal">
+                  
+                 </LinearLayout>
+				  
+              </LinearLayout>
+              
+              <LinearLayout
+   			    android:layout_width="match_parent"
+   			    android:layout_height="30dp"
+   			    android:gravity="center_vertical|center_horizontal"
+   			    android:orientation="horizontal" >
+
+                  <LinearLayout
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="2"
+                      android:gravity="center_vertical|center_horizontal" >
+			
+                  <CheckBox
+                      android:id="@+id/checkbox_netos"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      fontPath="fonts/DaxlinePro-Regular.ttf"
+                      android:clickable="false"
+                      android:text="@string/cuenta_netos"
                       android:textColorLink="@color/hint_foreground_material_light"
                       tools:ignore="MissingPrefix" />
 
