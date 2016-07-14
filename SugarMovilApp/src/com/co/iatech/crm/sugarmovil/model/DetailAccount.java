@@ -185,7 +185,12 @@ public class DetailAccount extends GenericBean implements Parcelable {
 	private String precios_netos_c;
 	private String mini_c;
 	private String senalizacion_c;
-
+	private String bonificacion_flexible_c;
+	private String meta_mensual_c;
+	private String valor_bono_c;
+	private String maniobra_lovato_c;
+	private String meta_bimensual_c;
+	private String bimensual_c;
 
 	public DetailAccount() {
 
@@ -355,6 +360,14 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		setMini_c(validate(obj.getString("mini_c")));
 		setSenalizacion_c(validate(obj.getString("senalizacion_c")));
 		
+		setBonificacion_flexible_c(validate(obj.getString("bonificacion_flexible_c")));
+		setMeta_mensual_c(validate(obj.getString("meta_mensual_c")));
+		setValor_bono_c(validate(obj.getString("valor_bono_c")));
+		
+		setManiobra_lovato_c(validate(obj.getString("maniobra_lovato_c")));
+		setMeta_bimensual_c(validate(obj.getString("meta_bimensual_c")));
+		setBimensual_c(validate(obj.getString("bimensual_c")));
+		
 	}
 
 	protected DetailAccount(Parcel in) {
@@ -519,6 +532,14 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		setPrecios_netos_c(validate(in.readString()));
 		setMini_c(validate(in.readString()));
 		setSenalizacion_c(validate(in.readString()));
+		
+		setBonificacion_flexible_c(validate(in.readString()));
+		setMeta_mensual_c(validate(in.readString()));
+		setValor_bono_c(validate(in.readString()));
+		
+		setManiobra_lovato_c(validate(in.readString()));
+		setMeta_bimensual_c(validate(in.readString()));
+		setBimensual_c(validate(in.readString()));
 	}
 
 	@Override
@@ -689,6 +710,14 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		dest.writeString(getPrecios_netos_c());
 		dest.writeString(getMini_c());
 		dest.writeString(getSenalizacion_c());
+		
+		dest.writeString(getBonificacion_flexible_c());
+		dest.writeString(getMeta_mensual_c());
+		dest.writeString(getValor_bono_c());
+		
+		dest.writeString(getManiobra_lovato_c());
+		dest.writeString(getMeta_bimensual_c());
+		dest.writeString(getBimensual_c());
 	}
 
 	public String getId() {
@@ -1968,6 +1997,54 @@ public class DetailAccount extends GenericBean implements Parcelable {
 
 	public void setSenalizacion_c(String senalizacion_c) {
 		this.senalizacion_c = senalizacion_c;
+	}
+
+	public String getBonificacion_flexible_c() {
+		return bonificacion_flexible_c;
+	}
+
+	public void setBonificacion_flexible_c(String bonificacion_flexible_c) {
+		this.bonificacion_flexible_c = bonificacion_flexible_c;
+	}
+
+	public String getMeta_mensual_c() {
+		return meta_mensual_c;
+	}
+
+	public void setMeta_mensual_c(String meta_mensual_c) {
+		this.meta_mensual_c = meta_mensual_c;
+	}
+
+	public String getValor_bono_c() {
+		return valor_bono_c;
+	}
+
+	public void setValor_bono_c(String valor_bono_c) {
+		this.valor_bono_c = valor_bono_c;
+	}
+
+	public String getManiobra_lovato_c() {
+		return maniobra_lovato_c;
+	}
+
+	public void setManiobra_lovato_c(String maniobra_lovato_c) {
+		this.maniobra_lovato_c = maniobra_lovato_c;
+	}
+
+	public String getMeta_bimensual_c() {
+		return meta_bimensual_c;
+	}
+
+	public void setMeta_bimensual_c(String meta_bimensual_c) {
+		this.meta_bimensual_c = meta_bimensual_c;
+	}
+
+	public String getBimensual_c() {
+		return bimensual_c;
+	}
+
+	public void setBimensual_c(String bimensual_c) {
+		this.bimensual_c = bimensual_c;
 	}
 
 	@Override

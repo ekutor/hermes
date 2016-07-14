@@ -46,7 +46,8 @@ public class AccountStrategyFragmentActivity extends Fragment {
     private TextView txtEstrategia4;
     private TextView txtExhibidor,txtEntExhibidor1,txtActaEntrega1,txtImagen1,txtEntExhibidor2,txtActaEntrega2,txtImagen2,
     				txtEntExhibidor3,txtActaEntrega3,txtImagen3,txtLaumayer,txtEntrega1,txtPieza1,txtEntrega2,txtPieza2,
-    				txtDiaMarca,txtFechaMarca,txtPlaca,txtFechaPlaca,txtCertificaciones,txtOtrasEstr;
+    				txtDiaMarca,txtFechaMarca,txtPlaca,txtFechaPlaca,txtCertificaciones,txtOtrasEstr,
+    				txtPorBonFlexible,txtBonFlexible,txtBonManLovato,txtVlrManLovato;
     private CheckBox moeller;
     private CheckBox delta2;
     private CheckBox delta;
@@ -67,6 +68,8 @@ public class AccountStrategyFragmentActivity extends Fragment {
 	private CheckBox cbMiniEaton;
 	private CheckBox cbSenaEATON;
 	private CheckBox cbNetosLovato;
+	private CheckBox cbBOnFlex;
+	private CheckBox cbManLovato;
     
     
     @Override
@@ -111,6 +114,10 @@ public class AccountStrategyFragmentActivity extends Fragment {
 		chargeCheck(cbSenaEATON, cuentaDetalle.getSenalizacion_c());
 		chargeCheck(cbNetosLovato, cuentaDetalle.getPrecios_netos_c());
 		
+		chargeCheck(cbBonEaton, cuentaDetalle.getManiobraeatonanual_c());
+		chargeCheck(cbBOnFlex, cuentaDetalle.getBonificacion_flexible_c());
+		chargeCheck(cbManLovato, cuentaDetalle.getManiobra_lovato_c());
+		
 		
     	descAdicional1.setText(cuentaDetalle.getDescuento1_c());
     	descAdicional2.setText(cuentaDetalle.getDescuento2_c());
@@ -139,6 +146,11 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	txtEstrategia2.setText(cuentaDetalle.getEstrategia2_c());
     	txtEstrategia3.setText(cuentaDetalle.getEstrategia3_c());
     	txtEstrategia4.setText(cuentaDetalle.getEstrategia4_c());
+    	
+    	txtBonFlexible.setText(cuentaDetalle.getMeta_mensual_c());
+    	txtPorBonFlexible.setText(cuentaDetalle.getValor_bono_c());
+    	txtVlrManLovato.setText(cuentaDetalle.getMeta_bimensual_c());
+    	txtBonManLovato.setText(cuentaDetalle.getBimensual_c());
     	
     	txtExhibidor.setText(cuentaDetalle.getExhibidor_c());
     	
@@ -204,6 +216,9 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	cbSenaEATON = (CheckBox) view.findViewById(R.id.checkbox_mandoeaton);
     	cbNetosLovato = (CheckBox) view.findViewById(R.id.checkbox_netos);
     	
+    	cbBOnFlex = (CheckBox) view.findViewById(R.id.checkbox_bon_flexible);
+    	cbManLovato = (CheckBox) view.findViewById(R.id.checkbox_man_lovato);
+    	
     	descAdicional1 = (TextView) view.findViewById(R.id.valor_desc_ad_1);
     	descAdicional2 = (TextView) view.findViewById(R.id.valor_desc_ad_2);
     	descAdicional3 = (TextView) view.findViewById(R.id.valor_desc_ad_3);
@@ -230,6 +245,12 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	txtEstrategia2 = (TextView) view.findViewById(R.id.valor_estrategia2);
     	txtEstrategia3 = (TextView) view.findViewById(R.id.valor_estrategia3);
     	txtEstrategia4 = (TextView) view.findViewById(R.id.valor_estrategia4);
+    	
+    	txtBonFlexible = (TextView) view.findViewById(R.id.valor_meta_flexible);
+    	txtPorBonFlexible = (TextView) view.findViewById(R.id.valor_bon_flexible);
+    	
+    	txtVlrManLovato = (TextView) view.findViewById(R.id.valor_man_lovato);
+    	txtBonManLovato = (TextView) view.findViewById(R.id.valor_bon_bi_lovato);
     	
     	txtExhibidor = (TextView) view.findViewById(R.id.valor_exhibidor);
     	txtEntExhibidor1 = (TextView) view.findViewById(R.id.valor_EntExh1);
