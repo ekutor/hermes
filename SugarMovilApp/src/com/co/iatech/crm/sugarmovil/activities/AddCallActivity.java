@@ -391,14 +391,18 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	public void onClick(View v) {
 		try{
 			if (v.getId() == asignadoA.getId()) {
-				switch (tipoPermiso) {
-				case OWNER:
-					break;
-				case ALL:
+				if(isEditMode){
+					switch (tipoPermiso) {
+						case OWNER:
+							break;
+						case ALL:
+							Message.showUsersDialog(getSupportFragmentManager());
+							break;
+						case GROUP:
+							break;
+						}
+				}else{
 					Message.showUsersDialog(getSupportFragmentManager());
-					break;
-				case GROUP:
-					break;
 				}
 			} else if (v.getId() == botonHoraInicio.getId()) {
 				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
