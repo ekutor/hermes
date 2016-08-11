@@ -1,9 +1,10 @@
 package com.co.iatech.crm.sugarmovil.activities.listeners;
 
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.Call;
-import com.co.iatech.crm.sugarmovil.model.Oportunidad;
+import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 public interface DataVisitor {
 	
@@ -11,6 +12,7 @@ public interface DataVisitor {
 	public void add(Cuenta bean);
 	public void add(Call bean);
 	public void add(DetailTask bean);
+	public void add(DetailSubTask bean);
 	
 	public int size(Oportunidad bean);
 	public int size(Cuenta bean);

@@ -373,6 +373,11 @@
     <string name="tarea_titulo_relacion">RELACIONADO CON:</string>
     <string name="tarea_tipo">Tipo:</string>
     <string name="tarea_nombre">Nombre:</string>
+    
+     <!-- SubTarea Activity -->
+    <string name="title_activity_subtask">SUBTAREA</string>
+    <string name="subtarea_descripcion">Subtarea:</string>
+    <string name="title_activity_create_subtask">CREAR SUBTAREA</string>
 
     <string name="dialog_message_task">Se creó la tarea con exito</string>
     <string name="dialog_edit_message_task">Se editó la tarea con exito</string>

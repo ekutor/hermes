@@ -3,6 +3,20 @@ package com.co.iatech.crm.sugarmovil.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
+import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
+import com.co.iatech.crm.sugarmovil.fragments.ProductsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.SubTasksFragment;
+import com.co.iatech.crm.sugarmovil.fragments.TasksFragment;
+import com.co.iatech.crm.sugarmovil.model.DrawerItem;
+import com.co.iatech.crm.sugarmovil.util.GlobalClass;
+import com.squareup.picasso.Picasso;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
@@ -21,19 +35,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
-import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
-import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
-import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
-import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
-import com.co.iatech.crm.sugarmovil.fragments.ProductsFragment;
-import com.co.iatech.crm.sugarmovil.fragments.TasksFragment;
-import com.co.iatech.crm.sugarmovil.model.DrawerItem;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
-import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -110,12 +111,13 @@ public class MainActivity extends AppCompatActivity {
         mDataList.add(new DrawerItem("Cuentas", R.drawable.ic_accounts));
         mDataList.add(new DrawerItem("Contactos", R.drawable.ic_contacts));
         mDataList.add(new DrawerItem("Oportunidades", R.drawable.ic_opportunities));
+        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
         mDataList.add(new DrawerItem("Llamadas", R.drawable.ic_calls));
         mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
         mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
+        mDataList.add(new DrawerItem("Subtareas", R.drawable.ic_subtasks));
+        mDataList.add(new DrawerItem("Notas", R.drawable.ic_notes));
         mDataList.add(new DrawerItem("Salir", R.drawable.ic_action_cancel));
-//        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
-
 
         mDrawerAdapter = new DrawerAdapter(this, R.layout.item_drawer,
                 mDataList);
@@ -215,23 +217,32 @@ public class MainActivity extends AppCompatActivity {
                 fragment = OpportunitiesFragment.newInstance();
                 break;
             case 3:
+                ActivitiesMediator.getInstance().defineActualModule(Modules.OPPORTUNITIES);
+                fragment = OpportunitiesFragment.newInstance();
+            case 4:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.CALLS);
                 fragment = CallsFragment.newInstance();
                 break;
-            case 4:
+            case 5:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.PRODUCTS);
                 fragment = ProductsFragment.newInstance();
                 break;
-            case 5:
+            case 6:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.TASKS);
                 fragment = TasksFragment.newInstance();
                 break;
-            case 6:
+            case 7:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.SUBTASKS);
+                fragment = SubTasksFragment.newInstance();
+                break;
+            case 8:
+            	return;
+            	/*ActivitiesMediator.getInstance().defineActualModule(Modules.NOTES);
+                fragment = TasksFragment.newInstance();
+                break;*/
+            case 9:
                 System.exit(0);
                 break;
-//            case 6:
-//                fragment = ClientsFragment.newInstance();
-//                break;
 
             default:
             	position = 0;

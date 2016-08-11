@@ -95,7 +95,8 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 			String version = this.getPackageManager()
 			.getPackageInfo(this.getPackageName(), 0).versionName;
 			TextView txtVersion = (TextView) findViewById(R.id.text_version);
-			txtVersion.setText("Version "+version+"\n © Derechos Reservados.");
+			txtVersion.setText("Version "+version+"\n © Derechos Reservados."
+					+ "\n VERSION DE PRUEBAS");
 		} catch (NameNotFoundException e) {
 		}
         textUser = (EditText) findViewById(R.id.text_user);
