@@ -19,7 +19,7 @@ public class Utils {
 	private static final String DATETIME_FORMAT_BACKEND = "yyyy-MM-dd HH:mm:ss";
 	private static final String DATE_FORMAT_BACKEND = "yyyy-MM-dd";
 	
-	private static final int TIME_TO_DIFF_DB_BACKEND = 5;
+	private static final int TIME_TO_DIFF_DB_BACKEND = 0;
 
 	public static String getCurrentTime() {
 		Calendar c = Calendar.getInstance();

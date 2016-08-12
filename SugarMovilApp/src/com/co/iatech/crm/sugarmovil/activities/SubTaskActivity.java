@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.SubTasksModuleActions;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
@@ -18,15 +20,18 @@ import com.co.iatech.crm.sugarmovil.util.Utils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class SubTaskActivity extends SubTasksModuleActions {
+public class SubTaskActivity extends SubTasksModuleActions  implements OnClickListener {
 
 	/**
 	 * UI References.
 	 */
 	private Toolbar mTareaToolbar;
+	private ImageButton imgButtonNotes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,10 @@ public class SubTaskActivity extends SubTasksModuleActions {
 
 	@Override
 	public void applyActions() {
+		
+		imgButtonNotes = (ImageButton) findViewById(R.id.image_notes);
+		imgButtonNotes.setOnClickListener(this);
+		
 		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
 		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
 	}
@@ -136,6 +145,26 @@ public class SubTaskActivity extends SubTasksModuleActions {
 			beanCommunicator = intent.getParcelableExtra(MODULE.name());
 			String[] params = { "idSubTask", beanCommunicator.id };
 			this.executeTask(params, TypeInfoServer.getSubTask);
+		}
+	}
+	
+	@Override
+	public void onClick(View v) {
+		try {
+			Modules moduletoStart = null;
+
+			if (v.getId() == imgButtonNotes.getId()) {
+				moduletoStart = Modules.NOTES;
+				if (selectedBean != null) {
+					ActivitiesMediator.getInstance().setParentBean(selectedBean);
+					ActivitiesMediator.getInstance().setActualID(
+							new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
+				}
+				ActivitiesMediator.getInstance().showList(SubTaskActivity.this, moduletoStart, MODULE);
+			}
+			
+		} catch (Exception e) {
+			Message.showShortExt(Utils.errorToString(e), this);
 		}
 	}
 }

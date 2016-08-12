@@ -120,7 +120,7 @@ public class AddNoteActivity extends NotesModuleEditableActions {
 		} else {
 			selectedNote = new Notes();
 			switch (actualInfo.getActualParentModule()) {
-			case TASKS:
+			case SUBTASKS:
 				parentId = actualInfo.getActualParentInfo();
 				valorSubtarea.setText(parentId.name);
 				break;
