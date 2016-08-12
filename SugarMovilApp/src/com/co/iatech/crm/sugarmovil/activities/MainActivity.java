@@ -9,6 +9,7 @@ import com.co.iatech.crm.sugarmovil.adapters.DrawerAdapter;
 import com.co.iatech.crm.sugarmovil.fragments.AccountsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.CallsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.ContactsFragment;
+import com.co.iatech.crm.sugarmovil.fragments.NotesFragment;
 import com.co.iatech.crm.sugarmovil.fragments.OpportunitiesFragment;
 import com.co.iatech.crm.sugarmovil.fragments.ProductsFragment;
 import com.co.iatech.crm.sugarmovil.fragments.SubTasksFragment;
@@ -236,10 +237,9 @@ public class MainActivity extends AppCompatActivity {
                 fragment = SubTasksFragment.newInstance();
                 break;
             case 8:
-            	return;
-            	/*ActivitiesMediator.getInstance().defineActualModule(Modules.NOTES);
-                fragment = TasksFragment.newInstance();
-                break;*/
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.NOTES);
+                fragment = NotesFragment.newInstance();
+                break;
             case 9:
                 System.exit(0);
                 break;

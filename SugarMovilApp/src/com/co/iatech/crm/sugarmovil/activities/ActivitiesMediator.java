@@ -80,6 +80,9 @@ public class ActivitiesMediator implements IMediator {
 			case SUBTASKS:
 				intent = new Intent(context, SubTaskActivity.class);
 				break;
+			case NOTES:
+				intent = new Intent(context, NoteActivity.class);
+				break;
 		default:
 			break;
 		}
@@ -119,6 +122,9 @@ public class ActivitiesMediator implements IMediator {
 				break;
 			case SUBTASKS:
 				intent = new Intent(context, AddSubTaskActivity.class);
+				break;
+			case NOTES:
+				intent = new Intent(context, AddNoteActivity.class);
 				break;
 
 		}

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.co.iatech.crm.sugarmovil"
-    android:versionCode="40"
-    android:versionName="1.5.2" >
+    android:versionCode="41"
+    android:versionName="1.5.3" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -86,6 +86,16 @@
                 android:value=".MainActivity" />
         </activity>
         
+         <activity 
+            android:name=".activities.NoteActivity"
+            android:label="@string/title_activity_notes"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
         <activity 
             android:name=".activities.AddTaskActivity"
             android:label="@string/title_activity_create_task"
@@ -99,6 +109,16 @@
         <activity 
             android:name=".activities.AddSubTaskActivity"
             android:label="@string/title_activity_create_subtask"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
+        <activity 
+            android:name=".activities.AddNoteActivity"
+            android:label="@string/title_activity_create_note"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
@@ -175,6 +195,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".TaskActivity" />
+        </activity>
+        
+           <activity
+            android:name=".activities.ListNotesActivity"
+            android:label="@string/title_activity_notes"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.NoteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NoteActivity" />
         </activity>
         
         <activity

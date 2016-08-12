@@ -14,21 +14,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Representa un objeto parcelable para el manejo de una subtarea.
+ * Representa un objeto parcelable para el manejo de una nota.
  */
-public class DetailSubTask extends GenericBean implements Parcelable , Visitable{
+public class Notes extends GenericBean implements Parcelable , Visitable{
 
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<DetailSubTask> CREATOR = new Parcelable.Creator<DetailSubTask>() {
+    public static final Parcelable.Creator<Notes> CREATOR = new Parcelable.Creator<Notes>() {
         @Override
-        public DetailSubTask createFromParcel(Parcel in) {
-            return new DetailSubTask(in);
+        public Notes createFromParcel(Parcel in) {
+            return new Notes(in);
         }
 
         @Override
-        public DetailSubTask[] newArray(int size) {
-            return new DetailSubTask[size];
+        public Notes[] newArray(int size) {
+            return new Notes[size];
         }
     };
    
@@ -39,61 +39,49 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
     private String created_by;
     private String file_mime_type;
     private String filename;
-    private String parent_type;
     private String parent_id;
-    private String contact_id;
-    private String portal_flag;
-    private String embed_flag;
     private String description;
-    private String id_c;
-    private String estado_c;
-    private String fechainicio_c;
-    private String fechafin_c;
-    private String ejecuted_date_c;
     private String assigned_user_id;
     private String deleted;
     private String assigned_user_name;
-    private String contact_name;
     private String parent_name;
+    private String file_ext;
+    private String active_date;
+    private String exp_date;	
+    private String status_id;
     
-    public DetailSubTask(){
+    public Notes(){
     	
     }
     
-    public DetailSubTask(String id,String name){
+    public Notes(String id,String name){
     	this.id = id;
     	this.name = name;
     }
     
-    public DetailSubTask(JSONObject obj) throws JSONException {
+    public Notes(JSONObject obj) throws JSONException {
 		setId(validate(obj.getString("id")));
-	    setName(validate(obj.getString("name")));
+	    setName(validate(obj.getString("document_name")));
 	    setDate_entered(validate(obj.getString("date_entered")));
 	    setDate_modified(validate(obj.getString("date_modified")));
 	    setModified_user_id(validate(obj.getString("modified_user_id")));	    
 	    setCreated_by(validate(obj.getString("created_by")));
 	    setFile_mime_type(validate(obj.getString("file_mime_type")));
 	    setFilename(validate(obj.getString("filename")));
-	    setParent_type(validate(obj.getString("parent_type")));
 	    setParent_id(validate(obj.getString("parent_id")));
-	    setContact_id(validate(obj.getString("contact_id")));
-	    setPortal_flag(validate(obj.getString("portal_flag")));
-	    setEmbed_flag(validate(obj.getString("embed_flag")));
 	    setDescription(validate(obj.getString("description")));
-	    setId_c(validate(obj.getString("id_c")));
-	    setEstado_c(validate(obj.getString("estado_c")));
-	    setFechainicio_c(validate(obj.getString("fechainicio_c")));
-	    setFechafin_c(validate(obj.getString("fechafin_c")));
-	    setEjecuted_date_c(validate(obj.getString("ejecuted_date_c")));
 	    setAssigned_user_id(validate(obj.getString("assigned_user_id")));
 	    setDeleted(validate(obj.getString("deleted")));
 	    setAssigned_user_name(validate(obj.getString("assigned_user_name")));
-	    setContact_name(validate(obj.getString("contact_name")));
 	    setParent_name(validate(obj.getString("parent_name")));
+	    setFile_ext(validate(obj.getString("file_ext")));
+	    setActive_date(validate(obj.getString("active_date")));
+	    setExp_date(validate(obj.getString("exp_date")));
+	    setStatus_id(validate(obj.getString("status_id")));
 	    
     }
 
-    protected DetailSubTask(Parcel in) {
+    protected Notes(Parcel in) {
         id = in.readString();
         name = in.readString();
         date_entered = in.readString();
@@ -102,22 +90,16 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
         created_by = in.readString();
         file_mime_type = in.readString();
         filename = in.readString();
-        parent_type = in.readString();
         parent_id = in.readString();
-        contact_id = in.readString();
-        portal_flag = in.readString();
-        embed_flag = in.readString();
         description = in.readString();
-        id_c = in.readString();
-        estado_c = in.readString();
-        fechainicio_c = in.readString();
-        fechafin_c = in.readString();
-        ejecuted_date_c = in.readString();
         assigned_user_id = in.readString();
         deleted = in.readString();     
         assigned_user_name = in.readString();
-        contact_name = in.readString();
         parent_name = in.readString();
+        file_ext = in.readString();
+        active_date = in.readString();
+        exp_date = in.readString();
+        status_id = in.readString();
     }
 
     public String getId() {
@@ -192,44 +174,12 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
         this.assigned_user_id = assigned_user_id;
     }
 
-    public String getParent_type() {
-        return parent_type;
-    }
-
-    public void setParent_type(String parent_type) {
-        this.parent_type = parent_type;
-    }
-
     public String getParent_id() {
         return parent_id;
     }
 
     public void setParent_id(String parent_id) {
         this.parent_id = parent_id;
-    }
-
-    public String getContact_id() {
-        return contact_id;
-    }
-
-    public void setContact_id(String contact_id) {
-        this.contact_id = contact_id;
-    }
-    
-    public String getId_c() {
-        return id_c;
-    }
-
-    public void setId_c(String id_c) {
-        this.id_c = id_c;
-    }
-
-    public String getEjecuted_date_c() {
-        return ejecuted_date_c;
-    }
-
-    public void setEjecuted_date_c(String ejecuted_date_c) {
-        this.ejecuted_date_c = ejecuted_date_c;
     }
 
     public String getFile_mime_type() {
@@ -248,46 +198,6 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
 		this.filename = filename;
 	}
 
-	public String getPortal_flag() {
-		return portal_flag;
-	}
-
-	public void setPortal_flag(String portal_flag) {
-		this.portal_flag = portal_flag;
-	}
-
-	public String getEmbed_flag() {
-		return embed_flag;
-	}
-
-	public void setEmbed_flag(String embed_flag) {
-		this.embed_flag = embed_flag;
-	}
-
-	public String getEstado_c() {
-		return estado_c;
-	}
-
-	public void setEstado_c(String estado_c) {
-		this.estado_c = estado_c;
-	}
-
-	public String getFechainicio_c() {
-		return fechainicio_c;
-	}
-
-	public void setFechainicio_c(String fechainicio_c) {
-		this.fechainicio_c = fechainicio_c;
-	}
-
-	public String getFechafin_c() {
-		return fechafin_c;
-	}
-
-	public void setFechafin_c(String fechafin_c) {
-		this.fechafin_c = fechafin_c;
-	}
-
 	public String getAssigned_user_name() {
 		return assigned_user_name;
 	}
@@ -296,20 +206,44 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
 		this.assigned_user_name = assigned_user_name;
 	}
 
-	public String getContact_name() {
-		return contact_name;
-	}
-
-	public void setContact_name(String contact_name) {
-		this.contact_name = contact_name;
-	}
-
 	public String getParent_name() {
 		return parent_name;
 	}
 
 	public void setParent_name(String parent_name) {
 		this.parent_name = parent_name;
+	}
+	
+	public String getFile_ext() {
+		return file_ext;
+	}
+
+	public void setFile_ext(String file_ext) {
+		this.file_ext = file_ext;
+	}
+
+	public String getActive_date() {
+		return active_date;
+	}
+
+	public void setActive_date(String active_date) {
+		this.active_date = active_date;
+	}
+
+	public String getExp_date() {
+		return exp_date;
+	}
+
+	public void setExp_date(String exp_date) {
+		this.exp_date = exp_date;
+	}
+
+	public String getStatus_id() {
+		return status_id;
+	}
+
+	public void setStatus_id(String status_id) {
+		this.status_id = status_id;
 	}
 
 	@Override
@@ -327,22 +261,16 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
         dest.writeString(created_by);
         dest.writeString(file_mime_type);
         dest.writeString(filename);
-        dest.writeString(parent_type);
         dest.writeString(parent_id);
-        dest.writeString(contact_id);
-        dest.writeString(portal_flag);
-        dest.writeString(embed_flag);
         dest.writeString(description);
-        dest.writeString(id_c);
-        dest.writeString(estado_c);
-        dest.writeString(fechainicio_c);
-        dest.writeString(fechafin_c);
-        dest.writeString(ejecuted_date_c);
         dest.writeString(assigned_user_id);
         dest.writeString(deleted); 
         dest.writeString(assigned_user_name);
-        dest.writeString(contact_name);
         dest.writeString(parent_name);
+        dest.writeString(file_ext);
+        dest.writeString(active_date);
+        dest.writeString(exp_date);
+        dest.writeString(status_id);
     }
 
 	@Override
@@ -356,22 +284,16 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
 		data.put("created_by",created_by);
 		data.put("file_mime_type",file_mime_type);
 		data.put("filename",filename);
-		data.put("parent_type",parent_type);
 		data.put("parent_id",parent_id);
-		data.put("contact_id",contact_id);
-		data.put("portal_flag",portal_flag);
-		data.put("embed_flag",embed_flag);
 		data.put("description",Utils.hideTabs(description));
-		data.put("id_c",id_c);
-		data.put("estado_c",estado_c);
-		data.put("fechainicio_c",fechainicio_c);
-		data.put("fechafin_c",fechafin_c);
-		data.put("ejecuted_date_c",ejecuted_date_c);
 		data.put("assigned_user_id",assigned_user_id);
 		data.put("deleted",deleted);
 		data.put("assigned_user_name",assigned_user_name);
-		data.put("contact_name",contact_name);
 		data.put("parent_name",parent_name);
+		data.put("file_ext",file_ext);
+		data.put("active_date",active_date);
+		data.put("exp_date",exp_date);
+		data.put("status_id",status_id);
 		return data;
 	}
 

@@ -93,7 +93,7 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setSelectedItem(4);
+        mGlobalVariable.setSelectedItem(5);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
