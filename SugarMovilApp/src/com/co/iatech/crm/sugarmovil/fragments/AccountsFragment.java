@@ -45,8 +45,7 @@ public class AccountsFragment extends Fragment {
      * Member Variables.
      */
     private GlobalClass mGlobalVariable;
-    private String mUrl;
-    
+
 
     /**
      * UI References.

@@ -11,12 +11,11 @@ import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
 import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
-import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleEditableActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.SubTasksModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
@@ -25,14 +24,13 @@ import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
-import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListContactConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListModelConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -46,7 +44,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -58,18 +55,14 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class AddTaskActivity extends TasksModuleEditableActions {
+public class AddSubTaskActivity extends SubTasksModuleEditableActions {
 
-	/**
-	 * Debug.
-	 */
-	private static final String TAG = "AddTaskActivity";
 
 	/**
 	 * Member Variables.
 	 */
 
-	private DetailTask selectedTask;
+	private DetailSubTask selectedTask;
 
 	private ListUsersConverter lc = new ListUsersConverter();
 	private ListAccountConverter lac = new ListAccountConverter();
@@ -83,9 +76,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	 */
 	private Toolbar mTareaToolbar;
 	private ImageButton imgButtonGuardar;
-	private TextView valorTrabajoEstimado, valorAsunto, valorDescripcion, valorNombre;
-	private Spinner valorEstado, valorTipo, valorPrioridad, valorContacto;
-	private Button botonFechaInicio, botonFechaVen, botonHoraInicio, botonHoraVen;
+	private TextView valorAsunto, valorDescripcion, valorNombre;
+	private Spinner valorEstado, valorTipo, valorContacto;
+	private Button botonFechaInicio, botonFechaVen;
 	private TextView valorFechaInicio, asignadoA, valorFechaVen;
 
 	public String resultado;
@@ -94,12 +87,12 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 
 	private AddTask editTask;
 
-	private ActivityBeanCommunicator accountId;
+	private ActivityBeanCommunicator parentId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_task);
+		setContentView(R.layout.activity_add_subtask);
 		try {
 
 			// SoftKey
@@ -114,25 +107,17 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			getSupportActionBar().setHomeButtonEnabled(false);
 
 			defineValidations();
-			// carga los contactos de la cuenta actual - aplica solo cuando
-			// venga del modulo de cuentas
-			if (!listContacts.hasItems() && accountId != null) {
-				String[] params = { "idAccount", accountId.id };
-				this.executeTask(params, TypeInfoServer.getContactsxAccount);
-
-			} else {
-				this.chargeLists();
-			}
+			this.chargeLists();
 			asignadoA.setOnClickListener(this);
 
 			if (isEditMode) {
 				TextView title = (TextView) findViewById(R.id.text_task_toolbar);
-				title.setText("EDITAR TAREA");
+				title.setText("EDITAR SUBTAREA");
 				chargeViewInfo();
 			}
 
 		} catch (Exception e) {
-			Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddTaskActivity.this, MODULE);
+			Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddSubTaskActivity.this, MODULE);
 		}
 	}
 
@@ -146,44 +131,19 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		if (isEditMode) {
 			selectedTask = intent.getParcelableExtra(MODULE.getModuleName());
 		} else {
-			selectedTask = new DetailTask();
+			selectedTask = new DetailSubTask();
 			int pos = 0;
 			
 			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
 					actualInfo.getActualParentModule().getSugarDBName());
 			
 			boolean enabled = false;
-			
-			 /* Message.showFinalMessage(getFragmentManager(),"parent "
-			  +actualInfo.getActualParentModule().name()+
-			  "id "+ actualInfo.getActualParentId() + " principal : "+actualInfo.getActualPrincipalModule()
-			  +actualInfo.getActualPrincipalId(), AddTaskActivity.this, MODULE);*/
+
 			 
 			switch (actualInfo.getActualParentModule()) {
-			case ACCOUNTS:
-				valorNombre.setText(lac.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
-				accountId = actualInfo.getActualParentInfo();
-				break;
-			case OPPORTUNITIES:
-				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
-				if (bean != null) {
-					valorNombre.setText(bean.getName());
-				}
-				accountId = intent.getParcelableExtra(Modules.ACCOUNTS.name());
-				break;
-			case CONTACTS:
-				if(Modules.ACCOUNTS.equals(actualInfo.getActualPrincipalModule())){
-					accountId = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
-					valorNombre.setText(lac.convert(accountId.id, DataToGet.VALUE));
-					
-					pos =  ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
-							Modules.ACCOUNTS.getSugarDBName());
-				}else{
-					
-					valorNombre.setText(
-							allContacts.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
-					
-				}
+			case TASKS:
+				parentId = actualInfo.getActualParentInfo();
+				valorNombre.setText(parentId.name);
 				break;
 			default:
 				pos = 0;
@@ -213,11 +173,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorEstado.setAdapter(estadoAdapter);
 
-		ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.TASKS_PRIORITY));
-		prioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		valorPrioridad.setAdapter(prioridadAdapter);
-
 		int contactPosition = 0;
 
 		if (isEditMode) {
@@ -241,10 +196,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				valorTipo.setSelection(pos);
 			}
 
-			if (selectedTask.getPriority() != null) {
-				valorPrioridad.setSelection(ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, selectedTask.getPriority()));
-			}
-
 		} else {
 
 			// Contact
@@ -264,7 +215,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 //				+ actualInfo.getActualPrincipalModule() + " " + actualInfo.getActualParentId() + " "
 //				+ actualInfo.getActualPrincipalId() + " pos " + contactPosition + " id account " + accountId);
 
-		valorPrioridad.setSelection(1);
+
 
 		GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
@@ -285,20 +236,12 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		valorNombre = (TextView) findViewById(R.id.valor_nombre);
 		valorNombre.setOnClickListener(this);
 
-		valorTrabajoEstimado = (EditText) findViewById(R.id.valor_estimado);
-
 		// Fecha Inicio
 		botonFechaInicio = (Button) findViewById(R.id.boton_fecha_inicio);
 		botonFechaInicio.setOnClickListener(this);
 
-		botonHoraInicio = (Button) findViewById(R.id.boton_hora_inicio);
-		botonHoraInicio.setOnClickListener(this);
-
 		botonFechaVen = (Button) findViewById(R.id.boton_fecha_vence);
 		botonFechaVen.setOnClickListener(this);
-
-		botonHoraVen = (Button) findViewById(R.id.boton_hora_vence);
-		botonHoraVen.setOnClickListener(this);
 
 		imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 		imgButtonGuardar.setOnClickListener(this);
@@ -307,8 +250,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		// Contacto
 		valorContacto = (Spinner) findViewById(R.id.valor_contacto);
 		valorEstado = (Spinner) findViewById(R.id.valor_estado);
-
-		valorPrioridad = (Spinner) findViewById(R.id.valor_prioridad);
 
 		valorTipo = (Spinner) findViewById(R.id.valor_tipo);
 		ArrayAdapter<String> tipoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
@@ -351,16 +292,12 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	public void chargeViewInfo() {
 
 		valorAsunto.setText(selectedTask.getName());
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedTask.getStatus());
+		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedTask.getEstado_c());
 		valorEstado.setSelection(pos);
-		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedTask.getDate_start()));
-		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedTask.getDate_due()));
+		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedTask.getFechainicio_c()));
+		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedTask.getFechafin_c()));
 
 		// contacto
-
-		valorTrabajoEstimado.setText(selectedTask.getTrabajo_estimado_c());
-		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, selectedTask.getPriority());
-		valorPrioridad.setSelection(pos);
 		valorDescripcion.setText(selectedTask.getDescription());
 
 		// Asignado
@@ -386,15 +323,9 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				Message.showUsersDialog(getSupportFragmentManager());
 			}
 
-		} else if (v.getId() == botonHoraInicio.getId()) {
-			DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
-			newFragment.show(getFragmentManager(), "hourCierrePicker");
 		} else if (v.getId() == botonFechaInicio.getId()) {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaInicio, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
-		} else if (v.getId() == botonHoraVen.getId()) {
-			DialogFragment newFragment = new TimePickerFragment(this, valorFechaVen, isEditMode);
-			newFragment.show(getFragmentManager(), "hourCierrePicker");
 		} else if (v.getId() == botonFechaVen.getId()) {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaVen, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
@@ -423,15 +354,15 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
 
 			selectedTask.setName(valorAsunto.getText().toString());
-			selectedTask.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
+			selectedTask.setEstado_c(ListsConversor.convert(ConversorsType.TASKS_STATUS,
 					valorEstado.getSelectedItem().toString(), DataToGet.CODE));
 
 			if (valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1) {
-				selectedTask.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
+				selectedTask.setFechainicio_c(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
 			}
 
 			if (valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1) {
-				selectedTask.setDate_due(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
+				selectedTask.setFechafin_c(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
 			}
 
 			// contacto
@@ -442,9 +373,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 						listContacts.convert(valorContacto.getSelectedItem().toString(), DataToGet.CODE));
 			}
 
-			selectedTask.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
-			selectedTask.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
-					valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
 			selectedTask.setDescription(valorDescripcion.getText().toString());
 
 			// tipo Tarea
@@ -455,9 +383,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 						.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
 	
 				if (selectedTask.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
-					selectedTask.setParent_id(actualInfo.getActualParentInfo().id);
-				}else if(accountId != null){//aplica para contacts
-					selectedTask.setParent_id(accountId.id);
+					selectedTask.setParent_id(parentId.id);
 				}
 			
 			}
@@ -477,9 +403,8 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		data = new LinkedHashMap<View, CharSequence>();
 
 		data.put(valorAsunto, "El campo Asunto no puede estar vacio");
-		data.put(valorEstado, "Debe seleccionar un Estado de la Tarea");
-		data.put(valorPrioridad, "Debe seleccionar una Prioridad de Tarea");
-
+		data.put(valorEstado, "Debe seleccionar un Estado de la Subtarea");
+		
 		ValidatorGeneric.getInstance().define(data);
 
 	}
@@ -530,20 +455,19 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		protected Boolean doInBackground(Object... params) {
 			try {
 
-				DetailTask obj = (DetailTask) params[0];
+				DetailSubTask obj = (DetailSubTask) params[0];
 
 				// Resultado
 				resultado = null;
 
 				if (isEditMode) {
-					resultado = ControlConnection.putInfo(TypeInfoServer.addTask, obj.getDataBean(), Modo.EDITAR,
-							AddTaskActivity.this);
+					resultado = ControlConnection.putInfo(TypeInfoServer.addSubTask, obj.getDataBean(), Modo.EDITAR,
+							AddSubTaskActivity.this);
 				} else {
-					resultado = ControlConnection.putInfo(TypeInfoServer.addTask, obj.getDataBean(), Modo.AGREGAR,
-							AddTaskActivity.this);
+					resultado = ControlConnection.putInfo(TypeInfoServer.addSubTask, obj.getDataBean(), Modo.AGREGAR,
+							AddSubTaskActivity.this);
 				}
-				Log.d(TAG, "Crear Tarea Resp: " + resultado);
-
+				
 				if (resultado.contains("OK")) {
 					obj.id = Utils.getIDFromBackend(resultado);
 					obj.accept(new DataVisitorsManager());
@@ -554,7 +478,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 				}
 
 			} catch (Exception e) {
-				Log.d(TAG, "Crear Llamada Error: " + e.getClass().getName() + ":" + e.getMessage());
+			
 				resultado += Utils.errorToString(e);
 				return false;
 			}
@@ -566,24 +490,24 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			// AddTaskActivity.this);
 			if (success) {
 				if (isEditMode) {
-					Message.showFinalMessage(getFragmentManager(), DialogType.EDITED, AddTaskActivity.this, MODULE);
+					Message.showFinalMessage(getFragmentManager(), DialogType.EDITED, AddSubTaskActivity.this, MODULE);
 
 				} else {
-					Message.showFinalMessage(getFragmentManager(), DialogType.CREATED, AddTaskActivity.this, MODULE);
+					Message.showFinalMessage(getFragmentManager(), DialogType.CREATED, AddSubTaskActivity.this, MODULE);
 
 				}
 
 			} else {
 				if (isEditMode) {
-					Message.showFinalMessage(getFragmentManager(), DialogType.NO_EDITED, AddTaskActivity.this, MODULE);
+					Message.showFinalMessage(getFragmentManager(), DialogType.NO_EDITED, AddSubTaskActivity.this, MODULE);
 
 				} else {
-					Message.showFinalMessage(getFragmentManager(), resultado, AddTaskActivity.this, MODULE);
+					Message.showFinalMessage(getFragmentManager(), resultado, AddSubTaskActivity.this, MODULE);
 					// Message.showFinalMessage(getFragmentManager(),DialogType.NO_CREATED,
 					// AddTaskActivity.this, MODULE );
 
 				}
-				Log.d(TAG, "Crear Tarea error");
+				
 			}
 
 		}
@@ -591,7 +515,6 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		@Override
 		protected void onCancelled() {
 
-			Log.d(TAG, "Cancelado ");
 		}
 	}
 

@@ -50,5 +50,6 @@ public abstract class GenericBean {
 	public abstract Map<String,String> getDataBean();
 	
 	public abstract String getName();
+	public abstract void setName(String name);
 	
 }

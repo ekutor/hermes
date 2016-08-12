@@ -2,8 +2,9 @@ package com.co.iatech.crm.sugarmovil.activities.ui;
 
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.fragments.AccountsDialog;
+import com.co.iatech.crm.sugarmovil.fragments.GenericListDialog;
 import com.co.iatech.crm.sugarmovil.fragments.UsersDialog;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListModelConverter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,8 +32,8 @@ public class Message {
 	        UsersDialog userDialog = new UsersDialog();
 	        userDialog.show(fm, "users_dialog");
 	  }
-	 public static void showAccountsDialog(FragmentManager fm ) {
-	        AccountsDialog dialog = new AccountsDialog();
+	 public static void showGenericDialog(FragmentManager fm, ListModelConverter list, Modules responseModule ) {
+	        GenericListDialog dialog = new GenericListDialog(list,responseModule);
 	        dialog.show(fm, "accounts_dialog");
 	  }
 	 

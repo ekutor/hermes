@@ -158,19 +158,9 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
                 return false;
             }
         });
-        
+        mMainSearchView.setQuery("", true);
         GatewayPublisher.getInstance().register(this);
-      //  if(!DataManager.getInstance().IsSynchronized(MODULE)){
-        	// Tarea para consultar productos
-        	GenericTaskPublisher getProducts = new GenericTaskPublisher(getActivity(),MODULE, 
-        			TypeInfoServer.getProductos, "Buscando productos...");
-            getProducts.execute();
-            
-//        }else{
-//        	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
-//        	chargeViewInfo();
-//        }
-//        
+        
 	} catch (Exception e) {
 		Message.showShortExt(Utils.errorToString(e), this.getActivity());
 	}
@@ -183,9 +173,12 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
         super.onResume();
         mMainSearchView.clearFocus();
         try {
+        	GenericTaskPublisher getProducts = new GenericTaskPublisher(getActivity(),MODULE, 
+        			TypeInfoServer.getProductos, "Buscando productos...");
+            getProducts.execute();
             mMainSearchView.setIconified(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            Message.showShortExt(Utils.errorToString(e), getActivity());
         }
         Log.d(TAG, "onResume Fragment Products");
     }

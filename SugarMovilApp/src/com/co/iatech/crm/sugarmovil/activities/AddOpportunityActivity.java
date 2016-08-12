@@ -334,20 +334,27 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	public void onClick(View v) {
 	try{
 		if(v.getId() == asignadoA.getId()){
-			switch(tipoPermiso){
-			case OWNER:
-				break;
-			case ALL:
+			if(isEditMode){
+				switch(tipoPermiso){
+				case OWNER:
+					break;
+				case ALL:
+					Message.showUsersDialog(getSupportFragmentManager());
+					break;
+				case GROUP:
+					break;
+				}
+			}else{
 				Message.showUsersDialog(getSupportFragmentManager());
-				break;
-			case GROUP:
-				break;
 			}
+			
 		}else if(v.getId() == botonFechaCierre.getId()){
 			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		}else if(v.getId() == valorCuenta.getId()){
-			Message.showAccountsDialog(getSupportFragmentManager());
+			Message.showGenericDialog(getSupportFragmentManager(), 
+					lac, Modules.ACCOUNTS);
+			
 		}else if(v.getId() == imgButtonGuardar.getId()){
 	        //Realizar Validaciones
 			if(!ValidatorGeneric.getInstance().executeValidations(getApplicationContext())){

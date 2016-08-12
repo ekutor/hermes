@@ -223,6 +223,42 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_clase"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_clase"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_clase"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -2100,14 +2136,14 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
-
+				
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/text_mumero_alianzas"
+                        android:id="@+id/text_pasivos_actual"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2118,12 +2154,12 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/cuenta_numero_alianzas"
+                        android:text="@string/cuenta_pasivo_actual"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_numero_alianzas"
+                        android:id="@+id/valor_pasivos_actual"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2136,14 +2172,14 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
-
+                
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/text_alianzas"
+                        android:id="@+id/text_pasivos_anterior"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2154,12 +2190,12 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/cuenta_alianzas"
+                        android:text="@string/cuenta_pasivo_anterior"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_alianzas"
+                        android:id="@+id/valor_pasivos_anterior"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2172,7 +2208,79 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
+                
+                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/text_activos_actual"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_activo_actual"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_activos_actual"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_activos_anterior"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cuenta_activo_anterior"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/valor_activos_anterior"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
+                
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -74,8 +74,10 @@ ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c
 a.date_end,a.parent_type,a.status,a.direction,a.parent_id,a.reminder_time,a.email_reminder_time,a.email_reminder_sent,a.outlook_id,a.repeat_type,
 a.repeat_interval,a.repeat_dow,a.repeat_until,a.repeat_count,a.repeat_parent_id,a.recurring_source,ac.id_c,
 ac.resultadodelallamada_c FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c 
+LEFT JOIN calls_contacts ON a.id = calls_contacts.call_id
 	WHERE a.deleted = '0' 
-	AND a.parent_id = '$idContact' 
+	AND calls_contacts.deleted = '0'
+	AND calls_contacts.contact_id = '$idContact' 
 	ORDER BY name ASC";
 		
 	return getGenericCall($sql);
@@ -127,6 +129,15 @@ function getParentName($id,$tipo)
 		while($r2 = mysqli_fetch_assoc($res2))
 		{
 			return $r2['first_name'];
+		}
+	}else if($tipo == 'Opportunities')
+	{
+		$mysqli = makeSqlConnection();
+		$sql2 = "SELECT name FROM opportunities WHERE id = '$id'";
+		$res2 = $mysqli->query($sql2);
+		while($r2 = mysqli_fetch_assoc($res2))
+		{
+			return $r2['name'];
 		}
 	}
 	else

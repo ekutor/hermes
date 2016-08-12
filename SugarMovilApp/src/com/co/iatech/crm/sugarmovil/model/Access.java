@@ -112,4 +112,10 @@ public class Access extends GenericBean implements Parcelable {
 	public String getName() {
 		return "Not Implemented";
 	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
 }

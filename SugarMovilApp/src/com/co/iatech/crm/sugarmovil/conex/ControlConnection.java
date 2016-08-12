@@ -22,10 +22,13 @@ import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 public class ControlConnection {
 	
 	public enum Modo {EDITAR, AGREGAR}
-	
-	public static String URL2 = "http://181.143.40.162/movil/CRMLaumayerWS/index.php/";
-	public static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
-	
+
+	//Produccion
+	//public static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
+	//public static String URL2 = "http://181.143.40.162/movil/CRMLaumayerWS/index.php/";
+	//Pruebas
+	public static String URL = "http://crmlaumayer.com/pruebas/crm/movil/CRMLaumayerWS/index.php/";
+	public static String URL2 = "http://181.143.40.162/pruebas/crm/movil/CRMLaumayerWS/index.php/";
 	
 	public static String android_id;
 	public static String device_id;
@@ -130,8 +133,8 @@ public class ControlConnection {
         }
 	}
 	
-	public static void addHeader(String header, String value){
-		if(data == null){
+	public static void addHeader(String header, String value, boolean cleanData){
+		if(data == null || cleanData){
 			data = new HashMap<String,String> ();
 		}
 		data.put(header, value);
@@ -141,6 +144,10 @@ public class ControlConnection {
 		User u = global.getUsuarioAutenticado();
 		ControlConnection.userId = u.getId();
 		ControlConnection.hash = u.getUser_hash();
+	}
+
+	public static void addCurrentUser(Activity activity) {
+		ControlConnection.addHeader("currentUser", ControlConnection.userId, false);
 	}
 	
 

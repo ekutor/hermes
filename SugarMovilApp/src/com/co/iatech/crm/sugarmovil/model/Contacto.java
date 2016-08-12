@@ -24,26 +24,31 @@ public class Contacto extends GenericBean implements Parcelable {
         }
     };
     
-    private String first_name, title, phone_mobile, phone_work, phone_other, phone_fax;
+    public Contacto(){}
+    
+    private String first_name, title, phone_mobile, phone_work, phone_other, phone_fax, account_id;
     
     public Contacto(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
-        setNombre(validate(obj.getString("first_name")));
+        setName(validate(obj.getString("first_name")));
         setTitulo(validate(obj.getString("title")));
         setPhone_mobile(validate(obj.getString("phone_mobile")));
         setTelefonoTrabajo(validate(obj.getString("phone_work")));
         setTelefonoOtro(validate(obj.getString("phone_other")));
         setTelefonoFax(validate(obj.getString("phone_fax")));
+        setAccount_id(validate(obj.getString("account_id")));
+        
     }
 
     public Contacto(Parcel in) {
     	setId(validate(in.readString()));
-        setNombre(validate(in.readString()));
+        setName(validate(in.readString()));
         setTitulo(validate(in.readString()));
         setPhone_mobile(validate(in.readString()));
         setTelefonoTrabajo(validate(in.readString()));
         setTelefonoOtro(validate(in.readString()));
         setTelefonoFax(validate(in.readString()));
+        setAccount_id(validate(in.readString()));
     }
 
     @Override
@@ -54,12 +59,13 @@ public class Contacto extends GenericBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(getId());
-        dest.writeString(getNombre());
+        dest.writeString(getName());
         dest.writeString(getTitulo());
         dest.writeString(getPhone_mobile());
         dest.writeString(getTelefonoTrabajo());
         dest.writeString(getTelefonoOtro());
         dest.writeString(getTelefonoFax());
+        dest.writeString(getAccount_id());
     }
 
     public String getId() {
@@ -70,13 +76,6 @@ public class Contacto extends GenericBean implements Parcelable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return first_name;
-    }
-
-    public void setNombre(String nombre) {
-        this.first_name = nombre;
-    }
 
     public String getTitulo() {
         return title;
@@ -117,6 +116,15 @@ public class Contacto extends GenericBean implements Parcelable {
     public void setTelefonoFax(String telefonoFax) {
         this.phone_fax = telefonoFax;
     }
+    
+
+	public String getAccount_id() {
+		return account_id;
+	}
+
+	public void setAccount_id(String account_id) {
+		this.account_id = account_id;
+	}
 
 	@Override
 	public Map<String, String> getDataBean() {
@@ -126,7 +134,13 @@ public class Contacto extends GenericBean implements Parcelable {
 	
 	@Override
 	public String getName() {
-		return first_name;
+		 return first_name;
+	}
+
+	@Override
+	public void setName(String name) {
+		 first_name = name;
+		
 	}
 }
 

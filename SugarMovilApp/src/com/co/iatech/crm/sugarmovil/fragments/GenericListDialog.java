@@ -2,10 +2,12 @@ package com.co.iatech.crm.sugarmovil.fragments;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
-import com.co.iatech.crm.sugarmovil.model.User;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListAccountConverter;
+import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListModelConverter;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -21,23 +23,25 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
-public class AccountsDialog extends DialogFragment  {
+public class GenericListDialog extends DialogFragment  {
 
 	private Button btnSeleccionar;
 	private ListView listAccounts;
 	private SearchView searchView;
 	private ArrayAdapter<String> adapter;
-	private ListAccountConverter lac;
-	private Cuenta account;
+	private ListModelConverter lmc;
+	private Modules resModule;
+
+	public GenericListDialog(ListModelConverter list, Modules responseModule){
+		lmc = list;
+		resModule = responseModule;
 		
-	public AccountsDialog(){
-		lac = new ListAccountConverter();
 	}
 
 	 @Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	        View rootView = inflater.inflate(R.layout.search_accounts_dialog, container, false);
-	        getDialog().setTitle(R.string.dialog_accounts_title);
+	        getDialog().setTitle("Buscar "+resModule.getVisualName().toLowerCase());
 	        
 	        btnSeleccionar = (Button) rootView.findViewById(R.id.searchAccountDialog_button);
 	        listAccounts = (ListView) rootView.findViewById(R.id.listSearchAccountView);
@@ -45,7 +49,7 @@ public class AccountsDialog extends DialogFragment  {
 	        
 	        
 	        adapter = new ArrayAdapter<String>(getActivity(), 
-	        		android.R.layout.simple_list_item_1, lac.getListInfo());
+	        		android.R.layout.simple_list_item_1, lmc.getListInfo());
 	        listAccounts.setAdapter(adapter);
 	        
 	        listAccounts.setOnItemClickListener(new OnItemClickListener(){
@@ -53,18 +57,28 @@ public class AccountsDialog extends DialogFragment  {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					account = new Cuenta();
-					account.setName(adapter.getItem(position));
+					GenericBean bean = null;
+					switch(resModule){
+						case ACCOUNTS:
+							bean = new Cuenta();
+							break;
+						
+						case CONTACTS:
+							bean = new Contacto();
+							break;
+					}
 					
-					String accID = lac.convert(account.getName(),
+					bean.setName(adapter.getItem(position));
+					
+					String accID = lmc.convert(bean.getName(),
 							DataToGet.CODE);
 					
 					
-					account.setId(accID);
+					bean.id = accID;
 				
 					//Pasar por Listener Pattern 
 					SearchDialogInterface listener = (SearchDialogInterface) getActivity();
-		            listener.onFinishSearchDialog(account);
+		            listener.onFinishSearchDialog(bean);
 		            dismiss();
 				}
 

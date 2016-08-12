@@ -9,6 +9,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.text.Html;
+import android.text.Spanned;
+
 public class Utils {
 	private static final String DATETIME_FORMAT_FRONTEND = "dd MMMM yyyy HH:mm:ss";
 	private static final String DATE_FORMAT_FRONTEND = "dd MMMM yyyy";
@@ -219,6 +222,13 @@ public class Utils {
 			
 		}
 		return r;
+	}
+
+	public static Spanned getLinkFormat(String value) {
+		if(value.contains("http")){
+			return Html.fromHtml("<a href="+value+">"+value);
+		}
+		return Html.fromHtml(value);
 	}
 
 }

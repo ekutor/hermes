@@ -1,30 +1,22 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.DetailAccount;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
-import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor;
-import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 
 
 public class AccountFragmentActivity extends Fragment {
@@ -34,12 +26,6 @@ public class AccountFragmentActivity extends Fragment {
      */
     private static final String TAG = "AccountActivity";
 
-
-    /**
-     * Member Variables.
-     */
-
-    private CuentaDetalle mCuentaDetalle;
 
     /**
      * UI References.
@@ -77,8 +63,7 @@ public class AccountFragmentActivity extends Fragment {
     private TextView valorConstitucion;
     private TextView valorActual;
     private TextView valorAnterior;
-    private TextView valorNumeroAlianzas;
-    private TextView valorAlianzas;
+   
     private TextView valorOrigen;
     private TextView valorFecha;
     private TextView valorDiaria;
@@ -104,6 +89,12 @@ public class AccountFragmentActivity extends Fragment {
     private TextView valorVencida;
     private TextView valorAVencer;
     
+    private TextView valorClase;
+    private TextView valorActActual;
+    private TextView valorActAnterior;
+    private TextView valorPasActual;
+    private TextView valorPasAnterior;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -111,7 +102,7 @@ public class AccountFragmentActivity extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_general, container, false);
         
         Bundle args = getArguments();
-        CuentaDetalle cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
+        DetailAccount cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
   
         cargarComponentes(rootView);
         ponerValores(cuenta);
@@ -123,69 +114,75 @@ public class AccountFragmentActivity extends Fragment {
     }
     
     
-    public void ponerValores(CuentaDetalle cuentaDetalle) {
+    public void ponerValores(DetailAccount detailAccount) {
     	try{
-    	valorRazon.setText(cuentaDetalle.getName());
-    	valorNit.setText(cuentaDetalle.getNit_c());
-    	valorCodigo.setText(cuentaDetalle.getCod_alterno_c());
-    	valorCanal.setText(ListsConversor.convert(ConversorsType.CHANNEL, cuentaDetalle.getCanal_c(), DataToGet.VALUE));
-    	valorSector.setText(cuentaDetalle.getSector_c());
-    	valorTel1.setText(cuentaDetalle.getPhone_office());
-    	valorExt1.setText(cuentaDetalle.getExtension1_c());
-    	valorTel2.setText(cuentaDetalle.getPhone_alternate());
-    	valorExt2.setText(cuentaDetalle.getExtension2_c());
-    	valorCelular.setText(cuentaDetalle.getCelular_c());
-    	valorFax.setText(cuentaDetalle.getPhone_fax());
-    	valorDireccion.setText(cuentaDetalle.getDireccion_c());
-    	valorMunicipio.setText(cuentaDetalle.getMunicipio_c());
+    	valorRazon.setText(detailAccount.getName());
+    	valorNit.setText(detailAccount.getNit_c());
+    	valorCodigo.setText(detailAccount.getCod_alterno_c());
+    	valorCanal.setText(ListsConversor.convert(ConversorsType.CHANNEL, detailAccount.getCanal_c(), DataToGet.VALUE));
+    	valorSector.setText(detailAccount.getSector_c());
+    	valorClase.setText(detailAccount.getClase_c());
+    	valorTel1.setText(detailAccount.getPhone_office());
+    	valorExt1.setText(detailAccount.getExtension1_c());
+    	valorTel2.setText(detailAccount.getPhone_alternate());
+    	valorExt2.setText(detailAccount.getExtension2_c());
+    	valorCelular.setText(detailAccount.getCelular_c());
+    	valorFax.setText(detailAccount.getPhone_fax());
+    	valorDireccion.setText(detailAccount.getDireccion_c());
+    	valorMunicipio.setText(detailAccount.getMunicipio_c());
     	valorDepartamento.setText(
-    			ListsConversor.convert(ConversorsType.DPTO, cuentaDetalle.getDepartamento_c(), DataToGet.VALUE)
+    			ListsConversor.convert(ConversorsType.DPTO, detailAccount.getDepartamento_c(), DataToGet.VALUE)
     			);
-    	valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, cuentaDetalle.getZona_c(), DataToGet.VALUE));
-    	valorUen.setText(cuentaDetalle.getUen_c());
-    	valorEmail.setText(cuentaDetalle.getEmail_address());
-    	valorWeb.setText(cuentaDetalle.getWebsite());
-    	valorGrupo.setText(cuentaDetalle.getGrupo_objetivo_c());
-    	valorSegmento.setText(cuentaDetalle.getSegmento_c());
-    	valorEstado.setText(cuentaDetalle.getEstado_c());
-    	valorDescuento.setText(cuentaDetalle.getDescuentocomercial2_c());
-    	valorDescuento2.setText(cuentaDetalle.getDescuentocomercial_c());
-    	valorPresupuesto.setText(cuentaDetalle.getPresupuestoanual_c());
-    	valorDescripcion.setText(cuentaDetalle.getDescription());
-    	valorTransporte.setText(cuentaDetalle.getCorreotransporte_c());
-    	valorCreado.setText(cuentaDetalle.getDate_entered());
-    	valorUsuario.setText(cuentaDetalle.getAssigned_user_name());
-    	valorConstitucion.setText(cuentaDetalle.getFechaempresa_c());
-    	valorActual.setText(cuentaDetalle.getVentasactual_c());
-    	valorAnterior.setText(cuentaDetalle.getVentasanterior_c());
-    	valorNumeroAlianzas.setText(cuentaDetalle.getNumeroalianzas_c());
-    	valorAlianzas.setText(cuentaDetalle.getAlianzasestrategicas_c());
-    	valorOrigen.setText(cuentaDetalle.getOrigencuenta_c());
-    	valorFecha.setText(cuentaDetalle.getFechafacturacion_c());
-    	valorDiaria.setText(cuentaDetalle.getFacturaciondiara_c());
-    	valorAcumulada.setText(cuentaDetalle.getFacturacionmes_c());
-    	valorCumplimiento.setText(cuentaDetalle.getPorcentaje_cumplimiento_c());
-    	valorAutorizada.setText(cuentaDetalle.getFacturacionautorizada_c());
-    	valorNoAutorizada.setText(cuentaDetalle.getFacturacionnoautorizada_c());
-    	valorFechaDespacho.setText(cuentaDetalle.getFecha_despacho_c());
-    	valorRemesa.setText(cuentaDetalle.getRemesa_c());
-    	valorDestino.setText(cuentaDetalle.getDestino_c());
-    	valorDestinatario.setText(cuentaDetalle.getNombredestinatario_c());
-    	valorUnidades.setText(cuentaDetalle.getUnidades_c());
-    	valorDocumentos.setText(cuentaDetalle.getDocumento_c());
-    	valorDestinatarioPendientes.setText(cuentaDetalle.getNombredestinatario2_c());
-    	valorDestinoPendientes.setText(cuentaDetalle.getNombredestinatario2_c());
-    	valorMotivo.setText(cuentaDetalle.getMotivo_c());
-    	valorCupo.setText(cuentaDetalle.getCupodisponible_c());
-    	valorCupoCr.setText(cuentaDetalle.getCupocr_c());
-    	valorTotal.setText(cuentaDetalle.getTotalcartera_c());
-    	valorCondicion.setText(cuentaDetalle.getCondpago_c());
-    	valorPlazo.setText(cuentaDetalle.getPlpago_c());
-    	valorPromedio.setText(cuentaDetalle.getPrompago_c());
-    	valorVencida.setText(cuentaDetalle.getCarteravencida_c());
-    	valorAVencer.setText(cuentaDetalle.getCarteravencer_c());
-    	}catch(java.lang.NullPointerException ne){
-    		
+    	valorZona.setText(ListsConversor.convert(ConversorsType.ZONE, detailAccount.getZona_c(), DataToGet.VALUE));
+    	valorUen.setText(detailAccount.getUen_c());
+    	valorEmail.setText(detailAccount.getEmail_address());
+    	valorWeb.setText(Utils.getLinkFormat(detailAccount.getWebsite()));
+    	valorGrupo.setText(detailAccount.getGrupo_objetivo_c());
+    	valorSegmento.setText(detailAccount.getSegmento_c());
+    	valorEstado.setText(detailAccount.getEstado_c());
+    	valorDescuento.setText(detailAccount.getDescuentocomercial2_c());
+    	valorDescuento2.setText(detailAccount.getDescuentocomercial_c());
+    	valorPresupuesto.setText(detailAccount.getPresupuestoanual_c());
+    	valorDescripcion.setText(detailAccount.getDescription());
+    	valorTransporte.setText(detailAccount.getCorreotransporte_c());
+    	valorCreado.setText(detailAccount.getDate_entered());
+    	valorUsuario.setText(detailAccount.getAssigned_user_name());
+    	valorConstitucion.setText(detailAccount.getFechaempresa_c());
+    	valorActual.setText(detailAccount.getVentasactual_c());
+    	valorAnterior.setText(detailAccount.getVentasanterior_c());
+   /* 	valorNumeroAlianzas.setText(detailAccount.getNumeroalianzas_c());
+    	valorAlianzas.setText(detailAccount.getAlianzasestrategicas_c());*/
+    	valorOrigen.setText(detailAccount.getOrigencuenta_c());
+    	valorFecha.setText(detailAccount.getFechafacturacion_c());
+    	valorDiaria.setText(detailAccount.getFacturaciondiara_c());
+    	valorAcumulada.setText(detailAccount.getFacturacionmes_c());
+    	valorCumplimiento.setText(detailAccount.getPorcentaje_cumplimiento_c());
+    	valorAutorizada.setText(detailAccount.getFacturacionautorizada_c());
+    	valorNoAutorizada.setText(detailAccount.getFacturacionnoautorizada_c());
+    	valorFechaDespacho.setText(detailAccount.getFecha_despacho_c());
+    	valorRemesa.setText(detailAccount.getRemesa_c());
+    	valorDestino.setText(detailAccount.getDestino_c());
+    	valorDestinatario.setText(detailAccount.getNombredestinatario_c());
+    	valorUnidades.setText(detailAccount.getUnidades_c());
+    	valorDocumentos.setText(detailAccount.getDocumento_c());
+    	valorDestinatarioPendientes.setText(detailAccount.getNombredestinatario2_c());
+    	valorDestinoPendientes.setText(detailAccount.getNombredestinatario2_c());
+    	valorMotivo.setText(detailAccount.getMotivo_c());
+    	valorCupo.setText(detailAccount.getCupodisponible_c());
+    	valorCupoCr.setText(detailAccount.getCupocr_c());
+    	valorTotal.setText(detailAccount.getTotalcartera_c());
+    	valorCondicion.setText(detailAccount.getCondpago_c());
+    	valorPlazo.setText(detailAccount.getPlpago_c());
+    	valorPromedio.setText(detailAccount.getPrompago_c());
+    	valorVencida.setText(detailAccount.getCarteravencida_c());
+    	valorAVencer.setText(detailAccount.getCarteravencer_c());
+    	
+    	valorActActual.setText(detailAccount.getActivos_actual_c());
+    	valorActAnterior.setText(detailAccount.getActivos_anterior_c());
+    	valorPasActual.setText(detailAccount.getPasivos_actual_c());
+    	valorPasAnterior.setText(detailAccount.getPasivos_anterior_c());
+    	}catch(Exception ne){
+    		Message.showShortExt(Utils.errorToString(ne), this.getActivity());
     	}
     }
     
@@ -195,6 +192,8 @@ public class AccountFragmentActivity extends Fragment {
     	valorCodigo = (TextView) view.findViewById(R.id.valor_codigo);
     	valorCanal = (TextView) view.findViewById(R.id.valor_canal);
     	valorSector = (TextView) view.findViewById(R.id.valor_sector);
+    	
+    	valorClase = (TextView) view.findViewById(R.id.valor_clase);
     	valorTel1 = (TextView) view.findViewById(R.id.valor_tel1);
     	valorExt1 = (TextView) view.findViewById(R.id.valor_ext1);
     	valorTel2 = (TextView) view.findViewById(R.id.valor_tel2);
@@ -208,6 +207,7 @@ public class AccountFragmentActivity extends Fragment {
     	valorUen = (TextView) view.findViewById(R.id.valor_uen);
     	valorEmail = (TextView) view.findViewById(R.id.valor_email);
     	valorWeb = (TextView) view.findViewById(R.id.valor_web);
+    	valorWeb.setMovementMethod(LinkMovementMethod.getInstance());
     	valorGrupo = (TextView) view.findViewById(R.id.valor_grupo);
     	valorSegmento = (TextView) view.findViewById(R.id.valor_segmento);
     	valorEstado = (TextView) view.findViewById(R.id.valor_estado);
@@ -221,8 +221,7 @@ public class AccountFragmentActivity extends Fragment {
     	valorConstitucion = (TextView) view.findViewById(R.id.valor_constitucion);
     	valorActual = (TextView) view.findViewById(R.id.valor_actual);
     	valorAnterior = (TextView) view.findViewById(R.id.valor_anterior);
-    	valorNumeroAlianzas = (TextView) view.findViewById(R.id.valor_numero_alianzas);
-    	valorAlianzas = (TextView) view.findViewById(R.id.valor_alianzas);
+    	
     	valorOrigen = (TextView) view.findViewById(R.id.valor_origen);
     	valorFecha = (TextView) view.findViewById(R.id.valor_fecha);
     	valorDiaria = (TextView) view.findViewById(R.id.valor_diaria);
@@ -247,6 +246,11 @@ public class AccountFragmentActivity extends Fragment {
     	valorPromedio = (TextView) view.findViewById(R.id.valor_promedio);
     	valorVencida = (TextView) view.findViewById(R.id.valor_vencida);
     	valorAVencer = (TextView) view.findViewById(R.id.valor_a_vencer);
+    	
+    	valorActActual = (TextView) view.findViewById(R.id.valor_activos_actual);
+    	valorActAnterior = (TextView) view.findViewById(R.id.valor_activos_anterior);
+    	valorPasActual = (TextView) view.findViewById(R.id.valor_pasivos_actual);
+    	valorPasAnterior = (TextView) view.findViewById(R.id.valor_pasivos_anterior);
 
     }
 
