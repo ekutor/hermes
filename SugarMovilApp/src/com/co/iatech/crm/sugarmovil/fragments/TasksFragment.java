@@ -266,7 +266,8 @@ public class TasksFragment extends Fragment implements IMovilModuleActions,Tasks
             try {
                 // Parametros
                 String tasks;
-
+                
+                ControlConnection.addCurrentUser(getActivity());
                 // Intento de obtener tareas
 
                 tasks  = ControlConnection.getInfo(TypeInfoServer.getTasks, getActivity());

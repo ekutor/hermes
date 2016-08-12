@@ -58,7 +58,7 @@ public class GetOpportunitiesTask extends AsyncTask<String, Void, Boolean> {
 	                String resultado = null;
 
 	                // Intento de obtener datos
-	                ControlConnection.addHeader(key, bean.id);
+	                ControlConnection.addHeader(key, bean.id ,true);
 	                resultado  = ControlConnection.getInfo(TypeInfoServer.getAccountOpportunities, activity);
 	                oportunitiesXAccount.clear();
 

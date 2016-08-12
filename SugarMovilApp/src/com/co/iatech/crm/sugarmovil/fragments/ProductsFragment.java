@@ -158,7 +158,7 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
                 return false;
             }
         });
-        
+        mMainSearchView.setQuery("", true);
         GatewayPublisher.getInstance().register(this);
         
 	} catch (Exception e) {

@@ -174,12 +174,23 @@ public class DetailAccount extends GenericBean implements Parcelable {
 	private String descuentocomercial2_c;
 	private String dkc2_c;
 	private String descuento11_c;
+	private String descuento12_c;
+	private String descuento13_c;
 	private String oemxenergy_c;
 	private String activos_actual_c;
 	private String activos_anterior_c;
 	private String clase_c;
 	private String pasivos_actual_c;
 	private String pasivos_anterior_c;
+	private String precios_netos_c;
+	private String mini_c;
+	private String senalizacion_c;
+	private String bonificacion_flexible_c;
+	private String meta_mensual_c;
+	private String valor_bono_c;
+	private String maniobra_lovato_c;
+	private String meta_bimensual_c;
+	private String bimensual_c;
 
 	public DetailAccount() {
 
@@ -342,6 +353,21 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		setClase_c(validate(obj.getString("clase_c")));
 		setPasivos_actual_c(validate(obj.getString("pasivos_actual_c")));
 		setPasivos_anterior_c(validate(obj.getString("pasivos_anterior_c")));
+		
+		setDescuento12_c(validate(obj.getString("descuento12_c")));
+		setDescuento13_c(validate(obj.getString("descuento13_c")));
+		setPrecios_netos_c(validate(obj.getString("precios_netos_c")));
+		setMini_c(validate(obj.getString("mini_c")));
+		setSenalizacion_c(validate(obj.getString("senalizacion_c")));
+		
+		setBonificacion_flexible_c(validate(obj.getString("bonificacion_flexible_c")));
+		setMeta_mensual_c(validate(obj.getString("meta_mensual_c")));
+		setValor_bono_c(validate(obj.getString("valor_bono_c")));
+		
+		setManiobra_lovato_c(validate(obj.getString("maniobra_lovato_c")));
+		setMeta_bimensual_c(validate(obj.getString("meta_bimensual_c")));
+		setBimensual_c(validate(obj.getString("bimensual_c")));
+		
 	}
 
 	protected DetailAccount(Parcel in) {
@@ -500,6 +526,20 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		setClase_c(validate(in.readString()));
 		setPasivos_actual_c(validate(in.readString()));
 		setPasivos_anterior_c(validate(in.readString()));
+		
+		setDescuento12_c(validate(in.readString()));
+		setDescuento13_c(validate(in.readString()));
+		setPrecios_netos_c(validate(in.readString()));
+		setMini_c(validate(in.readString()));
+		setSenalizacion_c(validate(in.readString()));
+		
+		setBonificacion_flexible_c(validate(in.readString()));
+		setMeta_mensual_c(validate(in.readString()));
+		setValor_bono_c(validate(in.readString()));
+		
+		setManiobra_lovato_c(validate(in.readString()));
+		setMeta_bimensual_c(validate(in.readString()));
+		setBimensual_c(validate(in.readString()));
 	}
 
 	@Override
@@ -664,6 +704,20 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		dest.writeString(getClase_c());
 		dest.writeString(getPasivos_actual_c());
 		dest.writeString(getPasivos_anterior_c());
+		
+		dest.writeString(getDescuento12_c());
+		dest.writeString(getDescuento13_c());
+		dest.writeString(getPrecios_netos_c());
+		dest.writeString(getMini_c());
+		dest.writeString(getSenalizacion_c());
+		
+		dest.writeString(getBonificacion_flexible_c());
+		dest.writeString(getMeta_mensual_c());
+		dest.writeString(getValor_bono_c());
+		
+		dest.writeString(getManiobra_lovato_c());
+		dest.writeString(getMeta_bimensual_c());
+		dest.writeString(getBimensual_c());
 	}
 
 	public String getId() {
@@ -1903,6 +1957,94 @@ public class DetailAccount extends GenericBean implements Parcelable {
 
 	public void setPasivos_anterior_c(String pasivos_anterior_c) {
 		this.pasivos_anterior_c = pasivos_anterior_c;
+	}
+
+	public String getDescuento12_c() {
+		return descuento12_c;
+	}
+
+	public void setDescuento12_c(String descuento12_c) {
+		this.descuento12_c = descuento12_c;
+	}
+
+	public String getDescuento13_c() {
+		return descuento13_c;
+	}
+
+	public void setDescuento13_c(String descuento13_c) {
+		this.descuento13_c = descuento13_c;
+	}
+
+	public String getPrecios_netos_c() {
+		return precios_netos_c;
+	}
+
+	public void setPrecios_netos_c(String precios_netos_c) {
+		this.precios_netos_c = precios_netos_c;
+	}
+
+	public String getMini_c() {
+		return mini_c;
+	}
+
+	public void setMini_c(String mini_c) {
+		this.mini_c = mini_c;
+	}
+
+	public String getSenalizacion_c() {
+		return senalizacion_c;
+	}
+
+	public void setSenalizacion_c(String senalizacion_c) {
+		this.senalizacion_c = senalizacion_c;
+	}
+
+	public String getBonificacion_flexible_c() {
+		return bonificacion_flexible_c;
+	}
+
+	public void setBonificacion_flexible_c(String bonificacion_flexible_c) {
+		this.bonificacion_flexible_c = bonificacion_flexible_c;
+	}
+
+	public String getMeta_mensual_c() {
+		return meta_mensual_c;
+	}
+
+	public void setMeta_mensual_c(String meta_mensual_c) {
+		this.meta_mensual_c = meta_mensual_c;
+	}
+
+	public String getValor_bono_c() {
+		return valor_bono_c;
+	}
+
+	public void setValor_bono_c(String valor_bono_c) {
+		this.valor_bono_c = valor_bono_c;
+	}
+
+	public String getManiobra_lovato_c() {
+		return maniobra_lovato_c;
+	}
+
+	public void setManiobra_lovato_c(String maniobra_lovato_c) {
+		this.maniobra_lovato_c = maniobra_lovato_c;
+	}
+
+	public String getMeta_bimensual_c() {
+		return meta_bimensual_c;
+	}
+
+	public void setMeta_bimensual_c(String meta_bimensual_c) {
+		this.meta_bimensual_c = meta_bimensual_c;
+	}
+
+	public String getBimensual_c() {
+		return bimensual_c;
+	}
+
+	public void setBimensual_c(String bimensual_c) {
+		this.bimensual_c = bimensual_c;
 	}
 
 	@Override

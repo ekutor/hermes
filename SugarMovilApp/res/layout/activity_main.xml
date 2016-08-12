@@ -24,7 +24,7 @@
             <TextView
                 android:id="@+id/text_main_toolbar"
                 
-                android:layout_width="250dp"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:ellipsize="end"

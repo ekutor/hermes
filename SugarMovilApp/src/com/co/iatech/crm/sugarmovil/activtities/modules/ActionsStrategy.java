@@ -43,7 +43,7 @@ public class ActionsStrategy {
 
 					} else {
 						Message.showShortExt(
-								"No Autorizado para realizar Editar esta "
+								"No Autorizado para editar esta "
 										+ actionModule.getModule().getVisualName().toLowerCase(),
 										context);
 					}

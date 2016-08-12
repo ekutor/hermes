@@ -131,21 +131,29 @@
     <string name="cuenta_wohner">Wohner</string>
     <string name="cuenta_lp">Comun. LP Dolares</string>
     <string name="cuenta_eaton">Maniobra EATON</string>
+    <string name="cuenta_minieaton">Minibreaker EATON</string>
+    <string name="cuenta_mandoeaton">Señal. y Mando EATON</string>
     <string name="cuenta_xenergy">OEM Xenergy</string>
     <string name="cuenta_min_eaton">Precios Minimos EATON</string>
+    <string name="cuenta_netos">Precios Netos Lovato</string>
     <string name="cuenta_desc_ad">Desc. Adicional:</string>
     
     <string name="cuenta_bono_especial">Bonos Especiales</string>
     <string name="cuenta_meta_anual">Meta Anual:</string>
     <string name="cuenta_meta_tri">Meta Trimestral:</string>
-    <string name="cuenta_meta_bi">Meta Bimestral:</string>
+    <string name="cuenta_meta_bi">Meta Bimensual:</string>
+    <string name="cuenta_meta_me">Meta Mensual:</string>
     <string name="cuenta_por_bon_anual">% Bonificacion Anual:</string>
     <string name="cuenta_por_bon_bi_eaton">% Bonificacion Bimestral Eaton:</string>
+    <string name="cuenta_por_bon_valor">Valor Bono:</string>
+    <string name="cuenta_por_bon_bim">% Bimensual:</string>
     <string name="cuenta_por_bon_bi_leviton">% Bonificacion Bimestral Leviton:</string>
     <string name="cuenta_por_bon_tri">% Bonificacion Trimestral:</string>
-    <string name="cuenta_por_bon_compra">Bonif. por Compra</string>
+    <string name="cuenta_por_bon_compra">Bonificacion por Compra</string>
     <string name="cuenta_por_bon_eaton">Maniobra Eaton</string>
-    <string name="cuenta_por_bon_leviton">Bonificacion Leviton</string>
+    <string name="cuenta_por_bon_leviton">Señalizacion y Mando Eaton</string>
+    <string name="cuenta_por_man_lovato">Maniobra Lovato</string>
+    <string name="cuenta_por_bon_flexible">Bonificacion Flexible Eaton</string>
     <string name="cuenta_desp_rem">Des Remsion x Cierre</string>
     <string name="cuenta_no_cobro">No Cobro Anticipo</string>
     <string name="cuenta_estrategia1">Estrategia 1:</string>
@@ -365,6 +373,11 @@
     <string name="tarea_titulo_relacion">RELACIONADO CON:</string>
     <string name="tarea_tipo">Tipo:</string>
     <string name="tarea_nombre">Nombre:</string>
+    
+     <!-- SubTarea Activity -->
+    <string name="title_activity_subtask">SUBTAREA</string>
+    <string name="subtarea_descripcion">Subtarea:</string>
+    <string name="title_activity_create_subtask">CREAR SUBTAREA</string>
 
     <string name="dialog_message_task">Se creó la tarea con exito</string>
     <string name="dialog_edit_message_task">Se editó la tarea con exito</string>
