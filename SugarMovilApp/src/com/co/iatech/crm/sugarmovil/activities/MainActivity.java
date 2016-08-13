@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = OpportunitiesFragment.newInstance();
                 break;
             case 3:
-                ActivitiesMediator.getInstance().defineActualModule(Modules.OPPORTUNITIES);
+                ActivitiesMediator.getInstance().defineActualModule(Modules.LEADS);
                 fragment = OpportunitiesFragment.newInstance();
             case 4:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.CALLS);

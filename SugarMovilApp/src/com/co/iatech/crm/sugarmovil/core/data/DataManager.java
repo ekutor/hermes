@@ -11,6 +11,7 @@ import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.model.Notes;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.model.Product;
@@ -28,6 +29,7 @@ public class DataManager  {
     public List<DetailTask> tasksInfo;
     public List<DetailSubTask> subtasksInfo;
     public List<Notes> notesInfo;
+    public List<Lead> leadsInfo;
 	public List<Product> products;
     private Map<Modules,Boolean> synchronizedModules;
     
@@ -41,6 +43,7 @@ public class DataManager  {
 		tasksInfo = new ArrayList<DetailTask>();
 		subtasksInfo = new ArrayList<DetailSubTask>();
 		notesInfo = new ArrayList<Notes>();
+		leadsInfo = new ArrayList<Lead>();
 		products = new ArrayList<Product>();
 		synchronizedModules = new HashMap<Modules,Boolean>();
 		
