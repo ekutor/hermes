@@ -4,7 +4,7 @@ class IOManager{
   var $path; 
   
  public function __construct() {
-    $this->path = "/var/www/html/crm/movil/CRMLaumayerWS/IOManager/";
+    $this->path = "/var/www/html/crm/pruebas/crm/movil/CRMLaumayerWS/IOManager/";
 	$this->file = fopen($this->path."debug.log", "a") or die("Unable to open file!");
 
   }

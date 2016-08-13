@@ -6,10 +6,9 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.NotesModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.LeadsModuleActions;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
-import com.co.iatech.crm.sugarmovil.model.Notes;
+import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -22,7 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class LeadActivity extends NotesModuleActions {
+public class LeadActivity extends LeadsModuleActions {
 
 	/**
 	 * UI References.
@@ -32,12 +31,12 @@ public class LeadActivity extends NotesModuleActions {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_notes);
+		setContentView(R.layout.activity_lead);
 		try {
 			selectedBean = null;
 
 			// Main Toolbar
-			mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_notes);
+			mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_client);
 			setSupportActionBar(mTareaToolbar);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -50,30 +49,56 @@ public class LeadActivity extends NotesModuleActions {
 		}
 	}
 
-	public void showValues(Notes note) {
+	public void showValues(Lead lead) {
 		try {
 			
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			
 			TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
-			valorNombre.setText(note.getName());
+			valorNombre.setText(lead.getFirst_name());
+			
+			TextView valorApellidos = (TextView) findViewById(R.id.valor_apellidos);
+			valorApellidos.setText(lead.getLast_name());
+			
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
+			valorRazon.setText(lead.getRazonsocial_c());
+			
 			
 			TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
-			valorFechaInicio.setText(Utils.transformTimeBakendToUI(note.getActive_date()));
+			valorFechaInicio.setText(Utils.transformTimeBakendToUI(lead.getActive_date()));
 
 			TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
-			valorFechaVence.setText(Utils.transformTimeBakendToUI(note.getExp_date()));
+			valorFechaVence.setText(Utils.transformTimeBakendToUI(lead.getExp_date()));
 
 			TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
 			valorEstado.setText(
-					ListsConversor.convert(ConversorsType.TASKS_STATUS, note.getStatus_id(), DataToGet.VALUE));
+					ListsConversor.convert(ConversorsType.TASKS_STATUS, lead.getStatus_id(), DataToGet.VALUE));
 
 			TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
-			valorDescripcion.setText(note.getDescription());
+			valorDescripcion.setText(lead.getDescription());
 			
 			TextView valorSubtarea = (TextView) findViewById(R.id.valor_subtarea);
-			valorSubtarea.setText(note.getParent_name());
+			valorSubtarea.setText(lead.getParent_name());
 
 			TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
-			valorAsignado.setText(note.getAssigned_user_name());
+			valorAsignado.setText(lead.getAssigned_user_name());
 
 		} catch (Exception e) {
 
@@ -85,7 +110,7 @@ public class LeadActivity extends NotesModuleActions {
 	@Override
 	public void onResume() {
 		try {
-			selectedBean = (Notes) ActivitiesMediator.getInstance().getBeanInfo();
+			selectedBean = (Lead) ActivitiesMediator.getInstance().getBeanInfo();
 			if (selectedBean != null) {
 				this.showValues(selectedBean);
 			}
@@ -110,7 +135,7 @@ public class LeadActivity extends NotesModuleActions {
 
 			if (jArr.length() > 0) {
 				JSONObject obj = jArr.getJSONObject(0);
-				selectedBean = new Notes(obj);
+				selectedBean = new Lead(obj);
 				showValues(selectedBean);
 			}
 
@@ -124,13 +149,13 @@ public class LeadActivity extends NotesModuleActions {
 	public void chargeViewInfo() {
 		Intent intent = getIntent();
 
-		if (intent.getExtras().get(MODULE.getModuleName()) instanceof Notes) {
-			selectedBean = (Notes) intent.getExtras().get(MODULE.getModuleName());
+		if (intent.getExtras().get(MODULE.getModuleName()) instanceof Lead) {
+			selectedBean = (Lead) intent.getExtras().get(MODULE.getModuleName());
 			this.showValues(selectedBean);
 		} else {
 			beanCommunicator = intent.getParcelableExtra(MODULE.name());
-			String[] params = { "idNote", beanCommunicator.id };
-			this.executeTask(params, TypeInfoServer.getNote);
+			String[] params = { "idLead", beanCommunicator.id };
+			this.executeTask(params, TypeInfoServer.getLead);
 		}
 	}
 }
