@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".SubTaskActivity">
+    tools:context=".NoteActivity">
 
     <LinearLayout
-        android:id="@+id/subtask_linear_layout"
+        android:id="@+id/notes_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|top"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_subtask"
+            android:id="@+id/toolbar_notes"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:elevation="8dp"
@@ -44,7 +44,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:padding="5dp"
-                    android:text="@string/title_activity_subtask"
+                    android:text="@string/title_activity_notes"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
@@ -103,7 +103,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/text_contacto"
+                        android:id="@+id/text_nombre"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -114,48 +114,12 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_contacto"
+                        android:text="@string/nota_nombre"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_contacto"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
-                </LinearLayout>
-                
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_asunto"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        android:text="@string/tarea_asunto"
-                        android:textStyle="bold"
-                        tools:ignore="MissingPrefix" />
-
-                    <TextView
-                        android:id="@+id/valor_asunto"
+                        android:id="@+id/valor_nombre"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,7 +150,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_fecha_inicio"
+                        android:text="@string/nota_fecha_inicio"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
@@ -222,7 +186,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_fecha_vence"
+                        android:text="@string/nota_fecha_fin"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
@@ -294,7 +258,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/subtarea_descripcion"
+                        android:text="@string/tarea_descripcion"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
@@ -335,42 +299,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="#d1d3d4" />
- 				<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/text_tipo"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        android:text="@string/tarea_tipo"
-                        android:textStyle="bold"
-                        tools:ignore="MissingPrefix" />
-
-                    
-                    <TextView
-                        android:id="@+id/valor_tipo"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
-                </LinearLayout>
                 
                  <LinearLayout
                     android:layout_width="match_parent"
@@ -378,7 +306,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/text_nombre"
+                        android:id="@+id/text_subtarea"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -389,12 +317,12 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_nombre"
+                        android:text="@string/nota_padre"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_nombre"
+                        android:id="@+id/valor_subtarea"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -447,50 +375,5 @@
 
             </LinearLayout>
         </ScrollView>
-        
-          <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_bottom_contact"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom"
-            android:background="@color/crm_ligth_gray"
-            android:elevation="4dp"
-            android:gravity="bottom"
-            android:paddingBottom="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#e6e6e6" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal">
-
-                   <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal">
-
-                        <ImageButton
-                            android:id="@+id/image_notes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_notes" />
-                  </LinearLayout>
-                  
-
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
     </LinearLayout>
 </LinearLayout>

@@ -96,7 +96,7 @@ public class CallsFragment extends Fragment implements IMovilModuleActions,Calls
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setSelectedItem(3);
+        mGlobalVariable.setSelectedItem(4);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();

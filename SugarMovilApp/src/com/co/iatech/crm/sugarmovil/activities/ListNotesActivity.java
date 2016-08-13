@@ -10,12 +10,12 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.SubTasksModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.NotesModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
-import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.model.Notes;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
@@ -36,14 +36,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
-public class ListSubTasksActivity extends SubTasksModuleActions {
+public class ListNotesActivity extends NotesModuleActions {
 
     /**
      * Member Variables.
      */
  
   
-    private List<DetailSubTask> tasksXParent;
+    private List<Notes> tasksXParent;
 
     /**
      * UI References.
@@ -66,7 +66,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
         // SoftKey
         	
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        tasksXParent = new ArrayList<DetailSubTask>();
+        tasksXParent = new ArrayList<Notes>();
         getInfoFromMediator();
        
 
@@ -76,7 +76,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         mToolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_task);
-        mToolbarTextView.setText("SELECCIONAR SUBTAREA");
+        mToolbarTextView.setText("SELECCIONAR NOTA");
 
         // SearchView
         mSearchView = (SearchView) findViewById(R.id.search_view_list_task);
@@ -103,7 +103,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_list_task);
         mRecyclerView.setHasFixedSize(true);
 
-        mRecyclerViewLayoutManager = new LinearLayoutManager(ListSubTasksActivity.this);
+        mRecyclerViewLayoutManager = new LinearLayoutManager(ListNotesActivity.this);
         mRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
 
         // Eventos
@@ -119,7 +119,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
             public boolean onClose() {
                 mToolbarTextView.setVisibility(View.VISIBLE);
 
-                InputMethodManager imm = (InputMethodManager) ListSubTasksActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) ListNotesActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
                 try {
@@ -172,10 +172,10 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
         String message = "",keyID= "";
 
         switch(actualInfo.getActualParentModule()){
-			case TASKS:
-				infoServer = TypeInfoServer.getSubTaskxTask;
-				keyID = "idTask";
-				message = "Cargando Subtareas...";
+			case SUBTASKS:
+				infoServer = TypeInfoServer.getNotesxSubtask;
+				keyID = "idSubTask";
+				message = "Cargando Notas...";
 				break;
 			default:
 					break;
@@ -218,7 +218,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
 			try{
 				for (int i = 0; i < jArr.length(); i++) {
 					JSONObject obj = jArr.getJSONObject(i);
-					tasksXParent.add(new DetailSubTask(obj));
+					tasksXParent.add(new Notes(obj));
 				}
 			}catch(JSONException je){
 				
@@ -229,7 +229,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
 						AdapterSearchUtil.transform(tasksXParent), MODULE);
 				this.mRecyclerView.setAdapter(rv);
 			} else {
-				Message.showShort("No tiene subtareas asociadas", getApplicationContext());
+				Message.showShort("No tiene notas asociadas", getApplicationContext());
 			}
 		} catch (Exception e) {
 			Message.showShortExt(Utils.errorToString(e), getApplicationContext());
