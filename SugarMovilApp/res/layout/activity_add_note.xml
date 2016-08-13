@@ -150,7 +150,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_fecha_inicio"
+                        android:text="@string/nota_fecha_inicio"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
@@ -204,7 +204,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_fecha_vence"
+                        android:text="@string/nota_fecha_fin"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
