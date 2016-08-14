@@ -106,6 +106,15 @@ public class Lead extends GenericBean implements Parcelable {
     	this.first_name = first_name;
     	this.last_name = last_name;
     }
+    
+    public Lead( String id,  String first_name, String company, String phone_work, String phone_mobile ){
+    	this.id = id;
+    	this.first_name = first_name;
+    	this.razonsocial_c = validate(company);
+    	this.phone_work = validate(phone_work);
+    	this.phone_mobile = validate(phone_mobile);
+    }
+    
     public Lead(JSONObject obj) throws JSONException {
     	setId(validate(obj.getString("id")));
     	setDate_entered(validate(obj.getString("date_entered")));

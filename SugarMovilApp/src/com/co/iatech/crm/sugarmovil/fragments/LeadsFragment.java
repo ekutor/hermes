@@ -10,11 +10,11 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.LeadsModule;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerLeadsAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.fragments.NotesFragment.GetNotesTask;
 import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
@@ -121,7 +121,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 				imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
 
 				try {
-					((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).flushFilter();
+					((RecyclerLeadsAdapter) mRecyclerViewTasks.getAdapter()).flushFilter();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -135,7 +135,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 			public boolean onQueryTextSubmit(String query) {
 				try {
 					// Filtro para cuentas
-					((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(query);
+					((RecyclerLeadsAdapter) mRecyclerViewTasks.getAdapter()).setFilter(query);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -147,7 +147,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 			public boolean onQueryTextChange(String newText) {
 				try {
 					// Filtro para cuentas
-					((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
+					((RecyclerLeadsAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -171,8 +171,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 
 	@Override
 	public void chargeViewInfo() {
-		mRecyclerViewTasksAdapter = new RecyclerGenericAdapter(getActivity(),
-				AdapterSearchUtil.transform(DataManager.getInstance().notesInfo), MODULE);
+		mRecyclerViewTasksAdapter = new RecyclerLeadsAdapter(getActivity(),DataManager.getInstance().leadsInfo);
 		mRecyclerViewTasks.setAdapter(mRecyclerViewTasksAdapter);
 
 	}
@@ -257,7 +256,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 
 				tasks = ControlConnection.getInfo(TypeInfoServer.getLeads, getActivity());
 
-				DataManager.getInstance().notesInfo.clear();
+				DataManager.getInstance().leadsInfo.clear();
 
 				JSONObject jObj = new JSONObject(tasks);
 
@@ -266,8 +265,10 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 					JSONObject obj = jArr.getJSONObject(i);
 					String id = obj.getString("id");
 					String first_name = obj.getString("first_name");
-					String last_name = obj.getString("last_name");
-					DataManager.getInstance().leadsInfo.add(new Lead(id, first_name, last_name));
+					String company = obj.getString("razonsocial_c");
+					String phoneWork = obj.getString("phone_work");
+					String mobil = obj.getString("phone_mobile");
+					DataManager.getInstance().leadsInfo.add(new Lead(id, first_name, company, phoneWork , mobil));
 				}
 				DataManager.getInstance().defSynchronize(MODULE);
 				return true;
@@ -281,7 +282,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 			progressDialog.dismiss();
 
 			if (success) {
-				if (DataManager.getInstance().notesInfo.size() > 0) {
+				if (DataManager.getInstance().leadsInfo.size() > 0) {
 					chargeViewInfo();
 				}
 			}

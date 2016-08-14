@@ -61,41 +61,89 @@ public class LeadActivity extends LeadsModuleActions {
 			TextView valorApellidos = (TextView) findViewById(R.id.valor_apellidos);
 			valorApellidos.setText(lead.getLast_name());
 			
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
-			TextView valorRazon = (TextView) findViewById(R.id.valor_razon);
-			valorRazon.setText(lead.getRazonsocial_c());
+			TextView valorTelOficina = (TextView) findViewById(R.id.valor_oficina);
+			valorTelOficina.setText(lead.getPhone_work());
+			
+			TextView celular = (TextView) findViewById(R.id.valor_celular);
+			celular.setText(lead.getPhone_mobile());
+			
+			TextView valorFax = (TextView) findViewById(R.id.valor_fax);
+			valorFax.setText(lead.getPhone_fax());
+			
+			TextView cargo = (TextView) findViewById(R.id.valor_cargo);
+			cargo.setText(lead.getTitle());
+			
+			TextView departamento = (TextView) findViewById(R.id.valor_departamento);
+			departamento.setText(lead.getDepartment());
+			
+			TextView direccion = (TextView) findViewById(R.id.valor_direccion);
+			direccion.setText(lead.getPrimary_address_street()+ "\n" + lead.getPrimary_address_city());
+			
+			TextView correo = (TextView) findViewById(R.id.valor_correo);
+			correo.setText(lead.getEmail_address());
+			
+			TextView sitio = (TextView) findViewById(R.id.valor_sitio);
+			sitio.setText(lead.getWebsite());
+			
+			TextView requerimiento = (TextView) findViewById(R.id.valor_requerimiento);
+			requerimiento.setText(lead.getDescription());
+			
+			TextView medio = (TextView) findViewById(R.id.valor_medio);
+			medio.setText(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM, lead.getMedio_c(),
+					DataToGet.VALUE));
+			
+			TextView fuente = (TextView) findViewById(R.id.valor_fuente);
+			fuente.setText(lead.getFuente_c());
+			
+			TextView otro = (TextView) findViewById(R.id.valor_otro);
+			otro.setText(lead.getOtro_c());
 			
 			
-			TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
-			valorFechaInicio.setText(Utils.transformTimeBakendToUI(lead.getActive_date()));
-
-			TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
-			valorFechaVence.setText(Utils.transformTimeBakendToUI(lead.getExp_date()));
-
-			TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
-			valorEstado.setText(
-					ListsConversor.convert(ConversorsType.TASKS_STATUS, lead.getStatus_id(), DataToGet.VALUE));
-
-			TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
-			valorDescripcion.setText(lead.getDescription());
+			TextView estimado = (TextView) findViewById(R.id.valor_estimado);
+			estimado.setText(lead.getOpportunity_amount());
 			
-			TextView valorSubtarea = (TextView) findViewById(R.id.valor_subtarea);
-			valorSubtarea.setText(lead.getParent_name());
+			TextView marca = (TextView) findViewById(R.id.valor_marca);
+			marca.setText(ListsConversor.convert(ConversorsType.LEADS_BRAND, lead.getMarca_c(),
+					DataToGet.VALUE));
+			 
+			TextView estado = (TextView) findViewById(R.id.valor_estado);
+			estado.setText(lead.getStatus());
+			
+			TextView accion = (TextView) findViewById(R.id.valor_accion);
+			accion.setText(lead.getAccion_c());
+			
+			TextView retroalimenta = (TextView) findViewById(R.id.valor_retroalimenta);
+			retroalimenta.setText(lead.getStatus_description());
+			
+			TextView fecha = (TextView) findViewById(R.id.valor_fecha);
+			fecha.setText(Utils.transformTimeBakendToUI(lead.getFecha_c()));
+			
+			TextView responsable = (TextView) findViewById(R.id.valor_responsable);
+			responsable.setText(lead.getResponsable_c());
+			
+			TextView retroalimenta2 = (TextView) findViewById(R.id.valor_retroalimenta2);
+			retroalimenta2.setText(lead.getRetroalimentacion2_c());
+			
+			TextView fecha2 = (TextView) findViewById(R.id.valor_fecha2);
+			fecha2.setText(Utils.transformTimeBakendToUI(lead.getFecha2_c()));
+			
+			TextView responsable2 = (TextView) findViewById(R.id.valor_responsable2);
+			responsable2.setText(lead.getResponsable2_c());
+			
+			TextView retroalimenta3 = (TextView) findViewById(R.id.valor_retroalimenta3);
+			retroalimenta3.setText(lead.getRetroalimentacion3_c());
+			
+			TextView fecha3 = (TextView) findViewById(R.id.valor_fecha3);
+			fecha3.setText(Utils.transformTimeBakendToUI(lead.getFecha3_c()));
+			
+			TextView responsable3 = (TextView) findViewById(R.id.valor_responsable3);
+			responsable3.setText(lead.getResponsable3_c());
+			
+			TextView valorReal = (TextView) findViewById(R.id.valor_real);
+			valorReal.setText(lead.getValor_real_c());
+			
+			TextView campana = (TextView) findViewById(R.id.valor_campana);
+			campana.setText(lead.getCampaign_name());
 
 			TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
 			valorAsignado.setText(lead.getAssigned_user_name());

@@ -10,7 +10,7 @@ public class ListsConversor {
     public enum ConversorsType { ZONE,DPTO,CHANNEL,OPPORTUNITY_MEDIUM, OPPORTUNITY_PROYECT,OPPORTUNITY_SOURCE,
     	OPPORTUNITY_STAGE,OPPORTUNITY_COMUNICATIONS, OPPORTUNITY_ENERGY,OPPORTUNITY_ILUM,
     	OPPORTUNITY_CURRENCY,CALLS_STATUS,CALLS_DIRECTION,CALLS_MINS_DURATION,CALLS_RESULT,
-    	TASKS_STATUS, TASKS_TYPE, TASKS_PRIORITY,DPTO_PHONE }
+    	TASKS_STATUS, TASKS_TYPE, TASKS_PRIORITY,DPTO_PHONE,LEADS_BRAND }
     
     private static ListConverter create(ConversorsType type){
     	ListConverter converter = null;
@@ -71,6 +71,9 @@ public class ListsConversor {
 			break;
 			case TASKS_PRIORITY:
 				converter = ListTasksPriorityConverter.getInstance();
+			break;
+			case LEADS_BRAND:
+				converter = ListLeadBrandConverter.getInstance();
 			break;
 			default: 
 				break;
