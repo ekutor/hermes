@@ -312,8 +312,8 @@
     <string name="codigo_grupo">Grupo:</string>
 
     <!-- Cliente Activity -->
-    <string name="title_activity_client">CLIENTE</string>
-    <string name="title_activity_create_client">CREAR CLIENTE</string>
+    <string name="title_activity_client">CLIENTE POTENCIAL</string>
+    <string name="title_activity_create_client">CREAR CLIENTE </string>
     <string name="title_activity_edit_client">EDITAR CLIENTE</string>
     <string name="cliente_titulo_vision">VISIÓN GENERAL</string>
     <string name="cliente_razon">Razón Social:</string>
@@ -336,13 +336,13 @@
     <string name="cliente_marca">Marca:</string>
     <string name="cliente_estado">Estado:</string>
     <string name="cliente_accion">Acción:</string>
-    <string name="cliente_retroalimenta">Retroalimenta:</string>
+    <string name="cliente_retroalimenta">Retroalimentacion:</string>
     <string name="cliente_fecha">Fecha:</string>
     <string name="cliente_responsable">Responsable:</string>
-    <string name="cliente_retroalimenta2">Retroalimenta 2:</string>
+    <string name="cliente_retroalimenta2">Retroalimentacion 2:</string>
     <string name="cliente_fecha2">Fecha 2:</string>
     <string name="cliente_resposable2">Responsable 2:</string>
-    <string name="cliente_retroalimenta3">Retroalimenta 3:</string>
+    <string name="cliente_retroalimenta3">Retroalimentacion 3:</string>
     <string name="cliente_fecha3">Fecha 3:</string>
     <string name="cliente_responsable3">Responsable 3:</string>
     <string name="cliente_valor_real">Valor real:</string>

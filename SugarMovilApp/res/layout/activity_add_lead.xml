@@ -986,7 +986,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <Button
-                        android:id="@+id/boton_fecha_2"
+                        android:id="@+id/boton_fecha2"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1002,7 +1002,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_fecha_2"
+                        android:id="@+id/valor_fecha2"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1038,7 +1038,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <Spinner
-                        android:id="@+id/valor_responsable_2"
+                        android:id="@+id/valor_responsable2"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1110,7 +1110,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <Button
-                        android:id="@+id/boton_fecha_3"
+                        android:id="@+id/boton_fecha3"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1126,7 +1126,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <TextView
-                        android:id="@+id/valor_fecha_3"
+                        android:id="@+id/valor_fecha3"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1162,7 +1162,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <Spinner
-                        android:id="@+id/valor_responsable_3"
+                        android:id="@+id/valor_responsable3"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -107,7 +107,8 @@ public class LeadActivity extends LeadsModuleActions {
 					DataToGet.VALUE));
 			 
 			TextView estado = (TextView) findViewById(R.id.valor_estado);
-			estado.setText(lead.getStatus());
+			estado.setText(ListsConversor.convert(ConversorsType.LEADS_STATUS, lead.getStatus(),
+					DataToGet.VALUE));
 			
 			TextView accion = (TextView) findViewById(R.id.valor_accion);
 			accion.setText(lead.getAccion_c());

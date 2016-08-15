@@ -156,15 +156,15 @@
                 android:value=".MainActivity" />
         </activity>
         
-    <!--   <activity 
+       <activity 
             android:name=".activities.AddLeadActivity"
-            android:label="@string/title_activity_create_client"
+            android:label="@string/title_activity_client"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
-        </activity> -->
+        </activity>
         
          <activity
             android:name=".activities.ListContactActivity"

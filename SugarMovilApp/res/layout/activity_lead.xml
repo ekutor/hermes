@@ -44,7 +44,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:padding="5dp"
-                    android:text="@string/title_activity_create_client"
+                    android:text="@string/title_activity_client"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
@@ -859,22 +859,6 @@
                         android:singleLine="false"
                         android:text="@string/cliente_fecha"
                         android:textStyle="bold"
-                        tools:ignore="MissingPrefix" />
-
-                    <Button
-                        android:id="@+id/boton_fecha"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        android:text="@string/tarea_fecha"
-                        android:textAllCaps="false"
                         tools:ignore="MissingPrefix" />
 
                     <TextView

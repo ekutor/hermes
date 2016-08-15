@@ -792,11 +792,11 @@ public class Lead extends GenericBean implements Parcelable {
     }
 
     public String getMarca_c() {
-        return marca_c;
+        return deleteSpecialChar(marca_c);
     }
 
     public void setMarca_c(String marca_c) {
-        this.marca_c = marca_c;
+        this.marca_c = addSpecialChar(marca_c);
     }
 
     public String getEstado_c() {
