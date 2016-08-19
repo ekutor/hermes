@@ -23,9 +23,10 @@ import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
-import com.co.iatech.crm.sugarmovil.model.Notes;
+import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListDefaultSourceConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -41,6 +42,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +57,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 	 * Member Variables.
 	 */
 
-	private Notes selectedLead;
+	private Lead selectedLead;
 
 	private ListUsersConverter lc = new ListUsersConverter();
 
@@ -65,14 +68,45 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 	 */
 	private Toolbar mTareaToolbar;
 	private ImageButton imgButtonGuardar;
-	private TextView valorDescripcion, valorSubtarea, valorNombre;
-	private Spinner valorEstado;
-	private Button botonFechaInicio, botonFechaVen;
-	private TextView valorFechaInicio, asignadoA, valorFechaVen;
+	private EditText valorNombre;
+	private EditText valorApellidos;
+	private EditText valorTelOficina;
+	private EditText celular;
+	private EditText valorFax;
+	private EditText cargo;
+	private EditText departamento;
+	private EditText direccion;
+	private EditText ciudad;
+	private EditText provincia;
+	private EditText correo;
+	private EditText sitio;
+	private EditText requerimiento;
+	private Spinner medio;
+	private Spinner fuente;
+	private Spinner marca;
+	private Spinner estado;
+	private EditText otro;
+	private EditText estimado;
+	private Spinner accion;
+	private EditText retroalimenta;
+	private TextView fecha;
+	private EditText responsable;
+	private EditText retroalimenta2;
+	private TextView fecha2;
+	private EditText responsable2;
+	private EditText retroalimenta3;
+	private TextView fecha3;
+	private EditText responsable3;
+	private EditText valorReal;
+	private EditText campana;
+	private TextView asignadoA;
+	private EditText valorRazon;
+
+	private Button botonFecha, botonFecha2, botonFecha3;
 
 	public String resultado;
 
-	private AddNoteTask editTask;
+	private AddLeadTask editTask;
 
 	private ActivityBeanCommunicator parentId;
 
@@ -88,7 +122,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			getInfoFromMediator();
 
 			// Main Toolbar
-			mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_note);
+			mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_client);
 			setSupportActionBar(mTareaToolbar);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -98,7 +132,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			asignadoA.setOnClickListener(this);
 
 			if (isEditMode) {
-				TextView title = (TextView) findViewById(R.id.text_note_toolbar);
+				EditText title = (EditText) findViewById(R.id.text_client_toolbar);
 				title.setText("EDITAR CLIENTE P");
 				chargeViewInfo();
 			}
@@ -118,11 +152,11 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		if (isEditMode) {
 			selectedLead = intent.getParcelableExtra(MODULE.getModuleName());
 		} else {
-			selectedLead = new Notes();
+			selectedLead = new Lead();
 			switch (actualInfo.getActualParentModule()) {
 			case OPPORTUNITIES:
 				parentId = actualInfo.getActualParentInfo();
-				valorSubtarea.setText(parentId.name);
+
 				break;
 			default:
 				break;
@@ -138,16 +172,48 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		// Estado
 
 		ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.TASKS_STATUS));
+				ListsConversor.getValuesList(ConversorsType.LEADS_STATUS));
 		estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		valorEstado.setAdapter(estadoAdapter);
+		estado.setAdapter(estadoAdapter);
+
+		ArrayAdapter<String> marcaAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+				ListsConversor.getValuesList(ConversorsType.LEADS_BRAND));
+		marcaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		marca.setAdapter(marcaAdapter);
+
+		ArrayAdapter<String> medioAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+				ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_MEDIUM));
+		medioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		medio.setAdapter(medioAdapter);
+		medio.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				fuente.setAdapter(null);
+				ListDefaultSourceConverter source = ListDefaultSourceConverter.getInstance();
+				ArrayAdapter<String> adapter = source.getListAdatper(AddLeadActivity.this,
+						medio.getSelectedItem().toString());
+				if (adapter != null) {
+					fuente.setAdapter(adapter);
+					fuente.setSelection(0, true);
+				}
+
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
 
 		if (isEditMode) {
 
 			// Parent
-			if (selectedLead.getParent_id() != null && selectedLead.getParent_id().length() > 1) {
-				valorSubtarea.setText(selectedLead.getParent_name());
-			}
+			/*
+			 * if (selectedLead.getParent_id() != null &&
+			 * selectedLead.getParent_id().length() > 1) {
+			 * valorSubtarea.setText(selectedLead.getParent_name()); }
+			 */
 
 		} else {
 
@@ -163,37 +229,100 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 
 	@Override
 	public void createWidgets() {
-		valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
-		valorFechaInicio = (TextView) findViewById(R.id.valor_fecha_inicio);
-		valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
-		valorNombre = (TextView) findViewById(R.id.valor_nombre);
-		valorSubtarea = (TextView) findViewById(R.id.valor_subtarea);
+		valorRazon = (EditText) findViewById(R.id.valor_razon);
+		valorNombre = (EditText) findViewById(R.id.valor_nombre);
+		valorApellidos = (EditText) findViewById(R.id.valor_apellidos);
+		valorTelOficina = (EditText) findViewById(R.id.valor_oficina);
+		celular = (EditText) findViewById(R.id.valor_celular);
+		valorFax = (EditText) findViewById(R.id.valor_fax);
+		cargo = (EditText) findViewById(R.id.valor_cargo);
+		departamento = (EditText) findViewById(R.id.valor_departamento);
+		direccion = (EditText) findViewById(R.id.valor_direccion);
+		ciudad = (EditText) findViewById(R.id.valor_ciudad);
+		provincia = (EditText) findViewById(R.id.valor_provincia);
+		correo = (EditText) findViewById(R.id.valor_correo);
+		sitio = (EditText) findViewById(R.id.valor_sitio);
+		requerimiento = (EditText) findViewById(R.id.valor_requerimiento);
+		fuente = (Spinner) findViewById(R.id.valor_fuente);
+		medio = (Spinner) findViewById(R.id.valor_medio);
+		marca = (Spinner) findViewById(R.id.valor_marca);
+		estado = (Spinner) findViewById(R.id.valor_estado);
+		otro = (EditText) findViewById(R.id.valor_otro);
+		estimado = (EditText) findViewById(R.id.valor_estimado);
+		accion = (Spinner) findViewById(R.id.valor_accion);
+		retroalimenta = (EditText) findViewById(R.id.valor_retroalimenta);
+		fecha = (TextView) findViewById(R.id.valor_fecha);
+		responsable = (EditText) findViewById(R.id.valor_responsable);
+		retroalimenta2 = (EditText) findViewById(R.id.valor_retroalimenta2);
+		fecha2 = (TextView) findViewById(R.id.valor_fecha2);
+		responsable2 = (EditText) findViewById(R.id.valor_responsable2);
+		retroalimenta3 = (EditText) findViewById(R.id.valor_retroalimenta3);
+		fecha3 = (TextView) findViewById(R.id.valor_fecha3);
+		responsable3 = (EditText) findViewById(R.id.valor_responsable3);
+		valorReal = (EditText) findViewById(R.id.valor_real);
+		campana = (EditText) findViewById(R.id.valor_campana);
 
 		// Fecha Inicio
-		botonFechaInicio = (Button) findViewById(R.id.boton_fecha_inicio);
-		botonFechaInicio.setOnClickListener(this);
-
-		botonFechaVen = (Button) findViewById(R.id.boton_fecha_vence);
-		botonFechaVen.setOnClickListener(this);
+		botonFecha = (Button) findViewById(R.id.boton_fecha);
+		botonFecha.setOnClickListener(this);
+		botonFecha2 = (Button) findViewById(R.id.boton_fecha2);
+		botonFecha2.setOnClickListener(this);
+		botonFecha3 = (Button) findViewById(R.id.boton_fecha3);
+		botonFecha3.setOnClickListener(this);
 
 		imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 		imgButtonGuardar.setOnClickListener(this);
 
 		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
 
-		valorEstado = (Spinner) findViewById(R.id.valor_estado);
-
 	}
 
 	@Override
 	public void chargeViewInfo() {
+		valorRazon.setText(selectedLead.getRazonsocial_c());
+		valorNombre.setText(selectedLead.getFirst_name());
+		valorApellidos.setText(selectedLead.getLast_name());
+		valorTelOficina.setText(selectedLead.getPhone_work());
+		celular.setText(selectedLead.getPhone_mobile());
+		valorFax.setText(selectedLead.getPhone_fax());
+		cargo.setText(selectedLead.getTitle());
+		departamento.setText(selectedLead.getDepartment());
+		direccion.setText(selectedLead.getPrimary_address_street());
+		ciudad.setText(selectedLead.getPrimary_address_city());
+		provincia.setText(selectedBean.getPrimary_address_state());
+		correo.setText(selectedLead.getEmail_address());
+		sitio.setText(selectedLead.getWebsite());
+		requerimiento.setText(selectedLead.getDescription());
 
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedLead.getStatus_id());
-		valorEstado.setSelection(pos);
-		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedLead.getActive_date()));
-		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedLead.getExp_date()));
-		valorDescripcion.setText(selectedLead.getDescription());
-		valorNombre.setText(selectedLead.getName());
+		otro.setText(selectedLead.getOtro_c());
+		estimado.setText(selectedLead.getOpportunity_amount());
+
+		retroalimenta.setText(selectedLead.getStatus_description());
+		fecha.setText(Utils.transformTimeBakendToUI(selectedLead.getFecha_c()));
+		responsable.setText(selectedLead.getResponsable_c());
+		retroalimenta2.setText(selectedLead.getRetroalimentacion2_c());
+		fecha2.setText(Utils.transformTimeBakendToUI(selectedLead.getFecha2_c()));
+		responsable2.setText(selectedLead.getResponsable2_c());
+		retroalimenta3.setText(selectedLead.getRetroalimentacion3_c());
+		fecha3.setText(Utils.transformTimeBakendToUI(selectedLead.getFecha3_c()));
+		responsable3.setText(selectedLead.getResponsable3_c());
+		valorReal.setText(selectedLead.getValor_real_c());
+		campana.setText(selectedLead.getCampaign_name());
+
+		int pos = ListsConversor.getPosItemOnList(ConversorsType.LEADS_STATUS, selectedLead.getStatus());
+		estado.setSelection(pos);
+		
+		pos = ListsConversor.getPosItemOnList(ConversorsType.LEADS_ACTIONS, selectedLead.getAccion_c());
+		accion.setSelection(pos);
+
+		pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_MEDIUM, selectedLead.getMedio_c());
+		medio.setSelection(pos);
+
+		pos = ListsConversor.getPosItemOnList(ConversorsType.LEADS_BRAND, selectedLead.getMarca_c());
+		marca.setSelection(pos);
+
+		ListDefaultSourceConverter source = ListDefaultSourceConverter.getInstance();
+		fuente.setSelection(source.getPosItemOnList(selectedLead.getMedio_c(), selectedLead.getFuente_c()));
 
 		// Asignado
 		asignadoA.setText(lc.convert(selectedLead.getAssigned_user_id(), DataToGet.VALUE));
@@ -218,11 +347,14 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 				Message.showUsersDialog(getSupportFragmentManager());
 			}
 
-		} else if (v.getId() == botonFechaInicio.getId()) {
-			DialogFragment newFragment = new DatePickerFragment(this, valorFechaInicio, isEditMode);
+		} else if (v.getId() == botonFecha.getId()) {
+			DialogFragment newFragment = new DatePickerFragment(this, fecha, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
-		} else if (v.getId() == botonFechaVen.getId()) {
-			DialogFragment newFragment = new DatePickerFragment(this, valorFechaVen, isEditMode);
+		} else if (v.getId() == botonFecha2.getId()) {
+			DialogFragment newFragment = new DatePickerFragment(this, fecha2, isEditMode);
+			newFragment.show(getFragmentManager(), "dateCierrePicker");
+		} else if (v.getId() == botonFecha3.getId()) {
+			DialogFragment newFragment = new DatePickerFragment(this, fecha3, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		} else if (v.getId() == imgButtonGuardar.getId()) {
 			// Realizar Validaciones
@@ -232,32 +364,67 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
 
 			selectedLead.setName(valorNombre.getText().toString());
-			selectedLead.setStatus_id(ListsConversor.convert(ConversorsType.TASKS_STATUS,
-					valorEstado.getSelectedItem().toString(), DataToGet.CODE));
+			selectedLead.setStatus(ListsConversor.convert(ConversorsType.LEADS_STATUS,
+					estado.getSelectedItem().toString(), DataToGet.CODE));
 
-			if (valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1) {
-				selectedLead.setActive_date(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
+			if (fecha.getText() != null && fecha.getText().toString().length() > 1) {
+				selectedLead.setFecha_c(Utils.transformTimeUItoBackend(fecha.getText().toString()));
 			}
 
-			if (valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1) {
-				selectedLead.setExp_date(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
+			if (fecha2.getText() != null && fecha2.getText().toString().length() > 1) {
+				selectedLead.setFecha2_c(Utils.transformTimeUItoBackend(fecha2.getText().toString()));
+			}
+			if (fecha3.getText() != null && fecha3.getText().toString().length() > 1) {
+				selectedLead.setFecha3_c(Utils.transformTimeUItoBackend(fecha3.getText().toString()));
 			}
 
-			selectedLead.setDescription(valorDescripcion.getText().toString());
+			selectedLead.setRazonsocial_c(valorRazon.getText().toString());
+			selectedLead.setFirst_name(valorNombre.getText().toString());
+			selectedLead.setLast_name(valorApellidos.getText().toString());
+			selectedLead.setPhone_work(valorTelOficina.getText().toString());
+			selectedLead.setPhone_mobile(celular.getText().toString());
+			selectedLead.setPhone_fax(valorFax.getText().toString());
+			selectedLead.setTitle(cargo.getText().toString());
+			selectedLead.setDepartment(departamento.getText().toString());
+			selectedLead.setPrimary_address_street(direccion.getText().toString());
+			selectedLead.setPrimary_address_city(ciudad.getText().toString());
+			selectedLead.setPrimary_address_state(provincia.getText().toString());
+			selectedLead.setEmail_address(correo.getText().toString());
+			selectedLead.setWebsite(sitio.getText().toString());
+			selectedLead.setDescription(requerimiento.getText().toString());
+			selectedLead.setOtro_c(otro.getText().toString());
+			selectedLead.setOpportunity_amount(estimado.getText().toString());
+
+			selectedLead.setStatus_description(retroalimenta.getText().toString());
+			selectedLead.setFecha_c(Utils.transformTimeUItoBackend(fecha.getText().toString()));
+			selectedLead.setResponsable_c(responsable.getText().toString());
+			selectedLead.setRetroalimentacion2_c(retroalimenta2.getText().toString());
+			selectedLead.setFecha2_c(Utils.transformTimeUItoBackend(fecha2.getText().toString()));
+			selectedLead.setResponsable2_c(responsable2.getText().toString());
+			selectedLead.setRetroalimentacion3_c(retroalimenta3.getText().toString());
+			selectedLead.setFecha3_c(Utils.transformTimeUItoBackend(fecha3.getText().toString()));
+			selectedLead.setResponsable3_c(responsable3.getText().toString());
+			selectedLead.setValor_real_c(valorReal.getText().toString());
+			selectedLead.setCampaign_name(campana.getText().toString());
+			
+			selectedLead.setMedio_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM, medio.getSelectedItem().toString(), DataToGet.CODE));
+			selectedLead.setStatus(ListsConversor.convert(ConversorsType.LEADS_STATUS, estado.getSelectedItem().toString(), DataToGet.CODE));
+			selectedLead.setAccion_c(ListsConversor.convert(ConversorsType.LEADS_ACTIONS, accion.getSelectedItem().toString(), DataToGet.CODE));
+			selectedLead.setMarca_c(ListsConversor.convert(ConversorsType.LEADS_BRAND, marca.getSelectedItem().toString(), DataToGet.CODE));
 
 			// tipo Tarea
 
 			if (!isEditMode) {
 
-				if (Modules.SUBTASKS.equals(actualInfo.getActualParentModule())) {
-					selectedLead.setParent_id(parentId.id);
+				if (Modules.OPPORTUNITIES.equals(actualInfo.getActualParentModule())) {
+					// selectedLead.setParent_id(parentId.id);
 				}
 
 			}
 			String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(), DataToGet.CODE);
 			selectedLead.setAssigned_user_id(idUsuarioAsignado);
 
-			editTask = new AddNoteTask();
+			editTask = new AddLeadTask();
 
 			editTask.execute(selectedLead);
 		}
@@ -270,7 +437,6 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		data = new LinkedHashMap<View, CharSequence>();
 
 		data.put(valorNombre, "El campo Nombre no puede estar vacio");
-		data.put(valorFechaInicio, "Debe seleccionar una Fecha de Publicacion");
 
 		ValidatorGeneric.getInstance().define(data);
 
@@ -281,7 +447,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		if (selectedBean instanceof User) {
 			User selectedUser = (User) selectedBean;
 			asignadoA.setText(selectedUser.getUser_name());
-		} 
+		}
 
 	}
 
@@ -311,24 +477,24 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 	}
 
 	/**
-	 * Representa una tarea asincrona de creacion de Notas.
+	 * Representa una tarea asincrona de creacion de Cliente Potencial
 	 */
-	public class AddNoteTask extends AsyncTask<Object, Void, Boolean> {
+	public class AddLeadTask extends AsyncTask<Object, Void, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(Object... params) {
 			try {
 
-				Notes obj = (Notes) params[0];
+				Lead obj = (Lead) params[0];
 
 				// Resultado
 				resultado = null;
 
 				if (isEditMode) {
-					resultado = ControlConnection.putInfo(TypeInfoServer.addNote, obj.getDataBean(), Modo.EDITAR,
+					resultado = ControlConnection.putInfo(TypeInfoServer.addLead, obj.getDataBean(), Modo.EDITAR,
 							AddLeadActivity.this);
 				} else {
-					resultado = ControlConnection.putInfo(TypeInfoServer.addNote, obj.getDataBean(), Modo.AGREGAR,
+					resultado = ControlConnection.putInfo(TypeInfoServer.addLead, obj.getDataBean(), Modo.AGREGAR,
 							AddLeadActivity.this);
 				}
 

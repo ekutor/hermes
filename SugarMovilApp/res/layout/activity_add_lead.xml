@@ -370,7 +370,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/valor_departamento"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -420,7 +420,78 @@
                         android:singleLine="false"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
+				
+                  <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/text_ciudad"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cliente_ciudad"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <EditText
+                        android:id="@+id/valor_ciudad"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
+                
+                  <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_provincia"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/cliente_provincia"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+
+                    <EditText
+                        android:id="@+id/valor_provincia"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        tools:ignore="MissingPrefix" />
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -609,7 +680,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/valor_fuente"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -1282,6 +1353,7 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
+                        android:textColor="@color/link"
                         tools:ignore="MissingPrefix" />
                 </LinearLayout>
             </LinearLayout>

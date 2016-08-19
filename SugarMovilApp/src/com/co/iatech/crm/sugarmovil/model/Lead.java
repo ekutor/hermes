@@ -6,6 +6,8 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
+import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.os.Parcel;
@@ -14,7 +16,7 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de los clientes.
  */
-public class Lead extends GenericBean implements Parcelable {
+public class Lead extends GenericBean implements Parcelable, Visitable {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<Lead> CREATOR = new Parcelable.Creator<Lead>() {
@@ -28,7 +30,6 @@ public class Lead extends GenericBean implements Parcelable {
             return new Lead[size];
         }
     };
-    private String id;
     private String date_entered;
     private String date_modified;
     private String modified_user_id;
@@ -100,6 +101,8 @@ public class Lead extends GenericBean implements Parcelable {
     private String campaign_name;
     private String assigned_user_name;
     
+    public Lead( ){
+    }
     
     public Lead( String id,  String first_name, String last_name ){
     	this.id = id;
@@ -997,5 +1000,10 @@ public class Lead extends GenericBean implements Parcelable {
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void accept(DataVisitor visitor) {
+		visitor.add(this);
 	}
 }

@@ -325,6 +325,8 @@
     <string name="cliente_cargo">Cargo:</string>
     <string name="cliente_departamento">Departamento:</string>
     <string name="cliente_direccion">Dirección:</string>
+    <string name="cliente_ciudad">Ciudad:</string>
+    <string name="cliente_provincia">Estado/Provincia:</string>
     <string name="cliente_correo">Correo:</string>
     <string name="cliente_sito">Sitio web:</string>
     <string name="cliente_requerimiento">Requerimiento:</string>

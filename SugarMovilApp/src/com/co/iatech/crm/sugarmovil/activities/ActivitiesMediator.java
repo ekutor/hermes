@@ -129,6 +129,9 @@ public class ActivitiesMediator implements IMediator {
 			case NOTES:
 				intent = new Intent(context, AddNoteActivity.class);
 				break;
+			case LEADS:
+				intent = new Intent(context, AddLeadActivity.class);
+				break;
 
 		}
 		//si es nulo estoy en un fragment y voy a mostrar una nueva pantalla del mismo modulo
