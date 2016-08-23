@@ -64,7 +64,7 @@ public class DataManager  {
 	}
 	
 	public void defSynchronize(Modules module) {
-		synchronizedModules.put(module, true);
+		//synchronizedModules.put(module, true);
 	}
 
 	public void unDefsynchronize(Modules module) {

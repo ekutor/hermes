@@ -34,7 +34,7 @@
     <string name="title_activity_select_oppotunity">SELECCIONAR OPORTUNIDAD</string>
     <string name="title_activity_select_task">SELECCIONAR TAREA</string>
     <string name="title_activity_select_call">SELECCIONAR LLAMADA</string>
-    <string name="title_activity_select_lead">SELECCIONAR CLIENTE POTENCIAL</string>
+    <string name="title_activity_select_lead">SELECCIONAR CLIENTE</string>
     <string name="title_activity_select_user">SELECCIONAR USUARIO</string>
     <string name="title_activity_select_campaign">SELECCIONAR CAMPAÑA</string>
 

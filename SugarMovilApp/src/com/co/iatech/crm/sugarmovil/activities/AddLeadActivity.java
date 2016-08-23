@@ -25,6 +25,7 @@ import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.model.User;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListCampaignsConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListDefaultSourceConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListUsersConverter;
@@ -60,6 +61,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 	private Lead selectedLead;
 
 	private ListUsersConverter lc = new ListUsersConverter();
+	private ListCampaignsConverter campaigns;
 
 	private TypeActions tipoPermiso;
 
@@ -90,15 +92,15 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 	private Spinner accion;
 	private EditText retroalimenta;
 	private TextView fecha;
-	private EditText responsable;
+	private TextView responsable;
 	private EditText retroalimenta2;
 	private TextView fecha2;
-	private EditText responsable2;
+	private TextView responsable2;
 	private EditText retroalimenta3;
 	private TextView fecha3;
-	private EditText responsable3;
+	private TextView responsable3;
 	private EditText valorReal;
-	private EditText campana;
+	private TextView campana;
 	private TextView asignadoA;
 	private EditText valorRazon;
 
@@ -115,7 +117,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_lead);
 		try {
-
+			campaigns = new ListCampaignsConverter();
 			// SoftKey
 			this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			createWidgets();
@@ -132,7 +134,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			asignadoA.setOnClickListener(this);
 
 			if (isEditMode) {
-				EditText title = (EditText) findViewById(R.id.text_client_toolbar);
+				TextView title = (TextView) findViewById(R.id.text_client_toolbar);
 				title.setText("EDITAR CLIENTE P");
 				chargeViewInfo();
 			}
@@ -175,6 +177,11 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 				ListsConversor.getValuesList(ConversorsType.LEADS_STATUS));
 		estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		estado.setAdapter(estadoAdapter);
+		
+		ArrayAdapter<String> accionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+				ListsConversor.getValuesList(ConversorsType.LEADS_ACTIONS));
+		accionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		accion.setAdapter(accionAdapter);
 
 		ArrayAdapter<String> marcaAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 				ListsConversor.getValuesList(ConversorsType.LEADS_BRAND));
@@ -252,15 +259,18 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		accion = (Spinner) findViewById(R.id.valor_accion);
 		retroalimenta = (EditText) findViewById(R.id.valor_retroalimenta);
 		fecha = (TextView) findViewById(R.id.valor_fecha);
-		responsable = (EditText) findViewById(R.id.valor_responsable);
+		responsable = (TextView) findViewById(R.id.valor_responsable);
+		responsable.setOnClickListener(this);
 		retroalimenta2 = (EditText) findViewById(R.id.valor_retroalimenta2);
 		fecha2 = (TextView) findViewById(R.id.valor_fecha2);
-		responsable2 = (EditText) findViewById(R.id.valor_responsable2);
+		responsable2 = (TextView) findViewById(R.id.valor_responsable2);
+		responsable2.setOnClickListener(this);
 		retroalimenta3 = (EditText) findViewById(R.id.valor_retroalimenta3);
 		fecha3 = (TextView) findViewById(R.id.valor_fecha3);
-		responsable3 = (EditText) findViewById(R.id.valor_responsable3);
+		responsable3 = (TextView) findViewById(R.id.valor_responsable3);
+		responsable3.setOnClickListener(this);
 		valorReal = (EditText) findViewById(R.id.valor_real);
-		campana = (EditText) findViewById(R.id.valor_campana);
+		campana = (TextView) findViewById(R.id.valor_campana);
 
 		// Fecha Inicio
 		botonFecha = (Button) findViewById(R.id.boton_fecha);
@@ -289,7 +299,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		departamento.setText(selectedLead.getDepartment());
 		direccion.setText(selectedLead.getPrimary_address_street());
 		ciudad.setText(selectedLead.getPrimary_address_city());
-		provincia.setText(selectedBean.getPrimary_address_state());
+		provincia.setText(selectedLead.getPrimary_address_state());
 		correo.setText(selectedLead.getEmail_address());
 		sitio.setText(selectedLead.getWebsite());
 		requerimiento.setText(selectedLead.getDescription());
@@ -305,7 +315,8 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 		responsable2.setText(selectedLead.getResponsable2_c());
 		retroalimenta3.setText(selectedLead.getRetroalimentacion3_c());
 		fecha3.setText(Utils.transformTimeBakendToUI(selectedLead.getFecha3_c()));
-		responsable3.setText(selectedLead.getResponsable3_c());
+
+		responsable3.setText(lc.convert(selectedLead.getResponsable3_c(), DataToGet.VALUE));
 		valorReal.setText(selectedLead.getValor_real_c());
 		campana.setText(selectedLead.getCampaign_name());
 
@@ -332,19 +343,26 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 
 	@Override
 	public void onClick(View v) {
+	  try{
+		if (v.getId() == responsable.getId() ||
+				v.getId() == responsable2.getId() ||
+					v.getId() == responsable3.getId()) {
+			Message.showUsersDialog(getSupportFragmentManager(), v.getId());
+			
+		}
 		if (v.getId() == asignadoA.getId()) {
 			if (isEditMode) {
 				switch (tipoPermiso) {
 				case OWNER:
 					break;
 				case ALL:
-					Message.showUsersDialog(getSupportFragmentManager());
+					Message.showUsersDialog(getSupportFragmentManager() ,v.getId());
 					break;
 				case GROUP:
 					break;
 				}
 			} else {
-				Message.showUsersDialog(getSupportFragmentManager());
+				Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 			}
 
 		} else if (v.getId() == botonFecha.getId()) {
@@ -364,9 +382,7 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
 
 			selectedLead.setName(valorNombre.getText().toString());
-			selectedLead.setStatus(ListsConversor.convert(ConversorsType.LEADS_STATUS,
-					estado.getSelectedItem().toString(), DataToGet.CODE));
-
+			
 			if (fecha.getText() != null && fecha.getText().toString().length() > 1) {
 				selectedLead.setFecha_c(Utils.transformTimeUItoBackend(fecha.getText().toString()));
 			}
@@ -394,18 +410,27 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			selectedLead.setDescription(requerimiento.getText().toString());
 			selectedLead.setOtro_c(otro.getText().toString());
 			selectedLead.setOpportunity_amount(estimado.getText().toString());
-
-			selectedLead.setStatus_description(retroalimenta.getText().toString());
-			selectedLead.setFecha_c(Utils.transformTimeUItoBackend(fecha.getText().toString()));
-			selectedLead.setResponsable_c(responsable.getText().toString());
-			selectedLead.setRetroalimentacion2_c(retroalimenta2.getText().toString());
-			selectedLead.setFecha2_c(Utils.transformTimeUItoBackend(fecha2.getText().toString()));
-			selectedLead.setResponsable2_c(responsable2.getText().toString());
-			selectedLead.setRetroalimentacion3_c(retroalimenta3.getText().toString());
-			selectedLead.setFecha3_c(Utils.transformTimeUItoBackend(fecha3.getText().toString()));
-			selectedLead.setResponsable3_c(responsable3.getText().toString());
+			
+			if(responsable.getText() != null){
+				selectedLead.setStatus_description(retroalimenta.getText().toString());
+				selectedLead.setFecha_c(Utils.transformTimeUItoBackend(fecha.getText().toString()));
+				selectedLead.setResponsable_c(responsable.getText().toString());
+			}
+			
+			if(responsable2.getText() != null){
+				selectedLead.setRetroalimentacion2_c(retroalimenta2.getText().toString());
+				selectedLead.setFecha2_c(Utils.transformTimeUItoBackend(fecha2.getText().toString()));
+				selectedLead.setResponsable2_c(responsable2.getText().toString());
+			}
+			
+			if(responsable3.getText() != null){
+				selectedLead.setRetroalimentacion3_c(retroalimenta3.getText().toString());
+				selectedLead.setFecha3_c(Utils.transformTimeUItoBackend(fecha3.getText().toString()));		
+				selectedLead.setResponsable3_c(responsable3.getText().toString());
+			}
+			
 			selectedLead.setValor_real_c(valorReal.getText().toString());
-			selectedLead.setCampaign_name(campana.getText().toString());
+			selectedLead.setCampaign_name(campaigns.convert(campana.getText().toString(), DataToGet.CODE));
 			
 			selectedLead.setMedio_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_MEDIUM, medio.getSelectedItem().toString(), DataToGet.CODE));
 			selectedLead.setStatus(ListsConversor.convert(ConversorsType.LEADS_STATUS, estado.getSelectedItem().toString(), DataToGet.CODE));
@@ -428,6 +453,9 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 
 			editTask.execute(selectedLead);
 		}
+	  } catch (Exception e) {
+			Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), AddLeadActivity.this, MODULE);
+	  }
 
 	}
 
@@ -443,10 +471,18 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if (selectedBean instanceof User) {
 			User selectedUser = (User) selectedBean;
-			asignadoA.setText(selectedUser.getUser_name());
+			if (elementId == responsable.getId()){
+				responsable.setText(selectedUser.getUser_name());
+			}else if (elementId == responsable2.getId()){
+				responsable2.setText(selectedUser.getUser_name());
+			}else if (elementId == responsable3.getId()){
+				responsable3.setText(selectedUser.getUser_name());
+			}else{
+				asignadoA.setText(selectedUser.getUser_name());
+			}
 		}
 
 	}

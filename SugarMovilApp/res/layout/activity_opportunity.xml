@@ -818,6 +818,18 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/ic_calls" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="bottom|center_horizontal">
+
+                        <ImageButton
+                            android:id="@+id/image_leads"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_leads" />
+                  </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>

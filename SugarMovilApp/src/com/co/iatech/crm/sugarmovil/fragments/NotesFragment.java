@@ -191,7 +191,6 @@ public class NotesFragment extends Fragment implements IMovilModuleActions, Note
 			e.printStackTrace();
 		}
 
-		chargeViewInfo();
 	}
 
 	@Override

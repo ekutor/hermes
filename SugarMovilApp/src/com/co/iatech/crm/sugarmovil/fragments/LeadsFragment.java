@@ -191,7 +191,6 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 			e.printStackTrace();
 		}
 
-		chargeViewInfo();
 	}
 
 	@Override

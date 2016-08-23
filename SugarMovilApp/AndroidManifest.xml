@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.co.iatech.crm.sugarmovil"
-    android:versionCode="43"
-    android:versionName="1.6.0" >
+    android:versionCode="45"
+    android:versionName="1.6.2.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -216,9 +216,18 @@
                 android:value=".TaskActivity" />
         </activity>
         
-           <activity
+        <activity
             android:name=".activities.ListNotesActivity"
             android:label="@string/title_activity_notes"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.NoteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NoteActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ListLeadsActivity"
+            android:label="@string/title_activity_select_lead"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.NoteActivity">
             <meta-data

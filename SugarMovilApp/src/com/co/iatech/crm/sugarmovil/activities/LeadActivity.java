@@ -77,7 +77,8 @@ public class LeadActivity extends LeadsModuleActions {
 			departamento.setText(lead.getDepartment());
 			
 			TextView direccion = (TextView) findViewById(R.id.valor_direccion);
-			direccion.setText(lead.getPrimary_address_street()+ "\n" + lead.getPrimary_address_city());
+			direccion.setText(lead.getPrimary_address_street()+ "\n" + lead.getPrimary_address_city()
+			+ "\n"+ lead.getPrimary_address_state());
 			
 			TextView correo = (TextView) findViewById(R.id.valor_correo);
 			correo.setText(lead.getEmail_address());

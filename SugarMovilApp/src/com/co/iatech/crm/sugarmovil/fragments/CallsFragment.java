@@ -196,7 +196,7 @@ public class CallsFragment extends Fragment implements IMovilModuleActions,Calls
         } catch (Exception e) {
             e.printStackTrace();
         }
-        chargeViewInfo();
+        
     }
 
     @Override

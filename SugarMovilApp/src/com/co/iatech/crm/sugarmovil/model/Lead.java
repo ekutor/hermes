@@ -735,6 +735,9 @@ public class Lead extends GenericBean implements Parcelable, Visitable {
     }
 
     public void setResponsable_c(String responsable_c) {
+    	if(responsable_c != null){
+    		responsable_c = responsable_c.replaceAll("\\s", "_");
+    	}
         this.responsable_c = responsable_c;
     }
 
@@ -743,6 +746,9 @@ public class Lead extends GenericBean implements Parcelable, Visitable {
     }
 
     public void setResponsable2_c(String responsable2_c) {
+    	if(responsable2_c != null){
+    		responsable2_c = responsable2_c.replaceAll("\\s", "_");
+    	}
         this.responsable2_c = responsable2_c;
     }
 
@@ -751,6 +757,9 @@ public class Lead extends GenericBean implements Parcelable, Visitable {
     }
 
     public void setResponsable3_c(String responsable3_c) {
+    	if(responsable3_c != null){
+    		responsable3_c = responsable3_c.replaceAll("\\s", "_");
+    	}
         this.responsable3_c = responsable3_c;
     }
 

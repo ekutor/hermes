@@ -984,7 +984,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_responsable"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -1108,7 +1108,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_responsable2"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -1232,7 +1232,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_responsable3"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -1269,7 +1269,7 @@
                         tools:ignore="MissingPrefix" />
 
                     <EditText
-                        android:id="@+id/valor_valor_real"
+                        android:id="@+id/valor_real"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1304,7 +1304,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_campana"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"
@@ -1340,7 +1340,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                    <TextView
                         android:id="@+id/valor_asignado_a"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"

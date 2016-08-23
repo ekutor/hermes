@@ -339,13 +339,13 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 				case OWNER:
 					break;
 				case ALL:
-					Message.showUsersDialog(getSupportFragmentManager());
+					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 					break;
 				case GROUP:
 					break;
 				}
 			}else{
-				Message.showUsersDialog(getSupportFragmentManager());
+				Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 			}
 			
 		}else if(v.getId() == botonFechaCierre.getId()){
@@ -441,7 +441,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if(selectedBean instanceof User){
 			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());

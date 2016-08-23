@@ -179,6 +179,9 @@ public class ActivitiesMediator implements IMediator {
 			case NOTES:
 				intent = new Intent(context, ListNotesActivity.class);
 				break;
+			case LEADS:
+				intent = new Intent(context, ListLeadsActivity.class);
+				break;
 		default:
 			break;
 			
