@@ -87,7 +87,7 @@ public class LeadsFragment extends Fragment implements IMovilModuleActions, Lead
 
 		// Variable Global
 		mGlobalVariable = (GlobalClass) getActivity().getApplicationContext();
-		mGlobalVariable.setSelectedItem(8);
+		mGlobalVariable.setSelectedItem(3);
 
 		// Main Toolbar
 		mMainTextView = ((MainActivity) getActivity()).getMainTextView();

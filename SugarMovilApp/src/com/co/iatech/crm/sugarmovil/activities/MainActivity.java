@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         mDataList.add(new DrawerItem("Cuentas", R.drawable.ic_accounts));
         mDataList.add(new DrawerItem("Contactos", R.drawable.ic_contacts));
         mDataList.add(new DrawerItem("Oportunidades", R.drawable.ic_opportunities));
-        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
+       // mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
         mDataList.add(new DrawerItem("Llamadas", R.drawable.ic_calls));
         mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
         mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
@@ -218,31 +218,33 @@ public class MainActivity extends AppCompatActivity {
             	ActivitiesMediator.getInstance().defineActualModule(Modules.OPPORTUNITIES);
                 fragment = OpportunitiesFragment.newInstance();
                 break;
+           // case 3:
+//            	ActivitiesMediator.getInstance().defineActualModule(Modules.ACCOUNTS);
+//                fragment = AccountsFragment.newInstance();
+//                ActivitiesMediator.getInstance().defineActualModule(Modules.LEADS);
+//                fragment = LeadsFragment.newInstance();
+//                break;
             case 3:
-                ActivitiesMediator.getInstance().defineActualModule(Modules.LEADS);
-                fragment = LeadsFragment.newInstance();
-                break;
-            case 4:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.CALLS);
                 fragment = CallsFragment.newInstance();
                 break;
-            case 5:
+            case 4:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.PRODUCTS);
                 fragment = ProductsFragment.newInstance();
                 break;
-            case 6:
+            case 5:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.TASKS);
                 fragment = TasksFragment.newInstance();
                 break;
-            case 7:
+            case 6:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.SUBTASKS);
                 fragment = SubTasksFragment.newInstance();
                 break;
-            case 8:
+            case 7:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.NOTES);
                 fragment = NotesFragment.newInstance();
                 break;
-            case 9:
+            case 8:
                 System.exit(0);
                 break;
 

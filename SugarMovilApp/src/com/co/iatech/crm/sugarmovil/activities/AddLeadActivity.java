@@ -158,7 +158,8 @@ public class AddLeadActivity extends LeadsModuleEditableActions {
 			switch (actualInfo.getActualParentModule()) {
 			case OPPORTUNITIES:
 				parentId = actualInfo.getActualParentInfo();
-
+				selectedLead.setOpportunity_id(parentId.id);
+				selectedLead.setOpportunity_name(parentId.name);
 				break;
 			default:
 				break;

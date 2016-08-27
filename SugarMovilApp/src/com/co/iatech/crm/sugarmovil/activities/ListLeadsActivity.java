@@ -14,6 +14,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.LeadsModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
+import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.model.Notes;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
@@ -216,7 +217,12 @@ public class ListLeadsActivity extends LeadsModuleActions {
 			try{
 				for (int i = 0; i < jArr.length(); i++) {
 					JSONObject obj = jArr.getJSONObject(i);
-					tasksXParent.add(new Lead(obj));
+					String id = obj.getString("id");
+					String first_name = obj.getString("first_name");
+					String company = obj.getString("razonsocial_c");
+					String phoneWork = obj.getString("phone_work");
+					String mobil = obj.getString("phone_mobile");
+					tasksXParent.add(new Lead(id, first_name, company, phoneWork , mobil));
 				}
 			}catch(JSONException je){
 				
