@@ -24,12 +24,12 @@ public class ControlConnection {
 	public enum Modo {EDITAR, AGREGAR}
 
 	//Produccion
-	/*public static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
-	public static String URL2 = "http://181.143.40.162/movil/CRMLaumayerWS/index.php/";*/
+	public static String URL = "http://crmlaumayer.com/movil/CRMLaumayerWS/index.php/";
+	public static String URL2 = "http://181.143.40.162/movil/CRMLaumayerWS/index.php/";
 	//Pruebas
-	public static String URL = "http://crmlaumayer.com/pruebas/crm/movil/CRMLaumayerWS/index.php/";
+	/*public static String URL = "http://crmlaumayer.com/pruebas/crm/movil/CRMLaumayerWS/index.php/";
 	public static String URL2 = "http://181.143.40.162/pruebas/crm/movil/CRMLaumayerWS/index.php/";
-	
+	*/
 	public static String android_id;
 	public static String device_id;
 	public static String hash, userId;
