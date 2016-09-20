@@ -27,11 +27,11 @@ public class Message {
 	        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 80);
 	        toast.show();
 	}
-	
-	 public static void showUsersDialog(FragmentManager fm ) {
-	        UsersDialog userDialog = new UsersDialog();
+	 public static void showUsersDialog(FragmentManager fm, int elementId ) {
+	        UsersDialog userDialog = new UsersDialog(elementId);
 	        userDialog.show(fm, "users_dialog");
-	  }
+	 }
+	 
 	 public static void showGenericDialog(FragmentManager fm, ListModelConverter list, Modules responseModule ) {
 	        GenericListDialog dialog = new GenericListDialog(list,responseModule);
 	        dialog.show(fm, "accounts_dialog");

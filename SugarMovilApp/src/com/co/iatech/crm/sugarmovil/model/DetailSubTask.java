@@ -14,7 +14,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Representa un objeto parcelable para el manejo de una nota.
+ * Representa un objeto parcelable para el manejo de una subtarea.
  */
 public class DetailSubTask extends GenericBean implements Parcelable , Visitable{
 
@@ -87,9 +87,9 @@ public class DetailSubTask extends GenericBean implements Parcelable , Visitable
 	    setEjecuted_date_c(validate(obj.getString("ejecuted_date_c")));
 	    setAssigned_user_id(validate(obj.getString("assigned_user_id")));
 	    setDeleted(validate(obj.getString("deleted")));
-	    setAssigned_user_name(validate(obj.getString("assigned_user_name")));;
-	    setContact_name(validate(obj.getString("contact_name")));;
-	    setParent_name(validate(obj.getString("parent_name")));;
+	    setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+	    setContact_name(validate(obj.getString("contact_name")));
+	    setParent_name(validate(obj.getString("parent_name")));
 	    
     }
 

@@ -76,6 +76,7 @@ public class ListSubTasksActivity extends SubTasksModuleActions {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
         mToolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_task);
+        mToolbarTextView.setText("SELECCIONAR SUBTAREA");
 
         // SearchView
         mSearchView = (SearchView) findViewById(R.id.search_view_list_task);

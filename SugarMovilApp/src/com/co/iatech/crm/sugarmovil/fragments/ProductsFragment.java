@@ -93,7 +93,7 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setSelectedItem(4);
+        mGlobalVariable.setSelectedItem(5);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
@@ -160,7 +160,7 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
         });
         mMainSearchView.setQuery("", true);
         GatewayPublisher.getInstance().register(this);
-        
+        showProducts();
 	} catch (Exception e) {
 		Message.showShortExt(Utils.errorToString(e), this.getActivity());
 	}
@@ -172,7 +172,12 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
     public void onResume() {
         super.onResume();
         mMainSearchView.clearFocus();
-        try {
+        
+        Log.d(TAG, "onResume Fragment Products");
+    }
+
+    private void showProducts(){
+    	try {
         	GenericTaskPublisher getProducts = new GenericTaskPublisher(getActivity(),MODULE, 
         			TypeInfoServer.getProductos, "Buscando productos...");
             getProducts.execute();
@@ -180,9 +185,7 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
         } catch (Exception e) {
             Message.showShortExt(Utils.errorToString(e), getActivity());
         }
-        Log.d(TAG, "onResume Fragment Products");
     }
-
     @Override
     public void onPause() {
         super.onPause();

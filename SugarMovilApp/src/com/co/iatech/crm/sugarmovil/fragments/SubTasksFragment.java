@@ -193,7 +193,6 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 			e.printStackTrace();
 		}
 
-		chargeViewInfo();
 	}
 
 	@Override

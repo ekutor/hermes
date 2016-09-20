@@ -34,7 +34,7 @@
     <string name="title_activity_select_oppotunity">SELECCIONAR OPORTUNIDAD</string>
     <string name="title_activity_select_task">SELECCIONAR TAREA</string>
     <string name="title_activity_select_call">SELECCIONAR LLAMADA</string>
-    <string name="title_activity_select_lead">SELECCIONAR CLIENTE POTENCIAL</string>
+    <string name="title_activity_select_lead">SELECCIONAR CLIENTE</string>
     <string name="title_activity_select_user">SELECCIONAR USUARIO</string>
     <string name="title_activity_select_campaign">SELECCIONAR CAMPAÑA</string>
 
@@ -312,8 +312,8 @@
     <string name="codigo_grupo">Grupo:</string>
 
     <!-- Cliente Activity -->
-    <string name="title_activity_client">CLIENTE</string>
-    <string name="title_activity_create_client">CREAR CLIENTE</string>
+    <string name="title_activity_client">CLIENTE POTENCIAL</string>
+    <string name="title_activity_create_client">CREAR CLIENTE </string>
     <string name="title_activity_edit_client">EDITAR CLIENTE</string>
     <string name="cliente_titulo_vision">VISIÓN GENERAL</string>
     <string name="cliente_razon">Razón Social:</string>
@@ -325,6 +325,8 @@
     <string name="cliente_cargo">Cargo:</string>
     <string name="cliente_departamento">Departamento:</string>
     <string name="cliente_direccion">Dirección:</string>
+    <string name="cliente_ciudad">Ciudad:</string>
+    <string name="cliente_provincia">Estado/Provincia:</string>
     <string name="cliente_correo">Correo:</string>
     <string name="cliente_sito">Sitio web:</string>
     <string name="cliente_requerimiento">Requerimiento:</string>
@@ -336,13 +338,13 @@
     <string name="cliente_marca">Marca:</string>
     <string name="cliente_estado">Estado:</string>
     <string name="cliente_accion">Acción:</string>
-    <string name="cliente_retroalimenta">Retroalimenta:</string>
+    <string name="cliente_retroalimenta">Retroalimentacion:</string>
     <string name="cliente_fecha">Fecha:</string>
     <string name="cliente_responsable">Responsable:</string>
-    <string name="cliente_retroalimenta2">Retroalimenta 2:</string>
+    <string name="cliente_retroalimenta2">Retroalimentacion 2:</string>
     <string name="cliente_fecha2">Fecha 2:</string>
     <string name="cliente_resposable2">Responsable 2:</string>
-    <string name="cliente_retroalimenta3">Retroalimenta 3:</string>
+    <string name="cliente_retroalimenta3">Retroalimentacion 3:</string>
     <string name="cliente_fecha3">Fecha 3:</string>
     <string name="cliente_responsable3">Responsable 3:</string>
     <string name="cliente_valor_real">Valor real:</string>
@@ -373,6 +375,14 @@
     <string name="tarea_titulo_relacion">RELACIONADO CON:</string>
     <string name="tarea_tipo">Tipo:</string>
     <string name="tarea_nombre">Nombre:</string>
+    
+     <!-- Nota Activity -->
+    <string name="title_activity_notes">NOTA</string>
+    <string name="title_activity_create_note">CREAR NOTA</string>
+    <string name="nota_nombre">Nombre Nota:</string>
+    <string name="nota_fecha_inicio">Fecha Publicación:</string>
+    <string name="nota_fecha_fin">Fecha Caducidad:</string>
+    <string name="nota_padre">Subtarea:</string>
     
      <!-- SubTarea Activity -->
     <string name="title_activity_subtask">SUBTAREA</string>

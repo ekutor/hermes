@@ -6,7 +6,8 @@ function getContactTasks($idContact)
 {
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	$sql = "SELECT * FROM tasks WHERE contact_id = '$idContact' AND deleted = '0'";
+	//$sql = "SELECT * FROM tasks WHERE contact_id = '$idContact' AND deleted = '0'";
+	$sql = "SELECT * FROM calls a LEFT JOIN calls_cstm ac ON a.id = ac.id_c WHERE deleted = '0' AND id = '$idContact' ORDER BY name ASC";
 	$res = $mysqli->query($sql);
 	
 	while($r = mysqli_fetch_assoc($res))

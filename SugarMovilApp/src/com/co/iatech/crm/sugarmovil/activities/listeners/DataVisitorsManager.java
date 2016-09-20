@@ -8,6 +8,8 @@ import com.co.iatech.crm.sugarmovil.model.Cuenta;
 import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
+import com.co.iatech.crm.sugarmovil.model.Lead;
+import com.co.iatech.crm.sugarmovil.model.Notes;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
 public class DataVisitorsManager implements DataVisitor{
@@ -47,6 +49,12 @@ public class DataVisitorsManager implements DataVisitor{
 	}
 
 	@Override
+	public void add(Lead bean) {
+		this.addObject(DataManager.getInstance().leadsInfo, bean);
+		
+	}
+
+	@Override
 	public int size(DetailTask bean) {
 		return DataManager.getInstance().tasksInfo.size();
 	}
@@ -60,6 +68,10 @@ public class DataVisitorsManager implements DataVisitor{
 	public void add(DetailSubTask bean) {
 		this.addObject(DataManager.getInstance().subtasksInfo, bean);
 		
+	}
+	@Override
+	public void add(Notes bean) {
+		this.addObject(DataManager.getInstance().notesInfo, bean);
 	}
 
 	@Override
