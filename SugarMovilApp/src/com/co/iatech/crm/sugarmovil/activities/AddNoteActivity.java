@@ -209,13 +209,13 @@ public class AddNoteActivity extends NotesModuleEditableActions {
 				case OWNER:
 					break;
 				case ALL:
-					Message.showUsersDialog(getSupportFragmentManager());
+					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 					break;
 				case GROUP:
 					break;
 				}
 			} else {
-				Message.showUsersDialog(getSupportFragmentManager());
+				Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 			}
 
 		} else if (v.getId() == botonFechaInicio.getId()) {
@@ -277,7 +277,7 @@ public class AddNoteActivity extends NotesModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if (selectedBean instanceof User) {
 			User selectedUser = (User) selectedBean;
 			asignadoA.setText(selectedUser.getUser_name());

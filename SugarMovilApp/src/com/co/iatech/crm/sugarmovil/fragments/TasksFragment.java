@@ -204,7 +204,6 @@ public class TasksFragment extends Fragment implements IMovilModuleActions,Tasks
             e.printStackTrace();
         }
 
-        chargeViewInfo();
     }
 
     @Override

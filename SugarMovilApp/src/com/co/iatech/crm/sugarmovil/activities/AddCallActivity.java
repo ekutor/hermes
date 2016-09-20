@@ -214,7 +214,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if (selectedBean instanceof User) {
 			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());
@@ -396,13 +396,13 @@ public class AddCallActivity extends CallsModuleEditableActions {
 						case OWNER:
 							break;
 						case ALL:
-							Message.showUsersDialog(getSupportFragmentManager());
+							Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 							break;
 						case GROUP:
 							break;
 						}
 				}else{
-					Message.showUsersDialog(getSupportFragmentManager());
+					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 				}
 			} else if (v.getId() == botonHoraInicio.getId()) {
 				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);

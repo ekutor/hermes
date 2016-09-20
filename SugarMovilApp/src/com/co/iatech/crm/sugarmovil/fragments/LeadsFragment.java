@@ -7,15 +7,15 @@ import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
 import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
+import com.co.iatech.crm.sugarmovil.activtities.modules.LeadsModule;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.activtities.modules.SubTasksModule;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.adapters.RecyclerLeadsAdapter;
 import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
-import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.model.Lead;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.software.shell.fab.ActionButton;
 
@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +35,12 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class SubTasksFragment extends Fragment implements IMovilModuleActions, SubTasksModule {
+public class LeadsFragment extends Fragment implements IMovilModuleActions, LeadsModule {
 
 	/**
 	 * Tasks.
 	 */
-	private GetSubTasksTask obtenerTareas = null;
+	private GetLeadsTask getLeads;
 
 	/**
 	 * Member Variables.
@@ -60,15 +59,15 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 	private RecyclerView.LayoutManager mRecyclerViewTasksLayoutManager;
 	private ActionButton actionButton;
 
-	public SubTasksFragment() {
+	public LeadsFragment() {
 		// Required empty public constructor
 	}
 
 	/*
 	 * Nueva Instancia de TasksFragment.
 	 */
-	public static SubTasksFragment newInstance() {
-		SubTasksFragment fragment = new SubTasksFragment();
+	public static LeadsFragment newInstance() {
+		LeadsFragment fragment = new LeadsFragment();
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
 		return fragment;
@@ -88,11 +87,11 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 
 		// Variable Global
 		mGlobalVariable = (GlobalClass) getActivity().getApplicationContext();
-		mGlobalVariable.setSelectedItem(7);
+		mGlobalVariable.setSelectedItem(3);
 
 		// Main Toolbar
 		mMainTextView = ((MainActivity) getActivity()).getMainTextView();
-		mMainTextView.setText("SUB TAREAS");
+		mMainTextView.setText("CLIENTES POTENCIALES");
 		mMainTextView.setVisibility(View.VISIBLE);
 		mMainSearchView = ((MainActivity) getActivity()).getMainSearchView();
 		mMainSearchView.setVisibility(View.VISIBLE);
@@ -122,7 +121,7 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 				imm.hideSoftInputFromWindow(mMainSearchView.getWindowToken(), 0);
 
 				try {
-					((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).flushFilter();
+					((RecyclerLeadsAdapter) mRecyclerViewTasks.getAdapter()).flushFilter();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -136,7 +135,7 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 			public boolean onQueryTextSubmit(String query) {
 				try {
 					// Filtro para cuentas
-					((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(query);
+					((RecyclerLeadsAdapter) mRecyclerViewTasks.getAdapter()).setFilter(query);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -148,7 +147,7 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 			public boolean onQueryTextChange(String newText) {
 				try {
 					// Filtro para cuentas
-					((RecyclerGenericAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
+					((RecyclerLeadsAdapter) mRecyclerViewTasks.getAdapter()).setFilter(newText);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -160,8 +159,8 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 		this.applyActions();
 
 		if (!DataManager.getInstance().IsSynchronized(MODULE)) {
-			obtenerTareas = new GetSubTasksTask();
-			obtenerTareas.execute();
+			getLeads= new GetLeadsTask();
+			getLeads.execute();
 
 		} else {
 
@@ -172,8 +171,7 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 
 	@Override
 	public void chargeViewInfo() {
-		mRecyclerViewTasksAdapter = new RecyclerGenericAdapter(getActivity(),
-				AdapterSearchUtil.transform(DataManager.getInstance().subtasksInfo), MODULE);
+		mRecyclerViewTasksAdapter = new RecyclerLeadsAdapter(getActivity(),DataManager.getInstance().leadsInfo);
 		mRecyclerViewTasks.setAdapter(mRecyclerViewTasksAdapter);
 
 	}
@@ -232,16 +230,16 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 	}
 
 	/**
-	 * Representa una tarea asincrona de obtencion de Subtareas.
+	 * Representa una tarea asincrona de obtencion de Clientes Potenciales.
 	 */
-	public class GetSubTasksTask extends AsyncTask<Void, Void, Boolean> {
+	public class GetLeadsTask extends AsyncTask<Void, Void, Boolean> {
 		private ProgressDialog progressDialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog = new ProgressDialog(getActivity(), ProgressDialog.THEME_HOLO_DARK);
-			progressDialog.setMessage("Cargando Subtareas...");
+			progressDialog.setMessage("Cargando Clientes Potenciales...");
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
@@ -255,9 +253,9 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 				ControlConnection.addCurrentUser(getActivity());
 				// Intento de obtener tareas
 
-				tasks = ControlConnection.getInfo(TypeInfoServer.getSubTasks, getActivity());
+				tasks = ControlConnection.getInfo(TypeInfoServer.getLeads, getActivity());
 
-				DataManager.getInstance().subtasksInfo.clear();
+				DataManager.getInstance().leadsInfo.clear();
 
 				JSONObject jObj = new JSONObject(tasks);
 
@@ -265,8 +263,11 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 				for (int i = 0; i < jArr.length(); i++) {
 					JSONObject obj = jArr.getJSONObject(i);
 					String id = obj.getString("id");
-					String name = obj.getString("name");
-					DataManager.getInstance().subtasksInfo.add(new DetailSubTask(id, name));
+					String first_name = obj.getString("first_name");
+					String company = obj.getString("razonsocial_c");
+					String phoneWork = obj.getString("phone_work");
+					String mobil = obj.getString("phone_mobile");
+					DataManager.getInstance().leadsInfo.add(new Lead(id, first_name, company, phoneWork , mobil));
 				}
 				DataManager.getInstance().defSynchronize(MODULE);
 				return true;
@@ -277,11 +278,10 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
-			obtenerTareas = null;
 			progressDialog.dismiss();
 
 			if (success) {
-				if (DataManager.getInstance().subtasksInfo.size() > 0) {
+				if (DataManager.getInstance().leadsInfo.size() > 0) {
 					chargeViewInfo();
 				}
 			}
@@ -289,7 +289,7 @@ public class SubTasksFragment extends Fragment implements IMovilModuleActions, S
 
 		@Override
 		protected void onCancelled() {
-			obtenerTareas = null;
+		
 		}
 	}
 

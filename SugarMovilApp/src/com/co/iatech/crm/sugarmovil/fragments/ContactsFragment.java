@@ -158,7 +158,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
             }
         });
        
-
+        showContacts();
         return mRootView;
     }
 
@@ -170,13 +170,19 @@ public class ContactsFragment extends Fragment implements ContactsModule{
             obtenerContactos.execute();
             
         }else{
-        	Log.d(TAG,"Cargando Contactos desde MEMORIA");
-        	RecyclerView.Adapter mRecyclerViewContactsAdapter;
-          	mRecyclerViewContactsAdapter = new RecyclerGenericAdapter(getActivity(), 
-          			AdapterSearchUtil.transform(DataManager.getInstance().contactsInfo), MODULE);
-              mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
+        	
+        	chargeViewInfo();
+          	
         }
       
+	}
+    
+    public void chargeViewInfo() {
+    	RecyclerView.Adapter mRecyclerViewContactsAdapter;
+    	mRecyclerViewContactsAdapter = new RecyclerGenericAdapter(getActivity(), 
+      			AdapterSearchUtil.transform(DataManager.getInstance().contactsInfo), MODULE);
+          mRecyclerViewContacts.setAdapter(mRecyclerViewContactsAdapter);
+		
 	}
 
 	@Override
@@ -188,8 +194,6 @@ public class ContactsFragment extends Fragment implements ContactsModule{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        showContacts();
     }
 
     @Override
@@ -249,8 +253,7 @@ public class ContactsFragment extends Fragment implements ContactsModule{
 
             if (success) {
                 if (DataManager.getInstance().contactsInfo.size() > 0) {
-                	
-                    showContacts();
+                	chargeViewInfo();
                 } else {
                     Log.d(TAG,
                             "No hay Contactos: "

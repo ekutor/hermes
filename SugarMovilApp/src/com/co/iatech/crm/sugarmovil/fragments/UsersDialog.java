@@ -32,10 +32,12 @@ public class UsersDialog extends DialogFragment  {
 	private List<String> users;
 	private ListUsersConverter luc = new ListUsersConverter();
 	private User usr;
-		
-	public UsersDialog(){
+	private int elementId;
+	
+	public UsersDialog(int elementId){
 		luc = new ListUsersConverter();
 		users = luc.getListInfo();
+		this.elementId = elementId;
 	}
 
 	 @Override
@@ -68,7 +70,7 @@ public class UsersDialog extends DialogFragment  {
 				
 					//Pasar por Listener Pattern 
 					SearchDialogInterface listener = (SearchDialogInterface) getActivity();
-		            listener.onFinishSearchDialog(usr);
+		            listener.onFinishSearchDialog(usr, elementId);
 		            dismiss();
 				}
 

@@ -191,7 +191,6 @@ public class OpportunitiesFragment extends Fragment implements IMovilModuleActio
         } catch (Exception e) {
             e.printStackTrace();
         }
-        chargeViewInfo();
     }
 
     @Override

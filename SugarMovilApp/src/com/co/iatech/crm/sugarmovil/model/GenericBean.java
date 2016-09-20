@@ -22,7 +22,7 @@ public abstract class GenericBean {
 	}
 	
 	protected String addSpecialChar(String value){
-		if(value != null && !value.equals("") && !value.equalsIgnoreCase("null")){
+		if(value != null && !value.equals("") && !value.equalsIgnoreCase("null") && !value.contains(specialSugarChar)){
 			value = specialSugarChar+value+specialSugarChar;
 		}
 		return value;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.co.iatech.crm.sugarmovil"
-    android:versionCode="42"
-    android:versionName="1.5.4" >
+    android:versionCode="49"
+    android:versionName="1.6.5.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -96,6 +96,16 @@
                 android:value=".MainActivity" />
         </activity>
         
+         <activity 
+            android:name=".activities.LeadActivity"
+            android:label="@string/title_activity_client"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
         <activity 
             android:name=".activities.AddTaskActivity"
             android:label="@string/title_activity_create_task"
@@ -146,6 +156,15 @@
                 android:value=".MainActivity" />
         </activity>
         
+       <activity 
+            android:name=".activities.AddLeadActivity"
+            android:label="@string/title_activity_client"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         
          <activity
             android:name=".activities.ListContactActivity"
@@ -197,9 +216,18 @@
                 android:value=".TaskActivity" />
         </activity>
         
-           <activity
+        <activity
             android:name=".activities.ListNotesActivity"
             android:label="@string/title_activity_notes"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.NoteActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NoteActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ListLeadsActivity"
+            android:label="@string/title_activity_select_lead"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.NoteActivity">
             <meta-data

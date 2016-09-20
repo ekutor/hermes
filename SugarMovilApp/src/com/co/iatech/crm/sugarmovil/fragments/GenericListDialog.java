@@ -78,7 +78,7 @@ public class GenericListDialog extends DialogFragment  {
 				
 					//Pasar por Listener Pattern 
 					SearchDialogInterface listener = (SearchDialogInterface) getActivity();
-		            listener.onFinishSearchDialog(bean);
+		            listener.onFinishSearchDialog(bean, 0);
 		            dismiss();
 				}
 
