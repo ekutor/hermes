@@ -372,14 +372,18 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == asignadoA.getId()) {
-			switch (tipoPermiso) {
-			case OWNER:
-				break;
-			case ALL:
-				Message.showUsersDialog(getSupportFragmentManager());
-				break;
-			case GROUP:
-				break;
+			if(isEditMode){
+				switch (tipoPermiso) {
+				case OWNER:
+					break;
+				case ALL:
+					Message.showUsersDialog(getSupportFragmentManager(), v.getId());
+					break;
+				case GROUP:
+					break;
+				}
+			}else{
+				Message.showUsersDialog(getSupportFragmentManager(), v.getId());
 			}
 
 		} else if (v.getId() == botonHoraInicio.getId()) {
@@ -421,7 +425,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			selectedTask.setName(valorAsunto.getText().toString());
 			selectedTask.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
 					valorEstado.getSelectedItem().toString(), DataToGet.CODE));
-
+		
 			if (valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1) {
 				selectedTask.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
 			}
@@ -481,7 +485,7 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if (selectedBean instanceof User) {
 			User selectedUser = (User) selectedBean;
 			asignadoA.setText(selectedUser.getUser_name());

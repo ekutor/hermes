@@ -112,9 +112,12 @@ public class RecyclerGenericAdapter extends RecyclerView.Adapter<RecyclerGeneric
 	    			case PRODUCTS:{
 	    				GenericTaskPublisher task = new GenericTaskPublisher((Activity) context, recyclerModule
 	    						,TypeInfoServer.getProductos, "Cargando productos de consulta");
-	    	
-	    				String[]  params = {"queryText",queryText};
-	    				task.execute(params);
+	    				if(!"".equals(queryText)){
+		    				String[]  params = {"queryText",queryText};
+		    				task.execute(params);
+	    				}else{
+	    					task.execute();
+	    				}
 	    				
 	    				break;
 	    			}

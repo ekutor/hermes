@@ -2,11 +2,17 @@
 
 require 'conexion.php';
 
-function getOpportunities()
+function getOpportunities($currentUser = null)
 {
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	$sql = "SELECT id,name FROM opportunities WHERE deleted = '0' ORDER BY name ASC";
+	$sql = "SELECT id,name FROM opportunities WHERE deleted = '0'";
+	
+	if(!empty($currentUser)){
+		$sql .= " AND assigned_user_id = '$currentUser'";
+	}
+	$sql .= " ORDER BY name ASC";
+	
 	$res = $mysqli->query($sql);
 	
 	$rows = array();

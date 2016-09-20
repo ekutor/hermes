@@ -214,7 +214,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if (selectedBean instanceof User) {
 			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());
@@ -378,7 +378,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 		data = new LinkedHashMap<View, CharSequence>();
 
 		data.put(valorAsunto, "El campo Asunto no puede estar vacio");
-		data.put(spinnerResult, "Debe seleccionar un Resultado de Llamada");
+		data.put(valorFechaInicio, "Debe definir una fecha de llamada");
+	//	data.put(spinnerResult, "Debe seleccionar un Resultado de Llamada");
 		data.put(spinnerDirection, "Debe seleccionar un Estado");
 		data.put(spinnerState, "Debe seleccionar un Estado ");
 
@@ -390,14 +391,18 @@ public class AddCallActivity extends CallsModuleEditableActions {
 	public void onClick(View v) {
 		try{
 			if (v.getId() == asignadoA.getId()) {
-				switch (tipoPermiso) {
-				case OWNER:
-					break;
-				case ALL:
-					Message.showUsersDialog(getSupportFragmentManager());
-					break;
-				case GROUP:
-					break;
+				if(isEditMode){
+					switch (tipoPermiso) {
+						case OWNER:
+							break;
+						case ALL:
+							Message.showUsersDialog(getSupportFragmentManager(),v.getId());
+							break;
+						case GROUP:
+							break;
+						}
+				}else{
+					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 				}
 			} else if (v.getId() == botonHoraInicio.getId()) {
 				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
@@ -443,15 +448,17 @@ public class AddCallActivity extends CallsModuleEditableActions {
 				// tipo Tarea
 	
 				if (!isEditMode) {
+					
 					String selectedType = spinnerType.getSelectedItem().toString();
 					selectedCall.setParent_type(
 							ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
 	
 					if (selectedCall.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
 						selectedCall.setParent_id(actualInfo.getActualParentInfo().id);
-					}else if(selectedCall.getParent_type().equals(Modules.CONTACTS)){
+					}else if(selectedCall.getParent_type().equals(Modules.ACCOUNTS.getSugarDBName())){
 						selectedCall.setParent_id(lac.convert(txtParentName.getText().toString(), DataToGet.CODE));
 					}
+					
 				}
 	
 				ListCampaignsConverter lcc = new ListCampaignsConverter();

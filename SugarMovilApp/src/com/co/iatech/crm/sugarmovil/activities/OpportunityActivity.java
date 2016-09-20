@@ -35,6 +35,7 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 	private Toolbar mCuentaToolbar;
 	private ImageButton imgButtonTasks;
 	private ImageButton imgButtonCalls;
+	private ImageButton imgButtonLeads;
 	private ListUsersConverter lc = new ListUsersConverter();
 
 	@Override
@@ -134,6 +135,9 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 
 		imgButtonCalls = (ImageButton) findViewById(R.id.image_calls);
 		imgButtonCalls.setOnClickListener(this);
+		
+		imgButtonLeads = (ImageButton) findViewById(R.id.image_leads);
+		imgButtonLeads.setOnClickListener(this);
 
    	}
     
@@ -146,6 +150,8 @@ public class OpportunityActivity extends OpportunitiesModuleActions implements O
 			moduletoStart = Modules.TASKS;
 		}else if (v.getId() == imgButtonCalls.getId()){
 			moduletoStart = Modules.CALLS;
+		}else if (v.getId() == imgButtonLeads.getId()){
+			moduletoStart = Modules.LEADS;
 		}
 		if(selectedBean != null){
 			ActivitiesMediator.getInstance().setParentBean(selectedBean);

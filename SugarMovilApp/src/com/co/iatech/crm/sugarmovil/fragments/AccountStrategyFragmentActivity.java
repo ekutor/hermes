@@ -1,25 +1,20 @@
 package com.co.iatech.crm.sugarmovil.fragments;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
+import com.co.iatech.crm.sugarmovil.model.DetailAccount;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
-import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.Info;
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
 
 
 public class AccountStrategyFragmentActivity extends Fragment {
@@ -31,17 +26,12 @@ public class AccountStrategyFragmentActivity extends Fragment {
 
 
     /**
-     * Member Variables.
-     */
-
-    private CuentaDetalle mCuentaDetalle;
-
-    /**
      * UI References.
      */
         
     private TextView descAdicional1,descAdicional2,descAdicional3,descAdicional4,descAdicional5,
-    				descAdicional6,descAdicional7,descAdicional8,descAdicional9,descAdicional10,descAdicional11;
+    				descAdicional6,descAdicional7,descAdicional8,descAdicional9,descAdicional10,descAdicional11,
+    				descAdicional12,descAdicional13;
     private TextView txtMetaAnual;
     private TextView txtMetaTri;
     private TextView txtMetaEaton;
@@ -56,7 +46,8 @@ public class AccountStrategyFragmentActivity extends Fragment {
     private TextView txtEstrategia4;
     private TextView txtExhibidor,txtEntExhibidor1,txtActaEntrega1,txtImagen1,txtEntExhibidor2,txtActaEntrega2,txtImagen2,
     				txtEntExhibidor3,txtActaEntrega3,txtImagen3,txtLaumayer,txtEntrega1,txtPieza1,txtEntrega2,txtPieza2,
-    				txtDiaMarca,txtFechaMarca,txtPlaca,txtFechaPlaca,txtCertificaciones,txtOtrasEstr;
+    				txtDiaMarca,txtFechaMarca,txtPlaca,txtFechaPlaca,txtCertificaciones,txtOtrasEstr,
+    				txtPorBonFlexible,txtBonFlexible,txtBonManLovato,txtVlrManLovato;
     private CheckBox moeller;
     private CheckBox delta2;
     private CheckBox delta;
@@ -74,6 +65,11 @@ public class AccountStrategyFragmentActivity extends Fragment {
     private CheckBox cbBonLeviton;
     private CheckBox cbBonDespRem;
     private CheckBox cbBonCobroAnticipo;
+	private CheckBox cbMiniEaton;
+	private CheckBox cbSenaEATON;
+	private CheckBox cbNetosLovato;
+	private CheckBox cbBOnFlex;
+	private CheckBox cbManLovato;
     
     
     @Override
@@ -83,7 +79,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_strategy, container, false);
     	 
         Bundle args = getArguments();
-        CuentaDetalle cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
+        DetailAccount cuenta = args.getParcelable(Modules.ACCOUNTS.getModuleName());
   
         cargarComponentes(rootView);
         ponerValores(cuenta);
@@ -93,7 +89,7 @@ public class AccountStrategyFragmentActivity extends Fragment {
     }
     
     
-    public void ponerValores(CuentaDetalle cuentaDetalle) {
+    public void ponerValores(DetailAccount cuentaDetalle) {
     	try{
     	chargeCheck(moeller, cuentaDetalle.getAutomatizacionmoeller_c());
     	chargeCheck(delta, cuentaDetalle.getDelta_c());
@@ -105,7 +101,6 @@ public class AccountStrategyFragmentActivity extends Fragment {
 		chargeCheck(cbWohner, cuentaDetalle.getWohner_c());
 		chargeCheck(cbLP, cuentaDetalle.getComunicaciones_c());
 		chargeCheck(cbEaton, cuentaDetalle.getManiobraeaton_c());
-		//chargeCheck(cbxenergy, cuentaDetalle.getx);
 		chargeCheck(cbMinEaton, cuentaDetalle.getPreciosmineaton_c());
 		chargeCheck(cbBonEspecial, cuentaDetalle.getBonosespeciales_c());
 		chargeCheck(cbBonCompra, cuentaDetalle.getBonificacioncompra_c());
@@ -113,6 +108,15 @@ public class AccountStrategyFragmentActivity extends Fragment {
 		chargeCheck(cbBonLeviton, cuentaDetalle.getBonificacionleviton_c());
 		chargeCheck(cbBonDespRem, cuentaDetalle.getDespachoremsion_c());
 		chargeCheck(cbBonCobroAnticipo, cuentaDetalle.getNocobro_c());
+		chargeCheck(cbxenergy, cuentaDetalle.getOemxenergy_c());
+		
+		chargeCheck(cbMiniEaton, cuentaDetalle.getMini_c());
+		chargeCheck(cbSenaEATON, cuentaDetalle.getSenalizacion_c());
+		chargeCheck(cbNetosLovato, cuentaDetalle.getPrecios_netos_c());
+		
+		chargeCheck(cbBonEaton, cuentaDetalle.getManiobraeatonanual_c());
+		chargeCheck(cbBOnFlex, cuentaDetalle.getBonificacion_flexible_c());
+		chargeCheck(cbManLovato, cuentaDetalle.getManiobra_lovato_c());
 		
 		
     	descAdicional1.setText(cuentaDetalle.getDescuento1_c());
@@ -127,6 +131,9 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	descAdicional10.setText(cuentaDetalle.getDescuento10_c());
     	descAdicional11.setText(cuentaDetalle.getDescuento11_c());
     	
+    	descAdicional12.setText(cuentaDetalle.getDescuento12_c());
+    	descAdicional13.setText(cuentaDetalle.getDescuento13_c());
+    	
     	txtMetaAnual.setText(cuentaDetalle.getMeta1_c());
     	txtMetaTri.setText(cuentaDetalle.getMeta2_c());
     	txtMetaEaton.setText(cuentaDetalle.getMeta3_c());
@@ -140,21 +147,30 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	txtEstrategia3.setText(cuentaDetalle.getEstrategia3_c());
     	txtEstrategia4.setText(cuentaDetalle.getEstrategia4_c());
     	
+    	txtBonFlexible.setText(cuentaDetalle.getMeta_mensual_c());
+    	txtPorBonFlexible.setText(cuentaDetalle.getValor_bono_c());
+    	txtVlrManLovato.setText(cuentaDetalle.getMeta_bimensual_c());
+    	txtBonManLovato.setText(cuentaDetalle.getBimensual_c());
+    	
     	txtExhibidor.setText(cuentaDetalle.getExhibidor_c());
+    	
     	txtEntExhibidor1.setText(cuentaDetalle.getEntregaexhibidor1_c());
-    	txtActaEntrega1.setText(cuentaDetalle.getActa1_c());
-    	txtImagen1.setText(cuentaDetalle.getImagen1_c());
+    	txtActaEntrega1.setText(Utils.getLinkFormat(cuentaDetalle.getActa1_c()));
+    	txtImagen1.setText(Utils.getLinkFormat(cuentaDetalle.getImagen1_c()));
+    	
     	txtEntExhibidor2.setText(cuentaDetalle.getEntregaexhibidor2_c());
-    	txtActaEntrega2.setText(cuentaDetalle.getActa1_c());
-    	txtImagen2.setText(cuentaDetalle.getImagen2_c());
+    	txtActaEntrega2.setText(Utils.getLinkFormat(cuentaDetalle.getActa1_c()));
+    	txtImagen2.setText(Utils.getLinkFormat(cuentaDetalle.getImagen2_c()));
+    	
     	txtEntExhibidor3.setText(cuentaDetalle.getEntregaexhibidor3_c());
-    	txtActaEntrega3.setText(cuentaDetalle.getActa3_c());
-    	txtImagen3.setText(cuentaDetalle.getImagen3_c());
+    	txtActaEntrega3.setText(Utils.getLinkFormat(cuentaDetalle.getActa3_c()));
+    	txtImagen3.setText(Utils.getLinkFormat(cuentaDetalle.getImagen3_c()));
+    	
     	txtLaumayer.setText(cuentaDetalle.getLaumayer2_c());
     	//txtEntrega1.setText(cuentaDetalle.gete);
-    	txtPieza1.setText(cuentaDetalle.getPieza_c());
+    	txtPieza1.setText(Utils.getLinkFormat(cuentaDetalle.getPieza_c()));
     	//txtEntrega2.setText(cuentaDetalle);
-    	txtPieza2.setText(cuentaDetalle.getPieza2_c());
+    	txtPieza2.setText(Utils.getLinkFormat(cuentaDetalle.getPieza2_c()));
     	txtDiaMarca.setText(cuentaDetalle.getDiamarca_c());
     	txtFechaMarca.setText(cuentaDetalle.getFechamarca_c());
     	txtPlaca.setText(cuentaDetalle.getPlacaaniversario_c());
@@ -196,6 +212,12 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	cbBonDespRem = (CheckBox) view.findViewById(R.id.checkbox_desp_rem);
     	cbBonCobroAnticipo = (CheckBox) view.findViewById(R.id.checkbox_cobro_anticipo);
     	
+    	cbMiniEaton = (CheckBox) view.findViewById(R.id.checkbox_minieaton);
+    	cbSenaEATON = (CheckBox) view.findViewById(R.id.checkbox_mandoeaton);
+    	cbNetosLovato = (CheckBox) view.findViewById(R.id.checkbox_netos);
+    	
+    	cbBOnFlex = (CheckBox) view.findViewById(R.id.checkbox_bon_flexible);
+    	cbManLovato = (CheckBox) view.findViewById(R.id.checkbox_man_lovato);
     	
     	descAdicional1 = (TextView) view.findViewById(R.id.valor_desc_ad_1);
     	descAdicional2 = (TextView) view.findViewById(R.id.valor_desc_ad_2);
@@ -208,6 +230,8 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	descAdicional9 = (TextView) view.findViewById(R.id.valor_desc_ad_9);
     	descAdicional10 = (TextView) view.findViewById(R.id.valor_desc_ad_10);
     	descAdicional11 = (TextView) view.findViewById(R.id.valor_desc_ad_11);
+    	descAdicional12 = (TextView) view.findViewById(R.id.valor_desc_ad_12);
+    	descAdicional13 = (TextView) view.findViewById(R.id.valor_desc_ad_13);
     	
     	txtMetaAnual = (TextView) view.findViewById(R.id.valor_meta_anual);
     	txtMetaTri = (TextView) view.findViewById(R.id.valor_meta_tri);
@@ -222,21 +246,42 @@ public class AccountStrategyFragmentActivity extends Fragment {
     	txtEstrategia3 = (TextView) view.findViewById(R.id.valor_estrategia3);
     	txtEstrategia4 = (TextView) view.findViewById(R.id.valor_estrategia4);
     	
+    	txtBonFlexible = (TextView) view.findViewById(R.id.valor_meta_flexible);
+    	txtPorBonFlexible = (TextView) view.findViewById(R.id.valor_bon_flexible);
+    	
+    	txtVlrManLovato = (TextView) view.findViewById(R.id.valor_man_lovato);
+    	txtBonManLovato = (TextView) view.findViewById(R.id.valor_bon_bi_lovato);
+    	
     	txtExhibidor = (TextView) view.findViewById(R.id.valor_exhibidor);
     	txtEntExhibidor1 = (TextView) view.findViewById(R.id.valor_EntExh1);
+    	
     	txtActaEntrega1 = (TextView) view.findViewById(R.id.valor_ActEnt1);
+    	txtActaEntrega1.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtImagen1 = (TextView) view.findViewById(R.id.valor_ActImg1);
+    	txtImagen1.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtEntExhibidor2 = (TextView) view.findViewById(R.id.valor_EntExh2);
     	txtActaEntrega2 = (TextView) view.findViewById(R.id.valor_ActEnt2);
+    	txtActaEntrega2.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtImagen2 = (TextView) view.findViewById(R.id.valor_ActImg2);
+    	txtImagen2.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtEntExhibidor3 = (TextView) view.findViewById(R.id.valor_EntExh3);
     	txtActaEntrega3 = (TextView) view.findViewById(R.id.valor_ActEnt3);
+    	txtActaEntrega3.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtImagen3 = (TextView) view.findViewById(R.id.valor_ActImg3);
+    	txtImagen3.setMovementMethod(LinkMovementMethod.getInstance());
+    	
     	txtLaumayer = (TextView) view.findViewById(R.id.valor_laumayer);
     	txtEntrega1 = (TextView) view.findViewById(R.id.valor_Ent1);
     	txtPieza1 = (TextView) view.findViewById(R.id.valor_Pieza1);
+    	txtPieza1.setMovementMethod(LinkMovementMethod.getInstance());
     	txtEntrega2 = (TextView) view.findViewById(R.id.valor_Ent2);
     	txtPieza2 = (TextView) view.findViewById(R.id.valor_Pieza2);
+    	txtPieza2.setMovementMethod(LinkMovementMethod.getInstance());
     	txtDiaMarca = (TextView) view.findViewById(R.id.valor_DiaMarca);
     	txtFechaMarca = (TextView) view.findViewById(R.id.valor_FechaMarca);
     	txtPlaca = (TextView) view.findViewById(R.id.valor_PlacaMarca);

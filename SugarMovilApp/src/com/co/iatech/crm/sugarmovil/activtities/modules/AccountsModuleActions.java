@@ -1,11 +1,11 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
-import com.co.iatech.crm.sugarmovil.model.CuentaDetalle;
+import com.co.iatech.crm.sugarmovil.model.DetailAccount;
 
 import android.os.Parcelable;
 
 public abstract class AccountsModuleActions extends AbstractMovilModuleActions implements AccountsModule{
-	protected CuentaDetalle selectedBean;
+	protected DetailAccount selectedBean;
 
 	@Override
 	public Modules getModule() {

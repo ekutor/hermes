@@ -78,6 +78,15 @@ public class ActivitiesMediator implements IMediator {
 			case PRODUCTS:
 				intent = new Intent(context, ProductActivity.class);
 				break;
+			case SUBTASKS:
+				intent = new Intent(context, SubTaskActivity.class);
+				break;
+			case NOTES:
+				intent = new Intent(context, NoteActivity.class);
+				break;
+			case LEADS:
+				intent = new Intent(context, LeadActivity.class);
+				break;
 			case CALENDAR:
 				intent = new Intent(context, CalendarActivity.class);
 				break;
@@ -118,8 +127,18 @@ public class ActivitiesMediator implements IMediator {
 			case CALLS:
 				intent = new Intent(context, AddCallActivity.class);
 				break;
-		default:
-			break;
+			case SUBTASKS:
+				intent = new Intent(context, AddSubTaskActivity.class);
+				break;
+			case NOTES:
+				intent = new Intent(context, AddNoteActivity.class);
+				break;
+			case LEADS:
+				intent = new Intent(context, AddLeadActivity.class);
+				break;
+
+			default:
+				break;
 		}
 		//si es nulo estoy en un fragment y voy a mostrar una nueva pantalla del mismo modulo
 		if(lastModuleFrom == null){
@@ -159,6 +178,15 @@ public class ActivitiesMediator implements IMediator {
 				break;
 			case CALLS:
 				intent = new Intent(context, ListCallsActivity.class);
+				break;
+			case SUBTASKS:
+				intent = new Intent(context, ListSubTasksActivity.class);
+				break;
+			case NOTES:
+				intent = new Intent(context, ListNotesActivity.class);
+				break;
+			case LEADS:
+				intent = new Intent(context, ListLeadsActivity.class);
 				break;
 		default:
 			break;

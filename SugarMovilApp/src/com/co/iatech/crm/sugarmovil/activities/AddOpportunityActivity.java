@@ -334,15 +334,20 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	public void onClick(View v) {
 	try{
 		if(v.getId() == asignadoA.getId()){
-			switch(tipoPermiso){
-			case OWNER:
-				break;
-			case ALL:
-				Message.showUsersDialog(getSupportFragmentManager());
-				break;
-			case GROUP:
-				break;
+			if(isEditMode){
+				switch(tipoPermiso){
+				case OWNER:
+					break;
+				case ALL:
+					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
+					break;
+				case GROUP:
+					break;
+				}
+			}else{
+				Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 			}
+			
 		}else if(v.getId() == botonFechaCierre.getId()){
 			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
@@ -436,7 +441,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	}
 
 	@Override
-	public void onFinishSearchDialog(GenericBean selectedBean) {
+	public void onFinishSearchDialog(GenericBean selectedBean, int elementId) {
 		if(selectedBean instanceof User){
 			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());

@@ -191,7 +191,6 @@ public class OpportunitiesFragment extends Fragment implements IMovilModuleActio
         } catch (Exception e) {
             e.printStackTrace();
         }
-        chargeViewInfo();
     }
 
     @Override
@@ -258,7 +257,7 @@ public class OpportunitiesFragment extends Fragment implements IMovilModuleActio
             try {
                 // Parametros
                 String resultado = null;
-
+                ControlConnection.addCurrentUser(getActivity());
                 // Intento de obtener oportunidades
 
                 resultado  = ControlConnection.getInfo(TypeInfoServer.getOpportunities, getActivity());

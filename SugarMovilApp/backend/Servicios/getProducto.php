@@ -44,11 +44,10 @@ function getProductos($queryText = null)
 
 	//Realiza el query en la base de datos
 	$mysqli = makeSqlConnection();
-	//$sql = "SELECT * FROM psg_productos a LEFT JOIN psg_productos_cstm ac ON a.id = ac.id_c";
-	$sql = "SELECT id,name FROM psg_productos where deleted ='0' ";
+	$sql = "SELECT id,name FROM psg_productos p, psg_productos_cstm pc where p.id=pc.id_c AND deleted ='0' ";
 	
 	if($queryText != null && !empty($queryText)){
-		$sql .= " AND name like ('$queryText%') ";
+		$sql .= " AND ( name like ('%$queryText%') OR  codigo_c like ('%$queryText%') )";
 	}else{
 		$sql .= " limit 50" ;
 	}

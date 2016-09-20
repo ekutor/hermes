@@ -1,6 +1,14 @@
 package com.co.iatech.crm.sugarmovil.model;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
+import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,21 +16,20 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de los clientes.
  */
-public class ClienteDetalle extends GenericBean implements Parcelable {
+public class Lead extends GenericBean implements Parcelable, Visitable {
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ClienteDetalle> CREATOR = new Parcelable.Creator<ClienteDetalle>() {
+    public static final Parcelable.Creator<Lead> CREATOR = new Parcelable.Creator<Lead>() {
         @Override
-        public ClienteDetalle createFromParcel(Parcel in) {
-            return new ClienteDetalle(in);
+        public Lead createFromParcel(Parcel in) {
+            return new Lead(in);
         }
 
         @Override
-        public ClienteDetalle[] newArray(int size) {
-            return new ClienteDetalle[size];
+        public Lead[] newArray(int size) {
+            return new Lead[size];
         }
     };
-    private String id;
     private String date_entered;
     private String date_modified;
     private String modified_user_id;
@@ -93,152 +100,99 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
     private String email_address;
     private String campaign_name;
     private String assigned_user_name;
-
-    public ClienteDetalle(String id,
-                          String date_entered,
-                          String date_modified,
-                          String modified_user_id,
-                          String created_by,
-                          String description,
-                          String deleted,
-                          String assigned_user_id,
-                          String salutation,
-                          String first_name,
-                          String last_name,
-                          String title,
-                          String department,
-                          String do_not_call,
-                          String phone_home,
-                          String phone_mobile,
-                          String phone_work,
-                          String phone_other,
-                          String phone_fax,
-                          String primary_address_street,
-                          String primary_address_city,
-                          String primary_address_state,
-                          String primary_address_postalcode,
-                          String primary_address_country,
-                          String alt_address_street,
-                          String alt_address_city,
-                          String alt_address_state,
-                          String alt_address_postalcode,
-                          String alt_address_country,
-                          String assistant,
-                          String assistant_phone,
-                          String converted,
-                          String refered_by,
-                          String lead_source,
-                          String lead_source_description,
-                          String status,
-                          String status_description,
-                          String reports_to_id,
-                          String account_name,
-                          String account_description,
-                          String contact_id,
-                          String account_id,
-                          String opportunity_id,
-                          String opportunity_name,
-                          String opportunity_amount,
-                          String campaign_id,
-                          String birthdate,
-                          String portal_name,
-                          String portal_app,
-                          String website,
-                          String id_c,
-                          String razonsocial_c,
-                          String accion_c,
-                          String fecha_c,
-                          String fecha2_c,
-                          String fecha3_c,
-                          String retroalimentacion2_c,
-                          String retroalimentacion3_c,
-                          String responsable_c,
-                          String responsable2_c,
-                          String responsable3_c,
-                          String fuente_c,
-                          String medio_c,
-                          String otro_c,
-                          String tiposolicitud_c,
-                          String valor_real_c,
-                          String marca_c,
-                          String estado_c,
-                          String email_address,
-                          String campaign_name,
-                          String assigned_user_name) {
-        setId(id);
-        setDate_entered(date_entered);
-        setDate_modified(date_modified);
-        setModified_user_id(modified_user_id);
-        setCreated_by(created_by);
-        setDescription(description);
-        setDeleted(deleted);
-        setAssigned_user_id(assigned_user_id);
-        setSalutation(salutation);
-        setFirst_name(first_name);
-        setLast_name(last_name);
-        setTitle(title);
-        setDepartment(department);
-        setDo_not_call(do_not_call);
-        setPhone_home(phone_home);
-        setPhone_mobile(phone_mobile);
-        setPhone_work(phone_work);
-        setPhone_other(phone_other);
-        setPhone_fax(phone_fax);
-        setPrimary_address_street(primary_address_street);
-        setPrimary_address_city(primary_address_city);
-        setPrimary_address_state(primary_address_state);
-        setPrimary_address_postalcode(primary_address_postalcode);
-        setPrimary_address_country(primary_address_country);
-        setAlt_address_street(alt_address_street);
-        setAlt_address_city(alt_address_city);
-        setAlt_address_state(alt_address_state);
-        setAlt_address_postalcode(alt_address_postalcode);
-        setAlt_address_country(alt_address_country);
-        setAssistant(assistant);
-        setAssistant_phone(assistant_phone);
-        setConverted(converted);
-        setRefered_by(refered_by);
-        setLead_source(lead_source);
-        setLead_source_description(lead_source_description);
-        setStatus(status);
-        setStatus_description(status_description);
-        setReports_to_id(reports_to_id);
-        setAccount_name(account_name);
-        setAccount_description(account_description);
-        setContact_id(contact_id);
-        setAccount_id(account_id);
-        setOpportunity_id(opportunity_id);
-        setOpportunity_name(opportunity_name);
-        setOpportunity_amount(opportunity_amount);
-        setCampaign_id(campaign_id);
-        setBirthdate(birthdate);
-        setPortal_name(portal_name);
-        setPortal_app(portal_app);
-        setWebsite(website);
-        setId_c(id_c);
-        setRazonsocial_c(razonsocial_c);
-        setAccion_c(accion_c);
-        setFecha_c(fecha_c);
-        setFecha2_c(fecha2_c);
-        setFecha3_c(fecha3_c);
-        setRetroalimentacion2_c(retroalimentacion2_c);
-        setRetroalimentacion3_c(retroalimentacion3_c);
-        setResponsable_c(responsable_c);
-        setResponsable2_c(responsable2_c);
-        setResponsable3_c(responsable3_c);
-        setFuente_c(fuente_c);
-        setMedio_c(medio_c);
-        setOtro_c(otro_c);
-        setTiposolicitud_c(tiposolicitud_c);
-        setValor_real_c(valor_real_c);
-        setMarca_c(marca_c);
-        setEstado_c(estado_c);
-        setEmail_address(email_address);
-        setCampaign_name(campaign_name);
-        setAssigned_user_name(assigned_user_name);
+    
+    public Lead( ){
+    }
+    
+    public Lead( String id,  String first_name, String last_name ){
+    	this.id = id;
+    	this.first_name = first_name;
+    	this.last_name = last_name;
+    }
+    
+    public Lead( String id,  String first_name, String company, String phone_work, String phone_mobile ){
+    	this.id = id;
+    	this.first_name = first_name;
+    	this.razonsocial_c = validate(company);
+    	this.phone_work = validate(phone_work);
+    	this.phone_mobile = validate(phone_mobile);
+    }
+    
+    public Lead(JSONObject obj) throws JSONException {
+    	setId(validate(obj.getString("id")));
+    	setDate_entered(validate(obj.getString("date_entered")));
+    	setDate_modified(validate(obj.getString("date_modified")));
+    	setModified_user_id(validate(obj.getString("modified_user_id")));
+    	setCreated_by(validate(obj.getString("created_by")));
+    	setDescription(validate(obj.getString("description")));
+    	setDeleted(validate(obj.getString("deleted")));
+    	setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+    	setSalutation(validate(obj.getString("salutation")));
+    	setFirst_name(validate(obj.getString("first_name")));
+    	setLast_name(validate(obj.getString("last_name")));
+    	setTitle(validate(obj.getString("title")));
+    	setDepartment(validate(obj.getString("department")));
+    	setDo_not_call(validate(obj.getString("do_not_call")));
+    	setPhone_home(validate(obj.getString("phone_home")));
+    	setPhone_mobile(validate(obj.getString("phone_mobile")));
+    	setPhone_work(validate(obj.getString("phone_work")));
+    	setPhone_other(validate(obj.getString("phone_other")));
+    	setPhone_fax(validate(obj.getString("phone_fax")));
+    	setPrimary_address_street(validate(obj.getString("primary_address_street")));
+    	setPrimary_address_city(validate(obj.getString("primary_address_city")));
+    	setPrimary_address_state(validate(obj.getString("primary_address_state")));
+    	setPrimary_address_postalcode(validate(obj.getString("primary_address_postalcode")));
+    	setPrimary_address_country(validate(obj.getString("primary_address_country")));
+    	setAlt_address_street(validate(obj.getString("alt_address_street")));
+    	setAlt_address_city(validate(obj.getString("alt_address_city")));
+    	setAlt_address_state(validate(obj.getString("alt_address_state")));
+    	setAlt_address_postalcode(validate(obj.getString("alt_address_postalcode")));
+    	setAlt_address_country(validate(obj.getString("alt_address_country")));
+    	setAssistant(validate(obj.getString("assistant")));
+    	setAssistant_phone(validate(obj.getString("assistant_phone")));
+    	setConverted(validate(obj.getString("converted")));
+    	setRefered_by(validate(obj.getString("refered_by")));
+    	setLead_source(validate(obj.getString("lead_source")));
+    	setLead_source_description(validate(obj.getString("lead_source_description")));
+    	setStatus(validate(obj.getString("status")));
+    	setStatus_description(validate(obj.getString("status_description")));
+    	setReports_to_id(validate(obj.getString("reports_to_id")));
+    	setAccount_name(validate(obj.getString("account_name")));
+    	setAccount_description(validate(obj.getString("account_description")));
+    	setContact_id(validate(obj.getString("contact_id")));
+    	setAccount_id(validate(obj.getString("account_id")));
+    	setOpportunity_id(validate(obj.getString("opportunity_id")));
+    	setOpportunity_name(validate(obj.getString("opportunity_name")));
+    	setOpportunity_amount(validate(obj.getString("opportunity_amount")));
+    	setCampaign_id(validate(obj.getString("campaign_id")));
+    	setBirthdate(validate(obj.getString("birthdate")));
+    	setPortal_name(validate(obj.getString("portal_name")));
+    	setPortal_app(validate(obj.getString("portal_app")));
+    	setWebsite(validate(obj.getString("website")));
+    	setId_c(validate(obj.getString("id_c")));
+    	setRazonsocial_c(validate(obj.getString("razonsocial_c")));
+    	setAccion_c(validate(obj.getString("accion_c")));
+    	setFecha_c(validate(obj.getString("fecha_c")));
+    	setFecha2_c(validate(obj.getString("fecha2_c")));
+    	setFecha3_c(validate(obj.getString("fecha3_c")));
+    	setRetroalimentacion2_c(validate(obj.getString("retroalimentacion2_c")));
+    	setRetroalimentacion3_c(validate(obj.getString("retroalimentacion3_c")));
+    	setResponsable_c(validate(obj.getString("responsable_c")));
+    	setResponsable2_c(validate(obj.getString("responsable2_c")));
+    	setResponsable3_c(validate(obj.getString("responsable3_c")));
+    	setFuente_c(validate(obj.getString("fuente_c")));
+    	setMedio_c(validate(obj.getString("medio_c")));
+    	setOtro_c(validate(obj.getString("otro_c")));
+    	setTiposolicitud_c(validate(obj.getString("tiposolicitud_c")));
+    	setValor_real_c(validate(obj.getString("valor_real_c")));
+    	setMarca_c(validate(obj.getString("marca_c")));
+    	setEstado_c(validate(obj.getString("estado_c")));
+    	setEmail_address(validate(obj.getString("email_address")));
+    	setCampaign_name(validate(obj.getString("campaign_name")));
+    	setAssigned_user_name(validate(obj.getString("assigned_user_name")));
     }
 
-    protected ClienteDetalle(Parcel in) {
+    protected Lead(Parcel in) {
     	id = validate(in.readString());
         date_entered = validate(in.readString());
         date_modified = validate(in.readString());
@@ -781,6 +735,9 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
     }
 
     public void setResponsable_c(String responsable_c) {
+    	if(responsable_c != null){
+    		responsable_c = responsable_c.replaceAll("\\s", "_");
+    	}
         this.responsable_c = responsable_c;
     }
 
@@ -789,6 +746,9 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
     }
 
     public void setResponsable2_c(String responsable2_c) {
+    	if(responsable2_c != null){
+    		responsable2_c = responsable2_c.replaceAll("\\s", "_");
+    	}
         this.responsable2_c = responsable2_c;
     }
 
@@ -797,6 +757,9 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
     }
 
     public void setResponsable3_c(String responsable3_c) {
+    	if(responsable3_c != null){
+    		responsable3_c = responsable3_c.replaceAll("\\s", "_");
+    	}
         this.responsable3_c = responsable3_c;
     }
 
@@ -841,11 +804,11 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
     }
 
     public String getMarca_c() {
-        return marca_c;
+        return deleteSpecialChar(marca_c);
     }
 
     public void setMarca_c(String marca_c) {
-        this.marca_c = marca_c;
+        this.marca_c = addSpecialChar(marca_c);
     }
 
     public String getEstado_c() {
@@ -962,8 +925,79 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
 
 	@Override
 	public Map<String, String> getDataBean() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("id",id);
+		data.put("date_entered",date_entered);
+		data.put("date_modified",date_modified);
+		data.put("modified_user_id",modified_user_id);
+		data.put("created_by",created_by);
+		data.put("description",Utils.hideTabs(description));
+		data.put("deleted",deleted);
+		data.put("assigned_user_id",assigned_user_id);
+		data.put("salutation",salutation);
+		data.put("first_name",first_name);
+		data.put("last_name",last_name);
+		data.put("title",title);
+		data.put("department",department);
+		data.put("do_not_call",do_not_call);
+		data.put("phone_home",phone_home);
+		data.put("phone_mobile",phone_mobile);
+		data.put("phone_work",phone_work);
+		data.put("phone_other",phone_other);
+		data.put("phone_fax",phone_fax);
+		data.put("primary_address_street",primary_address_street);
+		data.put("primary_address_city",primary_address_city);
+		data.put("primary_address_state",primary_address_state);
+		data.put("primary_address_postalcode",primary_address_postalcode);
+		data.put("primary_address_country",primary_address_country);
+		data.put("alt_address_street",alt_address_street);
+		data.put("alt_address_city",alt_address_city);
+		data.put("alt_address_state",alt_address_state);
+		data.put("alt_address_postalcode",alt_address_postalcode);
+		data.put("alt_address_country",alt_address_country);
+		data.put("assistant",assistant);
+		data.put("assistant_phone",assistant_phone);
+		data.put("converted",converted);
+		data.put("refered_by",refered_by);
+		data.put("lead_source",lead_source);
+		data.put("lead_source_description",lead_source_description);
+		data.put("status",status);
+		data.put("status_description",status_description);
+		data.put("reports_to_id",reports_to_id);
+		data.put("account_name",account_name);
+		data.put("account_description",account_description);
+		data.put("contact_id",contact_id);
+		data.put("account_id",account_id);
+		data.put("opportunity_id",opportunity_id);
+		data.put("opportunity_name",opportunity_name);
+		data.put("opportunity_amount",opportunity_amount);
+		data.put("campaign_id",campaign_id);
+		data.put("birthdate",birthdate);
+		data.put("portal_name",portal_name);
+		data.put("portal_app",portal_app);
+		data.put("website",website);
+		data.put("id_c",id_c);
+		data.put("razonsocial_c",razonsocial_c);
+		data.put("accion_c",accion_c);
+		data.put("fecha_c",fecha_c);
+		data.put("fecha2_c",fecha2_c);
+		data.put("fecha3_c",fecha3_c);
+		data.put("retroalimentacion2_c",retroalimentacion2_c);
+		data.put("retroalimentacion3_c",retroalimentacion3_c);
+		data.put("responsable_c",responsable_c);
+		data.put("responsable2_c",responsable2_c);
+		data.put("responsable3_c",responsable3_c);
+		data.put("fuente_c",fuente_c);
+		data.put("medio_c",medio_c);
+		data.put("otro_c",otro_c);
+		data.put("tiposolicitud_c",tiposolicitud_c);
+		data.put("valor_real_c",valor_real_c);
+		data.put("marca_c",marca_c);
+		data.put("estado_c",estado_c);
+		data.put("email_address",email_address);
+		data.put("campaign_name",campaign_name);
+		data.put("assigned_user_name",assigned_user_name);
+		return data;
 	}
 
 	@Override
@@ -975,5 +1009,10 @@ public class ClienteDetalle extends GenericBean implements Parcelable {
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void accept(DataVisitor visitor) {
+		visitor.add(this);
 	}
 }

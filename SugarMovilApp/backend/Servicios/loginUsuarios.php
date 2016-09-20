@@ -6,10 +6,6 @@ require 'connldap.php';
 function loginUsuarios($usuario,$password)
 {
 
-if($usuario == 'h'){
-  $usuario= 'luz';
-  $password = "temporal2016&apos;";
-}
 	$auth = connectLdap($usuario,$password);
 	if($auth !=  "AUTHENTICATE"){
 	    $array = array("auth" => "FALSE","message" =>"Usuario o Password invalidos");
@@ -30,7 +26,7 @@ if($usuario == 'h'){
 		$rows[] = $r;
 	}
 	
-		
+	
 	if( empty( $rows ) )
 	{
 		$array = array("auth" => "FALSE","message" =>"Usuario No existe en la BD, la primera vez debe ingresar por CRM WEB");
@@ -44,9 +40,9 @@ if($usuario == 'h'){
 		$sql.="FROM users u , acl_roles r , acl_roles_actions ra ,acl_actions a ,acl_roles_users ru ";
 		$sql.="WHERE u.id = ru.user_id AND ru.role_id = r.id AND r.id = ra.role_id ";
 		$sql.="AND ra.action_id = a.id AND ru.deleted = 0 AND ra.deleted = 0 AND u.id ='".$rows[0]['id']."' ";
-		$sql.="AND a.category IN ('Accounts','Opportunities','Contacts','Calls','Tasks','psg_Productos')";
-		//$sql.="AND a.category IN ('Opportunities')";
-
+		$sql.="AND a.category IN ('Accounts','Opportunities','Contacts','Calls','Tasks','psg_Productos',";
+		$sql.="'Notes','Leads','adm_Notas')";
+		
 		$salt = "/hsanchezmovil$/";
 		
 		$resp = $mysqli->query($sql);
@@ -87,6 +83,13 @@ if($usuario == 'h'){
 		);
 		return json_encode($array);		
 	}
+}
+
+function quitar_tildes($cadena) {
+$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
+$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
+$texto = str_replace($no_permitidas, $permitidas ,$cadena);
+return $texto;
 }
 
 ?>

@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(R.drawable.ic_search).resize(70, 70).into(searchIcon);
         int closeSearchImgId = getResources().getIdentifier("android:id/search_close_btn", null, null);
         ImageView closeSearchIcon = (ImageView) mMainSearchView.findViewById(closeSearchImgId);
-        closeSearchIcon.getLayoutParams().height = 60;
-        closeSearchIcon.getLayoutParams().width = 60;
+        closeSearchIcon.getLayoutParams().height = 70;
+        closeSearchIcon.getLayoutParams().width = 70;
         closeSearchIcon.requestLayout();
-        Picasso.with(getApplicationContext()).load(R.drawable.ic_close_search).resize(60,60).into(closeSearchIcon);
+        Picasso.with(getApplicationContext()).load(R.drawable.ic_close_search).resize(70,70).into(closeSearchIcon);
         int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView searchText = (TextView) searchPlate.findViewById(searchTextId);
         searchText.setTextColor(Color.WHITE);
@@ -112,13 +112,14 @@ public class MainActivity extends AppCompatActivity {
         mDataList.add(new DrawerItem("Cuentas", R.drawable.ic_accounts));
         mDataList.add(new DrawerItem("Contactos", R.drawable.ic_contacts));
         mDataList.add(new DrawerItem("Oportunidades", R.drawable.ic_opportunities));
+        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
         mDataList.add(new DrawerItem("Llamadas", R.drawable.ic_calls));
         mDataList.add(new DrawerItem("Productos", R.drawable.ic_products));
         mDataList.add(new DrawerItem("Tareas", R.drawable.ic_tasks));
+        mDataList.add(new DrawerItem("Subtareas", R.drawable.ic_subtasks));
+        mDataList.add(new DrawerItem("Notas", R.drawable.ic_notes));
         mDataList.add(new DrawerItem("Calendario", R.drawable.calendarimg));
         mDataList.add(new DrawerItem("Salir", R.drawable.ic_action_cancel));
-//        mDataList.add(new DrawerItem("Clientes Potenciales", R.drawable.ic_leads));
-
 
         mDrawerAdapter = new DrawerAdapter(this, R.layout.item_drawer,
                 mDataList);
@@ -218,39 +219,48 @@ public class MainActivity extends AppCompatActivity {
                 fragment = OpportunitiesFragment.newInstance();
                 break;
             case 3:
+                ActivitiesMediator.getInstance().defineActualModule(Modules.LEADS);
+                fragment = LeadsFragment.newInstance();
+                break;
+            case 4:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.CALLS);
                 fragment = CallsFragment.newInstance();
                 break;
-            case 4:
+            case 5:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.PRODUCTS);
                 fragment = ProductsFragment.newInstance();
                 break;
-            case 5:
+            case 6:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.TASKS);
                 fragment = TasksFragment.newInstance();
                 break;
-            case 6:
+            case 7:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.SUBTASKS);
+                fragment = SubTasksFragment.newInstance();
+                break;
+            case 8:
+            	ActivitiesMediator.getInstance().defineActualModule(Modules.NOTES);
+                fragment = NotesFragment.newInstance();
+                break;
+	    case 9:
             	ActivitiesMediator.getInstance().defineActualModule(Modules.CALENDAR);
             	ActivitiesMediator.getInstance().showActivity(getApplicationContext(), Modules.CALENDAR, new ActivityBeanCommunicator("",""));
                 break;
-            case 7:
+            case 10:
                 System.exit(0);
                 break;
-//            case 6:
-//                fragment = ClientsFragment.newInstance();
-//                break;
 
             default:
             	position = 0;
             	fragment = AccountsFragment.newInstance();
                 break;
         }
-        if(fragment != null){
-	        fragment.setArguments(args);
-	        FragmentManager frgManager = getFragmentManager();
-	        frgManager.beginTransaction().replace(R.id.container, fragment)
-	                .commit();
-        }
+
+        fragment.setArguments(args);
+        FragmentManager frgManager = getFragmentManager();
+        frgManager.beginTransaction().replace(R.id.container, fragment)
+                .commit();
+        
         mDrawerList.setItemChecked(position, true);
         try{
         	setTitle(mDataList.get(position).getItemName());

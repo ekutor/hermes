@@ -93,7 +93,7 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
         mGlobalVariable = (GlobalClass) getActivity()
                 .getApplicationContext();
 
-        mGlobalVariable.setSelectedItem(4);
+        mGlobalVariable.setSelectedItem(5);
 
         // Main Toolbar
         mMainTextView = ((MainActivity) getActivity()).getMainTextView();
@@ -158,19 +158,9 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
                 return false;
             }
         });
-        
+        mMainSearchView.setQuery("", true);
         GatewayPublisher.getInstance().register(this);
-      //  if(!DataManager.getInstance().IsSynchronized(MODULE)){
-        	// Tarea para consultar productos
-        	GenericTaskPublisher getProducts = new GenericTaskPublisher(getActivity(),MODULE, 
-        			TypeInfoServer.getProductos, "Buscando productos...");
-            getProducts.execute();
-            
-//        }else{
-//        	Log.d(TAG,"Cargando Llamadas desde MEMORIA");
-//        	chargeViewInfo();
-//        }
-//        
+        showProducts();
 	} catch (Exception e) {
 		Message.showShortExt(Utils.errorToString(e), this.getActivity());
 	}
@@ -182,14 +172,20 @@ public class ProductsFragment extends FragmentsModules implements ProductsModule
     public void onResume() {
         super.onResume();
         mMainSearchView.clearFocus();
-        try {
-            mMainSearchView.setIconified(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
         Log.d(TAG, "onResume Fragment Products");
     }
 
+    private void showProducts(){
+    	try {
+        	GenericTaskPublisher getProducts = new GenericTaskPublisher(getActivity(),MODULE, 
+        			TypeInfoServer.getProductos, "Buscando productos...");
+            getProducts.execute();
+            mMainSearchView.setIconified(true);
+        } catch (Exception e) {
+            Message.showShortExt(Utils.errorToString(e), getActivity());
+        }
+    }
     @Override
     public void onPause() {
         super.onPause();

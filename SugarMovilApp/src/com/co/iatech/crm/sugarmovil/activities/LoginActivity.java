@@ -96,6 +96,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 			.getPackageInfo(this.getPackageName(), 0).versionName;
 			TextView txtVersion = (TextView) findViewById(R.id.text_version);
 			txtVersion.setText("Version "+version+"\n © Derechos Reservados.");
+				//	+ "\n VERSION DE PRUEBAS");
 		} catch (NameNotFoundException e) {
 		}
         textUser = (EditText) findViewById(R.id.text_user);
@@ -234,8 +235,8 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
             		user = "crm";
             		passwordUser = "M4rk3tingLAU+*";
             	}
-            	ControlConnection.addHeader("usuario", user);
-            	ControlConnection.addHeader("password", passwordUser);
+            	ControlConnection.addHeader("usuario", user, true);
+            	ControlConnection.addHeader("password", passwordUser, false);
             	getApplicationContext();
             	login = ControlConnection.getInfo(TypeInfoServer.loginUsuarios, LoginActivity.this);
 
@@ -250,7 +251,7 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
                 	ControlConnection.chargeUser(LoginActivity.this);
                 }else{
 	            	mensajeAutenticacion = objAuth.getString("message");
-	            	if(mensajeAutenticacion != null){
+	            	if(mensajeAutenticacion == null || "".equals(mensajeAutenticacion)){
 	            		mensajeAutenticacion = "Falla en la autenticacion";
 	            	}
 	            	return auth;

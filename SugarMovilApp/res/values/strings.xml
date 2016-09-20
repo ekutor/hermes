@@ -34,7 +34,7 @@
     <string name="title_activity_select_oppotunity">SELECCIONAR OPORTUNIDAD</string>
     <string name="title_activity_select_task">SELECCIONAR TAREA</string>
     <string name="title_activity_select_call">SELECCIONAR LLAMADA</string>
-    <string name="title_activity_select_lead">SELECCIONAR CLIENTE POTENCIAL</string>
+    <string name="title_activity_select_lead">SELECCIONAR CLIENTE</string>
     <string name="title_activity_select_user">SELECCIONAR USUARIO</string>
     <string name="title_activity_select_campaign">SELECCIONAR CAMPAÑA</string>
 
@@ -49,6 +49,7 @@
     <string name="cuenta_codigo">Código alterno:</string>
     <string name="cuenta_canal">Canal:</string>
     <string name="cuenta_sector">Sector:</string>
+    <string name="cuenta_clase">Clase:</string>
     <string name="cuenta_tel1">Teléfono 1:</string>
     <string name="cuenta_ext1">Extensión 1:</string>
     <string name="cuenta_tel2">Teléfono 2:</string>
@@ -74,8 +75,12 @@
     <string name="cuenta_usuario">Usuario:</string>
     <string name="cuenta_titulo_segmentacion">SEGMENTACIÓN CLIENTES</string>
     <string name="cuenta_constitucion">Constitución:</string>
-    <string name="cuenta_actual">Ventas actual:</string>
-    <string name="cuenta_anterior">Ventas anterior:</string>
+    <string name="cuenta_actual">Ventas año actual:</string>
+    <string name="cuenta_anterior">Ventas año anterior:</string>
+    <string name="cuenta_pasivo_actual">Pasivos año actual:</string>
+    <string name="cuenta_pasivo_anterior">Pasivos año anterior:</string>
+    <string name="cuenta_activo_actual">Activos Año actual:</string>
+    <string name="cuenta_activo_anterior">Activos Año anterior:</string>
     <string name="cuenta_numero_alianzas"># Alianzas:</string>
     <string name="cuenta_alianzas">Alianzas:</string>
     <string name="cuenta_origen">Origen:</string>
@@ -126,21 +131,29 @@
     <string name="cuenta_wohner">Wohner</string>
     <string name="cuenta_lp">Comun. LP Dolares</string>
     <string name="cuenta_eaton">Maniobra EATON</string>
+    <string name="cuenta_minieaton">Minibreaker EATON</string>
+    <string name="cuenta_mandoeaton">Señal. y Mando EATON</string>
     <string name="cuenta_xenergy">OEM Xenergy</string>
     <string name="cuenta_min_eaton">Precios Minimos EATON</string>
+    <string name="cuenta_netos">Precios Netos Lovato</string>
     <string name="cuenta_desc_ad">Desc. Adicional:</string>
     
     <string name="cuenta_bono_especial">Bonos Especiales</string>
     <string name="cuenta_meta_anual">Meta Anual:</string>
-    <string name="cuenta_meta_tri">Meta Trimsestral:</string>
-    <string name="cuenta_meta_bi">Meta Bimestral:</string>
+    <string name="cuenta_meta_tri">Meta Trimestral:</string>
+    <string name="cuenta_meta_bi">Meta Bimensual:</string>
+    <string name="cuenta_meta_me">Meta Mensual:</string>
     <string name="cuenta_por_bon_anual">% Bonificacion Anual:</string>
     <string name="cuenta_por_bon_bi_eaton">% Bonificacion Bimestral Eaton:</string>
+    <string name="cuenta_por_bon_valor">Valor Bono:</string>
+    <string name="cuenta_por_bon_bim">% Bimensual:</string>
     <string name="cuenta_por_bon_bi_leviton">% Bonificacion Bimestral Leviton:</string>
     <string name="cuenta_por_bon_tri">% Bonificacion Trimestral:</string>
-    <string name="cuenta_por_bon_compra">Bonif. por Compra</string>
+    <string name="cuenta_por_bon_compra">Bonificacion por Compra</string>
     <string name="cuenta_por_bon_eaton">Maniobra Eaton</string>
-    <string name="cuenta_por_bon_leviton">Bonificacion Leviton</string>
+    <string name="cuenta_por_bon_leviton">Señalizacion y Mando Eaton</string>
+    <string name="cuenta_por_man_lovato">Maniobra Lovato</string>
+    <string name="cuenta_por_bon_flexible">Bonificacion Flexible Eaton</string>
     <string name="cuenta_desp_rem">Des Remsion x Cierre</string>
     <string name="cuenta_no_cobro">No Cobro Anticipo</string>
     <string name="cuenta_estrategia1">Estrategia 1:</string>
@@ -299,8 +312,8 @@
     <string name="codigo_grupo">Grupo:</string>
 
     <!-- Cliente Activity -->
-    <string name="title_activity_client">CLIENTE</string>
-    <string name="title_activity_create_client">CREAR CLIENTE</string>
+    <string name="title_activity_client">CLIENTE POTENCIAL</string>
+    <string name="title_activity_create_client">CREAR CLIENTE </string>
     <string name="title_activity_edit_client">EDITAR CLIENTE</string>
     <string name="cliente_titulo_vision">VISIÓN GENERAL</string>
     <string name="cliente_razon">Razón Social:</string>
@@ -312,6 +325,8 @@
     <string name="cliente_cargo">Cargo:</string>
     <string name="cliente_departamento">Departamento:</string>
     <string name="cliente_direccion">Dirección:</string>
+    <string name="cliente_ciudad">Ciudad:</string>
+    <string name="cliente_provincia">Estado/Provincia:</string>
     <string name="cliente_correo">Correo:</string>
     <string name="cliente_sito">Sitio web:</string>
     <string name="cliente_requerimiento">Requerimiento:</string>
@@ -323,13 +338,13 @@
     <string name="cliente_marca">Marca:</string>
     <string name="cliente_estado">Estado:</string>
     <string name="cliente_accion">Acción:</string>
-    <string name="cliente_retroalimenta">Retroalimenta:</string>
+    <string name="cliente_retroalimenta">Retroalimentacion:</string>
     <string name="cliente_fecha">Fecha:</string>
     <string name="cliente_responsable">Responsable:</string>
-    <string name="cliente_retroalimenta2">Retroalimenta 2:</string>
+    <string name="cliente_retroalimenta2">Retroalimentacion 2:</string>
     <string name="cliente_fecha2">Fecha 2:</string>
     <string name="cliente_resposable2">Responsable 2:</string>
-    <string name="cliente_retroalimenta3">Retroalimenta 3:</string>
+    <string name="cliente_retroalimenta3">Retroalimentacion 3:</string>
     <string name="cliente_fecha3">Fecha 3:</string>
     <string name="cliente_responsable3">Responsable 3:</string>
     <string name="cliente_valor_real">Valor real:</string>
@@ -360,6 +375,19 @@
     <string name="tarea_titulo_relacion">RELACIONADO CON:</string>
     <string name="tarea_tipo">Tipo:</string>
     <string name="tarea_nombre">Nombre:</string>
+    
+     <!-- Nota Activity -->
+    <string name="title_activity_notes">NOTA</string>
+    <string name="title_activity_create_note">CREAR NOTA</string>
+    <string name="nota_nombre">Nombre Nota:</string>
+    <string name="nota_fecha_inicio">Fecha Publicación:</string>
+    <string name="nota_fecha_fin">Fecha Caducidad:</string>
+    <string name="nota_padre">Subtarea:</string>
+    
+     <!-- SubTarea Activity -->
+    <string name="title_activity_subtask">SUBTAREA</string>
+    <string name="subtarea_descripcion">Subtarea:</string>
+    <string name="title_activity_create_subtask">CREAR SUBTAREA</string>
 
     <string name="dialog_message_task">Se creó la tarea con exito</string>
     <string name="dialog_edit_message_task">Se editó la tarea con exito</string>
