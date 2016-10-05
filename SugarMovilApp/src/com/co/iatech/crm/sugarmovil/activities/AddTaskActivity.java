@@ -24,7 +24,7 @@ import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
@@ -489,8 +489,8 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		if (selectedBean instanceof User) {
 			User selectedUser = (User) selectedBean;
 			asignadoA.setText(selectedUser.getUser_name());
-		} else if (selectedBean instanceof Cuenta) {
-			Cuenta ac = (Cuenta) selectedBean;
+		} else if (selectedBean instanceof Account) {
+			Account ac = (Account) selectedBean;
 			valorNombre.setText(ac.getName());
 		}
 

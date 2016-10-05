@@ -55,9 +55,18 @@ public class GenericTaskPublisher extends AsyncTask<String, Void, Boolean> {
         	
         	//Params
         	 if(params != null && params.length > 1){
-        		 String key = params[0];
-            	 String id = params[1];
-        		 ControlConnection.addHeader(key, id, true);
+        		 int boucle = params.length / 2;
+        		 try{
+        			 boolean cleanCache = true;
+	        		 for(int i = 0; i < params.length ; i++ ){
+		        		 String key = params[i];
+		            	 String id = params[++i];
+		        		 ControlConnection.addHeader(key, id, cleanCache);
+		        		 cleanCache = false;
+	        		 }
+        		 }catch(java.lang.ArrayIndexOutOfBoundsException ie){
+        			 ie.printStackTrace();
+        		 }
         	}
             // Resultado
             response= "";

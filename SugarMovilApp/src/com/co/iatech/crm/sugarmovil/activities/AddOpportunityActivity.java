@@ -17,7 +17,7 @@ import com.co.iatech.crm.sugarmovil.conex.ControlConnection.Modo;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
@@ -445,8 +445,8 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 		if(selectedBean instanceof User){
 			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());
-		}else if(selectedBean instanceof Cuenta){
-			Cuenta ac = (Cuenta) selectedBean;
+		}else if(selectedBean instanceof Account){
+			Account ac = (Account) selectedBean;
 			valorCuenta.setText(ac.getName());
 		}
 	}

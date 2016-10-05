@@ -5,31 +5,18 @@
     android:id="@+id/calendar_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/lightgray"
+    android:background="@color/white"
     android:orientation="vertical" >
-
-    	
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_task"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:elevation="8dp"
-            android:gravity="start"
-            app:contentInsetEnd="10dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetRight="10dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/lightgray"
-            >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left|center">
+                android:layout_height="30sp"
+                android:background="@color/sky"
+                >
 				
                 <ImageView
 		            android:id="@+id/prevMonth"
-		            android:layout_width="40sp"
+		            android:layout_width="20sp"
 		            android:layout_height="fill_parent"
 		            android:layout_gravity="center"
 		            android:layout_marginLeft="10sp"
@@ -63,7 +50,7 @@
 		        </ImageView>
 
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+   
 
     <Button
         android:id="@+id/selectedDayMonthYear"
@@ -74,12 +61,25 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF" >
     </Button>
+    
+	<LinearLayout
+        android:id="@+id/grid_days_layout"
+        android:layout_width="match_parent"
+        android:layout_height="20dip"
+        android:gravity="center|top"
+        android:orientation="horizontal" >
 
+    </LinearLayout>
+    
     <GridView
         android:id="@+id/grid_calendar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:numColumns="7" >
+        android:numColumns="7" 
+        android:horizontalSpacing="1dp"
+	    android:verticalSpacing="1dp"
+	    
+	    android:clipToPadding="false" >
     </GridView>
 
 </LinearLayout>

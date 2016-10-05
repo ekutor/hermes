@@ -10,7 +10,7 @@ import com.co.iatech.crm.sugarmovil.adapters.RecyclerAccountsAdapter;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
@@ -220,7 +220,7 @@ public class AccountsFragment extends Fragment {
                  for (int i = 0; i < jArr.length(); i++) {
                      JSONObject obj = jArr.getJSONObject(i);
         
-                     DataManager.getInstance().accountsInfo.add(new Cuenta(obj));
+                     DataManager.getInstance().accountsInfo.add(new Account(obj));
                  }
                  ListsHolder.saveList(ListsHolderType.ACCOUNTS, DataManager.getInstance().accountsInfo);
                  DataManager.getInstance().defSynchronize(Modules.ACCOUNTS);

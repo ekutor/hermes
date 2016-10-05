@@ -132,6 +132,14 @@ public class Utils {
 		SimpleDateFormat sdout = new SimpleDateFormat(DATETIME_FORMAT_FRONTEND);
 		return sdout.format(c.getTime());
 	}
+	
+	public static CharSequence convertTimetoStringBackend(Calendar c) {
+		if(c == null){
+			c = Calendar.getInstance();
+		}
+		SimpleDateFormat sdout = new SimpleDateFormat(DATETIME_FORMAT_BACKEND);
+		return sdout.format(c.getTime());
+	}
 
 	public static String getMonth(int month) {
 		String m = "";
@@ -176,6 +184,12 @@ public class Utils {
 		return m;
 	}
 
+	public static String getActualMonth(){
+		Calendar c = Calendar.getInstance();
+		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("es"));
+		return month;
+	}
+	
 	public static String delSpecialChars(String value) {
 		if (value != null) {
 			value = value.replace(",", "");
@@ -229,6 +243,18 @@ public class Utils {
 			return Html.fromHtml("<a href="+value+">"+value);
 		}
 		return Html.fromHtml(value);
+	}
+
+	public static int getDay(String dateStart) {
+		try{
+			SimpleDateFormat sdin = new SimpleDateFormat(DATE_FORMAT_BACKEND, new Locale("es", "ES"));
+			Date d = sdin.parse(dateStart);
+			Calendar c = Calendar.getInstance(); c.setTime(d);
+			return c.get(Calendar.DATE);
+		}catch(Exception e ){
+			
+		}
+		return -1;
 	}
 
 }
