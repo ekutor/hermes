@@ -244,8 +244,6 @@ public class MainActivity extends AppCompatActivity {
 				break;
 			case 9:
 				ActivitiesMediator.getInstance().defineActualModule(Modules.CALENDAR);
-				//ActivitiesMediator.getInstance().showActivity(getApplicationContext(), Modules.CALENDAR,
-				//		new ActivityBeanCommunicator("", ""));
 				fragment = CalendarFragment.newInstance();
 				break;
 			case 10:

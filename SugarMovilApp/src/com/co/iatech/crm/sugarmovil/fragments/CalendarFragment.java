@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GatewayPublisher;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTaskPublisher;
@@ -153,7 +154,7 @@ CalendarModule, OnClickListener {
 					150, LayoutParams.WRAP_CONTENT);
 			lparams.gravity = Gravity.CENTER_HORIZONTAL;
 			
-			String[] days = {"D","L","M","X","J","V","S"};
+			String[] days = {"    D","    L","    M","    X","    J","    V","    S"};
 			for(String d : days){
 				TextView tv = new TextView(this.getActivity().getApplicationContext());
 				tv.setLayoutParams(lparams);
@@ -185,7 +186,7 @@ CalendarModule, OnClickListener {
         	String[] params = { "currentUser", ControlConnection.userId , "dateStart" , Utils.convertTimetoStringBackend(_calendar).toString() };
         	
         	tpCalendar.execute(params);
-        	Message.showShortExt( Utils.convertTimetoStringBackend(_calendar).toString() , getActivity());
+        	
         } catch (Exception e) {
             Message.showShortExt(Utils.errorToString(e), getActivity());
         }
@@ -491,7 +492,8 @@ CalendarModule, OnClickListener {
 			try {
 				String date_month_year = (String) view.getTag();
 				selectedDayMonthYearButton.setText("Selected: " + date_month_year);
-
+				ActivitiesMediator.getInstance().showActivity(getActivity(),MODULE, new ActivityBeanCommunicator(date_month_year, ""));
+		         
 				// Date parsedDate = dateFormatter.parse(date_month_year);
 
 			} catch (Exception e) {
