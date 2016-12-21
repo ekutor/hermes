@@ -86,9 +86,6 @@ CalendarModule, OnClickListener {
 	@SuppressLint({ "NewApi", "NewApi", "NewApi", "NewApi" })
 	private final DateFormat dateFormatter = new DateFormat();
 	private static final String dateTemplate = "MMMM yyyy";
-	
-	private Map<Integer,List<Meeting>> metingsMonth;
-
 
 	public CalendarFragment() {
 
@@ -144,8 +141,8 @@ CalendarModule, OnClickListener {
 			
 			
 			calendarView = (GridView) rootView.findViewById(R.id.grid_calendar);
-
-			adapter = new GridCellAdapter(this.getActivity().getApplicationContext(), R.id.calendar_day_gridcell, _calendar , metingsMonth);
+			
+			adapter = new GridCellAdapter(this.getActivity().getApplicationContext(), R.id.calendar_day_gridcell, _calendar , new HashMap<Integer,List<Meeting>>() );
 			adapter.notifyDataSetChanged();
 			calendarView.setAdapter(adapter);
 			
@@ -257,18 +254,13 @@ CalendarModule, OnClickListener {
 	 * @param calendar
 	 * 
 	 */
-	private void setGridCellAdapterToDate(Calendar c) {
+	private void setGridCellAdapterToDate(Calendar c, Map<Integer,List<Meeting>> metingsMonth) {
 		adapter = new GridCellAdapter(this.getActivity().getApplicationContext(), R.id.calendar_day_gridcell, c,metingsMonth);
 		currentMonth.setText(DateFormat.format(dateTemplate, c.getTime()));
 		adapter.notifyDataSetChanged();
 		calendarView.setAdapter(adapter);
 	}
 	
-	private void setGridCellAdapterToDate(int month, int year) {
-		
-		setGridCellAdapterToDate(_calendar);
-	}
-
 	@Override
 	public void onClick(View v) {
 		if (v == prevMonth) {
@@ -466,7 +458,9 @@ CalendarModule, OnClickListener {
 			String theyear = day_color[3];
 			try{
 			num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
+			
 			num_events_per_day.setText("");
+	
 			if ( eventsPerMonthMap != null && !eventsPerMonthMap.isEmpty() ) {
 				int day = Integer.parseInt(theday);
 				if (eventsPerMonthMap.containsKey(day) && !day_color[1].equals("GREY")) {
@@ -549,7 +543,7 @@ CalendarModule, OnClickListener {
 			}
 			
 			selectedDayMonthYearButton.setText("Selected: UPdated");
-			DataManager.getInstance().meetings.clear();
+			Map<Integer,List<Meeting>> metingsMonth;
 			metingsMonth = new HashMap<Integer, List<Meeting>>();
 	        
 			JSONObject jObj = new JSONObject(response.getAdditionalInfo());
@@ -558,7 +552,7 @@ CalendarModule, OnClickListener {
 	        for (int i = 0; i < jArr.length(); i++) {
 	            JSONObject obj = jArr.getJSONObject(i);
 	            Meeting m = new Meeting(obj);
-	            DataManager.getInstance().meetings.add(m);
+	           
 	            int day = Utils.getDay(m.getDateStart());
 	          
 	            if(metingsMonth.containsKey(day)){
@@ -571,7 +565,7 @@ CalendarModule, OnClickListener {
 	           
 	        }
 	        
-	        setGridCellAdapterToDate(_calendar);
+	        setGridCellAdapterToDate(_calendar , metingsMonth);
 	        
 	        
 		} catch (Exception e) {

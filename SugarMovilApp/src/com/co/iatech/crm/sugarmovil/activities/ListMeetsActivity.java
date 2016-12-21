@@ -134,9 +134,7 @@ public class ListMeetsActivity extends CallsModuleActions {
 	        for (int i = 0; i < jArr.length(); i++) {
 	            JSONObject obj = jArr.getJSONObject(i);
 	            Meeting m = new Meeting(obj);
-	            DataManager.getInstance().meetings.add(m);
-	            int day = Utils.getDay(m.getDateStart());
-
+	            
             	lm.add(m);
 
 	        }

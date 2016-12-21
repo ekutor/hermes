@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.model.Meeting;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListCallStatusConverter;
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
@@ -45,9 +47,9 @@ public class RecyclerMeetsAdapter extends RecyclerView.Adapter<RecyclerMeetsAdap
         final Meeting mt = mVisibleDataset.get(position);
 
         holder.name.setText(mt.getName());
-        holder.dateS.setText(Utils.transformTimeBakendToUI(mt.getDateStart()));
+        holder.dateS.setText(Utils.transformTimeBakendToUI(mt.getDateStart(), 5 ));
         holder.location.setText(mt.getLocation());
-        holder.status.setText(mt.getStatus());
+        holder.status.setText(ListCallStatusConverter.getInstance().convert(mt.getStatus(), DataToGet.VALUE));
         // Eventos
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

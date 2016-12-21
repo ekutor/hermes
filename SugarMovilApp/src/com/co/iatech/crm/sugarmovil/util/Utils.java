@@ -50,6 +50,10 @@ public class Utils {
 	}
 
 	public static String transformTimeBakendToUI(String date_closed) {
+		return transformTimeBakendToUI(date_closed , TIME_TO_DIFF_DB_BACKEND );
+	}
+	
+	public static String transformTimeBakendToUI(String date_closed, int timeDiff) {
 		String time = null;
 		if (date_closed != null && !date_closed.equals("")) {
 			try {
@@ -68,7 +72,7 @@ public class Utils {
 				Date d = sdin.parse(date_closed);
 				Calendar dateCal = Calendar.getInstance();
 				dateCal.setTime(d);
-				dateCal.add(Calendar.HOUR, -TIME_TO_DIFF_DB_BACKEND);
+				dateCal.add(Calendar.HOUR, -timeDiff);
 				time = sdout.format(dateCal.getTime());
 			} catch (Exception e) {
 

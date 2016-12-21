@@ -32,7 +32,7 @@ public class DataManager  {
     public List<Notes> notesInfo;
     public List<Lead> leadsInfo;
 	public List<Product> products;
-	public List<Meeting> meetings;
+	
     private Map<Modules,Boolean> synchronizedModules;
     
     
@@ -47,7 +47,7 @@ public class DataManager  {
 		notesInfo = new ArrayList<Notes>();
 		leadsInfo = new ArrayList<Lead>();
 		products = new ArrayList<Product>();
-		meetings = new ArrayList<Meeting>();
+		
 		synchronizedModules = new HashMap<Modules,Boolean>();
 		
 		for(Modules module: Modules.values()){
