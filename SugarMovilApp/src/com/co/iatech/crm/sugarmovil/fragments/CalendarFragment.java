@@ -131,6 +131,7 @@ CalendarModule, OnClickListener {
 
 			selectedDayMonthYearButton = (Button) rootView.findViewById(R.id.selectedDayMonthYear);
 			selectedDayMonthYearButton.setText("Selected: ");
+			selectedDayMonthYearButton.setVisibility(View.INVISIBLE);
 
 			prevMonth = (ImageView) rootView.findViewById(R.id.prevMonth);
 			prevMonth.setOnClickListener(this);
@@ -181,9 +182,15 @@ CalendarModule, OnClickListener {
 	public void chargeViewInfo() {
 		try {
         	GenericTaskPublisher tpCalendar = new GenericTaskPublisher(getActivity(),MODULE, 
-        			TypeInfoServer.getMeeting, "Cargando Agenda...");
-        
-        	String[] params = { "currentUser", ControlConnection.userId , "dateStart" , Utils.convertTimetoStringBackend(_calendar).toString() };
+        			TypeInfoServer.getMeetings, "Cargando Agenda...");
+           Calendar firstdate = Calendar.getInstance();
+           firstdate.set(Calendar.DATE, 1);
+           firstdate.set(Calendar.HOUR, 1);
+           firstdate.set(Calendar.YEAR,  _calendar.get(Calendar.YEAR));
+           firstdate.set(Calendar.MONTH,  _calendar.get(Calendar.MONTH));
+         
+        	String[] params = { "currentUser", ControlConnection.userId , "dateStart" , 
+        			Utils.convertTimetoStringBackend(firstdate).toString() };
         	
         	tpCalendar.execute(params);
         	
@@ -322,12 +329,13 @@ CalendarModule, OnClickListener {
 
 			setCurrentDayOfMonth(c.get(Calendar.DAY_OF_MONTH));
 			setCurrentWeekDay(c.get(Calendar.DAY_OF_WEEK));
+			
+			// Find Number of Events
+			eventsPerMonthMap = eventsPerMonth;
 
 			// Print Month
 			printMonth(c.get(Calendar.MONTH), c.get(Calendar.YEAR));
 
-			// Find Number of Events
-			eventsPerMonthMap = eventsPerMonth;
 		}
 
 		private String getMonthAsString(int i) {
@@ -408,22 +416,23 @@ CalendarModule, OnClickListener {
 			for (int i = 0; i < trailingSpaces; i++) {
 
 				list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-"
-						+ getMonthAsString(prevMonth) + "-" + prevYear);
+						+ (prevMonth+1) + "-" + prevYear);
 			}
 
 			// Current Month Days
+			currentMonth++;
 			for (int i = 1; i <= daysInMonth; i++) {
 				if (i == getCurrentDayOfMonth()) {
-					list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+					list.add(String.valueOf(i) + "-BLUE" + "-" + currentMonth + "-" + yy);
 				} else {
-					list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+					list.add(String.valueOf(i) + "-WHITE" + "-" + currentMonth + "-" + yy);
 				}
 			}
 
 			// Leading Month days
 			for (int i = 0; i < list.size() % 7; i++) {
 
-				list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
+				list.add(String.valueOf(i + 1) + "-GREY" + "-" + (nextMonth+1) + "-" + nextYear);
 			}
 		}
 
@@ -457,7 +466,7 @@ CalendarModule, OnClickListener {
 			String theyear = day_color[3];
 			try{
 			num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
-
+			num_events_per_day.setText("");
 			if ( eventsPerMonthMap != null && !eventsPerMonthMap.isEmpty() ) {
 				int day = Integer.parseInt(theday);
 				if (eventsPerMonthMap.containsKey(day) && !day_color[1].equals("GREY")) {
@@ -491,7 +500,7 @@ CalendarModule, OnClickListener {
 		public void onClick(View view) {
 			try {
 				String date_month_year = (String) view.getTag();
-				selectedDayMonthYearButton.setText("Selected: " + date_month_year);
+				//selectedDayMonthYearButton.setText("Selected: " + date_month_year);
 				ActivitiesMediator.getInstance().showActivity(getActivity(),MODULE, new ActivityBeanCommunicator(date_month_year, ""));
 		         
 				// Date parsedDate = dateFormatter.parse(date_month_year);
@@ -538,6 +547,8 @@ CalendarModule, OnClickListener {
 			if(response.getModule() != MODULE){
 			 return;
 			}
+			
+			selectedDayMonthYearButton.setText("Selected: UPdated");
 			DataManager.getInstance().meetings.clear();
 			metingsMonth = new HashMap<Integer, List<Meeting>>();
 	        
@@ -564,7 +575,7 @@ CalendarModule, OnClickListener {
 	        
 	        
 		} catch (Exception e) {
-			Message.showFinalMessage(this.getFragmentManager(), Utils.errorToString(e), this.getActivity(), MODULE);
+			//Message.showShortExt(Utils.errorToString(e), this.getActivity().getApplicationContext());
 		}
 	}
 

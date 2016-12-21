@@ -342,7 +342,7 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		setPrue_c(validate(obj.getString("prue_c")));
 		setPrueba_c(validate(obj.getString("prueba_c")));
 		setPrueba_c(validate(obj.getString("preuba_c")));
-		setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+		
 		setEmail_address(validate(obj.getString("email_address")));
 		setDescuentocomercial2_c(validate(obj.getString("descuentocomercial2_c")));
 		setDkc2_c(validate(obj.getString("dkc2_c")));
@@ -367,6 +367,11 @@ public class DetailAccount extends GenericBean implements Parcelable {
 		setManiobra_lovato_c(validate(obj.getString("maniobra_lovato_c")));
 		setMeta_bimensual_c(validate(obj.getString("meta_bimensual_c")));
 		setBimensual_c(validate(obj.getString("bimensual_c")));
+		try{
+			setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+		}catch(Exception e){
+			
+		}
 		
 	}
 

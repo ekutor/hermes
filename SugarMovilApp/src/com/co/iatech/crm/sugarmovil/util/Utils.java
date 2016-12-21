@@ -125,6 +125,25 @@ public class Utils {
 		return c;
 	}
 	
+	public static Calendar convertSpecialDate(String text) {
+		Calendar c = Calendar.getInstance();
+		if (text != null) {
+			SimpleDateFormat sdf = null;
+
+				sdf = new SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES"));
+			
+			try {
+				Date d = sdf.parse(text);
+				c.setTime(d);
+			} catch (ParseException ex) {
+				ex.printStackTrace();
+			}
+
+		}
+		return c;
+	}
+	
+	
 	public static CharSequence convertTimetoStringFrontEnd(Calendar c) {
 		if(c == null){
 			c = Calendar.getInstance();

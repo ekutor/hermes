@@ -1,18 +1,11 @@
 package com.co.iatech.crm.sugarmovil.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
-import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter.SearchType;
-import com.co.iatech.crm.sugarmovil.adapters.search.IAdapterItems;
-import com.co.iatech.crm.sugarmovil.model.Account;
-import com.co.iatech.crm.sugarmovil.model.Lead;
+import com.co.iatech.crm.sugarmovil.model.Meeting;
+import com.co.iatech.crm.sugarmovil.util.Utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,10 +21,10 @@ public class RecyclerMeetsAdapter extends RecyclerView.Adapter<RecyclerMeetsAdap
      */
     private Context context;
 
-    private List<Lead> mDataset;
-    private List<Lead> mVisibleDataset;
+    private List<Meeting> mDataset;
+    private List<Meeting> mVisibleDataset;
 
-    public RecyclerMeetsAdapter(Context context,List<Lead> mAccountsArray) {
+    public RecyclerMeetsAdapter(Context context,List<Meeting> mAccountsArray) {
         this.context = context;
         mDataset = mAccountsArray;
         mVisibleDataset = mDataset;
@@ -49,22 +42,22 @@ public class RecyclerMeetsAdapter extends RecyclerView.Adapter<RecyclerMeetsAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Lead lead = mVisibleDataset.get(position);
+        final Meeting mt = mVisibleDataset.get(position);
 
-        holder.txtName.setText(lead.getFirst_name());
-        holder.txtCompany.setText(lead.getRazonsocial_c());
-        holder.txtPhonework.setText(lead.getPhone_work());
-        holder.txtPhoneMobile.setText(lead.getPhone_mobile());
+        holder.name.setText(mt.getName());
+        holder.dateS.setText(Utils.transformTimeBakendToUI(mt.getDateStart()));
+        holder.location.setText(mt.getLocation());
+        holder.status.setText(mt.getStatus());
         // Eventos
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Account Activity     
-                ActivitiesMediator.getInstance().showActivity(context,Modules.LEADS, new ActivityBeanCommunicator(lead.getId(), lead.getFirst_name()));
+                //ActivitiesMediator.getInstance().showActivity(context,Modules.MEETS, new ActivityBeanCommunicator(lead.getId(), lead.getFirst_name()));
             }
         });
 
-        holder.itemView.setTag(lead);
+        holder.itemView.setTag(mt);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -73,23 +66,7 @@ public class RecyclerMeetsAdapter extends RecyclerView.Adapter<RecyclerMeetsAdap
         return mVisibleDataset.size();
     }
 
-    public void flushFilter() {
-        mVisibleDataset = new ArrayList<Lead>();
-        mVisibleDataset.addAll(mDataset);
-        notifyDataSetChanged();
-    }
-
-    public void setFilter(String queryText) {
-
-        mVisibleDataset = new ArrayList<Lead>();
-        for (Lead item : mDataset) {
-            if (item.getFirst_name().toLowerCase().contains(queryText))
-                mVisibleDataset.add(item);
-            if (item.getRazonsocial_c().toLowerCase().contains(queryText))
-                mVisibleDataset.add(item);
-        }
-        notifyDataSetChanged();
-    }
+    
 
     /**
      * Clase para ViewHolder
@@ -97,18 +74,20 @@ public class RecyclerMeetsAdapter extends RecyclerView.Adapter<RecyclerMeetsAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
     	
     	public LinearLayout itemLayout;
-        public TextView txtName;
-        public TextView txtCompany;
-        public TextView txtPhonework;
-        public TextView txtPhoneMobile;
+        public TextView name;
+        public TextView dateS;
+        public TextView location;
+        public TextView duration;
+        public TextView status;
 
         public ViewHolder(View v) {
             super(v);
-            itemLayout = (LinearLayout) v.findViewById(R.id.item_leads);
-            txtName = (TextView) v.findViewById(R.id.leadName);
-            txtCompany = (TextView) v.findViewById(R.id.leadCompany);
-            txtPhonework = (TextView) v.findViewById(R.id.leadPhoneW);
-            txtPhoneMobile = (TextView) v.findViewById(R.id.leadPhoneM);
+            itemLayout = (LinearLayout) v.findViewById(R.id.item_meet);
+            name = (TextView) v.findViewById(R.id.mtName);
+            dateS = (TextView) v.findViewById(R.id.mtStartDate);
+            location = (TextView) v.findViewById(R.id.location);
+            duration = (TextView) v.findViewById(R.id.duration);
+            status = (TextView) v.findViewById(R.id.status);
         }
     }
 }
