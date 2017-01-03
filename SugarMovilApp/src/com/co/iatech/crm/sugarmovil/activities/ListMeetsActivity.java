@@ -113,7 +113,7 @@ public class ListMeetsActivity extends CallsModuleActions {
    	public void applyActions() {
    		actionButton = (ActionButton) findViewById(R.id.action_button);
    		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
-   		actionButton.setVisibility(View.INVISIBLE);
+   		
    	}
    	
    	@Override

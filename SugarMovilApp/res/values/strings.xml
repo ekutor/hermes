@@ -388,6 +388,16 @@
     <string name="title_activity_subtask">SUBTAREA</string>
     <string name="subtarea_descripcion">Subtarea:</string>
     <string name="title_activity_create_subtask">CREAR SUBTAREA</string>
+    
+    <!-- SubTarea Activity -->
+    <string name="title_activity_create_meet">CREAR REUNION</string>
+    <string name="cal_lugar">Trabajo Estimado en días:</string>
+	<string name="cal_tipo_reunion">Tipo de Reunion:</string>
+	<string name="cal_objetivos">Objetivos de Viaje:</string>
+	<string name="cal_compromisos">Compromisos Adquiridos:</string>
+	<string name="cal_asistentes">ASISTENTES:</string>
+	<string name="cal_anadir">añadir:</string>
+	
 
     <string name="dialog_message_task">Se creó la tarea con exito</string>
     <string name="dialog_edit_message_task">Se editó la tarea con exito</string>
