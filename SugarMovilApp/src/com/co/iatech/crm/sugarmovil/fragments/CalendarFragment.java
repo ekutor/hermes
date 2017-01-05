@@ -499,7 +499,7 @@ CalendarModule, OnClickListener {
 				//.getInstance().showActivity(getActivity(),MODULE, new ActivityBeanCommunicator(date_month_year, ""));
 
 				ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(date_month_year,""), MODULE);
-				ActivitiesMediator.getInstance().showList(getActivity().getApplicationContext(), MODULE, MODULE);
+				ActivitiesMediator.getInstance().showList(getActivity(), MODULE, MODULE);
 
 			} catch (Exception e) {
 				Message.showShortExt(Utils.errorToString(e), getActivity());

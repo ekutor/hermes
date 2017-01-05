@@ -41,6 +41,7 @@ public class Meeting extends GenericBean implements Parcelable  	{
     private String description;
     private String objetivos;
     private String compromisos;
+    private String tipo_c;
     //private String created_by;
     
     
@@ -61,6 +62,10 @@ public class Meeting extends GenericBean implements Parcelable  	{
         setType(validate(obj.getString("type")));
         setReminderTime(validate(obj.getString("reminder_time")));
         setUserId(validate(obj.getString("user_id")));
+        setDescription(validate(obj.getString("description")));
+        setTipo_c(validate(obj.getString("tipo_c")));
+        setCompromisos(validate(obj.getString("compromiso_c")));
+        setObjetivos(validate(obj.getString("objetivos_c")));
         
     }
 
@@ -78,6 +83,10 @@ public class Meeting extends GenericBean implements Parcelable  	{
         setType(in.readString());
         setReminderTime(in.readString());
         setUserId(in.readString());
+        setDescription(in.readString());
+        setTipo_c(in.readString());
+        setCompromisos(in.readString());
+        setObjetivos(in.readString());
     }
 
     @Override
@@ -100,6 +109,10 @@ public class Meeting extends GenericBean implements Parcelable  	{
         dest.writeString(getType());
         dest.writeString(getReminderTime());
         dest.writeString(getUserId());
+        dest.writeString(getDescription());
+        dest.writeString(getTipo_c());
+        dest.writeString(getCompromisos());
+        dest.writeString(getObjetivos());
        
     }
 
@@ -232,6 +245,14 @@ public class Meeting extends GenericBean implements Parcelable  	{
 		this.compromisos = compromisos;
 	}
 
+	public String getTipo_c() {
+		return tipo_c;
+	}
+
+	public void setTipo_c(String tipo_c) {
+		this.tipo_c = tipo_c;
+	}
+
 	@Override
 	public Map<String, String> getDataBean() {
 		Map<String, String> data = new HashMap<String, String>();
@@ -243,7 +264,7 @@ public class Meeting extends GenericBean implements Parcelable  	{
 		data.put("description",description);
 		data.put("commitment",compromisos);
 		data.put("objectives",objetivos);
-		data.put("type",type);
+		data.put("type",tipo_c);
 		data.put("status",status);
 		data.put("duration_hours",durationHours);
 		data.put("duration_minutes",durationMinutes);

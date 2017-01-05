@@ -1,11 +1,11 @@
 package com.co.iatech.crm.sugarmovil.activtities.modules;
 
-import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.model.Meeting;
 
 import android.os.Parcelable;
 
 public abstract class CalendarModuleActions extends AbstractMovilModuleActions implements CalendarModule {
-	protected DetailTask selectedBean;
+	protected Meeting selectedBean;
 
 	@Override
 	public Modules getModule() {
@@ -14,7 +14,7 @@ public abstract class CalendarModuleActions extends AbstractMovilModuleActions i
 
 	@Override
 	public String getAssignedUser() {
-		return selectedBean.getAssigned_user_id();
+		return selectedBean.getUserId();
 	}
 
 	@Override

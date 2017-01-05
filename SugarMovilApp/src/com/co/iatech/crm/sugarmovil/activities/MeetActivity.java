@@ -11,6 +11,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.CalendarModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
+import com.co.iatech.crm.sugarmovil.model.Meeting;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.ListsConversor;
@@ -25,24 +26,19 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MeetActivity extends CalendarModuleActions implements OnClickListener {
+public class MeetActivity extends CalendarModuleActions {
 
-	/**
-	 * UI References.
-	 */
-	private Toolbar mTareaToolbar;
-	private ImageButton imgButtonSubTasks;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_task);
+		setContentView(R.layout.activity_meet);
 		try {
 			selectedBean = null;
 
 			// Main Toolbar
-			mTareaToolbar = (Toolbar) findViewById(R.id.toolbar_task);
-			setSupportActionBar(mTareaToolbar);
+			Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_meet);
+			setSupportActionBar(toolbar);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
 
@@ -54,45 +50,53 @@ public class MeetActivity extends CalendarModuleActions implements OnClickListen
 		}
 	}
 
-	public void showValues(DetailTask tareaDetalle) {
+	public void showValues(Meeting meet) {
 		try {
 
 			TextView valorAsunto = (TextView) findViewById(R.id.valor_asunto);
-			valorAsunto.setText(tareaDetalle.getName());
+			valorAsunto.setText(meet.getName());
 
 			TextView valorEstado = (TextView) findViewById(R.id.valor_estado);
 			valorEstado.setText(
-					ListsConversor.convert(ConversorsType.TASKS_STATUS, tareaDetalle.getStatus(), DataToGet.VALUE));
-
+					ListsConversor.convert(ConversorsType.MEETS_STATUS, meet.getStatus(), DataToGet.VALUE));
+			
+			
+			TextView valorL = (TextView) findViewById(R.id.valor_lugar);
+			valorL.setText(meet.getLocation());
+			
 			TextView valorFechaInicio = (TextView) findViewById(R.id.boton_fecha_inicio);
-			valorFechaInicio.setText(Utils.transformTimeBakendToUI(tareaDetalle.getDate_start()));
+			valorFechaInicio.setText(Utils.transformTimeBakendToUI(meet.getDateStart()));
 
 			TextView valorFechaVence = (TextView) findViewById(R.id.boton_fecha_vence);
-			valorFechaVence.setText(Utils.transformTimeBakendToUI(tareaDetalle.getDate_due()));
-
-			TextView valorContacto = (TextView) findViewById(R.id.valor_contacto);
-			valorContacto.setText(tareaDetalle.getContact_name());
-
-			TextView valorEstimado = (TextView) findViewById(R.id.valor_estimado);
-			valorEstimado.setText(tareaDetalle.getTrabajo_estimado_c());
-			TextView valorPrioridad = (TextView) findViewById(R.id.valor_prioridad);
-
-			valorPrioridad.setText(
-					ListsConversor.convert(ConversorsType.TASKS_PRIORITY, tareaDetalle.getPriority(), DataToGet.VALUE));
-
+			valorFechaVence.setText(Utils.transformTimeBakendToUI(meet.getDateEnd()));
+			
+			TextView valorDuracion = (TextView) findViewById(R.id.valor_duracion);
+			valorDuracion.setText(meet.getDurationHours());
+			
 			TextView valorDescripcion = (TextView) findViewById(R.id.valor_descripcion);
-			valorDescripcion.setText(tareaDetalle.getDescription());
+			valorDescripcion.setText(meet.getDescription());
+			
+			TextView valorObj= (TextView) findViewById(R.id.valor_objetivos);
+			valorObj.setText(meet.getObjetivos());
+			
+			TextView valorComp = (TextView) findViewById(R.id.valor_compromisos);
+			valorComp.setText(meet.getCompromisos());
 
 			TextView valorTipo = (TextView) findViewById(R.id.valor_tipo);
-			valorTipo.setText(
-					ListsConversor.convert(ConversorsType.TASKS_TYPE, tareaDetalle.getParent_type(), DataToGet.VALUE));
+//			valorTipo.setText(
+//					ListsConversor.convert(ConversorsType.MEETS_TYPE, meet.getParentType(), DataToGet.VALUE));
 
 			TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
-			valorAsignado.setText(tareaDetalle.getAssigned_user_name());
+			//valorAsignado.setText(meet.getAssigned_user_name());
 
 			TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
 
-			valorNombre.setText(tareaDetalle.getParent_name());
+			//valorNombre.setText(meet.getParent_name());
+			
+			
+			TextView valorTipoR= (TextView) findViewById(R.id.valor_tipoReu);
+			valorTipoR.setText(
+					ListsConversor.convert(ConversorsType.MEETS_TYPE, meet.getTipo_c(), DataToGet.VALUE));
 		} catch (Exception e) {
 
 			Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), this, MODULE);
@@ -103,7 +107,7 @@ public class MeetActivity extends CalendarModuleActions implements OnClickListen
 	@Override
 	public void onResume() {
 		try {
-			selectedBean = (DetailTask) ActivitiesMediator.getInstance().getBeanInfo();
+			selectedBean = (Meeting) ActivitiesMediator.getInstance().getBeanInfo();
 			if (selectedBean != null) {
 				this.showValues(selectedBean);
 			}
@@ -116,8 +120,6 @@ public class MeetActivity extends CalendarModuleActions implements OnClickListen
 
 	@Override
 	public void applyActions() {
-		imgButtonSubTasks = (ImageButton) findViewById(R.id.image_subtasks);
-		imgButtonSubTasks.setOnClickListener(this);
 
 		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
 		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
@@ -131,7 +133,7 @@ public class MeetActivity extends CalendarModuleActions implements OnClickListen
 
 			if (jArr.length() > 0) {
 				JSONObject obj = jArr.getJSONObject(0);
-				selectedBean = new DetailTask(obj);
+				selectedBean = new Meeting(obj);
 				showValues(selectedBean);
 			}
 
@@ -144,35 +146,10 @@ public class MeetActivity extends CalendarModuleActions implements OnClickListen
 	@Override
 	public void chargeViewInfo() {
 		Intent intent = getIntent();
-
-		if (intent.getExtras().get(MODULE.getModuleName()) instanceof DetailTask) {
-			selectedBean = (DetailTask) intent.getExtras().get(MODULE.getModuleName());
-			this.showValues(selectedBean);
-		} else {
 			beanCommunicator = intent.getParcelableExtra(MODULE.name());
-			String[] params = { "idTask", beanCommunicator.id };
-			this.executeTask(params, TypeInfoServer.getTask);
-		}
-	}
-
-	@Override
-	public void onClick(View v) {
-		try {
-			Modules moduletoStart = null;
-
-			if (v.getId() == imgButtonSubTasks.getId()) {
-				moduletoStart = Modules.SUBTASKS;
-				if (selectedBean != null) {
-					ActivitiesMediator.getInstance().setParentBean(selectedBean);
-					ActivitiesMediator.getInstance().setActualID(
-							new ActivityBeanCommunicator(selectedBean.getId(), selectedBean.getName()), MODULE);
-				}
-				ActivitiesMediator.getInstance().showList(MeetActivity.this, moduletoStart, MODULE);
-			}
-			
-		} catch (Exception e) {
-			Message.showShortExt(Utils.errorToString(e), this);
-		}
+			String[] params = { "MeetingId", beanCommunicator.id };
+			this.executeTask(params, TypeInfoServer.getOneMeeting);
+		
 	}
 
 }

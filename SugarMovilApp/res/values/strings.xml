@@ -389,7 +389,8 @@
     <string name="subtarea_descripcion">Subtarea:</string>
     <string name="title_activity_create_subtask">CREAR SUBTAREA</string>
     
-    <!-- SubTarea Activity -->
+    <!-- Meet Activity -->
+    <string name="title_activity_meet">REUNION</string>
     <string name="title_activity_create_meet">CREAR REUNION</string>
     <string name="cal_lugar">Trabajo Estimado en días:</string>
 	<string name="cal_tipo_reunion">Tipo de Reunion:</string>

@@ -140,7 +140,7 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 			selectedMeet = new Meeting();
 			int pos = 0;
 			
-			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
+			pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_TYPE,
 					actualInfo.getActualParentModule().getSugarDBName());
 			valorTipo.setSelection(0);
 	
@@ -276,7 +276,7 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 	public void chargeViewInfo() {
 
 		valorAsunto.setText(selectedMeet.getName());
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedMeet.getStatus());
+		int pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_STATUS, selectedMeet.getStatus());
 		valorEstado.setSelection(pos);
 		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedMeet.getDateStart()));
 		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedMeet.getDateEnd()));
