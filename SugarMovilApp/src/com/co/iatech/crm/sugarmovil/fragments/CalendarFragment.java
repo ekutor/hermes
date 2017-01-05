@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
+import com.co.iatech.crm.sugarmovil.activities.OpportunityActivity;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GatewayPublisher;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTaskPublisher;
 import com.co.iatech.crm.sugarmovil.activities.tasks.IObserverTask;
@@ -494,10 +495,11 @@ CalendarModule, OnClickListener {
 		public void onClick(View view) {
 			try {
 				String date_month_year = (String) view.getTag();
-				//selectedDayMonthYearButton.setText("Selected: " + date_month_year);
-				ActivitiesMediator.getInstance().showActivity(getActivity(),MODULE, new ActivityBeanCommunicator(date_month_year, ""));
-		         
-				// Date parsedDate = dateFormatter.parse(date_month_year);
+				
+				//.getInstance().showActivity(getActivity(),MODULE, new ActivityBeanCommunicator(date_month_year, ""));
+
+				ActivitiesMediator.getInstance().setActualID(new ActivityBeanCommunicator(date_month_year,""), MODULE);
+				ActivitiesMediator.getInstance().showList(getActivity().getApplicationContext(), MODULE, MODULE);
 
 			} catch (Exception e) {
 				Message.showShortExt(Utils.errorToString(e), getActivity());

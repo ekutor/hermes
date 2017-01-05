@@ -6,13 +6,16 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitor;
+import com.co.iatech.crm.sugarmovil.activities.listeners.Visitable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Representa un objeto parcelable para el manejo de las reuniones.
  */
-public class Meeting extends GenericBean implements Parcelable {
+public class Meeting extends GenericBean implements Parcelable  	{
 
     public static final Creator<Meeting> CREATOR
             = new Creator<Meeting>() {
@@ -35,6 +38,11 @@ public class Meeting extends GenericBean implements Parcelable {
     private String type;
     private String reminderTime;
     private String userId;
+    private String description;
+    private String objetivos;
+    private String compromisos;
+    //private String created_by;
+    
     
     
     public Meeting() {}
@@ -199,6 +207,31 @@ public class Meeting extends GenericBean implements Parcelable {
 		this.userId = userId;
 	}
 
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getObjetivos() {
+		return objetivos;
+	}
+
+	public void setObjetivos(String objetivos) {
+		this.objetivos = objetivos;
+	}
+
+	public String getCompromisos() {
+		return compromisos;
+	}
+
+	public void setCompromisos(String compromisos) {
+		this.compromisos = compromisos;
+	}
+
 	@Override
 	public Map<String, String> getDataBean() {
 		Map<String, String> data = new HashMap<String, String>();
@@ -207,15 +240,23 @@ public class Meeting extends GenericBean implements Parcelable {
 		data.put("date_start",dateStart);
 		data.put("date_end",dateEnd);
 		data.put("location",location);
+		data.put("description",description);
+		data.put("commitment",compromisos);
+		data.put("objectives",objetivos);
+		data.put("type",type);
+		data.put("status",status);
 		data.put("duration_hours",durationHours);
 		data.put("duration_minutes",durationMinutes);
-		data.put("status",status);
+		
 		data.put("parent_type",parentType);
 		data.put("parent_id",parentId);
-		data.put("type",type);
+		
+		data.put("assigned_user_id",userId);
+		data.put("created_by",userId);
+
 		data.put("reminder_time",reminderTime);
-		data.put("user_id",userId);
+	
 		return data;
 	}
-    
+
 }

@@ -10,16 +10,11 @@ import org.json.JSONObject;
 
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
-import com.co.iatech.crm.sugarmovil.activtities.modules.ActionsStrategy;
-import com.co.iatech.crm.sugarmovil.activtities.modules.CallsModuleActions;
-import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CalendarModuleActions;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerMeetsAdapter;
-import com.co.iatech.crm.sugarmovil.adapters.search.AdapterSearchUtil;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Meeting;
-import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
 
@@ -33,7 +28,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-public class ListMeetsActivity extends CallsModuleActions {
+public class ListMeetsActivity extends CalendarModuleActions {
 
 
     /**
@@ -112,8 +107,12 @@ public class ListMeetsActivity extends CallsModuleActions {
    	@Override
    	public void applyActions() {
    		actionButton = (ActionButton) findViewById(R.id.action_button);
-   		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
-   		
+   		actionButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				ActivitiesMediator.getInstance().showEditActivity(getApplicationContext(), MODULE,false);
+			}
+		});
+   		actionButton.setVisibility(View.VISIBLE);
    	}
    	
    	@Override

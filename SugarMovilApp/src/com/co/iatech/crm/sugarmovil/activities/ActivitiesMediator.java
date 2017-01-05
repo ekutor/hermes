@@ -88,7 +88,7 @@ public class ActivitiesMediator implements IMediator {
 				intent = new Intent(context, LeadActivity.class);
 				break;
 			case CALENDAR:
-				intent = new Intent(context, ListMeetsActivity.class);
+				intent = new Intent(context, MeetActivity.class);
 				break;
 		default:
 			break;
@@ -139,7 +139,7 @@ public class ActivitiesMediator implements IMediator {
 			case CALENDAR:
 				intent = new Intent(context, AddMeetActivity.class);
 				break;
-
+			
 			default:
 				break;
 		}
@@ -190,6 +190,9 @@ public class ActivitiesMediator implements IMediator {
 				break;
 			case LEADS:
 				intent = new Intent(context, ListLeadsActivity.class);
+				break;
+			case CALENDAR:
+				intent = new Intent(context, ListMeetsActivity.class);
 				break;
 		default:
 			break;

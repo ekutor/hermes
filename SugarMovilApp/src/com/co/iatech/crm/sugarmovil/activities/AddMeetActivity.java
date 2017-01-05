@@ -15,6 +15,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.TimePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.CalendarModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.activtities.modules.TasksModuleEditableActions;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
@@ -26,6 +27,7 @@ import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
 import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
+import com.co.iatech.crm.sugarmovil.model.Meeting;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.User;
@@ -58,14 +60,14 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class AddMeetActivity extends TasksModuleEditableActions {
+public class AddMeetActivity extends CalendarModuleEditableActions {
 
 
 	/**
 	 * Member Variables.
 	 */
 
-	private DetailTask selectedTask;
+	private Meeting selectedMeet;
 
 	private ListUsersConverter lc = new ListUsersConverter();
 	private ListAccountConverter lac = new ListAccountConverter();
@@ -79,16 +81,16 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 	 */
 	private Toolbar mTareaToolbar;
 	private ImageButton imgButtonGuardar;
-	private TextView valorTrabajoEstimado, valorAsunto, valorDescripcion, valorNombre;
-	private Spinner valorEstado, valorTipo, valorPrioridad, valorContacto;
+	private EditText valorAsunto, valorDescripcion, valorObjetivos,valorCompromisos,valorLugar, asistentes;
+	private Spinner valorEstado, valorTipo;
 	private Button botonFechaInicio, botonFechaVen, botonHoraInicio, botonHoraVen;
-	private TextView valorFechaInicio, asignadoA, valorFechaVen;
+	private TextView valorFechaInicio, asignadoA, valorFechaVen, valorNombre;
 
 	public String resultado;
 
 	private boolean selectedTypeTaskAccount;
 
-	private AddTask editTask;
+	private AddMeet editMeet;
 
 	private ActivityBeanCommunicator accountId;
 
@@ -133,55 +135,15 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 		Intent intent = getIntent();
 
 		if (isEditMode) {
-			selectedTask = intent.getParcelableExtra(MODULE.getModuleName());
+			selectedMeet = intent.getParcelableExtra(MODULE.getModuleName());
 		} else {
-			selectedTask = new DetailTask();
+			selectedMeet = new Meeting();
 			int pos = 0;
 			
 			pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
 					actualInfo.getActualParentModule().getSugarDBName());
-			
-			boolean enabled = false;
-			
-			 /* Message.showFinalMessage(getFragmentManager(),"parent "
-			  +actualInfo.getActualParentModule().name()+
-			  "id "+ actualInfo.getActualParentId() + " principal : "+actualInfo.getActualPrincipalModule()
-			  +actualInfo.getActualPrincipalId(), AddTaskActivity.this, MODULE);*/
-			 
-			switch (actualInfo.getActualParentModule()) {
-			case ACCOUNTS:
-				valorNombre.setText(lac.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
-				accountId = actualInfo.getActualParentInfo();
-				break;
-			case OPPORTUNITIES:
-				OportunidadDetalle bean = (OportunidadDetalle) ActivitiesMediator.getInstance().getParentBean();
-				if (bean != null) {
-					valorNombre.setText(bean.getName());
-				}
-				accountId = intent.getParcelableExtra(Modules.ACCOUNTS.name());
-				break;
-			case CONTACTS:
-				if(Modules.ACCOUNTS.equals(actualInfo.getActualPrincipalModule())){
-					accountId = ActivitiesMediator.getInstance().getActualID(Modules.ACCOUNTS);
-					valorNombre.setText(lac.convert(accountId.id, DataToGet.VALUE));
-					
-					pos =  ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
-							Modules.ACCOUNTS.getSugarDBName());
-				}else{
-					
-					valorNombre.setText(
-							allContacts.convert(actualInfo.getActualParentInfo().id, DataToGet.VALUE));
-					
-				}
-				break;
-			default:
-				pos = 0;
-				enabled = true;
-				break;
-			}
-			
-			valorTipo.setSelection(pos);
-			valorTipo.setEnabled(enabled);
+			valorTipo.setSelection(0);
+	
 		}
 
 		
@@ -191,77 +153,49 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 	@Override
 	public void chargeLists() {
 
-		ArrayAdapter<String> contactAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				listContacts.getListInfo());
-		contactAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		valorContacto.setAdapter(contactAdapter);
+
 		// Estado
 
 		ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.TASKS_STATUS));
+				ListsConversor.getValuesList(ConversorsType.MEETS_STATUS));
 		estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorEstado.setAdapter(estadoAdapter);
 
-		ArrayAdapter<String> prioridadAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.TASKS_PRIORITY));
-		prioridadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		valorPrioridad.setAdapter(prioridadAdapter);
 
 		int contactPosition = 0;
 
 		if (isEditMode) {
-			// Contact
-			String contact = selectedTask.getContact_name();
-			valorContacto.setSelection(listContacts.getListInfo().indexOf(contact));
-			valorContacto.setVisibility(View.INVISIBLE);
-			TextView valorContactoOculto = (TextView) findViewById(R.id.text_contacto_hidden);
-			
-			valorContactoOculto.setVisibility(View.VISIBLE);
-			valorContactoOculto.setText(contact);
-			// Parent
-			if (selectedTask.getParent_id() != null && selectedTask.getParent_id().length() > 1) {
-				valorNombre.setText(selectedTask.getParent_name());
-			}
 
+	
 			// Carga Tipos
-			if (selectedTask.getParent_type() != null) {
-				int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_TYPE,
-						selectedTask.getParent_type());
+			if (selectedMeet.getType() != null) {
+				int pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_TYPE,
+						selectedMeet.getType());
 				valorTipo.setSelection(pos);
 			}
-
-			if (selectedTask.getPriority() != null) {
-				valorPrioridad.setSelection(ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, selectedTask.getPriority()));
+			
+			if (selectedMeet.getStatus()!= null) {
+				int pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_STATUS,
+						selectedMeet.getStatus());
+				valorEstado.setSelection(pos);
 			}
 
-		} else {
 
-			// Contact
-			if (actualInfo.getActualParentModule().equals(Modules.CONTACTS)
-					|| actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)) {
-				if (actualInfo.getActualParentModule().equals(Modules.CONTACTS)) {
-					contactPosition = Integer
-							.parseInt(listContacts.convert(actualInfo.getActualParentInfo().id, DataToGet.POS));
-				} else if (actualInfo.getActualPrincipalModule().equals(Modules.CONTACTS)) {
-					contactPosition = Integer
-							.parseInt(listContacts.convert(actualInfo.getActualPrincipalInfo().id, DataToGet.POS));
-				}
-				valorContacto.setSelection(contactPosition);
-			}
+
+		} 
 
 //		valorDescripcion.setText("Parent " + actualInfo.getActualParentModule() + " actual "
 //				+ actualInfo.getActualPrincipalModule() + " " + actualInfo.getActualParentId() + " "
 //				+ actualInfo.getActualPrincipalId() + " pos " + contactPosition + " id account " + accountId);
 
-		valorPrioridad.setSelection(1);
 
 		GlobalClass global = (GlobalClass) getApplicationContext();
 		User u = global.getUsuarioAutenticado();
-		selectedTask.setCreated_by(u.getId());
+		//selectedMeet.setCreated_by(u.getId());
 
 		asignadoA.setText(u.getFirst_name() + " " + u.getLast_name());
-		selectedTask.setAssigned_user_id(u.getId());
-		}
+		//selectedMeet.setAssigned_user_id(u.getId());
+	
 
 	}
 
@@ -273,8 +207,12 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 		valorFechaVen = (TextView) findViewById(R.id.valor_fecha_vence);
 		valorNombre = (TextView) findViewById(R.id.valor_nombre);
 		valorNombre.setOnClickListener(this);
-
-		valorTrabajoEstimado = (EditText) findViewById(R.id.valor_estimado);
+		
+		valorObjetivos = (EditText) findViewById(R.id.valor_objetivos);
+		
+		valorCompromisos = (EditText) findViewById(R.id.valor_compromisos);
+		asistentes = (EditText) findViewById(R.id.valor_asistentes);
+		valorLugar = (EditText) findViewById(R.id.valor_lugar);
 
 		// Fecha Inicio
 		botonFechaInicio = (Button) findViewById(R.id.boton_fecha_inicio);
@@ -294,66 +232,59 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
 
 		// Contacto
-		valorContacto = (Spinner) findViewById(R.id.valor_contacto);
+	
 		valorEstado = (Spinner) findViewById(R.id.valor_estado);
-
-		valorPrioridad = (Spinner) findViewById(R.id.valor_prioridad);
 
 		valorTipo = (Spinner) findViewById(R.id.valor_tipo);
 		ArrayAdapter<String> tipoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.TASKS_TYPE));
+				ListsConversor.getValuesList(ConversorsType.MEETS_TYPE));
 		tipoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		valorTipo.setAdapter(tipoAdapter);
-		valorTipo.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				int visibility;
-				visibility = View.INVISIBLE;
-				selectedTypeTaskAccount = false;
-				Modules selectedModuleType = null;
-				for (Modules mod : nameVisibleOnPermitedModules) {
-					if (valorTipo.getSelectedItem().toString().toLowerCase()
-							.contains(mod.getVisualName().toLowerCase())) {
-						visibility = View.VISIBLE;
-						selectedTypeTaskAccount = true;
-						selectedModuleType = mod;
-						break;
-					}
-				}
-
-				valorNombre.setVisibility(visibility);
-				if (actualInfo.getActualParentInfo() == null && selectedModuleType != null) {
-					valorNombre.setText(
-							ValidatorActivities.SELECT_MESSAGE + " " +selectedModuleType.getVisualName().toLowerCase());
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-		});
+//		valorTipo.setOnItemSelectedListener(new OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//				int visibility;
+//				visibility = View.INVISIBLE;
+//				selectedTypeTaskAccount = false;
+//				Modules selectedModuleType = null;
+//				for (Modules mod : nameVisibleOnPermitedModules) {
+//					if (valorTipo.getSelectedItem().toString().toLowerCase()
+//							.contains(mod.getVisualName().toLowerCase())) {
+//						visibility = View.VISIBLE;
+//						selectedTypeTaskAccount = true;
+//						selectedModuleType = mod;
+//						break;
+//					}
+//				}
+//
+//				valorNombre.setVisibility(visibility);
+//				if (actualInfo.getActualParentInfo() == null && selectedModuleType != null) {
+//					valorNombre.setText(
+//							ValidatorActivities.SELECT_MESSAGE + " " +selectedModuleType.getVisualName().toLowerCase());
+//				}
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> parent) {
+//
+//			}
+//		});
 
 	}
 
 	@Override
 	public void chargeViewInfo() {
 
-		valorAsunto.setText(selectedTask.getName());
-		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedTask.getStatus());
+		valorAsunto.setText(selectedMeet.getName());
+		int pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_STATUS, selectedMeet.getStatus());
 		valorEstado.setSelection(pos);
-		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedTask.getDate_start()));
-		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedTask.getDate_due()));
+		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedMeet.getDateStart()));
+		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedMeet.getDateEnd()));
 
-		// contacto
-
-		valorTrabajoEstimado.setText(selectedTask.getTrabajo_estimado_c());
-		pos = ListsConversor.getPosItemOnList(ConversorsType.TASKS_PRIORITY, selectedTask.getPriority());
-		valorPrioridad.setSelection(pos);
-		valorDescripcion.setText(selectedTask.getDescription());
+		valorDescripcion.setText(selectedMeet.getDescription());
 
 		// Asignado
-		asignadoA.setText(lc.convert(selectedTask.getAssigned_user_id(), DataToGet.VALUE));
+		//asignadoA.setText(lc.convert(selectedMeet.getAssigned_user_id(), DataToGet.VALUE));
 		imgButtonGuardar.setVisibility(View.VISIBLE);
 
 	}
@@ -411,51 +342,44 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 			}
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
 
-			selectedTask.setName(valorAsunto.getText().toString());
-			selectedTask.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
+			selectedMeet.setName(valorAsunto.getText().toString());
+			selectedMeet.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
 					valorEstado.getSelectedItem().toString(), DataToGet.CODE));
 		
 			if (valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1) {
-				selectedTask.setDate_start(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
+				selectedMeet.setDateStart(Utils.transformTimeUItoBackend(valorFechaInicio.getText().toString()));
 			}
 
 			if (valorFechaVen.getText() != null && valorFechaVen.getText().toString().length() > 1) {
-				selectedTask.setDate_due(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
+				selectedMeet.setDateEnd(Utils.transformTimeUItoBackend(valorFechaVen.getText().toString()));
 			}
 
-			// contacto
+			selectedMeet.setDescription(valorDescripcion.getText().toString());
+			selectedMeet.setCompromisos(valorCompromisos.getText().toString());
+			selectedMeet.setObjetivos(valorObjetivos.getText().toString());
+			selectedMeet.setLocation(valorLugar.getText().toString());
+			String selectedType = valorTipo.getSelectedItem().toString();
+			selectedMeet.setType(ListsConversor.convert(ConversorsType.MEETS_TYPE, selectedType, DataToGet.CODE));
+			
+			String selectedState = valorEstado.getSelectedItem().toString();
+			selectedMeet.setStatus(ListsConversor.convert(ConversorsType.MEETS_TYPE, selectedState, DataToGet.CODE));
 
-			if (valorContacto.getSelectedItemPosition() > 0) {
-				selectedTask.setContact_name(valorContacto.getSelectedItem().toString());
-				selectedTask.setContact_id(
-						listContacts.convert(valorContacto.getSelectedItem().toString(), DataToGet.CODE));
-			}
-
-			selectedTask.setTrabajo_estimado_c(valorTrabajoEstimado.getText().toString());
-			selectedTask.setPriority(ListsConversor.convert(ConversorsType.TASKS_PRIORITY,
-					valorPrioridad.getSelectedItem().toString(), DataToGet.CODE));
-			selectedTask.setDescription(valorDescripcion.getText().toString());
-
-			// tipo Tarea
 			
 			if(!isEditMode){
-				String selectedType = valorTipo.getSelectedItem().toString();
-				selectedTask
-						.setParent_type(ListsConversor.convert(ConversorsType.TASKS_TYPE, selectedType, DataToGet.CODE));
-	
-				if (selectedTask.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
-					selectedTask.setParent_id(actualInfo.getActualParentInfo().id);
+			
+			/*	if (selectedMeet.getParent_type().equals(actualInfo.getActualParentModule().getSugarDBName())) {
+					selectedMeet.setParent_id(actualInfo.getActualParentInfo().id);
 				}else if(accountId != null){//aplica para contacts
-					selectedTask.setParent_id(accountId.id);
-				}
+					selectedMeet.setParent_id(accountId.id);
+				} */
 			
 			}
 			String idUsuarioAsignado = lc.convert(asignadoA.getText().toString(), DataToGet.CODE);
-			selectedTask.setAssigned_user_id(idUsuarioAsignado);
+			selectedMeet.setUserId(idUsuarioAsignado);
 
-			editTask = new AddTask();
+			editMeet = new AddMeet();
 
-			editTask.execute(selectedTask);
+			editMeet.execute(selectedMeet);
 		}
 
 	}
@@ -467,7 +391,7 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 
 		data.put(valorAsunto, "El campo Asunto no puede estar vacio");
 		data.put(valorEstado, "Debe seleccionar un Estado de la Tarea");
-		data.put(valorPrioridad, "Debe seleccionar una Prioridad de Tarea");
+
 
 		ValidatorGeneric.getInstance().define(data);
 
@@ -511,31 +435,31 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 	}
 
 	/**
-	 * Representa una tarea asincrona de creacion de Tareas.
+	 * Representa una tarea asincrona de creacion de Reuniones.
 	 */
-	public class AddTask extends AsyncTask<Object, Void, Boolean> {
+	public class AddMeet extends AsyncTask<Object, Void, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(Object... params) {
 			try {
 
-				DetailTask obj = (DetailTask) params[0];
+				Meeting obj = (Meeting) params[0];
 
 				// Resultado
 				resultado = null;
 
 				if (isEditMode) {
-					resultado = ControlConnection.putInfo(TypeInfoServer.addTask, obj.getDataBean(), Modo.EDITAR,
+					resultado = ControlConnection.putInfo(TypeInfoServer.addMeet, obj.getDataBean(), Modo.EDITAR,
 							AddMeetActivity.this);
 				} else {
-					resultado = ControlConnection.putInfo(TypeInfoServer.addTask, obj.getDataBean(), Modo.AGREGAR,
+					resultado = ControlConnection.putInfo(TypeInfoServer.addMeet, obj.getDataBean(), Modo.AGREGAR,
 							AddMeetActivity.this);
 				}
-				Log.d(TAG, "Crear Tarea Resp: " + resultado);
+	
 
 				if (resultado.contains("OK")) {
 					obj.id = Utils.getIDFromBackend(resultado);
-					obj.accept(new DataVisitorsManager());
+				
 					ActivitiesMediator.getInstance().addObjectInfo(obj);
 					return true;
 				} else {
@@ -543,7 +467,7 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 				}
 
 			} catch (Exception e) {
-				Log.d(TAG, "Crear Llamada Error: " + e.getClass().getName() + ":" + e.getMessage());
+				
 				resultado += Utils.errorToString(e);
 				return false;
 			}
@@ -572,7 +496,7 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 					// AddTaskActivity.this, MODULE );
 
 				}
-				Log.d(TAG, "Crear Tarea error");
+				
 			}
 
 		}
@@ -580,7 +504,6 @@ public class AddMeetActivity extends TasksModuleEditableActions {
 		@Override
 		protected void onCancelled() {
 
-			Log.d(TAG, "Cancelado ");
 		}
 	}
 

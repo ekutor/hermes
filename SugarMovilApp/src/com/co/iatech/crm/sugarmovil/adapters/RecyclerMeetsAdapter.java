@@ -3,6 +3,9 @@ package com.co.iatech.crm.sugarmovil.adapters;
 import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.R;
+import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
+import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Meeting;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListCallStatusConverter;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
@@ -55,7 +58,7 @@ public class RecyclerMeetsAdapter extends RecyclerView.Adapter<RecyclerMeetsAdap
             @Override
             public void onClick(View v) {
                 // Account Activity     
-                //ActivitiesMediator.getInstance().showActivity(context,Modules.MEETS, new ActivityBeanCommunicator(lead.getId(), lead.getFirst_name()));
+                ActivitiesMediator.getInstance().showActivity(context,Modules.CALENDAR, new ActivityBeanCommunicator(mt.id, mt.getName()));
             }
         });
 

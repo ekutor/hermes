@@ -621,7 +621,7 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/valor_asistentes"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="match_parent"

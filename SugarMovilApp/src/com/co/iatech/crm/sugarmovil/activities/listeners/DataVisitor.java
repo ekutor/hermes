@@ -5,6 +5,7 @@ import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.Lead;
+import com.co.iatech.crm.sugarmovil.model.Meeting;
 import com.co.iatech.crm.sugarmovil.model.Notes;
 import com.co.iatech.crm.sugarmovil.model.Oportunidad;
 
