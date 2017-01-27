@@ -250,6 +250,9 @@ public class Meeting extends GenericBean implements Parcelable  	{
 	}
 
 	public void setTipo_c(String tipo_c) {
+		if("".equals(tipo_c)){
+			tipo_c= "INTERNA";
+		}
 		this.tipo_c = tipo_c;
 	}
 

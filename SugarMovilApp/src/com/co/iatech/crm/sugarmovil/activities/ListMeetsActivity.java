@@ -85,7 +85,7 @@ public class ListMeetsActivity extends CalendarModuleActions {
         Calendar c = Utils.convertSpecialDate(actualInfo.getActualParentInfo().id);
         String m =  c.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("es"));
         m = m!=null?m.toUpperCase():"";
-        mToolbarTextView.setText( m + " " + c.get(Calendar.DATE) );
+        mToolbarTextView.setText( m + " " + c.get(Calendar.DATE) +" " +actualInfo.getActualParentInfo().id);
         if(infoServer != null){
 	        String[] params = { "currentUser", ControlConnection.userId, "dateStart", actualInfo.getActualParentInfo().id };
 	        this.executeTask(params, infoServer, message);

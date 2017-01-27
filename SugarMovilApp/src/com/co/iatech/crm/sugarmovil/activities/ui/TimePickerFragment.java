@@ -17,23 +17,23 @@ TimePickerDialog.OnTimeSetListener {
 
 	private TextView textResponse;
 	private Activity actualActivity;
-	private boolean modoEdicion;
 	private Calendar c ;
 
-	public TimePickerFragment(Activity actualActivity, TextView textResponse,
-			boolean modoEdicion) {
+	public TimePickerFragment(Activity actualActivity, TextView textResponse) {
 		this.actualActivity = actualActivity;
 		this.textResponse = textResponse;
-		this.modoEdicion = modoEdicion;
+
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the current date as the default date in the picker
 		c = Calendar.getInstance();
-
-		if (modoEdicion) {
-			c = Utils.getDate(textResponse.getText().toString());
+        if(textResponse.getText() != null ){
+        	Calendar cal = Utils.getDate(textResponse.getText().toString());
+			if(cal != null){
+				c = cal;
+			}
 		}
 		int hour = c.get(Calendar.HOUR_OF_DAY);
 		int minute = c.get(Calendar.MINUTE);

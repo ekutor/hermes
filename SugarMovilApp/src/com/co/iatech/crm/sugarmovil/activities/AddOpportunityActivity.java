@@ -7,6 +7,7 @@ import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
 import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
+import com.co.iatech.crm.sugarmovil.activities.ui.MultiSelectionSpinner;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
@@ -142,8 +143,8 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         valorTipo = (Spinner) findViewById(R.id.valor_tipo);
         
         ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_PROYECT));
-        estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                android.R.layout.simple_list_item_multiple_choice, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_PROYECT));
+        estadoAdapter.setDropDownViewResource(android.R.layout.simple_list_item_multiple_choice);
         
         valorTipo.setAdapter(estadoAdapter);
         
@@ -189,6 +190,22 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
                 android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
         energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEnergia.setAdapter(energiaAdapter);
+        
+       /* final MultiSelectionSpinner spinner = (MultiSelectionSpinner) findViewById(R.id.btnSelected);
+        
+        //spinner.setItems(ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
+        final TextView text_energia2 = (TextView) findViewById(R.id.text_energia2);
+        
+        Button bt = (Button) findViewById(R.id.boton_multiselect);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = spinner.getSelectedItemsAsString();
+                text_energia2.setText(s);
+            }
+        });*/
+        
+        
 
         // Comunicaciones
         valorComunicaciones = (Spinner) findViewById(R.id.valor_comunicaciones);

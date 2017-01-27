@@ -307,13 +307,13 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 			}
 
 		} else if (v.getId() == botonHoraInicio.getId()) {
-			DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
+			DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio);
 			newFragment.show(getFragmentManager(), "hourCierrePicker");
 		} else if (v.getId() == botonFechaInicio.getId()) {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaInicio, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		} else if (v.getId() == botonHoraVen.getId()) {
-			DialogFragment newFragment = new TimePickerFragment(this, valorFechaVen, isEditMode);
+			DialogFragment newFragment = new TimePickerFragment(this, valorFechaVen);
 			newFragment.show(getFragmentManager(), "hourCierrePicker");
 		} else if (v.getId() == botonFechaVen.getId()) {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaVen, isEditMode);

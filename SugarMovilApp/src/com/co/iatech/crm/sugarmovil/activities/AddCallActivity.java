@@ -405,7 +405,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 				}
 			} else if (v.getId() == botonHoraInicio.getId()) {
-				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
+				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio);
 				newFragment.show(getFragmentManager(), "hourCierrePicker");
 			} else if (v.getId() == txtParentName.getId()) {
 				switch (actualInfo.getActualParentModule()) {
