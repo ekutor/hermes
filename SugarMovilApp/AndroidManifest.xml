@@ -156,6 +156,15 @@
                 android:value=".MainActivity" />
         </activity>
         
+             
+         <activity
+            android:name=".activities.MultiSelectAcivity"
+            android:label="@string/app_name" >
+             <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
        <activity 
             android:name=".activities.AddLeadActivity"
             android:label="@string/title_activity_client"
@@ -283,6 +292,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CalendarActivity" />
         </activity>
+    
         
         <activity
             android:name=".activities.MeetActivity"

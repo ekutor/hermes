@@ -81,7 +81,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
      */
     private Toolbar mCuentaToolbar;
     private ImageButton imgButtonGuardar;
-    private Button botonFechaCierre;
+    private Button botonFechaCierre,multiselectBtn;
     private TextView mValorFechaCierre,asignadoA,valorCuenta,valorEnergia;
     private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorPaso,valorDescripcion;
     private Spinner valorTipo,valorEtapa,valorMedio,valorComunicaciones,valorIluminacion,valorMoneda;
@@ -184,17 +184,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 				
 			}});
       
-        valorEnergia = (TextView) findViewById(R.id.valor_energia);
-        
-        Button bt = (Button) findViewById(R.id.boton_multiselect);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-            	valorEnergia.setText("hola");
-            }
-        });
-        
+        valorEnergia = (TextView) findViewById(R.id.valor_energia);       
         
 
         // Comunicaciones
@@ -278,6 +268,8 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         // Eventos
         // Guardar Tarea
         imgButtonGuardar.setOnClickListener(this);
+        multiselectBtn= (Button) findViewById(R.id.boton_multiselect);
+        multiselectBtn.setOnClickListener(this);
  
     }
     
@@ -354,7 +346,10 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 			}else{
 				Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 			}
-			
+		}else if(v.getId() == multiselectBtn.getId()){
+			Intent intent = new Intent(this.getApplicationContext(), MultiSelectAcivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			this.getApplicationContext().startActivity(intent);
 		}else if(v.getId() == botonFechaCierre.getId()){
 			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
