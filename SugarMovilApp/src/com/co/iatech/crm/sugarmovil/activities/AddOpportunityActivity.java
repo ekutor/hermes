@@ -191,17 +191,15 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEnergia.setAdapter(energiaAdapter);
         
-        final MultiSelectionSpinner spinner = (MultiSelectionSpinner) findViewById(R.id.btnSelected);
-        
-        //spinner.setItems(ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
+       //spinner.setItems(ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
         final TextView text_energia2 = (TextView) findViewById(R.id.text_energia2);
         
         Button bt = (Button) findViewById(R.id.boton_multiselect);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s = spinner.getSelectedItemsAsString();
-                text_energia2.setText(s);
+                
+                text_energia2.setText("hola");
             }
         });
         
