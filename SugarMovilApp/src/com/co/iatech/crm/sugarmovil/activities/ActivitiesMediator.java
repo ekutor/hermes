@@ -8,6 +8,7 @@ import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.content.Context;
@@ -202,6 +203,20 @@ public class ActivitiesMediator implements IMediator {
 		chargeLastModuleCaller(intent);
 		//Message.showShortExt("actual Module "+actualModule + chargeActualModule + viewCaller.name() + viewtoStart.name()+ " last "+lastModuleFrom, context);
     	context.startActivity(intent);
+		}catch(Exception e){
+			Message.showShortExt(Utils.errorToString(e) , context);
+		}
+		
+	}
+	
+	public void showMultiselectList(Context context, ConversorsType info) {
+		try{
+			Intent intent = null;
+			intent = new Intent(context, MultiSelectAcivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.putExtra(MultiSelectAcivity.LIST_TYPE, info.name());
+			chargeLastModuleCaller(intent);
+		    context.startActivity(intent);
 		}catch(Exception e){
 			Message.showShortExt(Utils.errorToString(e) , context);
 		}

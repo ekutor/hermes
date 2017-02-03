@@ -346,9 +346,10 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 				Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 			}
 		}else if(v.getId() == multiselectBtn.getId()){
-			Intent intent = new Intent(this.getApplicationContext(), MultiSelectAcivity.class);
+			/*Intent intent = new Intent(this.getApplicationContext(), MultiSelectAcivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			this.getApplicationContext().startActivity(intent);
+			this.getApplicationContext().startActivity(intent);*/
+			ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(), ConversorsType.OPPORTUNITY_ENERGY);
 		}else if(v.getId() == botonFechaCierre.getId()){
 			DialogFragment newFragment = new DatePickerFragment(this,mValorFechaCierre,isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
