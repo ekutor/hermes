@@ -82,9 +82,9 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
     private Toolbar mCuentaToolbar;
     private ImageButton imgButtonGuardar;
     private Button botonFechaCierre;
-    private TextView mValorFechaCierre,asignadoA,valorCuenta;
+    private TextView mValorFechaCierre,asignadoA,valorCuenta,valorEnergia;
     private EditText valorNombre,valorUsuario,valorEstimado,valorProbabilidad,valorPaso,valorDescripcion;
-    private Spinner valorTipo,valorEtapa,valorMedio,valorEnergia,valorComunicaciones,valorIluminacion,valorMoneda;
+    private Spinner valorTipo,valorEtapa,valorMedio,valorComunicaciones,valorIluminacion,valorMoneda;
     private Spinner valorCampana, valorFuente;
     private ListUsersConverter lc = new ListUsersConverter();
 
@@ -183,23 +183,15 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	
 				
 			}});
-        
-        //Energia
-        valorEnergia = (Spinner) findViewById(R.id.valor_energia);       
-        ArrayAdapter<String> energiaAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
-        energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        valorEnergia.setAdapter(energiaAdapter);
-        
-       //spinner.setItems(ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
-        final TextView text_energia2 = (TextView) findViewById(R.id.text_energia2);
+      
+        valorEnergia = (TextView) findViewById(R.id.valor_energia);
         
         Button bt = (Button) findViewById(R.id.boton_multiselect);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 
-                text_energia2.setText("hola");
+            	valorEnergia.setText("hola");
             }
         });
         
@@ -318,8 +310,8 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_SOURCE, oportSeleccionada.getFuente_c());
         valorFuente.setSelection(pos);
         
-        pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_ENERGY, oportSeleccionada.getEnergia_c());
-        valorEnergia.setSelection(pos);
+      //  pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_ENERGY, oportSeleccionada.getEnergia_c());
+       // valorEnergia.setSelection(pos);
         
         pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_COMUNICATIONS, oportSeleccionada.getComunicaciones_c());
         valorComunicaciones.setSelection(pos);
@@ -409,7 +401,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	        oportSeleccionada.setAssigned_user_id(idUsuarioAsignado);
 	      
 	        // Marca energia
-	        oportSeleccionada.setEnergia_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_ENERGY, valorEnergia.getSelectedItem().toString(), DataToGet.CODE));
+	        oportSeleccionada.setEnergia_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_ENERGY, valorEnergia.getText().toString(), DataToGet.CODE));
 	
 	        // Marca comunicaciones
 	        oportSeleccionada.setComunicaciones_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_COMUNICATIONS, valorComunicaciones.getSelectedItem().toString(), DataToGet.CODE));

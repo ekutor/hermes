@@ -215,7 +215,7 @@
                     
                     
                      <TextView
-                        android:id="@+id/text_energia2"
+                        android:id="@+id/valor_energia"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -226,7 +226,6 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/oportunidad_energia"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
                     
@@ -236,6 +235,7 @@
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
+    					android:textColor="@color/white"
                         android:layout_marginStart="15dp"
                         android:layout_marginLeft="15dp"  
                         android:layout_marginTop="10dp"
@@ -246,21 +246,7 @@
                         android:textAllCaps="false"
                         tools:ignore="MissingPrefix"
                         android:background="@drawable/border_radius"/>
-                    
-
-                    <Spinner
-                        android:id="@+id/valor_energia"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
+                   
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
