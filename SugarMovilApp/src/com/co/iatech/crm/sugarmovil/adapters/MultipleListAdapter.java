@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.co.iatech.crm.sugarmovil.R;
-import com.co.iatech.crm.sugarmovil.model.ContactObject;
+import com.co.iatech.crm.sugarmovil.model.ListInfo;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -23,24 +23,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-public class ContactsAdapter extends BaseAdapter {
+public class MultipleListAdapter extends BaseAdapter {
     Context mContext;
     LayoutInflater inflater;
-    private List<ContactObject> mainDataList = null;
-    private ArrayList<ContactObject> arraylist;
-    public ContactsAdapter(Context context, List<ContactObject> mainDataList) {
+    private List<ListInfo> mainDataList = null;
+    private ArrayList<ListInfo> arraylist;
+    public MultipleListAdapter(Context context, List<ListInfo> mainDataList) {
      
         mContext = context;
         this.mainDataList = mainDataList;
         inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<ContactObject>();
+        this.arraylist = new ArrayList<ListInfo>();
         this.arraylist.addAll(mainDataList);
          
          
     }
     static class ViewHolder {
         protected TextView name;
-        protected TextView number;
         protected CheckBox check;
         protected ImageView image;
     }
@@ -49,7 +48,7 @@ public class ContactsAdapter extends BaseAdapter {
         return mainDataList.size();
     }
     @Override
-    public ContactObject getItem(int position) {
+    public ListInfo getItem(int position) {
         return mainDataList.get(position);
     }
     @Override
@@ -62,12 +61,10 @@ public class ContactsAdapter extends BaseAdapter {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.list_row, null);
             holder.name = (TextView) view.findViewById(R.id.contactname);
-            holder.number = (TextView) view.findViewById(R.id.contactno);
             holder.check = (CheckBox) view.findViewById(R.id.contactcheck);
             holder.image = (ImageView) view.findViewById(R.id.contactimage);
             view.setTag(holder);
             view.setTag(R.id.contactname, holder.name);
-            view.setTag(R.id.contactno, holder.number);
             view.setTag(R.id.contactcheck, holder.check);
             holder.check
                     .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -84,14 +81,14 @@ public class ContactsAdapter extends BaseAdapter {
         }
         holder.check.setTag(position);
          
-        holder.name.setText(mainDataList.get(position).getName());
-        holder.number.setText(mainDataList.get(position).getNumber());
-         
-        if(getByteContactPhoto(mainDataList.get(position).getImage())==null){
+        holder.name.setText(mainDataList.get(position).getListName());
+     //   holder.number.setText(mainDataList.get(position).getNumber());
+        holder.image.setImageResource(R.drawable.ic_launcher);
+      /*  if(getByteContactPhoto(mainDataList.get(position).getImage())==null){
             holder.image.setImageResource(R.drawable.ic_launcher);
         }else{
             holder.image.setImageBitmap(getByteContactPhoto(mainDataList.get(position).getImage()));
-        }
+        }*/
          
          
          
@@ -104,8 +101,8 @@ public class ContactsAdapter extends BaseAdapter {
         if (charText.length() == 0) {
             mainDataList.addAll(arraylist);
         } else {
-            for (ContactObject wp : arraylist) {
-                if (wp.getName().toLowerCase(Locale.getDefault())
+            for (ListInfo wp : arraylist) {
+                if (wp.getListName().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
                     mainDataList.add(wp);
                 }
