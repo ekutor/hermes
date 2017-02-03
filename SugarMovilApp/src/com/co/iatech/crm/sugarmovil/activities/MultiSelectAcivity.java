@@ -2,6 +2,7 @@ package com.co.iatech.crm.sugarmovil.activities;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 import com.co.iatech.crm.sugarmovil.R;
@@ -10,18 +11,25 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.ContactsAdapter;
 import com.co.iatech.crm.sugarmovil.core.data.ContactsListClass;
 import com.co.iatech.crm.sugarmovil.model.ContactObject;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -41,6 +49,9 @@ public class MultiSelectAcivity extends Activity {
 	LinearLayout llContainer = null;
 	Button btnOK = null;
 	RelativeLayout rlPBContainer = null;
+	public static String LIST_TYPE="LIST_TYPE";
+	
+	private SearchView searchView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,25 +70,69 @@ public class MultiSelectAcivity extends Activity {
 					getSelectedContacts();
 				}
 			});
-			edtSearch.addTextChangedListener(new TextWatcher() {
-				@Override
-				public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-					// When user changed the Text
-					String text = edtSearch.getText().toString().toLowerCase(Locale.getDefault());
-					objAdapter.filter(text);
-				}
+			// Main Toolbar
+	        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_list_multiselect);
+	        TextView toolbarTextView = (TextView) findViewById(R.id.text_toolbar_list_multiselect);
+	        
+	        searchView = (SearchView) findViewById(R.id.search_view_list_multiselect);
+	        
+	        
+	        searchView.setOnSearchClickListener(new View.OnClickListener() {
+	            @Override
+	            public void onClick(View v) {
+	                //toolbarTextView.setVisibility(View.GONE);
+	            }
+	        });
 
-				@Override
-				public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-					// TODO Auto-generated method stub
-				}
+	        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+	            @Override
+	            public boolean onClose() {
+	                //toolbarTextView.setVisibility(View.VISIBLE);
 
-				@Override
-				public void afterTextChanged(Editable arg0) {
-					// TODO Auto-generated method stub
-				}
-			});
-			addContactsInList();
+	                InputMethodManager imm = (InputMethodManager) MultiSelectAcivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+	                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+
+	                try {
+	                   // ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).flushFilter();
+	                } catch (Exception e) {
+	                   
+	                }
+
+	                return false;
+	            }
+	        });
+
+	        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+	            @Override
+	            public boolean onQueryTextSubmit(String query) {
+	                try {
+	                    // Filtro para select
+	                  //  ((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(query);
+
+	                     objAdapter.filter(query);
+	                } catch (Exception e) {
+	                    
+	                }
+
+	                return false;
+	            }
+
+	            @Override
+	            public boolean onQueryTextChange(String newText) {
+	                try {
+	                    // Filtro para select
+	                    //((RecyclerGenericAdapter) mRecyclerView.getAdapter()).setFilter(newText);
+
+	                      objAdapter.filter(newText);
+
+	                } catch (Exception e) {
+	                   
+	                }
+
+	                return false;
+	            }
+	        });
+			showInfo();
 		} catch (Exception e) {
 			Message.showFinalMessage(getFragmentManager(), Utils.errorToString(e), MultiSelectAcivity.this, Modules.CALENDAR);
 		}
@@ -102,13 +157,19 @@ public class MultiSelectAcivity extends Activity {
 		}
 	}
 
-	private void addContactsInList() {
-		// TODO Auto-generated method stub
+	private void showInfo() {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
 				showPB();
 				try {
+					
+				/*	Intent intent = getIntent();
+                    String listInfo = intent.getStringExtra(LIST_TYPE);
+                    ConversorsType listSelected = ConversorsType.valueOf(listInfo);
+                    
+                    List<String> list = ListsConversor.getValuesList(listSelected);
+               */     
 					Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
 							null, null, null);
 					try {

@@ -7,7 +7,6 @@ import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.DataVisitorsManager;
 import com.co.iatech.crm.sugarmovil.activities.ui.DatePickerFragment;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
-import com.co.iatech.crm.sugarmovil.activities.ui.MultiSelectionSpinner;
 import com.co.iatech.crm.sugarmovil.activities.ui.ResponseDialogFragment.DialogType;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorActivities;
 import com.co.iatech.crm.sugarmovil.activities.validators.ValidatorGeneric;
