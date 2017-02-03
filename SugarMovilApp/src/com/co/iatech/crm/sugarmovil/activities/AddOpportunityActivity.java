@@ -191,7 +191,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
         energiaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         valorEnergia.setAdapter(energiaAdapter);
         
-       /* final MultiSelectionSpinner spinner = (MultiSelectionSpinner) findViewById(R.id.btnSelected);
+        final MultiSelectionSpinner spinner = (MultiSelectionSpinner) findViewById(R.id.btnSelected);
         
         //spinner.setItems(ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ENERGY));
         final TextView text_energia2 = (TextView) findViewById(R.id.text_energia2);
@@ -203,7 +203,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
                 String s = spinner.getSelectedItemsAsString();
                 text_energia2.setText(s);
             }
-        });*/
+        });
         
         
 
