@@ -155,6 +155,7 @@ public class MultiSelectAcivity extends Activity {
 
 						try {
 							ObjectListClass.dataList.clear();
+							ObjectListClass.type = listSelected;
 						} catch (Exception e) {
 						}
 

@@ -463,7 +463,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(ObjectListClass.dataList != null){
+		if(ObjectListClass.dataList != null && !ObjectListClass.dataList.isEmpty()){
 			StringBuffer sb = new StringBuffer();
 			for (ListInfo bean : ObjectListClass.dataList) {
 				if (bean.isSelected()) {
@@ -474,8 +474,25 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 			String s = sb.toString().trim();
 			if (!TextUtils.isEmpty(s)) {
 				s = s.substring(0, s.length() - 1);
-				valorEnergia.setText(s);
 			}
+			switch(ObjectListClass.type){
+				case OPPORTUNITY_ENERGY:
+					valorEnergia.setText(s);
+					break;
+					
+				case OPPORTUNITY_COMUNICATIONS:
+					//valorComunicaciones.setText(s);
+					break;
+					
+				case OPPORTUNITY_ILUM:
+					//valorIluminacion.setText(s);
+					break;
+					
+			default:
+				break;
+			}
+			ObjectListClass.dataList.clear();
+			
 		}
 
 	}
