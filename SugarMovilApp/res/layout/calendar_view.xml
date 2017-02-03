@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendar_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/lightgray"
+    android:orientation="vertical" >
+
+    	
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_task"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:elevation="8dp"
+            android:gravity="start"
+            app:contentInsetEnd="10dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="10dp"
+            app:contentInsetStart="0dp"
+            android:background="@color/lightgray"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center">
+				
+                <ImageView
+		            android:id="@+id/prevMonth"
+		            android:layout_width="40sp"
+		            android:layout_height="fill_parent"
+		            android:layout_gravity="center"
+		            android:layout_marginLeft="10sp"
+		            android:src="@drawable/calendar_left_arrow_selector" >
+		        </ImageView>
+                <TextView
+                    android:id="@+id/currentMonth"
+                    fontPath="fonts/DaxlinePro-Regular.ttf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:text="@string/title_activity_task"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    tools:ignore="MissingPrefix" />
+                
+                   <ImageView
+		            android:id="@+id/nextMonth"
+		            android:layout_width="20sp"
+		            android:layout_height="fill_parent"
+		            android:layout_gravity="center"
+		            android:layout_marginRight="10sp"
+		            android:src="@drawable/calendar_right_arrow_selector" >
+		        </ImageView>
+
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+    <Button
+        android:id="@+id/selectedDayMonthYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/calendar_top_header"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF" >
+    </Button>
+
+    <GridView
+        android:id="@+id/grid_calendar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="7" >
+    </GridView>
+
+</LinearLayout>

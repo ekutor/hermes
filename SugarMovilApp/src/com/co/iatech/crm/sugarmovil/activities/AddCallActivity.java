@@ -23,7 +23,7 @@ import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Call;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.User;
@@ -218,8 +218,8 @@ public class AddCallActivity extends CallsModuleEditableActions {
 		if (selectedBean instanceof User) {
 			User su = (User) selectedBean;
 			asignadoA.setText(su.getUser_name());
-		} else if (selectedBean instanceof Cuenta) {
-			Cuenta ac = (Cuenta) selectedBean;
+		} else if (selectedBean instanceof Account) {
+			Account ac = (Account) selectedBean;
 			txtParentName.setText(ac.getName());
 		}
 	}
@@ -405,7 +405,7 @@ public class AddCallActivity extends CallsModuleEditableActions {
 					Message.showUsersDialog(getSupportFragmentManager(),v.getId());
 				}
 			} else if (v.getId() == botonHoraInicio.getId()) {
-				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
+				DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio);
 				newFragment.show(getFragmentManager(), "hourCierrePicker");
 			} else if (v.getId() == txtParentName.getId()) {
 				switch (actualInfo.getActualParentModule()) {

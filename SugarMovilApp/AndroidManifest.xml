@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.co.iatech.crm.sugarmovil"
-    android:versionCode="49"
-    android:versionName="1.6.5.1" >
+    android:versionCode="56"
+    android:versionName="1.8.4" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -267,7 +267,39 @@
                 android:value=".MainActivity" />
             
         </activity>
-                 
+        
+         <activity
+            android:name=".activities.calendar.CalendarActivity"
+            android:label="@string/app_name" >
+             <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
+        <activity
+            android:name=".activities.ListMeetsActivity"
+            android:label="@string/app_name" >
+             <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CalendarActivity" />
+        </activity>
+        
+        <activity
+            android:name=".activities.MeetActivity"
+            android:label="@string/app_name" >
+             <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ListMeetsActivity" />
+        </activity>
+        
+        <activity
+            android:name=".activities.AddMeetActivity"
+            android:label="@string/app_name" >
+             <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ListMeetsActivity" />
+        </activity>
+
     </application>
 
 </manifest>

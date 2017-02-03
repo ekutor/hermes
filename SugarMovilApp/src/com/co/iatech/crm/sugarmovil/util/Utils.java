@@ -19,7 +19,7 @@ public class Utils {
 	private static final String DATETIME_FORMAT_BACKEND = "yyyy-MM-dd HH:mm:ss";
 	private static final String DATE_FORMAT_BACKEND = "yyyy-MM-dd";
 	
-	private static final int TIME_TO_DIFF_DB_BACKEND = 0;
+	private static final int TIME_TO_DIFF_DB_BACKEND = 5;
 
 	public static String getCurrentTime() {
 		Calendar c = Calendar.getInstance();
@@ -50,6 +50,10 @@ public class Utils {
 	}
 
 	public static String transformTimeBakendToUI(String date_closed) {
+		return transformTimeBakendToUI(date_closed , TIME_TO_DIFF_DB_BACKEND );
+	}
+	
+	public static String transformTimeBakendToUI(String date_closed, int timeDiff) {
 		String time = null;
 		if (date_closed != null && !date_closed.equals("")) {
 			try {
@@ -68,7 +72,7 @@ public class Utils {
 				Date d = sdin.parse(date_closed);
 				Calendar dateCal = Calendar.getInstance();
 				dateCal.setTime(d);
-				dateCal.add(Calendar.HOUR, -TIME_TO_DIFF_DB_BACKEND);
+				dateCal.add(Calendar.HOUR, -timeDiff);
 				time = sdout.format(dateCal.getTime());
 			} catch (Exception e) {
 
@@ -125,11 +129,38 @@ public class Utils {
 		return c;
 	}
 	
+	public static Calendar convertSpecialDate(String text) {
+		Calendar c = Calendar.getInstance();
+		if (text != null) {
+			SimpleDateFormat sdf = null;
+
+				sdf = new SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES"));
+			
+			try {
+				Date d = sdf.parse(text);
+				c.setTime(d);
+			} catch (ParseException ex) {
+				ex.printStackTrace();
+			}
+
+		}
+		return c;
+	}
+	
+	
 	public static CharSequence convertTimetoStringFrontEnd(Calendar c) {
 		if(c == null){
 			c = Calendar.getInstance();
 		}
 		SimpleDateFormat sdout = new SimpleDateFormat(DATETIME_FORMAT_FRONTEND);
+		return sdout.format(c.getTime());
+	}
+	
+	public static CharSequence convertTimetoStringBackend(Calendar c) {
+		if(c == null){
+			c = Calendar.getInstance();
+		}
+		SimpleDateFormat sdout = new SimpleDateFormat(DATETIME_FORMAT_BACKEND);
 		return sdout.format(c.getTime());
 	}
 
@@ -176,6 +207,12 @@ public class Utils {
 		return m;
 	}
 
+	public static String getActualMonth(){
+		Calendar c = Calendar.getInstance();
+		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("es"));
+		return month;
+	}
+	
 	public static String delSpecialChars(String value) {
 		if (value != null) {
 			value = value.replace(",", "");
@@ -229,6 +266,18 @@ public class Utils {
 			return Html.fromHtml("<a href="+value+">"+value);
 		}
 		return Html.fromHtml(value);
+	}
+
+	public static int getDay(String dateStart) {
+		try{
+			SimpleDateFormat sdin = new SimpleDateFormat(DATE_FORMAT_BACKEND, new Locale("es", "ES"));
+			Date d = sdin.parse(dateStart);
+			Calendar c = Calendar.getInstance(); c.setTime(d);
+			return c.get(Calendar.DATE);
+		}catch(Exception e ){
+			
+		}
+		return -1;
 	}
 
 }

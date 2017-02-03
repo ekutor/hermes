@@ -4,7 +4,7 @@ import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.listeners.SearchDialogInterface;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
 import com.co.iatech.crm.sugarmovil.model.converters.lists.ListModelConverter;
@@ -60,7 +60,7 @@ public class GenericListDialog extends DialogFragment  {
 					GenericBean bean = null;
 					switch(resModule){
 						case ACCOUNTS:
-							bean = new Cuenta();
+							bean = new Account();
 							break;
 						
 						case CONTACTS:

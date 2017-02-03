@@ -5,7 +5,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.User;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
@@ -19,7 +19,7 @@ public class ListUsersConverter extends ListModelConverter{
 	
 	}
 	
-	public ListUsersConverter (List<Cuenta> data){
+	public ListUsersConverter (List<Account> data){
 		this();
 		ListsHolder.saveList(typelist, data);
 	}

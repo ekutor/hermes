@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Call;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.DetailSubTask;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
@@ -21,7 +21,7 @@ public class DataVisitorsManager implements DataVisitor{
 	}
 
 	@Override
-	public void add(Cuenta bean) {
+	public void add(Account bean) {
 	
 	}
 	
@@ -31,7 +31,7 @@ public class DataVisitorsManager implements DataVisitor{
 	}
 
 	@Override
-	public int size(Cuenta bean) {
+	public int size(Account bean) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -75,7 +75,7 @@ public class DataVisitorsManager implements DataVisitor{
 	}
 
 	@Override
-	public void clear(Cuenta bean) {
+	public void clear(Account bean) {
 		// TODO Auto-generated method stub
 		
 	}

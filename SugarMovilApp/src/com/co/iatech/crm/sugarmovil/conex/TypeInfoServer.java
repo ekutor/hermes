@@ -7,6 +7,8 @@ public enum TypeInfoServer {
 	getSubTasks,getSubTask,addSubTask,getSubTaskxTask,
 	getNotes,getNote,addNote,getNotesxSubtask,
 	getLeads,getLead,addLead,getLeadsxOpportunity,
-	getUsers,getAccountContacts;
+	getUsers,getAccountContacts,
+	getMeeting,getMeetings, addMeet, getOneMeeting
+	;
 	
 }

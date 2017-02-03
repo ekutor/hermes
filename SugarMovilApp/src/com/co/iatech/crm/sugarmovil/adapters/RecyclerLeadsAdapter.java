@@ -9,7 +9,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.adapters.RecyclerGenericAdapter.SearchType;
 import com.co.iatech.crm.sugarmovil.adapters.search.IAdapterItems;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.Lead;
 
 import android.app.Activity;

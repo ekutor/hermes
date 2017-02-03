@@ -24,7 +24,7 @@ import com.co.iatech.crm.sugarmovil.core.acl.AccessControl;
 import com.co.iatech.crm.sugarmovil.core.acl.TypeActions;
 import com.co.iatech.crm.sugarmovil.core.data.DataManager;
 import com.co.iatech.crm.sugarmovil.model.Contacto;
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.model.GenericBean;
 import com.co.iatech.crm.sugarmovil.model.OportunidadDetalle;
 import com.co.iatech.crm.sugarmovil.model.DetailTask;
@@ -387,13 +387,13 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 			}
 
 		} else if (v.getId() == botonHoraInicio.getId()) {
-			DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio, isEditMode);
+			DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio);
 			newFragment.show(getFragmentManager(), "hourCierrePicker");
 		} else if (v.getId() == botonFechaInicio.getId()) {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaInicio, isEditMode);
 			newFragment.show(getFragmentManager(), "dateCierrePicker");
 		} else if (v.getId() == botonHoraVen.getId()) {
-			DialogFragment newFragment = new TimePickerFragment(this, valorFechaVen, isEditMode);
+			DialogFragment newFragment = new TimePickerFragment(this, valorFechaVen);
 			newFragment.show(getFragmentManager(), "hourCierrePicker");
 		} else if (v.getId() == botonFechaVen.getId()) {
 			DialogFragment newFragment = new DatePickerFragment(this, valorFechaVen, isEditMode);
@@ -489,8 +489,8 @@ public class AddTaskActivity extends TasksModuleEditableActions {
 		if (selectedBean instanceof User) {
 			User selectedUser = (User) selectedBean;
 			asignadoA.setText(selectedUser.getUser_name());
-		} else if (selectedBean instanceof Cuenta) {
-			Cuenta ac = (Cuenta) selectedBean;
+		} else if (selectedBean instanceof Account) {
+			Account ac = (Account) selectedBean;
 			valorNombre.setText(ac.getName());
 		}
 

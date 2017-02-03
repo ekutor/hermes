@@ -212,6 +212,41 @@
                         android:text="@string/oportunidad_energia"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
+                    
+                    
+                     <TextView
+                        android:id="@+id/text_energia2"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/oportunidad_energia"
+                        android:textStyle="bold"
+                        tools:ignore="MissingPrefix" />
+                    
+                     
+                    <Button
+                        android:id="@+id/boton_multiselect"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/tarea_fecha"
+                        android:textAllCaps="false"
+                        tools:ignore="MissingPrefix" />
+                    
 
                     <Spinner
                         android:id="@+id/valor_energia"

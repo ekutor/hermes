@@ -11,31 +11,31 @@ import android.os.Parcelable;
 /**
  * Representa un objeto parcelable para el manejo de las cuentas.
  */
-public class Cuenta extends GenericBean implements Parcelable {
+public class Account extends GenericBean implements Parcelable {
 
-    public static final Creator<Cuenta> CREATOR
-            = new Creator<Cuenta>() {
-        public Cuenta createFromParcel(Parcel in) {
-            return new Cuenta(in);
+    public static final Creator<Account> CREATOR
+            = new Creator<Account>() {
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
         }
 
-        public Cuenta[] newArray(int size) {
-            return new Cuenta[size];
+        public Account[] newArray(int size) {
+            return new Account[size];
         }
     };
 
     private String name, uen, nit;
     
-    public Cuenta() {}
+    public Account() {}
     
-    public Cuenta(JSONObject obj) throws JSONException {
+    public Account(JSONObject obj) throws JSONException {
         setId(obj.getString("id"));
         setName(validate(obj.getString("name")));
         setNit(validate(obj.getString("nit_c")));
         setUen(validate(obj.getString("uen")));
     }
 
-    public Cuenta(Parcel in) {
+    public Account(Parcel in) {
         setId(in.readString());
         setName(in.readString());
         setNit(in.readString());

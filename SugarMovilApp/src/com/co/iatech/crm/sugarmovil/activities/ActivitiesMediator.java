@@ -3,6 +3,7 @@ package com.co.iatech.crm.sugarmovil.activities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.co.iatech.crm.sugarmovil.activities.calendar.CalendarActivity;
 import com.co.iatech.crm.sugarmovil.activities.ui.Message;
 import com.co.iatech.crm.sugarmovil.activtities.modules.ActivityBeanCommunicator;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
@@ -86,6 +87,9 @@ public class ActivitiesMediator implements IMediator {
 			case LEADS:
 				intent = new Intent(context, LeadActivity.class);
 				break;
+			case CALENDAR:
+				intent = new Intent(context, MeetActivity.class);
+				break;
 		default:
 			break;
 		}
@@ -132,7 +136,12 @@ public class ActivitiesMediator implements IMediator {
 			case LEADS:
 				intent = new Intent(context, AddLeadActivity.class);
 				break;
-
+			case CALENDAR:
+				intent = new Intent(context, AddMeetActivity.class);
+				break;
+			
+			default:
+				break;
 		}
 		//si es nulo estoy en un fragment y voy a mostrar una nueva pantalla del mismo modulo
 		if(lastModuleFrom == null){
@@ -181,6 +190,9 @@ public class ActivitiesMediator implements IMediator {
 				break;
 			case LEADS:
 				intent = new Intent(context, ListLeadsActivity.class);
+				break;
+			case CALENDAR:
+				intent = new Intent(context, ListMeetsActivity.class);
 				break;
 		default:
 			break;

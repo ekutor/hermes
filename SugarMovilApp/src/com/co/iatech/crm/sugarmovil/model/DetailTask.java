@@ -67,31 +67,31 @@ public class DetailTask extends GenericBean implements Parcelable , Visitable{
     }
     
     public DetailTask(JSONObject obj) throws JSONException {
-		setId(validate(obj.getString("id")));;
-	    setName(validate(obj.getString("name")));;
-	    setDate_entered(validate(obj.getString("date_entered")));;
-	    setDate_modified(validate(obj.getString("date_modified")));;
-	    setModified_user_id(validate(obj.getString("modified_user_id")));;
-	    setCreated_by(validate(obj.getString("created_by")));;
-	    setDescription(validate(obj.getString("description")));;
-	    setDeleted(validate(obj.getString("deleted")));;
-	    setAssigned_user_id(validate(obj.getString("assigned_user_id")));;
-	    setStatus(validate(obj.getString("status")));;
-	    setDate_due_flag(validate(obj.getString("date_due_flag")));;
-	    setDate_due(validate(obj.getString("date_due")));;
-	    setDate_start_flag(validate(obj.getString("date_start_flag")));;
-	    setDate_start(validate(obj.getString("date_start")));;
-	    setParent_type(validate(obj.getString("parent_type")));;
-	    setParent_id(validate(obj.getString("parent_id")));;
-	    setContact_id(validate(obj.getString("contact_id")));;
-	    setPriority(validate(obj.getString("priority")));;
-	    setId_c(validate(obj.getString("id_c")));;
-	    setAviso_c(validate(obj.getString("aviso_c")));;
-	    setTrabajo_estimado_c(validate(obj.getString("trabajo_estimado_c")));;
-	    setEjecuted_date_c(validate(obj.getString("ejecuted_date_c")));;
-	    setAssigned_user_name(validate(obj.getString("assigned_user_name")));;
-	    setContact_name(validate(obj.getString("contact_name")));;
-	    setParent_name(validate(obj.getString("parent_name")));;
+		setId(validate(obj.getString("id")));
+	    setName(validate(obj.getString("name")));
+	    setDate_entered(validate(obj.getString("date_entered")));
+	    setDate_modified(validate(obj.getString("date_modified")));
+	    setModified_user_id(validate(obj.getString("modified_user_id")));
+	    setCreated_by(validate(obj.getString("created_by")));
+	    setDescription(validate(obj.getString("description")));
+	    setDeleted(validate(obj.getString("deleted")));
+	    setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+	    setStatus(validate(obj.getString("status")));
+	    setDate_due_flag(validate(obj.getString("date_due_flag")));
+	    setDate_due(validate(obj.getString("date_due")));
+	    setDate_start_flag(validate(obj.getString("date_start_flag")));
+	    setDate_start(validate(obj.getString("date_start")));
+	    setParent_type(validate(obj.getString("parent_type")));
+	    setParent_id(validate(obj.getString("parent_id")));
+	    setContact_id(validate(obj.getString("contact_id")));
+	    setPriority(validate(obj.getString("priority")));
+	    setId_c(validate(obj.getString("id_c")));
+	    setAviso_c(validate(obj.getString("aviso_c")));
+	    setTrabajo_estimado_c(validate(obj.getString("trabajo_estimado_c")));
+	    setEjecuted_date_c(validate(obj.getString("ejecuted_date_c")));
+	    setAssigned_user_name(validate(obj.getString("assigned_user_name")));
+	    setContact_name(validate(obj.getString("contact_name")));
+	    setParent_name(validate(obj.getString("parent_name")));
     }
 
     protected DetailTask(Parcel in) {

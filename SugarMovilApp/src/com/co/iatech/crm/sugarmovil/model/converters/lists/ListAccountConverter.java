@@ -4,7 +4,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.co.iatech.crm.sugarmovil.model.Cuenta;
+import com.co.iatech.crm.sugarmovil.model.Account;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder;
 import com.co.iatech.crm.sugarmovil.util.ListsHolder.ListsHolderType;
 
@@ -17,7 +17,7 @@ public class ListAccountConverter extends ListModelConverter{
 	
 	}
 	
-	public ListAccountConverter (List<Cuenta> data){
+	public ListAccountConverter (List<Account> data){
 		this();
 		ListsHolder.saveList(typelist, data);
 	}
@@ -29,11 +29,11 @@ public class ListAccountConverter extends ListModelConverter{
 		}
 		String resp= "";
 		boolean  finded = false;
-		List<Cuenta> lista = (List<Cuenta>) ListsHolder.getList(typelist);
+		List<Account> lista = (List<Account>) ListsHolder.getList(typelist);
 		switch(dataType){
 			case VALUE:
 				if(lista != null){
-					for(Cuenta c : lista){
+					for(Account c : lista){
 						if(c.getId().contains(value)){
 							finded = true;
 							resp = c.getName();
@@ -45,7 +45,7 @@ public class ListAccountConverter extends ListModelConverter{
 			case CODE:
 				
 				if(lista != null){
-					for(Cuenta c : lista){
+					for(Account c : lista){
 						if(c.getName().contains(value)){
 							finded = true;
 							resp = c.getId();
@@ -58,7 +58,7 @@ public class ListAccountConverter extends ListModelConverter{
 				int cont = 0;
 				if(lista != null){
 					
-					for(Cuenta c : lista){
+					for(Account c : lista){
 						cont++;
 						if(c.getId().equals(value)){
 							finded = true;
@@ -83,8 +83,8 @@ public class ListAccountConverter extends ListModelConverter{
 	public List<String> getListInfo() {
 		if(data.size()<= 0){
 			data.add("SELECCIONAR");
-			List<Cuenta> listaTemp = (List<Cuenta>) ListsHolder.getList(typelist);
-			for(Cuenta c : listaTemp){
+			List<Account> listaTemp = (List<Account>) ListsHolder.getList(typelist);
+			for(Account c : listaTemp){
 				data.add(c.getName());
 			}
 			
