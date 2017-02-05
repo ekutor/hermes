@@ -87,8 +87,6 @@ public class MultiSelectAcivity extends Activity {
 					imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
 					try {
-						// ((RecyclerGenericAdapter)
-						// mRecyclerView.getAdapter()).flushFilter();
 					} catch (Exception e) {
 
 					}
@@ -102,9 +100,6 @@ public class MultiSelectAcivity extends Activity {
 				public boolean onQueryTextSubmit(String query) {
 					try {
 						// Filtro para select
-						// ((RecyclerGenericAdapter)
-						// mRecyclerView.getAdapter()).setFilter(query);
-
 						objAdapter.filter(query);
 					} catch (Exception e) {
 
@@ -117,9 +112,6 @@ public class MultiSelectAcivity extends Activity {
 				public boolean onQueryTextChange(String newText) {
 					try {
 						// Filtro para select
-						// ((RecyclerGenericAdapter)
-						// mRecyclerView.getAdapter()).setFilter(newText);
-
 						objAdapter.filter(newText);
 
 					} catch (Exception e) {
@@ -170,7 +162,6 @@ public class MultiSelectAcivity extends Activity {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								// TODO Auto-generated method stub
 								llContainer.addView(lv);
 							}
 						});

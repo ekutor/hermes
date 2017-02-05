@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 import com.co.iatech.crm.sugarmovil.R;
 import com.co.iatech.crm.sugarmovil.activities.ActivitiesMediator;
 import com.co.iatech.crm.sugarmovil.activities.MainActivity;
-import com.co.iatech.crm.sugarmovil.activities.OpportunityActivity;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GatewayPublisher;
 import com.co.iatech.crm.sugarmovil.activities.tasks.GenericTaskPublisher;
 import com.co.iatech.crm.sugarmovil.activities.tasks.IObserverTask;
@@ -28,8 +26,7 @@ import com.co.iatech.crm.sugarmovil.activtities.modules.IMovilModuleActions;
 import com.co.iatech.crm.sugarmovil.activtities.modules.Modules;
 import com.co.iatech.crm.sugarmovil.conex.ControlConnection;
 import com.co.iatech.crm.sugarmovil.conex.TypeInfoServer;
-import com.co.iatech.crm.sugarmovil.core.data.DataManager;
-import com.co.iatech.crm.sugarmovil.model.Meeting;
+import com.co.iatech.crm.sugarmovil.model.MeetingsGroup;
 import com.co.iatech.crm.sugarmovil.util.GlobalClass;
 import com.co.iatech.crm.sugarmovil.util.Utils;
 import com.software.shell.fab.ActionButton;
@@ -143,7 +140,7 @@ CalendarModule, OnClickListener {
 			
 			calendarView = (GridView) rootView.findViewById(R.id.grid_calendar);
 			
-			adapter = new GridCellAdapter(this.getActivity().getApplicationContext(), R.id.calendar_day_gridcell, _calendar , new HashMap<Integer,List<Meeting>>() );
+			adapter = new GridCellAdapter(this.getActivity().getApplicationContext(), R.id.calendar_day_gridcell, _calendar , new HashMap<Integer,Integer>() );
 			adapter.notifyDataSetChanged();
 			calendarView.setAdapter(adapter);
 			
@@ -255,7 +252,7 @@ CalendarModule, OnClickListener {
 	 * @param calendar
 	 * 
 	 */
-	private void setGridCellAdapterToDate(Calendar c, Map<Integer,List<Meeting>> metingsMonth) {
+	private void setGridCellAdapterToDate(Calendar c, Map<Integer,Integer> metingsMonth) {
 		adapter = new GridCellAdapter(this.getActivity().getApplicationContext(), R.id.calendar_day_gridcell, c,metingsMonth);
 		currentMonth.setText(DateFormat.format(dateTemplate, c.getTime()));
 		adapter.notifyDataSetChanged();
@@ -311,11 +308,11 @@ CalendarModule, OnClickListener {
 		private TextView gridcell;
 		private RelativeLayout item;
 		private TextView num_events_per_day;
-		private final Map<Integer, List<Meeting>> eventsPerMonthMap;
+		private final Map<Integer, Integer> eventsPerMonthMap;
 		private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
 
 		// Days in Current Month
-		public GridCellAdapter(Context context, int textViewResourceId, Calendar c, Map<Integer, List<Meeting>> eventsPerMonth) {
+		public GridCellAdapter(Context context, int textViewResourceId, Calendar c, Map<Integer, Integer> eventsPerMonth) {
 			super();
 			this._context = context;
 			this.list = new ArrayList<String>();
@@ -465,7 +462,7 @@ CalendarModule, OnClickListener {
 			if ( eventsPerMonthMap != null && !eventsPerMonthMap.isEmpty() ) {
 				int day = Integer.parseInt(theday);
 				if (eventsPerMonthMap.containsKey(day) && !day_color[1].equals("GREY")) {
-					int numEvents = eventsPerMonthMap.get(day).size();
+					int numEvents = eventsPerMonthMap.get(day);
 					num_events_per_day.setText(String.valueOf(numEvents));
 					LinearLayout layoutBackground = (LinearLayout) row.findViewById(R.id.layoutBackground);
 					layoutBackground.setVisibility(View.VISIBLE);
@@ -545,26 +542,18 @@ CalendarModule, OnClickListener {
 			}
 			
 			selectedDayMonthYearButton.setText("Selected: UPdated");
-			Map<Integer,List<Meeting>> metingsMonth;
-			metingsMonth = new HashMap<Integer, List<Meeting>>();
+			Map<Integer,Integer> metingsMonth;
+			metingsMonth = new HashMap<Integer, Integer>();
 	        
 			JSONObject jObj = new JSONObject(response.getAdditionalInfo());
 	
 	        JSONArray jArr = jObj.getJSONArray("results");
 	        for (int i = 0; i < jArr.length(); i++) {
 	            JSONObject obj = jArr.getJSONObject(i);
-	            Meeting m = new Meeting(obj);
+	            MeetingsGroup m = new MeetingsGroup(obj);
 	           
-	            int day = Utils.getDay(m.getDateStart());
-	          
-	            if(metingsMonth.containsKey(day)){
-	            	metingsMonth.get(day).add(m);
-	            }else{
-	            	List<Meeting> lm = new ArrayList<Meeting>();
-	            	lm.add(m);
-	            	metingsMonth.put(day, lm);
-	            }
-	           
+	            int day = Utils.getDay(m.getDate());
+	            metingsMonth.put(day, Integer.parseInt(m.getQty()));
 	        }
 	        
 	        setGridCellAdapterToDate(_calendar , metingsMonth);
