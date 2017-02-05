@@ -12,7 +12,8 @@ public class ListOppIluminationConverter extends ListConverter{
 		dataMap = new LinkedHashMap<String,String>();
 		
 		dataMap.put(defaultListKey, defaultListValue);
-		dataMap.put("VCP", "VCP");
+		dataMap.put("VCP", "VCP ECOLIGHTING");
+		dataMap.put("EATON_LIGHTING", "EATON LIGHTING");
 		
 	}
 	

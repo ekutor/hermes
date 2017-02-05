@@ -83,7 +83,7 @@ public class MultipleListAdapter extends BaseAdapter {
          
         holder.name.setText(mainDataList.get(position).getListName());
      //   holder.number.setText(mainDataList.get(position).getNumber());
-        holder.image.setImageResource(R.drawable.ic_launcher);
+        holder.image.setImageResource(R.drawable.bg_intro);
       /*  if(getByteContactPhoto(mainDataList.get(position).getImage())==null){
             holder.image.setImageResource(R.drawable.ic_launcher);
         }else{

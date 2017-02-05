@@ -9,8 +9,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import com.co.iatech.crm.sugarmovil.model.converters.lists.ListConverter.DataToGet;
+import com.co.iatech.crm.sugarmovil.util.ListsConversor.ConversorsType;
+
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 public class Utils {
 	private static final String DATETIME_FORMAT_FRONTEND = "dd MMMM yyyy HH:mm:ss";
@@ -280,4 +285,25 @@ public class Utils {
 		return -1;
 	}
 
+	public static String transformValuesForCodes(TextView valorComunicaciones,
+			ConversorsType type, DataToGet datatoGet) {
+		StringBuilder sb = new StringBuilder();
+		String res = "";
+		if(!TextUtils.isEmpty(valorComunicaciones.getText())){
+			String[] values = valorComunicaciones.getText().toString().split(",");
+			boolean finded = false;
+			for(String listSelected : values){
+				sb.append(ListsConversor.convert(type,listSelected, datatoGet));
+				sb.append(",");
+				finded = true;
+			}
+			if(finded){
+				sb.deleteCharAt(sb.length()-1);
+				res = sb.toString();
+			}
+		}
+		return res;
+	}
+	
+	
 }

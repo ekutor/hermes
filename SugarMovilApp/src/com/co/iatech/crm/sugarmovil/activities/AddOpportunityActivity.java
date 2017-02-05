@@ -79,10 +79,10 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 	 */
 	private Toolbar mCuentaToolbar;
 	private ImageButton imgButtonGuardar;
-	private Button botonFechaCierre, multiselectBtn;
-	private TextView mValorFechaCierre, asignadoA, valorCuenta, valorEnergia;
+	private Button botonFechaCierre, multiselectBtn,multiselectComBtn,multiselectIlumBtn;
+	private TextView mValorFechaCierre, asignadoA, valorCuenta, valorEnergia, valorComunicaciones,valorIluminacion;
 	private EditText valorNombre, valorUsuario, valorEstimado, valorProbabilidad, valorPaso, valorDescripcion;
-	private Spinner valorTipo, valorEtapa, valorMedio, valorComunicaciones, valorIluminacion, valorMoneda;
+	private Spinner valorTipo, valorEtapa, valorMedio, valorMoneda;
 	private Spinner valorCampana, valorFuente;
 	private ListUsersConverter lc = new ListUsersConverter();
 
@@ -182,23 +182,6 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 			}
 		});
 
-		valorEnergia = (TextView) findViewById(R.id.valor_energia);
-
-		// Comunicaciones
-		valorComunicaciones = (Spinner) findViewById(R.id.valor_comunicaciones);
-		ArrayAdapter<String> comunicacionesAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_COMUNICATIONS));
-		comunicacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		valorComunicaciones.setAdapter(comunicacionesAdapter);
-
-		// Iluminacion
-		valorIluminacion = (Spinner) findViewById(R.id.valor_iluminacion);
-		ArrayAdapter<String> iluminacionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				ListsConversor.getValuesList(ConversorsType.OPPORTUNITY_ILUM));
-		iluminacionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		valorIluminacion.setAdapter(iluminacionAdapter);
-
 		// Moneda
 		valorMoneda = (Spinner) findViewById(R.id.valor_moneda);
 		ArrayAdapter<String> monedaAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
@@ -260,13 +243,22 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 		valorPaso = (EditText) findViewById(R.id.valor_paso);
 		// Descripcion
 		valorDescripcion = (EditText) findViewById(R.id.valor_descripcion);
-
+		
+		valorEnergia = (TextView) findViewById(R.id.valor_energia);
+		valorComunicaciones = (TextView) findViewById(R.id.valor_comunicaciones);
+		valorIluminacion = (TextView) findViewById(R.id.valor_iluminacion);
 		// Eventos
 		// Guardar Tarea
 		imgButtonGuardar.setOnClickListener(this);
 		multiselectBtn = (Button) findViewById(R.id.boton_multiselect);
 		multiselectBtn.setOnClickListener(this);
-
+		
+		multiselectComBtn = (Button) findViewById(R.id.boton_multiselect_com);
+		multiselectComBtn.setOnClickListener(this);
+		
+		multiselectIlumBtn = (Button) findViewById(R.id.boton_multiselect_ilum);
+		multiselectIlumBtn.setOnClickListener(this);
+		
 	}
 
 	public void chargeValues() {
@@ -296,19 +288,7 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 
 		pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_SOURCE, oportSeleccionada.getFuente_c());
 		valorFuente.setSelection(pos);
-
-		// pos =
-		// ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_ENERGY,
-		// oportSeleccionada.getEnergia_c());
-		// valorEnergia.setSelection(pos);
-
-		pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_COMUNICATIONS,
-				oportSeleccionada.getComunicaciones_c());
-		valorComunicaciones.setSelection(pos);
-
-		pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_ILUM, oportSeleccionada.getIluminacion_c());
-		valorIluminacion.setSelection(pos);
-
+		
 		pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_CURRENCY,
 				oportSeleccionada.getAmount_usdollar());
 		valorMoneda.setSelection(pos);
@@ -348,7 +328,13 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 			} else if (v.getId() == multiselectBtn.getId()) {
 				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
 						ConversorsType.OPPORTUNITY_ENERGY);
-			} else if (v.getId() == botonFechaCierre.getId()) {
+			}else if (v.getId() == multiselectComBtn.getId()) {
+				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
+						ConversorsType.OPPORTUNITY_COMUNICATIONS);	
+			}else if (v.getId() == multiselectIlumBtn.getId()) {
+				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
+						ConversorsType.OPPORTUNITY_ILUM);	
+		    }else if (v.getId() == botonFechaCierre.getId()) {
 				DialogFragment newFragment = new DatePickerFragment(this, mValorFechaCierre, isEditMode);
 				newFragment.show(getFragmentManager(), "dateCierrePicker");
 			} else if (v.getId() == valorCuenta.getId()) {
@@ -400,16 +386,16 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 				oportSeleccionada.setAssigned_user_id(idUsuarioAsignado);
 
 				// Marca energia
-				oportSeleccionada.setEnergia_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_ENERGY,
-						valorEnergia.getText().toString(), DataToGet.CODE));
+				oportSeleccionada.setEnergia_c(
+						Utils.transformValuesForCodes(valorEnergia,ConversorsType.OPPORTUNITY_ENERGY, DataToGet.CODE));
 
 				// Marca comunicaciones
-				oportSeleccionada.setComunicaciones_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_COMUNICATIONS,
-						valorComunicaciones.getSelectedItem().toString(), DataToGet.CODE));
-
+				oportSeleccionada.setComunicaciones_c(
+						Utils.transformValuesForCodes(valorComunicaciones,ConversorsType.OPPORTUNITY_COMUNICATIONS, DataToGet.CODE));
+				
 				// Marca iluminacion
-				oportSeleccionada.setIluminacion_c(ListsConversor.convert(ConversorsType.OPPORTUNITY_ILUM,
-						valorIluminacion.getSelectedItem().toString(), DataToGet.CODE));
+				oportSeleccionada.setIluminacion_c(
+						Utils.transformValuesForCodes(valorIluminacion,ConversorsType.OPPORTUNITY_ILUM, DataToGet.CODE));
 
 				// Moneda
 
@@ -481,11 +467,11 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 					break;
 					
 				case OPPORTUNITY_COMUNICATIONS:
-					//valorComunicaciones.setText(s);
+					valorComunicaciones.setText(s);
 					break;
 					
 				case OPPORTUNITY_ILUM:
-					//valorIluminacion.setText(s);
+					valorIluminacion.setText(s);
 					break;
 					
 			default:
