@@ -209,12 +209,13 @@ public class ActivitiesMediator implements IMediator {
 		
 	}
 	
-	public void showMultiselectList(Context context, ConversorsType info) {
+	public void showMultiselectList(Context context, ConversorsType info, String values) {
 		try{
 			Intent intent = null;
 			intent = new Intent(context, MultiSelectAcivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.putExtra(MultiSelectAcivity.LIST_TYPE, info.name());
+			intent.putExtra(MultiSelectAcivity.SELECTED_VALUES, values);
 			chargeLastModuleCaller(intent);
 		    context.startActivity(intent);
 		}catch(Exception e){

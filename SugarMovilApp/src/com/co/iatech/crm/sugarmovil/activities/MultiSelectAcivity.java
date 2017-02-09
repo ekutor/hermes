@@ -45,6 +45,7 @@ public class MultiSelectAcivity extends Activity {
 	Button btnOK = null;
 	RelativeLayout rlPBContainer = null;
 	public static String LIST_TYPE = "LIST_TYPE";
+	public static String SELECTED_VALUES = "SELECTED_VALUES";
 
 	private SearchView searchView;
 
@@ -73,24 +74,15 @@ public class MultiSelectAcivity extends Activity {
 			searchView.setOnSearchClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// toolbarTextView.setVisibility(View.GONE);
 				}
 			});
 
 			searchView.setOnCloseListener(new SearchView.OnCloseListener() {
 				@Override
 				public boolean onClose() {
-					// toolbarTextView.setVisibility(View.VISIBLE);
-
-					InputMethodManager imm = (InputMethodManager) MultiSelectAcivity.this
+				   InputMethodManager imm = (InputMethodManager) MultiSelectAcivity.this
 							.getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-
-					try {
-					} catch (Exception e) {
-
-					}
-
 					return false;
 				}
 			});
@@ -99,7 +91,6 @@ public class MultiSelectAcivity extends Activity {
 				@Override
 				public boolean onQueryTextSubmit(String query) {
 					try {
-						// Filtro para select
 						objAdapter.filter(query);
 					} catch (Exception e) {
 
@@ -138,6 +129,9 @@ public class MultiSelectAcivity extends Activity {
 
 					Intent intent = getIntent();
 					String listInfo = intent.getStringExtra(LIST_TYPE);
+					String selectedValues = intent.getStringExtra(SELECTED_VALUES);
+					selectedValues = selectedValues == null?"":selectedValues;
+					
 					ConversorsType listSelected = ConversorsType.valueOf(listInfo);
 
 					List<String> list = ListsConversor.getValuesList(listSelected);
@@ -154,6 +148,9 @@ public class MultiSelectAcivity extends Activity {
 						for (String iList : list) {
 							ListInfo li = new ListInfo();
 							li.setListName(iList);
+							if(selectedValues.contains(iList)){
+								li.setSelected(true);
+							}
 							ObjectListClass.dataList.add(li);
 						}
 
@@ -201,7 +198,6 @@ public class MultiSelectAcivity extends Activity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				rlPBContainer.setVisibility(View.VISIBLE);
 				edtSearch.setVisibility(View.GONE);
 				btnOK.setVisibility(View.GONE);
@@ -213,7 +209,6 @@ public class MultiSelectAcivity extends Activity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				rlPBContainer.setVisibility(View.GONE);
 				edtSearch.setVisibility(View.VISIBLE);
 				btnOK.setVisibility(View.VISIBLE);

@@ -274,7 +274,12 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 		valorPaso.setText(oportSeleccionada.getNext_step());
 		// Descripcion
 		valorDescripcion.setText(oportSeleccionada.getDescription());
-
+		
+		valorIluminacion.setText(oportSeleccionada.getIluminacion_c());
+		
+		valorComunicaciones.setText(oportSeleccionada.getComunicaciones_c());
+		
+		valorEnergia.setText(oportSeleccionada.getEnergia_c());
 		// valorEstimado.setText(oportSeleccionada.getValoroportunidad_c());
 
 		int pos = ListsConversor.getPosItemOnList(ConversorsType.OPPORTUNITY_PROYECT, oportSeleccionada.getTipo_c());
@@ -326,14 +331,17 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 					Message.showUsersDialog(getSupportFragmentManager(), v.getId());
 				}
 			} else if (v.getId() == multiselectBtn.getId()) {
+				String values = valorIluminacion.getText() == null ? "":valorEnergia.getText().toString();
 				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
-						ConversorsType.OPPORTUNITY_ENERGY);
+						ConversorsType.OPPORTUNITY_ENERGY, values);
 			}else if (v.getId() == multiselectComBtn.getId()) {
+				String values = valorIluminacion.getText() == null ? "":valorComunicaciones.getText().toString();
 				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
-						ConversorsType.OPPORTUNITY_COMUNICATIONS);	
+						ConversorsType.OPPORTUNITY_COMUNICATIONS, values);	
 			}else if (v.getId() == multiselectIlumBtn.getId()) {
+				String values = valorIluminacion.getText() == null ? "":valorIluminacion.getText().toString();
 				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
-						ConversorsType.OPPORTUNITY_ILUM);	
+						ConversorsType.OPPORTUNITY_ILUM, values);	
 		    }else if (v.getId() == botonFechaCierre.getId()) {
 				DialogFragment newFragment = new DatePickerFragment(this, mValorFechaCierre, isEditMode);
 				newFragment.show(getFragmentManager(), "dateCierrePicker");
