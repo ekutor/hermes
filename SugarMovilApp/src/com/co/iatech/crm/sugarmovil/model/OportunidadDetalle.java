@@ -332,7 +332,7 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     }
 
     public void setEnergia_c(String energia_c) {
-        this.energia_c = addSpecialChar(energia_c);
+        this.energia_c = energia_c;
     }
 
     public String getComunicaciones_c() {
@@ -340,7 +340,7 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     }
 
     public void setComunicaciones_c(String comunicaciones_c) {
-        this.comunicaciones_c = addSpecialChar(comunicaciones_c);
+        this.comunicaciones_c = comunicaciones_c;
     }
 
     public String getIluminacion_c() {
@@ -348,7 +348,7 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
     }
 
     public void setIluminacion_c(String iluminacion_c) {
-        this.iluminacion_c = addSpecialChar(iluminacion_c);
+        this.iluminacion_c = iluminacion_c;
     }
 
     public String getUsuario_final_c() {
@@ -458,9 +458,9 @@ public class OportunidadDetalle extends GenericBean implements Parcelable {
 		data.put("medio_c",medio_c);
 		data.put("fuente_c",fuente_c);
 		data.put("tipo_c",tipo_c);
-		data.put("energia_c",energia_c);
-		data.put("comunicaciones_c",comunicaciones_c);
-		data.put("iluminacion_c",iluminacion_c);
+		data.put("energia_c",addSpecialChar(energia_c));
+		data.put("comunicaciones_c",addSpecialChar(comunicaciones_c));
+		data.put("iluminacion_c",addSpecialChar(iluminacion_c));
 		data.put("usuario_final_c",usuario_final_c);
 		data.put("idAccount",idAccount);
 		data.put("nameAccount",nameAccount);

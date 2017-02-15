@@ -331,11 +331,11 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 					Message.showUsersDialog(getSupportFragmentManager(), v.getId());
 				}
 			} else if (v.getId() == multiselectBtn.getId()) {
-				String values = valorIluminacion.getText() == null ? "":valorEnergia.getText().toString();
+				String values = valorEnergia.getText() == null ? "":valorEnergia.getText().toString();
 				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
 						ConversorsType.OPPORTUNITY_ENERGY, values);
 			}else if (v.getId() == multiselectComBtn.getId()) {
-				String values = valorIluminacion.getText() == null ? "":valorComunicaciones.getText().toString();
+				String values = valorComunicaciones.getText() == null ? "":valorComunicaciones.getText().toString();
 				ActivitiesMediator.getInstance().showMultiselectList(this.getApplicationContext(),
 						ConversorsType.OPPORTUNITY_COMUNICATIONS, values);	
 			}else if (v.getId() == multiselectIlumBtn.getId()) {
@@ -354,6 +354,9 @@ public class AddOpportunityActivity extends OpportunitiesModuleEditableActions {
 					return;
 				}
 				imgButtonGuardar.setVisibility(View.INVISIBLE);
+				if(oportSeleccionada.id == null && oportSeleccionada.getId_c() != null){
+					oportSeleccionada.id = oportSeleccionada.getId_c();
+				}
 				// Nombre
 				oportSeleccionada.setName(valorNombre.getText().toString());
 

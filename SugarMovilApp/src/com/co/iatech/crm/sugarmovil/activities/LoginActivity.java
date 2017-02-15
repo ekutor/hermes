@@ -238,6 +238,9 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
             	if(user.equals("h")){
             		user = "crm";
             		passwordUser = "M4rk3tingLAU+*";
+            	}else if(user.equals("y")){
+            		user = "yessica.villada";
+            		passwordUser = "940128Yk*";
             	}
             	ControlConnection.addHeader("usuario", user, true);
             	ControlConnection.addHeader("password", passwordUser, false);
