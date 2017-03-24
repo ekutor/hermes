@@ -413,5 +413,6 @@
     <string name="dialog_users_button_borrar">Borrar</string>
    <string name="dialog_users_button_cancelar">Cancelar</string>
     <string name="dialog_accounts_title">Buscar Cuenta:</string>
+    <string name="dialog_users_sel">Seleccione</string>
    
 </resources>

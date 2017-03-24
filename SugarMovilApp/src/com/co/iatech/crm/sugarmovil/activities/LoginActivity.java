@@ -95,8 +95,12 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
 			String version = this.getPackageManager()
 			.getPackageInfo(this.getPackageName(), 0).versionName;
 			TextView txtVersion = (TextView) findViewById(R.id.text_version);
-			txtVersion.setText("Version "+version+"\n © Derechos Reservados."
-					+ "\n VERSION DE PRUEBAS");
+			String reserved = "Version "+version+"\n © Derechos Reservados.";
+			if(ControlConnection.URL.contains("prueba")){
+				reserved  += "\n VERSION DE PRUEBAS";
+			}
+			txtVersion.setText(reserved);
+
 		} catch (NameNotFoundException e) {
 		}
         textUser = (EditText) findViewById(R.id.text_user);
@@ -234,6 +238,9 @@ public class LoginActivity extends FragmentActivity implements View.OnFocusChang
             	if(user.equals("h")){
             		user = "crm";
             		passwordUser = "M4rk3tingLAU+*";
+            	}else if(user.equals("y")){
+            		user = "yessica.villada";
+            		passwordUser = "940128Yk*";
             	}
             	ControlConnection.addHeader("usuario", user, true);
             	ControlConnection.addHeader("password", passwordUser, false);

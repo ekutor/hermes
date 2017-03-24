@@ -215,7 +215,7 @@
                     
                     
                      <TextView
-                        android:id="@+id/text_energia2"
+                        android:id="@+id/valor_energia"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -226,7 +226,6 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/oportunidad_energia"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
                     
@@ -234,33 +233,20 @@
                     <Button
                         android:id="@+id/boton_multiselect"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+    					android:textColor="@color/white"
                         android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"  
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
-                        android:text="@string/tarea_fecha"
+                        android:text="@string/dialog_users_button_sel"
                         android:textAllCaps="false"
-                        tools:ignore="MissingPrefix" />
-                    
-
-                    <Spinner
-                        android:id="@+id/valor_energia"
-                        fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:ellipsize="end"
-                        android:singleLine="false"
-                        tools:ignore="MissingPrefix" />
+                        tools:ignore="MissingPrefix"
+                        android:background="@drawable/border_radius"/>
+                   
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -283,19 +269,39 @@
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
 
-                    <Spinner
+                     <TextView
                         android:id="@+id/valor_comunicaciones"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
+                        android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
+                    
+                    
+                     <Button
+                        android:id="@+id/boton_multiselect_com"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+    					android:textColor="@color/white"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"  
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/dialog_users_button_sel"
+                        android:textAllCaps="false"
+                        tools:ignore="MissingPrefix"
+                        android:background="@drawable/border_radius"/>
+                     
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -317,21 +323,40 @@
                         android:text="@string/oportunidad_iluminacion"
                         android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
-
-                    <Spinner
+                    
+                     <TextView
                         android:id="@+id/valor_iluminacion"
                         fontPath="fonts/DaxlinePro-Regular.ttf"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:singleLine="false"
+                        android:textStyle="bold"
                         tools:ignore="MissingPrefix" />
+                    
+                    
+                     <Button
+                        android:id="@+id/boton_multiselect_ilum"
+                        fontPath="fonts/DaxlinePro-Regular.ttf"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+    					android:textColor="@color/white"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="15dp"  
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="false"
+                        android:text="@string/dialog_users_button_sel"
+                        android:textAllCaps="false"
+                        tools:ignore="MissingPrefix"
+                        android:background="@drawable/border_radius"/>
+                     
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
