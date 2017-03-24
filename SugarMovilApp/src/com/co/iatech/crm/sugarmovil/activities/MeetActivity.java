@@ -87,7 +87,8 @@ public class MeetActivity extends CalendarModuleActions {
 //					ListsConversor.convert(ConversorsType.MEETS_TYPE, meet.getParentType(), DataToGet.VALUE));
 
 			TextView valorAsignado = (TextView) findViewById(R.id.valor_asignado_a);
-			//valorAsignado.setText(meet.getAssigned_user_name());
+			valorAsignado.setVisibility(View.INVISIBLE);
+			//valorAsignado.setText(meet.ge);
 
 			TextView valorNombre = (TextView) findViewById(R.id.valor_nombre);
 
@@ -122,7 +123,14 @@ public class MeetActivity extends CalendarModuleActions {
 	public void applyActions() {
 
 		imgButtonEdit = (ImageButton) findViewById(R.id.ic_edit);
-		ActionsStrategy.definePermittedActions(this, (GlobalClass) getApplicationContext());
+		imgButtonEdit.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+					ActivitiesMediator.getInstance().addObjectInfo( selectedBean );
+					ActivitiesMediator.getInstance().showEditActivity(MeetActivity.this, 
+							MODULE, true);
+				}
+			});
+
 	}
 
 	@Override

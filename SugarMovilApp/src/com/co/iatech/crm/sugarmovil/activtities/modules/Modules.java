@@ -14,7 +14,7 @@ public enum Modules {
 	SUBTASKS("Notes","SUBTAREAS", "SUB TAREA"),
 	NOTES("adm_Notas","NOTAS", "NOTA"),
 	LEADS("Leads","CLIENTES POTENCIALES", "CLIENTE POTENCIAL"),
-	CALENDAR("Calendar","CALENDAR","CALENDARIO")
+	CALENDAR("Calendar","CALENDARIO","CALENDARIO")
 	;
 	
 	private String moduleName,visualName,sugarDBName;

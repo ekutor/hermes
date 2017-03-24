@@ -130,8 +130,7 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 	@Override
 	public void getInfoFromMediator() {
 		super.getInfoFromMediator();
-
-		tipoPermiso = AccessControl.getTypeEdit(MODULE, (GlobalClass) getApplicationContext());
+	
 		Intent intent = getIntent();
 
 		if (isEditMode) {
@@ -139,14 +138,10 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 		} else {
 			selectedMeet = new Meeting();
 			int pos = 0;
-			
 			pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_TYPE,
 					actualInfo.getActualParentModule().getSugarDBName());
 			valorTipo.setSelection(0);
-	
 		}
-
-		
 
 	}
 
@@ -230,11 +225,13 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 		imgButtonGuardar = (ImageButton) findViewById(R.id.ic_ok);
 		imgButtonGuardar.setOnClickListener(this);
 		asignadoA = (TextView) findViewById(R.id.valor_asignado_a);
-
-		// Contacto
-	
+		asignadoA.setVisibility(View.INVISIBLE);
 		valorEstado = (Spinner) findViewById(R.id.valor_estado);
-
+		ArrayAdapter<String> estadoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+				ListsConversor.getValuesList(ConversorsType.MEETS_STATUS));
+		estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		valorEstado.setAdapter(estadoAdapter);
+		
 		valorTipo = (Spinner) findViewById(R.id.valor_tipo);
 		ArrayAdapter<String> tipoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 				ListsConversor.getValuesList(ConversorsType.MEETS_TYPE));
@@ -278,11 +275,16 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 		valorAsunto.setText(selectedMeet.getName());
 		int pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_STATUS, selectedMeet.getStatus());
 		valorEstado.setSelection(pos);
+		
+		pos = ListsConversor.getPosItemOnList(ConversorsType.MEETS_TYPE, selectedMeet.getTipo_c());
+		valorTipo.setSelection(pos);
 		valorFechaInicio.setText(Utils.transformTimeBakendToUI(selectedMeet.getDateStart()));
 		valorFechaVen.setText(Utils.transformTimeBakendToUI(selectedMeet.getDateEnd()));
 
 		valorDescripcion.setText(selectedMeet.getDescription());
 
+		valorObjetivos.setText(selectedMeet.getObjetivos());
+		valorCompromisos.setText(selectedMeet.getCompromisos());
 		// Asignado
 		//asignadoA.setText(lc.convert(selectedMeet.getAssigned_user_id(), DataToGet.VALUE));
 		imgButtonGuardar.setVisibility(View.VISIBLE);
@@ -292,19 +294,7 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == asignadoA.getId()) {
-			if(isEditMode){
-				switch (tipoPermiso) {
-				case OWNER:
-					break;
-				case ALL:
-					Message.showUsersDialog(getSupportFragmentManager(), v.getId());
-					break;
-				case GROUP:
-					break;
-				}
-			}else{
-				Message.showUsersDialog(getSupportFragmentManager(), v.getId());
-			}
+			//	Message.showUsersDialog(getSupportFragmentManager(), v.getId());		
 
 		} else if (v.getId() == botonHoraInicio.getId()) {
 			DialogFragment newFragment = new TimePickerFragment(this, valorFechaInicio);
@@ -343,7 +333,7 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 			imgButtonGuardar.setVisibility(View.INVISIBLE);
 
 			selectedMeet.setName(valorAsunto.getText().toString());
-			selectedMeet.setStatus(ListsConversor.convert(ConversorsType.TASKS_STATUS,
+			selectedMeet.setStatus(ListsConversor.convert(ConversorsType.MEETS_STATUS,
 					valorEstado.getSelectedItem().toString(), DataToGet.CODE));
 		
 			if (valorFechaInicio.getText() != null && valorFechaInicio.getText().toString().length() > 1) {
@@ -360,9 +350,6 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 			selectedMeet.setLocation(valorLugar.getText().toString());
 			String selectedType = valorTipo.getSelectedItem().toString();
 			selectedMeet.setType(ListsConversor.convert(ConversorsType.MEETS_TYPE, selectedType, DataToGet.CODE));
-			
-			String selectedState = valorEstado.getSelectedItem().toString();
-			selectedMeet.setStatus(ListsConversor.convert(ConversorsType.MEETS_TYPE, selectedState, DataToGet.CODE));
 
 			
 			if(!isEditMode){
@@ -459,7 +446,6 @@ public class AddMeetActivity extends CalendarModuleEditableActions {
 
 				if (resultado.contains("OK")) {
 					obj.id = Utils.getIDFromBackend(resultado);
-				
 					ActivitiesMediator.getInstance().addObjectInfo(obj);
 					return true;
 				} else {
