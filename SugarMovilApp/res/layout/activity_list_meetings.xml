@@ -61,6 +61,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
         fab:button_color="@color/primary_color"
         fab:button_colorPressed="@color/secondary_color"
         fab:image="@drawable/fab_plus_icon"/>
