@@ -112,7 +112,7 @@ public class ListMeetsActivity extends CalendarModuleActions {
 				ActivitiesMediator.getInstance().showEditActivity(getApplicationContext(), MODULE,false);
 			}
 		});
-   		actionButton.setVisibility(View.VISIBLE);
+   		actionButton.setVisibility(View.INVISIBLE);
    	}
    	
    	@Override
