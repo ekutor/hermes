@@ -43,25 +43,33 @@ public class ProductDetail extends GenericBean implements Parcelable {
     private String en_inventario_c;
     private String precio1_c;
     private String precio2_c;
+    private String numero_pedido_c;
+    private String cantidad_c;
+    private String fecha_est_llegada_lau_c;
+    private String nota_c;
 
     public ProductDetail(JSONObject obj) throws JSONException {
-    	setId(validate(obj.getString("id")));;
-        setName(validate(obj.getString("name")));;
-        setDate_entered(validate(obj.getString("date_entered")));;
-        setDate_modified(validate(obj.getString("date_modified")));;
-        setModified_user_id(validate(obj.getString("modified_user_id")));;
-        setCreated_by(validate(obj.getString("created_by")));;
-        setDescription(validate(obj.getString("description")));;
-        setDeleted(validate(obj.getString("deleted")));;
-        setAssigned_user_id(validate(obj.getString("assigned_user_id")));;
-        setId_c(validate(obj.getString("id_c")));;
-        setCodigo_c(validate(obj.getString("codigo_c")));;
-        setReferencia_c(validate(obj.getString("referencia_c")));;
-        setMarca_c(validate(obj.getString("marca_c")));;
-        setGrupo_c(validate(obj.getString("grupo_c")));;
-        setEn_inventario_c(validate(obj.getString("saldo")));;
-        setPrecio1_c(validate(obj.getString("precio1_c")));;
-        setPrecio2_c(validate(obj.getString("precio2_c")));;
+    	setId(validate(obj.getString("id")));
+        setName(validate(obj.getString("name")));
+        setDate_entered(validate(obj.getString("date_entered")));
+        setDate_modified(validate(obj.getString("date_modified")));
+        setModified_user_id(validate(obj.getString("modified_user_id")));
+        setCreated_by(validate(obj.getString("created_by")));
+        setDescription(validate(obj.getString("description")));
+        setDeleted(validate(obj.getString("deleted")));
+        setAssigned_user_id(validate(obj.getString("assigned_user_id")));
+        setId_c(validate(obj.getString("id_c")));
+        setCodigo_c(validate(obj.getString("codigo_c")));
+        setReferencia_c(validate(obj.getString("referencia_c")));
+        setMarca_c(validate(obj.getString("marca_c")));
+        setGrupo_c(validate(obj.getString("grupo_c")));
+        setEn_inventario_c(validate(obj.getString("saldo")));
+        setPrecio1_c(validate(obj.getString("precio1_c")));
+        setPrecio2_c(validate(obj.getString("precio2_c")));
+        setNumero_pedido_c(validate(obj.getString("numero_pedido_c")));
+        setCantidad_c(validate(obj.getString("cantidad_c")));
+        setFecha_est_llegada_lau_c(validate(obj.getString("fecha_est_llegada_lau_c")));
+        setNota_c(validate(obj.getString("nota_c")));
     }
 
     protected ProductDetail(Parcel in) {
@@ -82,6 +90,10 @@ public class ProductDetail extends GenericBean implements Parcelable {
         en_inventario_c = in.readString();
         precio1_c = in.readString();
         precio2_c = in.readString();
+        numero_pedido_c = in.readString();
+        cantidad_c = in.readString();
+        fecha_est_llegada_lau_c = in.readString();
+        nota_c = in.readString();
     }
 
     public String getId() {
@@ -220,7 +232,39 @@ public class ProductDetail extends GenericBean implements Parcelable {
         this.precio2_c = precio2_c;
     }
 
-    @Override
+    public String getNumero_pedido_c() {
+		return numero_pedido_c;
+	}
+
+	public void setNumero_pedido_c(String numero_pedido_c) {
+		this.numero_pedido_c = numero_pedido_c;
+	}
+
+	public String getCantidad_c() {
+		return cantidad_c;
+	}
+
+	public void setCantidad_c(String cantidad_c) {
+		this.cantidad_c = cantidad_c;
+	}
+
+	public String getFecha_est_llegada_lau_c() {
+		return fecha_est_llegada_lau_c;
+	}
+
+	public void setFecha_est_llegada_lau_c(String fecha_est_llegada_lau_c) {
+		this.fecha_est_llegada_lau_c = fecha_est_llegada_lau_c;
+	}
+
+	public String getNota_c() {
+		return nota_c;
+	}
+
+	public void setNota_c(String nota_c) {
+		this.nota_c = nota_c;
+	}
+
+	@Override
     public int describeContents() {
         return 0;
     }
@@ -244,6 +288,10 @@ public class ProductDetail extends GenericBean implements Parcelable {
         dest.writeString(en_inventario_c);
         dest.writeString(precio1_c);
         dest.writeString(precio2_c);
+        dest.writeString(numero_pedido_c);
+        dest.writeString(cantidad_c);
+        dest.writeString(fecha_est_llegada_lau_c);
+        dest.writeString(nota_c);
     }
 
 	@Override

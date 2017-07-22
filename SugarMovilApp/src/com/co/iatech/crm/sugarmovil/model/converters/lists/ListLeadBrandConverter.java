@@ -19,8 +19,10 @@ public class ListLeadBrandConverter extends ListConverter{
 		dataMap.put("0008", "EATON");
 		dataMap.put("0025", "EATON LIGHTING");
 		dataMap.put("0010", "ENERLUX");
+		dataMap.put("0026", "ENSAMBLES");
 		dataMap.put("0011", "GEROS");
 		dataMap.put("0012", "GREENLEE");
+		dataMap.put("0027", "GIC");
 		dataMap.put("0013", "KLAUKE");
 		dataMap.put("0014", "LEVELONE");
 		dataMap.put("0019", "LEVITON NETWORK SOLUTIONS");
@@ -32,6 +34,8 @@ public class ListLeadBrandConverter extends ListConverter{
 		dataMap.put("0024", "VCP ECOLIGHTING ");
 		dataMap.put("0001", "VCP ELECTRIC");
 		dataMap.put("0018", "WOHNER");
+		dataMap.put("0028", "TCI");
+		dataMap.put("0029", "ZIGUA");
 	}
 	
 	

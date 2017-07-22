@@ -18,12 +18,15 @@ public class ListOppEnergyConverter extends ListConverter{
 		dataMap.put("ENERLUX", "ENERLUX");	
 		dataMap.put("ENSAMBLES", "ENSAMBLES");	
 		dataMap.put("GEROS", "GEROS");	
+		dataMap.put("GIC", "GIC");
 		dataMap.put("GREENLEE", "GREENLEE");	
 		dataMap.put("KLAUKE", "KLAUKE");	
 		dataMap.put("LEVITON WID", "LEVITON WID");	
 		dataMap.put("LOVATO", "LOVATO");	
+		dataMap.put("TCI", "TCI");
 		dataMap.put("VCP ELECTRIC", "VCP ELECTRIC");	
 		dataMap.put("WOHNER", "WOHNER");	
+		dataMap.put("ZIGUA", "ZIGUA");
 	}
 	
 	

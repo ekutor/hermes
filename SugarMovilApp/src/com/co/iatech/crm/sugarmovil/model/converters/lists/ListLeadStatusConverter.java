@@ -21,6 +21,8 @@ public class ListLeadStatusConverter extends ListConverter{
 		dataMap.put("GENERA_ACCION_SGC" , "GENERA ACCIÓN SGC");
 		dataMap.put("SE_REDIRECCIONA_A_LOGISTICA" , "SE REDIRECCIONA A LOGISTICA");
 		dataMap.put("CONTACTO_DEL_EXTERIOR" , "CONTACTO DEL EXTERIOR");
+		dataMap.put("CLIENTE_ACTIVO" , "CLIENTE ACTIVO");
+		dataMap.put("USUARIO_FINAL_SIN_POTENCIAL" , "USUARIO FINAL SIN POTENCIAL. ");
 		dataMap.put("SELECCIONE" , "SELECCIONE");
 	}
 	

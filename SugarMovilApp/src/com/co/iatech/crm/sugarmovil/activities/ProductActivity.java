@@ -87,6 +87,15 @@ public class ProductActivity extends ProductsModuleActions {
 	        valorPrecioDolares.setText(detail.getPrecio2_c());
 	        TextView valorGrupo = (TextView) findViewById(R.id.valor_grupo);
 	        valorGrupo.setText(detail.getGrupo_c());
+	        
+	        TextView numPed = (TextView) findViewById(R.id.valor_num_pedido);
+	        numPed.setText(detail.getNumero_pedido_c());
+	        TextView cant = (TextView) findViewById(R.id.valor_cant);
+	        cant.setText(detail.getCantidad_c());
+	        TextView fechaLau = (TextView) findViewById(R.id.valor_fecha_est_lau);
+	        fechaLau.setText(detail.getFecha_est_llegada_lau_c());
+	        TextView nota = (TextView) findViewById(R.id.valor_nota);
+	        nota.setText(detail.getNota_c());
     	 }catch(Exception e){
         	   Message.showShortExt(Utils.errorToString(e), this);
           }

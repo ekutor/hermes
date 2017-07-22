@@ -310,7 +310,12 @@
     <string name="codigo_precio_pesos">Precio en pesos:</string>
     <string name="codigo_precio_dolares">Precio en dólar:</string>
     <string name="codigo_grupo">Grupo:</string>
-
+    <string name="title_transit">PEDIDOS EN TRANSITO</string>
+    <string name="product_number">Número de pedido:</string>
+	<string name="product_qty">Cantidad:</string>
+	<string name="product_date">Fecha estimada de llegada a Lau:</string>
+	<string name="product_note">Nota:</string>
+	
     <!-- Cliente Activity -->
     <string name="title_activity_client">CLIENTE POTENCIAL</string>
     <string name="title_activity_create_client">CREAR CLIENTE </string>
